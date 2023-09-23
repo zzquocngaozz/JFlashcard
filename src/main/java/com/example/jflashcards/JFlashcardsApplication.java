@@ -25,7 +25,7 @@ public class JFlashcardsApplication implements CommandLineRunner {
         user.setLastName("huu");
         user.setPhone("0123456789");
         user.setGender(1);
-        user.setBirth("1990-09-23");
+        user.setBirth("23-06-2001");
         userRepository.save(user);
         User user1 = new User();
         user1.setUserName("hieu");
@@ -35,7 +35,7 @@ public class JFlashcardsApplication implements CommandLineRunner {
         user1.setLastName("hieu");
         user1.setPhone("0124456789");
         user1.setGender(1);
-        user1.setBirth("1990-09-23");
+        user1.setBirth("12-6-2001");
         userRepository.save(user1);
     }
 
