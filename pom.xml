@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>LearnWithTiger</artifactId>
+    <artifactId>JFlashcards</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>LearnWithTiger</name>
     <description>LearnWithTiger</description>
