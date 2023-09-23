@@ -6,10 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Date;
 
 /**
  * @author Admin
@@ -23,10 +27,11 @@ import java.util.Set;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "user_id")
+    private Integer userId;
 
     @Column(name = "user_name")
-    private String username;
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -46,17 +51,18 @@ public class User implements Serializable {
     @Column(name = "gender")
     private int gender;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns =@JoinColumn(name = "user_id"),
-            inverseJoinColumns =@JoinColumn(name = "role_id"))
-    private Set<Role> roleList = new HashSet<>();
+    @Column(name = "birth")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date birth;
 
+    @Column(name = "roleID", columnDefinition = "int default 1")
+    private int roleID = 1;
 
+    @Column(name = "isLooked",columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isLooked = false ;
 
-    public void addRole(Role role) {
-        this.roleList.add(role);
-    }
+    @Column(name = "isVerify",columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isVerify = false;
 
     public String getGenderString(){
         if(gender ==1){
@@ -65,5 +71,20 @@ public class User implements Serializable {
             return "Female";
         }
         return "";
+    }
+    public String getRoleString(){
+        if(roleID ==1){
+            return "Learner";
+        }else if (roleID ==2) {
+            return "Teacher";
+        }else if (roleID ==3) {
+            return "Admin";
+        }
+        return "";
+    }
+    public void setBirth(String birthDateStr) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date birth = dateFormat.parse(birthDateStr);
+        this.birth = birth;
     }
 }
