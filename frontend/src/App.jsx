@@ -1,13 +1,32 @@
 import * as React from 'react';
-import UserTable from './components/UserTable';
-import Pagination from './components/Pagination';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from './pages/Dashboard';
+import UserList from './pages/UserList';
+import Home from './pages/Home';
+const Login = React.lazy(()=>import('./pages/Sigin')) ;
+const NoPage = React.lazy(()=>import( './pages/NotFound'));
 
 function App() {
   return (
-    <>
-      <h1>Hello G50!</h1>
-      <UserTable/>
-    </>
+    
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path='/signin' element={
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <Login/>
+        </React.Suspense>
+        }/>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route  path="/users">
+          <Route index element={<UserList/>}/>
+          <Route path=":id" element={<NoPage/>}/>
+          <Route path="add" element={<NoPage/>}/>
+        </Route>
+        <Route path='*' element={<NoPage/>}/>
+      </Routes>
+    </BrowserRouter>
+    
   );
 }
 
