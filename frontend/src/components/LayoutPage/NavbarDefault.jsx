@@ -10,7 +10,7 @@ const NavbarDefault = () => {
                 <Stack justifyContent="space-between" alignItems='center' flexDirection='row' width='calc(100% - 100px)'>
 
                     <Box
-                    sx={{marginLeft:'10px'}}>
+                    sx={{marginLeft:'10px', "& a":{color:'#fff'}}}>
                         <Link 
                                 style={{marginLeft:'10px'}}
                                 to="#">
@@ -27,7 +27,7 @@ const NavbarDefault = () => {
                     sx={{marginLeft:'10px'}}>
                         <Link 
                                 style={{marginLeft:'10px'}}
-                                to="#">
+                                to="/signin">
                                     Login</Link >
                     </Box>
                 </Stack>

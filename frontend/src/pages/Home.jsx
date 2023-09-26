@@ -29,7 +29,7 @@ const Home = () => {
                             maxWidth:'500px',
                             clipPath:'1/1'
                     }}/>
-            <Stack spacing={5} 
+            <Stack spacing={5}
                 sx={{
                     marginLeft:'5rem',
                     maxWidth:'500px',
@@ -62,12 +62,13 @@ const Home = () => {
                     md:"column",
                     lg:"row"
                 },
-                padding:'5rem'
             }}>
             <Stack sx={{
-                maxWidth: 500
+                maxWidth: 400,
+                border: '1px solid #fff',
+                flexDirection:"column-reverse"
             }}>
-                <img src={createImg} alt='create' />
+                <img src={createImg} alt='create' style={{width:'100%', clipPath:'1/1', objectFit:'cover'}} />
                 <Box>
                     <Typography variant='h4' mt={1}>Ghi nhớ và ôn tập hiệu quả hơn</Typography>
                     <Typography m='5px 0'>
@@ -81,14 +82,14 @@ const Home = () => {
                 sx={{
                     marginLeft:'5rem',
                     
-                    maxWidth:'500px',
+                    maxWidth:'400px',
                     spacing:'10px',
                     "& button":{
                         display:'block',
                         maxWidth:'200px'
                     }
                 }}>
-                    <img src={learnImg} alt='create'/>
+                    <img src={learnImg} alt='create' style={{width:'100%', clipPath:'1/1', objectFit:'cover'}}/>
                     <Box>
                         <Typography variant='h4'>
                             Tìm và học những bộ thẻ trên JFlashcards
