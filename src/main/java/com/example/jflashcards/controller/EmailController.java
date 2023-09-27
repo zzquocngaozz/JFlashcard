@@ -1,6 +1,6 @@
 package com.example.jflashcards.controller;
 
-import com.example.jflashcards.security.EmailService;
+import com.example.jflashcards.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.example.jflashcards.security;
+package com.example.jflashcards.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
