@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UserTable from './components/UserTable';
-import Pagination from './components/Pagination';
+// import Pagination from './components/Pagination';
 
 function App() {
   return (
