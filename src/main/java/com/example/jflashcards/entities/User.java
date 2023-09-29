@@ -1,6 +1,7 @@
 package com.example.jflashcards.entities;
 
 //import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Date;
 
 /**
@@ -28,7 +27,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "user_name")
     private String userName;
@@ -53,15 +52,16 @@ public class User implements Serializable {
 
     @Column(name = "birth")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date birth;
 
     @Column(name = "roleID", columnDefinition = "int default 1")
     private int roleID = 1;
 
-    @Column(name = "isLooked",columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(name = "islooked",columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isLooked = false ;
 
-    @Column(name = "isVerify",columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(name = "isverify",columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isVerify = false;
 
     public String getGenderString(){
