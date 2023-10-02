@@ -1,21 +1,25 @@
 package com.example.jflashcards.security;
 
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.example.jflashcards.entities.User;
+import com.example.jflashcards.service.UserService;
 
-public class UserDetailServiceImpl  {
-//    @Autowired implements UserDetailsService
-//    private UserRepository repository;
-//
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = repository.getUserByEmail(email);
-//        if(user == null) {
-//            throw new UsernameNotFoundException("Could not find user");
-//        }
-//        return new MyUserDetail(user);
-//    }
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserDetailServiceImpl implements UserDetailsService {
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userService.getUserByEmail(email);
+        if(user == null) {
+            throw new UsernameNotFoundException("Could not find user");
+        }
+        return new MyUserDetail(user);
+    }
 }

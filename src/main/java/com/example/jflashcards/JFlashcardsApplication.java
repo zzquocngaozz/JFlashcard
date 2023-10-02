@@ -17,7 +17,7 @@ public class JFlashcardsApplication implements CommandLineRunner {
     private UserRepository userRepository;
     @Override
     public void run(String... arg) throws Exception{
-        /*User user = new User();
+        User user = new User();
         user.setUserName("huu");
         user.setPassword("123456789");
         user.setEmail("huuuu@gmail.com");
@@ -36,7 +36,7 @@ public class JFlashcardsApplication implements CommandLineRunner {
         user1.setPhone("0124456789");
         user1.setGender(1);
         user1.setBirth("12-6-2001");
-        userRepository.save(user1);*/
+        userRepository.save(user1);
     }
 
 }
