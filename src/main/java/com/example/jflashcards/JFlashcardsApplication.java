@@ -4,6 +4,8 @@ import com.example.jflashcards.entities.Role;
 import com.example.jflashcards.entities.User;
 import com.example.jflashcards.repository.RoleRepository;
 import com.example.jflashcards.repository.UserRepository;
+import com.example.jflashcards.service.RoleService;
+import com.example.jflashcards.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +21,10 @@ public class JFlashcardsApplication implements CommandLineRunner {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private UserService userService;
     @Override
     public void run(String... arg) throws Exception{
 //        Role role = new Role();
@@ -28,7 +34,7 @@ public class JFlashcardsApplication implements CommandLineRunner {
 //        role1.setName("ROLE_TEACHER");
 //        roleRepository.save(role1);
 //        Role role2 = new Role();
-//        role.setName("ROLE_ADMIN");
+//        role2.setName("ROLE_ADMIN");
 //        roleRepository.save(role2);
 //        User user = new User();
 //        user.setUserName("huu");
@@ -39,7 +45,7 @@ public class JFlashcardsApplication implements CommandLineRunner {
 //        user.setPhone("0123456789");
 //        user.setGender(1);
 //        user.setBirth("23-06-2001");
-//        userRepository.save(user);
+//        userService.createUserWithRoles(user,"ROLE_LEARNER");
 //        User user1 = new User();
 //        user1.setUserName("hieu");
 //        user1.setPassword("123456789");

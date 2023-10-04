@@ -63,7 +63,7 @@ public class User implements Serializable {
             inverseJoinColumns =@JoinColumn(name = "role_id"))
     private Set<Role> roleList = new HashSet<>();
 
-    public void addRole(Role role) {
+    public void setRoles(Role role) {
         this.roleList.add(role);
     }
 
@@ -82,7 +82,6 @@ public class User implements Serializable {
         }
         return "";
     }
-
     public void setBirth(String birthDateStr) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date birth = dateFormat.parse(birthDateStr);

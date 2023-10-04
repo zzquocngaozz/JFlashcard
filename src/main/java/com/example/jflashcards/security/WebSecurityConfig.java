@@ -3,6 +3,7 @@ package com.example.jflashcards.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,44 +36,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setPasswordEncoder(passwordEncoder());
-        authProvider.setUserDetailsService(userDetailsService());
-        return authProvider;
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/v1").permitAll()
-                .antMatchers("/api/v1/register").permitAll()
-                .antMatchers("/api/v1/login").permitAll()
-                .antMatchers("/api/v1/user").permitAll()
-                .antMatchers("/api/v1/**").authenticated() // Cấu hình đường dẫn API chỉ có người dùng đã xác thực mới được truy cập
-                .antMatchers("/api/v1/dashboard/**").hasRole("ADMIN") // Cấu hình đường dẫn API chỉ có người dùng đã xác thực mới được truy cập
-
-                .anyRequest().permitAll() // Cho phép tất cả các yêu cầu khác
+                .antMatchers("/api/v1","/api/v1/login", "/api/v1/register").permitAll() // Cho phép tất cả mọi người truy cập "/api/v1/login" và "/api/v1/register" mà không cần đăng nhập
+                .antMatchers("/api/v1/homepage/**").authenticated() // Cấu hình đường dẫn API chỉ có người dùng đã xác thực mới được truy cập
+                .antMatchers("/api/v1/dashboard/**").hasRole("ADMIN") // Cấu hình đường dẫn API chỉ có người dùng đã xác thực và có vai trò "ADMIN" mới được truy cập
+                .anyRequest().authenticated() // Cấu hình các đường dẫn khác yêu cầu người dùng phải đăng nhập
                 .and()
-                .formLogin() // Sử dụng form login
+                .formLogin()
                 .loginPage("/api/v1/login") // Đường dẫn đến trang login
-                .permitAll() // Cho phép tất cả mọi người truy cập trang login
+                .permitAll()
                 .and()
-                .logout() // Cấu hình đăng xuất
-                .permitAll(); // Cho phép tất cả mọi người đăng xuất
-    }
+                .logout()
+                .permitAll();
 
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-        tokenRepository.setDataSource(dataSource);
-        return tokenRepository;
     }
 }
