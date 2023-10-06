@@ -1,0 +1,111 @@
+package com.example.jflashcardsv0_9.service.implement;
+
+import com.example.jflashcardsv0_9.dto.RegisterDTO;
+import com.example.jflashcardsv0_9.dto.UserDTO;
+import com.example.jflashcardsv0_9.dto.LoginDTORequest;
+import com.example.jflashcardsv0_9.dto.LoginDTOResponse;
+import com.example.jflashcardsv0_9.entities.Role;
+import com.example.jflashcardsv0_9.entities.User;
+import com.example.jflashcardsv0_9.exception.Error;
+import com.example.jflashcardsv0_9.mapper.UserMapper;
+import com.example.jflashcardsv0_9.repository.RoleRepository;
+import com.example.jflashcardsv0_9.repository.UserRepository;
+import com.example.jflashcardsv0_9.service.UserService;
+import com.example.jflashcardsv0_9.util.JwtTokenUtil;
+import com.example.jflashcardsv0_9.exception.*;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Override
+    public UserDTO registration( RegisterDTO registerDTO) {
+        CheckRegisterDTO(registerDTO);
+        registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        User user = UserMapper.toUser(registerDTO);
+        Role roles = roleRepository.findByName("ROLE_LEARNER").get();
+        user.setRoles(Collections.singleton(roles));
+        userRepository.save(user);
+        return UserMapper.toUserDTOResponse(user);
+    }
+
+    private void CheckRegisterDTO(RegisterDTO registerDTO) {
+        if (registerDTO.getUserName() == null) {
+            throw new AppException(Error.DUPLICATED_USER);
+        }
+        if(registerDTO.getEmail() == null){
+            throw new AppException(Error.DUPLICATED_USER);
+        }
+        if(userRepository.existsByUserName(registerDTO.getUserName())){
+            throw new AppException(Error.DUPLICATED_USER);
+        }
+        if(userRepository.existsByEmail(registerDTO.getEmail())){
+            throw new AppException(Error.DUPLICATED_USER);
+        }
+
+    }
+
+    @Override
+    public UserDTO registrationADMIN( RegisterDTO registerDTO) {
+        CheckRegisterDTO(registerDTO);
+        registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        User user = UserMapper.toUser(registerDTO);
+        Role roles = roleRepository.findByName("ROLE_ADMIN").get();
+        user.setRoles(Collections.singleton(roles));
+        userRepository.save(user);
+        return UserMapper.toUserDTOResponse(user);
+    }
+
+    @Override
+    public LoginDTOResponse login(LoginDTORequest loginDTORequest) {
+        Optional<User> userOptional = userRepository.findByUserName(loginDTORequest.getUsername());
+        boolean isAuthentication = false;
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (passwordEncoder.matches(loginDTORequest.getPassword(), user.getPassword())) {
+                isAuthentication = true;
+            }
+        }
+        if (!isAuthentication) {
+            throw new AppException(Error.LOGIN_INFO_INVALID);
+        }
+        User user = userOptional.get();
+        final int ONE_DAY_MILLISECONDS = 24 * 60 * 60;
+        String accessToken = "Bearer " + jwtTokenUtil.generateToken(UserMapper.toTokenPayload(user), ONE_DAY_MILLISECONDS);
+        return LoginDTOResponse.builder()
+                .user(UserMapper.toUserDTOResponse(user))
+                .accessToken(accessToken)
+                .build();
+//        return LoginDTOResponse.builder()
+//                .account(AccountMapper.toAccountDTOResponse(account))
+//                .build();
+    }
+    @Override
+    public List<User> findAllUser(){
+        return userRepository.findAll();
+    } ;
+}
