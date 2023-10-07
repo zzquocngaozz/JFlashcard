@@ -19,27 +19,30 @@ public class JFlashcardsV09Application implements CommandLineRunner{
         SpringApplication.run(JFlashcardsV09Application.class, args);
     }
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public  void run(String... arg) throws Exception{
-//        Role role = new Role();
-//        role.setName("ROLE_LEARNER");
-//        roleRepository.save(role);
-//        Role role1 = new Role();
-//        role1.setName("ROLE_TEACHER");
-//        roleRepository.save(role1);
-//        Role role2 = new Role();
-//        role2.setName("ROLE_ADMIN");
-//        roleRepository.save(role2);
+        if (roleRepository.findRoleByName("ROLE_LEARNER") == null) {
+            Role role = new Role();
+            role.setName("ROLE_LEARNER");
+            roleRepository.save(role);
+        }
+
+        if (roleRepository.findRoleByName("ROLE_TEACHER") == null) {
+            Role role = new Role();
+            role.setName("ROLE_TEACHER");
+            roleRepository.save(role);
+        }
+
+        if (roleRepository.findRoleByName("ROLE_ADMIN") == null) {
+            Role role = new Role();
+            role.setName("ROLE_ADMIN");
+            roleRepository.save(role);
+        }
 //        RegisterDTO registerDTO = RegisterDTO.builder()
 //                .userName("hieu")
-//                .password("123456789")
+//                .password("Qwer1234")
 //                .email("huuuu@gmail.com")
 //                .firstName("hoang")
 //                .lastName("hieu")

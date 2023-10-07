@@ -65,6 +65,21 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+    private void CheckUserDTO(UserDTO userDTO) {
+        if (userDTO.getUserName() == null) {
+            throw new AppException(Error.DUPLICATED_USER);
+        }
+        if(userDTO.getEmail() == null){
+            throw new AppException(Error.DUPLICATED_USER);
+        }
+        if(userRepository.existsByUserName(userDTO.getUserName())){
+            throw new AppException(Error.DUPLICATED_USER);
+        }
+        if(userRepository.existsByEmail(userDTO.getEmail())){
+            throw new AppException(Error.DUPLICATED_USER);
+        }
+
+    }
 
     @Override
     public UserDTO registrationADMIN( RegisterDTO registerDTO) {
@@ -149,6 +164,15 @@ public class UserServiceImpl implements UserService {
         }
         User user = userOptional.get();
         Role roles = roleRepository.findByRoleId(role).get();
+        user.setRoles(Collections.singleton(roles));
+        userRepository.save(user);
+    }
+    @Override
+    public void addUser(UserDTO userDTO) {
+        CheckUserDTO(userDTO);
+        userDTO.setPassword(passwordEncoder.encode("Qwer1234"));
+        User user = UserMapper.toUserDTO(userDTO);
+        Role roles = roleRepository.findByRoleId(userDTO.getRole()).get();
         user.setRoles(Collections.singleton(roles));
         userRepository.save(user);
     }

@@ -29,8 +29,19 @@ public class UserMapper {
                 .userName(registerDTO.getUserName())
                 .email(registerDTO.getEmail())
                 .password(registerDTO.getPassword())
+                .birth(registerDTO.getBirth())
                 .firstName(registerDTO.getFirstName())
                 .lastName(registerDTO.getLastName())
+                .build();
+    }
+    public static User toUserDTO(UserDTO userDTO) {
+        return User.builder()
+                .userName(userDTO.getUserName())
+                .email(userDTO.getEmail())
+                .password(userDTO.getPassword())
+                .birth(userDTO.getBirth())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
                 .build();
     }
 

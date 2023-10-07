@@ -1,4 +1,5 @@
 package com.example.jflashcardsv0_9.controller;
+import com.example.jflashcardsv0_9.dto.RegisterDTO;
 import com.example.jflashcardsv0_9.dto.UserDTO;
 import com.example.jflashcardsv0_9.entities.Role;
 import com.example.jflashcardsv0_9.entities.User;
@@ -43,5 +44,10 @@ public class DashboardUserController {
     public ResponseEntity<String> changeUserRole(@PathVariable Long userId, @RequestBody int role) {
         userService.changeUserRole(userId, role);
         return ResponseEntity.ok("User roles changed successfully");
+    }
+    @PostMapping("/addUser")
+    public ResponseEntity<String>  addUser(@RequestBody UserDTO userDTO)  {
+        userService.addUser(userDTO);
+        return ResponseEntity.ok("add User successfully");
     }
 }

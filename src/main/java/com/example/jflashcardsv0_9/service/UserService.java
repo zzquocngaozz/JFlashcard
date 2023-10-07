@@ -26,4 +26,5 @@ public interface UserService {
     void blockUser(Long userId);
     void unblockUser(Long userId);
     void changeUserRole(Long userId, int newRoles);
+    void addUser(UserDTO userDTO);
 }

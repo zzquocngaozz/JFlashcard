@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Builder
@@ -13,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 public class RegisterDTO {
      String userName;
      String password;
+     Date birth;
      String email;
      String firstName;
      String lastName;
