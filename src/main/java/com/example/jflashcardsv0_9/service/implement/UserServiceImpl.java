@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(UserDTO userDTO) {
         CheckUserDTO(userDTO);
-        userDTO.setPassword(passwordEncoder.encode("Qwer1234"));
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = UserMapper.toUserDTO(userDTO);
         Role roles = roleRepository.findByRoleId(userDTO.getRole()).get();
         user.setRoles(Collections.singleton(roles));
