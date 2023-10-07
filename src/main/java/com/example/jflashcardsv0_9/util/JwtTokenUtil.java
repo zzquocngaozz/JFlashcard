@@ -1,6 +1,6 @@
 package com.example.jflashcardsv0_9.util;
 
-import com.example.jflashcardsv0_9.model.TokenPayload;
+import com.example.jflashcardsv0_9.dto.TokenPayload;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

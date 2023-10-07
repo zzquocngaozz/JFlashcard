@@ -9,6 +9,7 @@ public enum Error {
     LOGIN_INFO_INVALID("login information is invalid", HttpStatus.UNPROCESSABLE_ENTITY),
     ALREADY_FOLLOWED_USER("already followed user", HttpStatus.UNPROCESSABLE_ENTITY),
     ALREADY_FAVORITED_ARTICLE("already followed user", HttpStatus.UNPROCESSABLE_ENTITY),
+    USER_BLOCK("user is block", HttpStatus.UNPROCESSABLE_ENTITY),
 
     USER_NOT_FOUND("user not found", HttpStatus.NOT_FOUND),
     TOKEN_NOT_FOUND("token not found", HttpStatus.NOT_FOUND),

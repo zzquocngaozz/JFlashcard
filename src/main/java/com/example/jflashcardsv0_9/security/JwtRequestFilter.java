@@ -2,7 +2,7 @@ package com.example.jflashcardsv0_9.security;
 
 import com.example.jflashcardsv0_9.entities.User;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
-import com.example.jflashcardsv0_9.model.TokenPayload;
+import com.example.jflashcardsv0_9.dto.TokenPayload;
 import com.example.jflashcardsv0_9.repository.UserRepository;
 import com.example.jflashcardsv0_9.util.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;

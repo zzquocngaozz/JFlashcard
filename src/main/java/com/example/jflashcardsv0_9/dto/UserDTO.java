@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Builder
@@ -18,7 +20,8 @@ public class UserDTO {
     String email;
     String firstName;
     String lastName;
-    String role;
+    Date birth;
+    int role;
     boolean isLooked;
     boolean isVerify;
 

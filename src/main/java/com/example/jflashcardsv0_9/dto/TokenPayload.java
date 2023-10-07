@@ -1,4 +1,5 @@
-package com.example.jflashcardsv0_9.model;
+package com.example.jflashcardsv0_9.dto;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
