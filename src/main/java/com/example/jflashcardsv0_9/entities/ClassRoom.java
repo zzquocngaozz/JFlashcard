@@ -34,8 +34,9 @@ public class ClassRoom implements Serializable {
     private String classRoomCode;
 
     @Column(name = "createdAt")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @JsonFormat(pattern="dd-MM-yyyy")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date createdAt;
 
     @ManyToOne // Đây là mối quan hệ nhiều Class đến một User

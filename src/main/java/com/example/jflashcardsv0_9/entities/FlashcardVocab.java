@@ -19,7 +19,24 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "FlashcardVocab")
+@Table(name = "flashcardVocab")
 @Entity
-public class FlashcardVocab {
+public class FlashcardVocab implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cardVocabId")
+    private Long cardVocabId;
+    @Column(name = "term")
+    private String term;
+    @Column(name = "mean")
+    private String mean;
+    @Column(name = "example")
+    private String example;
+    @Column(name = "exampleMean")
+    private String exampleMean;
+    @Column(name = "imgUrl")
+    private String imgUrl;
+    @ManyToOne
+    @JoinColumn(name = "flashcardSetId") // Tên cột khoá ngoại trong bảng FlashcardKanji
+    private FlashcardSet flashcardSet;
 }

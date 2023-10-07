@@ -33,8 +33,9 @@ public class ClassPost implements Serializable{
     private String downloadUrl;
 
     @Column(name = "createdAt")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @JsonFormat(pattern="dd-MM-yyyy")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date createdAt;
 
     @ManyToOne // Mối quan hệ nhiều ClassPost đến một Classroom
