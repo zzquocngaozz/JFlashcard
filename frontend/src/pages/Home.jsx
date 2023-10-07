@@ -4,14 +4,14 @@ import learnImg from '../assets/images/learnCard.png'
 import createImg from '../assets/images/createCard.png'
 import teachImg from '../assets/images/teachCard.png'
 import bannerSm from '../assets/images/banner-sm.png'
-import Footer from '../components/LayoutPage/Footer'
-import NavbarDefault from '../components/LayoutPage/NavbarDefault'
+import Footer from '../components/Parts/Footer'
+import Navbar from '../components/Parts/Navbar'
 
 const Home = () => {
 
   return (
     <>
-        <NavbarDefault/>
+        <Navbar/>
         <Stack 
             sx={{
                 width:'100%',

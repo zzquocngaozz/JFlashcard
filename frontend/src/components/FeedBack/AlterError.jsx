@@ -1,7 +1,6 @@
 import { Alert, Snackbar, IconButton} from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react'
-import useFeedBack from "../../hooks/useFeedBack";
 
 // export const alert = {
 //   error:<MUIAlert severity = "error" message = "This is error message alert -- Check it out!" />,

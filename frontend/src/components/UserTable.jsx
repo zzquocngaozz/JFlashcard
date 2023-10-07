@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from 'axios'
+import { Box, Stack } from '@mui/material';
+import SideNavAdmin from './SideNavAdmin';
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -30,6 +32,7 @@ const UserTable = () => {
     return dateString.split(" ")[0];
   }
 
+  // TODO: chuyen ra userlist page roi truyen xuong
   React.useEffect( ()=>{
     
         axios.get("http://localhost:8081/api/v1/user").then((response)=>{
@@ -42,38 +45,38 @@ const UserTable = () => {
   },[])
 
   return (
-    <>
-    {isPending?<div>is pending</div>:<div>done</div>}
+    <Box flex={12}>
+      {isPending?<div>is pending</div>:
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>User name</TableCell>
-                        <TableCell align="right">Full name</TableCell>
-                        <TableCell align="right">Birth date</TableCell>
-                        <TableCell align="right">Email</TableCell>
-                        <TableCell align="right">Phone</TableCell>
-                        <TableCell align="right">Role</TableCell>
-                    </TableRow>
-                </TableHead>
-            <TableBody>
-            {tableUser?.map((user) => (
-                <TableRow
-                key={user.userId}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell>{user.userName}</TableCell>
-                  <TableCell align="right">{user.firstName +" "+user.lastName }</TableCell>
-                  <TableCell align="right">{pasreDate(user.birth)}</TableCell>
-                  <TableCell align="right">{user.email}</TableCell>
-                  <TableCell align="right">{user.phone}</TableCell>
-                  <TableCell align="right">{user.roleString}</TableCell>
-                </TableRow>
-            ))}
-            </TableBody>
+                  <TableHead>
+                      <TableRow>
+                          <TableCell>User name</TableCell>
+                          <TableCell align="right">Full name</TableCell>
+                          <TableCell align="right">Birth date</TableCell>
+                           <TableCell align="right">Email</TableCell>
+                          <TableCell align="right">Phone</TableCell>
+                          <TableCell align="right">Role</TableCell>
+                      </TableRow>
+                  </TableHead>
+              <TableBody>
+              {tableUser?.map((user) => (
+                  <TableRow
+                  key={user.userId}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell>{user.userName}</TableCell>
+                    <TableCell align="right">{user.firstName +" "+user.lastName }</TableCell>
+                    <TableCell align="right">{pasreDate(user.birth)}</TableCell>
+                    <TableCell align="right">{user.email}</TableCell>
+                    <TableCell align="right">{user.phone}</TableCell>
+                    <TableCell align="right">{user.roleString}</TableCell>
+                  </TableRow>
+              ))}
+              </TableBody>
         </Table>
-        </TableContainer>
-    </>
+        </TableContainer>}
+    </Box>
   )
 }
 
