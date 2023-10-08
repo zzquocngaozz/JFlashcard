@@ -2,8 +2,10 @@ import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip
 import React from 'react'
 import Logout from '@mui/icons-material/Logout';
 import {colorGetter} from '../../utils/colorGetter'
+import useAuth from '../../hooks/useAuth';
 
 const AdminAccountMenu = () => {
+  const {currentUser} = useAuth()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -24,7 +26,7 @@ const AdminAccountMenu = () => {
         >
             <Avatar sx={{ width: 80, height: 80,bgcolor:`${colorGetter()}` }}>A</Avatar>
         </IconButton>
-        <HiddenText>Hello, Admin</HiddenText>
+        <HiddenText>Hello, {currentUser.firstName +" "+ currentUser.lastName}</HiddenText>
             
             
         </Box>

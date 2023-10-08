@@ -28,7 +28,37 @@ export const role={
             message:"Họ và tên không được chứa những ký tự đặc biệt"
         }
     },
-    username:{
+    fisrtName:{
+        required:"Vui lòng nhập họ",
+        minLength:{
+            value:2,
+            message:'Họ ít nhất có 2 ký tự'
+        },
+        maxLength:{
+            value:30,
+            message: 'Họ dài nhất có 30 chữ cái'
+        },
+        pattern:{
+            value:/^[^@#$%^&*()+=\[\]{}|;:'",<>/?\\]*$/,
+            message:"Họ không được chứa những ký tự đặc biệt"
+        }
+    },
+    lastName:{
+        required:"Vui lòng nhập tên",
+        minLength:{
+            value:2,
+            message:'Tên ít nhất có 2 ký tự'
+        },
+        maxLength:{
+            value:30,
+            message: 'Tên dài nhất có 30 chữ cái'
+        },
+        pattern:{
+            value:/^[^@#$%^&*()+=\[\]{}|;:'",<>/?\\]*$/,
+            message:"Tên không được chứa những ký tự đặc biệt"
+        }
+    },
+    userName:{
         required:"Vui lòng nhập tên tài khoản ",
         minLength:{
             value:4,

@@ -28,13 +28,12 @@ const UserTable = () => {
   console.log("run")
   
   const pasreDate = (dateString)=>{
-
     return dateString.split(" ")[0];
   }
 
   // TODO: chuyen ra userlist page roi truyen xuong
   React.useEffect( ()=>{
-    
+      startTransition()
         axios.get("http://localhost:8081/api/v1/user").then((response)=>{
           console.log(response.data)
           setTableUser(response.data);

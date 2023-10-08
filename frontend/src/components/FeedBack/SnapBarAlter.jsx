@@ -10,17 +10,12 @@ import { useEffect } from "react";
 //   warn:<MUIAlert severity = "warn" message = "This is message warn alert -- Check it out!" />,
 // }
 
-const MUIAlert =  ({severity,message}) => {
-  const [open,setOpen] = useState(true)
-
-  const handleCloseSnackBar = ()=>{
-    setOpen(false)
-  }
+const SnapBarAlter =  ({alert, handleCloseSnackBar}) => {
 
   return (
     <Snackbar
     sx={{maxWidth:400}}
-    open = {open}
+    open = {alert.open}
     // set snackbar position
     anchorOrigin={{vertical:'top',horizontal:'right'}}
     // handle close snackbar
@@ -36,9 +31,9 @@ const MUIAlert =  ({severity,message}) => {
       <CloseIcon fontSize="small" />
     </IconButton>}
     >
-        <Alert severity={severity} onClose={handleCloseSnackBar}>{message}</Alert>
+        <Alert severity={alert.severity} onClose={handleCloseSnackBar}>{alert.message}</Alert>
     </Snackbar>
   )
 }
 
-export {MUIAlert}
+export default SnapBarAlter

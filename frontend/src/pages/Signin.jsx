@@ -1,15 +1,24 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import {useForm} from 'react-hook-form'
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { role } from '../utils/regexRole'
+import { BASE_URL } from '../utils/constant'
+import useAuth from '../hooks/useAuth'
+import SnapBarAlter from '../components/FeedBack/SnapBarAlter'
+import useSnapBarAlert from '../hooks/useSnapBarAlert'
 
 const Signin = () => {
+  const {login} = useAuth()
+  const navigate = useNavigate()
+  const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert()
+//TODO: chuyen sang thanh custom hook sau
+  
+
   const {
     register,// ref 1 value in form hook
     handleSubmit,// 
-    watch,
     formState:{errors}
   } = useForm({
     defaultValues:{
@@ -18,24 +27,43 @@ const Signin = () => {
     }
   })
 
-    const onSubmit = (data)=>{
-    console.log("Click submit")
-    console.log(JSON.stringify({user:data}))
-    const config = {
-      headers: {
-        'Content-Type': 'application/json', // Set the media type to JSON
-      },
+    const onSubmit = async (data) => {
+      
+      const trimData = {
+        email: data.email.trim(),
+        password: data.password.trim(),
+      };
+      
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+    
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/login`,
+          JSON.stringify({ ...trimData }),
+          config
+        );
+    
+        const responseData = response.data;
+    
+        login(responseData);
+    
+        if (responseData.user && responseData.user.role === 3) {
+          navigate('/dashboard');
+        } else {
+          navigate('/');
+        }
+      } catch (error) {
+        setAlert({
+          open: true,
+          severity: 'error',
+          message: error.response?.data?.errors?.body[0] || 'Lỗi trả về không xác định',
+        });
+      }
     };
-    axios.post('https://api.realworld.io/api/users/login', JSON.stringify({user:data}), config)
-    .then((res)=>{console.log(res.data)}).catch((error)=>{console.log(error)})
-  }
-
-  useEffect(()=>{
-    axios.get('https://api.realworld.io/api/articles')
-    .then((res)=>{console.log(res.data)})
-  },[])
-
-  // console.log(watch('email'))
 
   return (
     <Stack 
@@ -111,6 +139,7 @@ const Signin = () => {
       >
         <Typography variant='h3'>Tạo bộ thẻ của chính bạn và bắt đầu học ngay hôm nay</Typography>
       </Box>
+      {alert.open?<SnapBarAlter alert = {alert} handleCloseSnackBar={handleCloseSnackBar}/>:""}
     </Stack>
   )
 }

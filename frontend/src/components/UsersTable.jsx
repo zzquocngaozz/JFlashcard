@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Chip, Divider, FormControl, IconButton, InputLabel, MenuItem, Select, TableHead, TextField, Tooltip, Typography, styled, useTheme } from '@mui/material';
+import { Avatar,  Button, Chip,  IconButton,  MenuItem, Select, TableHead, TextField, Tooltip, Typography, styled } from '@mui/material';
 import {Stack,Table} from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,37 +7,24 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import React from 'react'
+import React, { useState } from 'react'
 import TablePaginationActions from './datatable/TablePaginationActions';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
-
-
+import { ROLE } from '../utils/constant';
+import { parseBirth } from '../utils/datetimeCalc';
   
-  
-  function createUsers(id, fullname, username, email, birthDay,roleString,isVerify,isBlocked) {
-    return { id, fullname, username,email,birthDay,roleString,isVerify,isBlocked };
-  }
-  
-  const users = [
-    createUsers(1,'Huu Da', 'huudd', 'huudd@gmail.com','01-01-2001','Admin', true, false),
-    createUsers(2,'Huu Da 1', 'huudd1', 'huudd1@gmail.com','01-01-2001','Admin', true, false),
-    createUsers(3,'Huu Da 2', 'huudd2', 'huudd2@gmail.com','01-02-2001','Learner', true, false),
-    createUsers(4,'Huu Da 3', 'huudd3', 'huudd3@gmail.com','01-03-2001','Learner', true, false),
-    createUsers(5,'Huu Da 4', 'huudd4', 'huudd4@gmail.com','01-04-2001','Teacher', true, false),
-    createUsers(6,'Huu Da 5', 'huudd5', 'huudd1@gmail.com','01-05-2001','Learner', true, false),
-    createUsers(7,'Huu Da 6', 'huudd6', 'huudd2@gmail.com','01-06-2001','Learner', true, false),
-    createUsers(8,'Huu Da 7', 'huudd7', 'huudd3@gmail.com','01-07-2001','Learner', true, false),
-    // createUsers(9,'Huu Da 8', 'huudd8', 'huudd4@gmail.com','01-08-2001','Teacher', true, false),
-  ]
-  //.sort((a, b) => (a.calories < b.calories ? -1 : 1));
+ 
   
 
-const UsersTable = () => {
+const UsersTable = ({data}) => {  
 
-    const [filter,setFilter] = React.useState("fullname");
-    const [searchParam,setSearchParam] = React.useState("");
+    const [users,setUsers] = useState(data);
+
+    const [filter,setFilter] = useState("fullname");
+    const [searchParam,setSearchParam] = useState("");
+
 
   // trang hien tai
     const [page, setPage] = React.useState(0);
@@ -50,6 +37,15 @@ const UsersTable = () => {
     page > 0 ? Math.max(0, (1 + page) * usersPerPage - users.length) : 0;
 
     // --------handle function
+
+    function handleSearch(){
+      console.log(data)
+      const filterData = data.filter((user)=>user.userName.includes(searchParam))
+      setUsers(filterData)
+    }
+
+
+
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -70,7 +66,7 @@ const UsersTable = () => {
 
   return (
     <>
-      <Typography variant='h5'>User management</Typography>
+      <Typography variant='h5'>Quản lý người dùng</Typography>
       {/* Search user action */}
       <Stack flexDirection="row" sx={{ gap:"10px", float:'right', padding:'10px 0', margin:'10px 0' }}>
         <TextField placeholder='Search'/>
@@ -82,25 +78,24 @@ const UsersTable = () => {
             onChange={(e)=>{setFilter(e.target.value)}}
             sx={{width:"150px"}}
           >
-            <MenuItem value='fullname'>Full name</MenuItem>
-            <MenuItem value='username'>Username</MenuItem>
+            <MenuItem value='fullname'>Họ và tên</MenuItem>
+            <MenuItem value='username'>Tên tài khoản</MenuItem>
             <MenuItem value='email'>Email</MenuItem>
-            <MenuItem value='birthday'>Birth day</MenuItem>
-            <MenuItem value='role'>Role</MenuItem>
+            <MenuItem value='role'>Tài khoản</MenuItem>
           </Select>
-        <Button variant='contained'>Search</Button>
+        <Button variant='contained' onClick ={()=>handleSearch()} >Search</Button>
       </Stack>
       <TableContainer component={Paper} elevation={3}>
         <Table sx={{ minWidth: 500 }}>
         <TableHead>
               <TableRow>
                   <TableCell align="center">Id</TableCell>
-                  <TableCell align="left">Fullname</TableCell>
-                  <TableCell align="left">UserName</TableCell>
+                  <TableCell align="left">Họ và tên</TableCell>
+                  <TableCell align="left">Tên tài khoản</TableCell>
                   <TableCell align="left">Email</TableCell>
-                  <TableCell align="left">Birthday</TableCell>
-                  <TableCell align="left">Role</TableCell>
-                  <TableCell align="center">Status</TableCell>
+                  <TableCell align="left">Ngày sinh</TableCell>
+                  <TableCell align="left">Tài khoản</TableCell>
+                  <TableCell align="center">Trạng thái</TableCell>
                   <TableCell align="center">Action</TableCell>
               </TableRow>
           </TableHead>
@@ -109,14 +104,14 @@ const UsersTable = () => {
               ? users.slice(page * usersPerPage, page * usersPerPage + usersPerPage)
               : users
             ).map((user) => (
-              <TableRow key={user.id}>
-                <TableCell align="center">{user.id}</TableCell>
-                <TableCell align="left">{user.fullname}</TableCell>
-                <TableCell  align="left"><Avatar sx={{width:30, height:30,display:"inline-flex", mr:1}}>{(user.username.toUpperCase())[0]}</Avatar>{user.username}</TableCell>
+              <TableRow key={user.userId}>
+                <TableCell align="center">{user.userId}</TableCell>
+                <TableCell align="left">{user.firstName+" "+ user.lastName}</TableCell>
+                <TableCell  align="left"><Avatar sx={{width:30, height:30,display:"inline-flex", mr:1}}>{(user.userName.toUpperCase())[0]}</Avatar>{user.userName}</TableCell>
                 <TableCell  align="left">{user.email}</TableCell>
-                <TableCell  align="left">{user.birthDay}</TableCell>
-                <TableCell  align="left">{user.roleString}</TableCell>
-                <TableCell  align="center">{user.isBlocked?
+                <TableCell  align="left">{parseBirth(user.birth)}</TableCell>
+                <TableCell  align="left">{ROLE[user.role]}</TableCell>
+                <TableCell  align="center">{user.looked?
                   <Chip label="Blocked" color="error" variant="outlined" />
                   :<Chip label="Active" color="success" variant="outlined" />}</TableCell>
                 
@@ -132,7 +127,7 @@ const UsersTable = () => {
                     <Tooltip title="Delete">
                       <IconButton color="error" 
                         mt={0}
-                        onClick={()=>{console.log(`${user.name} clicked delete`)}}
+                        onClick={()=>{console.log(`${user.id} clicked delete`)}}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -140,7 +135,7 @@ const UsersTable = () => {
                     <Tooltip title="Block">
                       <IconButton 
                         mt={0}
-                        onClick={()=>{console.log(`${user.name} clicked delete`)}}
+                        onClick={()=>{console.log(`${user.id} clicked blocked`)}}
                       >
                         <BlockIcon color='success' />
                       </IconButton>

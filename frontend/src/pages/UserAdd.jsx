@@ -1,24 +1,57 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SideNavAdmin from '../components/SideNavAdmin'
 import { Controller, useForm } from 'react-hook-form'
 import { isBirthDate } from '../utils/datetimeCalc'
 import { role } from '../utils/regexRole'
+import { Link } from 'react-router-dom'
+import useAddUser from '../hooks/useAddUser'
+import useSnapBarAlert from '../hooks/useSnapBarAlert'
+import SnapBarAlter from '../components/FeedBack/SnapBarAlter'
 
 const UserAdd = () => {
   const {register,handleSubmit,watch,setError,clearErrors,formState:{errors},control} = useForm()
+
+  const isAdding = useRef(false);
+
+  const {loading,addUser,error} = useAddUser()
+  const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert()
     // 
-    const [errorMessage,setErrorMessage] = useState(null)
+    // const [errorMessage,setErrorMessage] = useState(null)
 
-    console.log('check reload')
-
-    
     const onSubmit = (data)=>{
+        isAdding.current = true
+        console.log("submit")
         console.log(data)
+        addUser(data)
+        
     }
 
+    useEffect(()=>{
+      console.log(loading," ", error," ",isAdding.current)
+      // TH1 loading xong roi va error null == success, đang add
+      if(!loading && !error && isAdding.current){
+        setAlert({
+          ...alert,
+          open:true,severity:"success",message:"Đã thêm người dùng mới thành công"
+        })
+        // clear Flag
+        isAdding.current = false
+      }
+      // TH2 loading xong roi va error == error
+      if(!loading && !!error && isAdding.current){
+        setAlert({
+          ...alert,
+          open:true,severity:"error",message:error
+        })
+
+        //clear flag
+        isAdding.current = false
+      }
+    },[loading,error])
+
     // handle validate birthday
-    const birth = watch('birthday')
+    const birth = watch('birth')
     useEffect(()=>{
         console.log(birth==='')
         // neu birthday nhap roi va lon hon current date thi set loi
@@ -36,9 +69,9 @@ const UserAdd = () => {
   return (
     <Stack flexDirection="row" sx={{width:'100%', height:'100vh'}}>
       <SideNavAdmin/>
-      <Box flex={12} sx={{padding:"2rem",overflowY:"scroll"}}>
-        <Paper>
-          <Typography variant='h3' textAlign='center' pt={10}>Tạo người dùng mới</Typography>
+      <Box flex={10} sx={{padding:"2rem",overflowY:"scroll",display:'flex', alignItems:"center", flexDirection:"column"}}>
+        <Paper sx={{maxWidth:700}}>
+          <Typography variant='h3' textAlign='center' pt={5}>Tạo người dùng mới</Typography>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Stack 
               // spacing={5}
@@ -57,7 +90,7 @@ const UserAdd = () => {
               <Stack sx={{flexDirection:"row",gap:5}}>
                 <TextField
                   {...register("firstName",
-                  role['fullname']
+                  role['firstName']
                   )}
                   id="firstName-helper-text"
                   type='text'
@@ -69,7 +102,7 @@ const UserAdd = () => {
                 />
                 <TextField
                   {...register("lastName",
-                  role['fullname']
+                  role['lastName']
                   )}
                   id="lastName-helper-text"
                   type='text'
@@ -81,7 +114,7 @@ const UserAdd = () => {
                 />
               </Stack>
               <TextField
-                {...register("birthday",
+                {...register("birth",
                 {required:'Vui lòng nhập ngày sinh của bạn'}
                 )}
                 id="birthday-helper-text"
@@ -90,19 +123,19 @@ const UserAdd = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                error={!!errors.birthday}
-                helperText={errors.birthday?errors.birthday.message:""}
+                error={!!errors.birth}
+                helperText={errors.birth?errors.birth.message:""}
                 variant="standard"
               />
               <TextField
-                {...register("username",
-                role['username']
+                {...register("userName",
+                role['userName']
                 )}
                 id="username-helper-text"
                 type='text'
                 label="Username"
-                error={!!errors.username}
-                helperText={errors.username?.message}
+                error={!!errors.userName}
+                helperText={errors.userName?.message}
                 variant="standard"
               />
               <TextField
@@ -147,12 +180,13 @@ const UserAdd = () => {
           </FormControl>
 
               <Stack sx={{ flexDirection:'row', alignItems:'center', justifyContent:'end', gap:10}}>
-                <Button type='submit' variant='contained'>Tạo</Button>
-                <Button type='button' variant='contained' color="error">Huỷ tạo</Button>
+                <Button type='submit' variant='contained' disabled = {loading}>Tạo</Button>
+                <Button type='button' variant='contained' color="error" LinkComponent={Link} to="/users/list" disabled = {loading}>Quay lại</Button>
               </Stack>
             </Stack >
           </form>
         </Paper>
+        {alert.open?<SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar}/>:""}
       </Box>
   </Stack>
   )
