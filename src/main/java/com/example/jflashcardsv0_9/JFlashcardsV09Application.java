@@ -11,6 +11,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.text.SimpleDateFormat;
+import java.sql.Date;
+
 
 @SpringBootApplication
 public class JFlashcardsV09Application implements CommandLineRunner{
@@ -20,6 +23,8 @@ public class JFlashcardsV09Application implements CommandLineRunner{
     }
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private UserService userService;
 
     @Override
     public  void run(String... arg) throws Exception{
@@ -41,9 +46,10 @@ public class JFlashcardsV09Application implements CommandLineRunner{
             roleRepository.save(role);
         }
 //        RegisterDTO registerDTO = RegisterDTO.builder()
-//                .userName("hieu")
+//                .userName("huuu")
 //                .password("Qwer1234")
-//                .email("huuuu@gmail.com")
+//                .email("12345abc@gmail.com")
+//                .birth(Date.valueOf("2001-12-12"))
 //                .firstName("hoang")
 //                .lastName("hieu")
 //                .build();

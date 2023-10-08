@@ -32,7 +32,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(authorizeRequests ->
+                .cors().and().authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/v1", "/api/v1/login", "/api/v1/register").permitAll()
                                 .requestMatchers("/api/v1/dashboard/**").hasRole("ADMIN")

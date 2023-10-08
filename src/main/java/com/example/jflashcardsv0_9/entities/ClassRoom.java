@@ -10,7 +10,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @author Admin
@@ -34,9 +34,8 @@ public class ClassRoom implements Serializable {
     private String classRoomCode;
 
     @Column(name = "createdAt")
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date createdAt;
 
     @ManyToOne // Đây là mối quan hệ nhiều Class đến một User

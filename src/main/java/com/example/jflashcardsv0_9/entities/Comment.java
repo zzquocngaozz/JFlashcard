@@ -9,7 +9,8 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
+
 
 /**
  * @author Admin
@@ -30,10 +31,9 @@ public class Comment implements Serializable {
     private String content;
 
     @Column(name = "createdAt")
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Date createdAt;
+    private Timestamp createdAt;
 
     @ManyToOne // Mối quan hệ nhiều Comment đến một ClassPost
     @JoinColumn(name = "postId") // Đặt tên cột foreign key là "class_id"

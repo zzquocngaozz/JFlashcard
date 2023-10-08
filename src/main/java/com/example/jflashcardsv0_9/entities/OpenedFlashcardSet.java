@@ -3,16 +3,10 @@ package com.example.jflashcardsv0_9.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Timestamp;
+
 
 /**
  * @author Admin
@@ -39,8 +33,7 @@ public class OpenedFlashcardSet {
 
 
     @Column(name = "openedAt")
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Date openedAt; // Thời gian mở flashcardset
+    private Timestamp openedAt; // Thời gian mở flashcardset
 }

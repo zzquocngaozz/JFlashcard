@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -46,7 +48,9 @@ public class DashboardUserController {
         return ResponseEntity.ok("User roles changed successfully");
     }
     @PostMapping("/addUser")
-    public ResponseEntity<String>  addUser(@RequestBody UserDTO userDTO)  {
+    public ResponseEntity<String>  addUser(@RequestBody UserDTO userDTO){
+        System.out.println("hiiiiiiiiiiiiiiiiiii");
+        System.out.println(userDTO.getPassword());
         userService.addUser(userDTO);
         return ResponseEntity.ok("add User successfully");
     }

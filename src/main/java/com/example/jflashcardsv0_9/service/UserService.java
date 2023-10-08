@@ -8,6 +8,7 @@ import com.example.jflashcardsv0_9.entities.Role;
 import com.example.jflashcardsv0_9.entities.User;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -26,5 +27,5 @@ public interface UserService {
     void blockUser(Long userId);
     void unblockUser(Long userId);
     void changeUserRole(Long userId, int newRoles);
-    void addUser(UserDTO userDTO);
+    void addUser(UserDTO userDTO) ;
 }

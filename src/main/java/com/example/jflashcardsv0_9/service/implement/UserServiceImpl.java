@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -172,7 +173,7 @@ public class UserServiceImpl implements UserService {
         CheckUserDTO(userDTO);
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = UserMapper.toUserDTO(userDTO);
-        Role roles = roleRepository.findByRoleId(userDTO.getRole()).get();
+        Role roles = roleRepository.findRoleByRoleId(userDTO.getRole());
         user.setRoles(Collections.singleton(roles));
         userRepository.save(user);
     }

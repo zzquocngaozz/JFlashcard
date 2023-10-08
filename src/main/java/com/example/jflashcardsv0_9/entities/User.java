@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,9 +62,4 @@ public class User implements Serializable {
     @Column(name = "isverify",columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isVerify ;
 
-    public void setBirth(String birthDateStr) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date birth = dateFormat.parse(birthDateStr);
-        this.birth = birth;
-    }
 }

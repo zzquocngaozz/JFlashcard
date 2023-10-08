@@ -10,9 +10,8 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
