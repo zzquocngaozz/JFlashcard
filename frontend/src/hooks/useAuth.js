@@ -17,7 +17,8 @@ const useAuth = ()=>{
     const [accessToken,setAccessToken] = useState(getAccessToken())
     const [currentUser,setCurrentUser] = useState(getJwtUser())
 
-    const isLogin = ()=> (currentUser !== null)
+    const isLogin = ()=>{ 
+        return (currentUser !== null)}
     
     const login=(data)=>{
         if (data.user !== null){
@@ -27,14 +28,16 @@ const useAuth = ()=>{
         if (data.accessToken!==null) {
             localStorage.setItem("accessToken",data.accessToken)
             setAccessToken(data.accessToken)
-            // axios.defaults.headers.common['Authorization'] = `${accessToken}`
+            
         }
     }
 
     const logout = ()=>{
         localStorage.removeItem("jwtUser")
         setCurrentUser(null)
-        // axios.defaults.headers.common['Authorization'] = null
+        setAccessToken(null)
+        localStorage.removeItem("jwtUser")
+        localStorage.removeItem("accessToken")
     }
 
 

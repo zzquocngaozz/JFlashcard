@@ -3,6 +3,7 @@ import React from 'react'
 import Logout from '@mui/icons-material/Logout';
 import {colorGetter} from '../../utils/colorGetter'
 import useAuth from '../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 const AdminAccountMenu = () => {
   const {currentUser} = useAuth()
@@ -24,9 +25,9 @@ const AdminAccountMenu = () => {
             size="small"
             sx={{ ml: 2 }}
         >
-            <Avatar sx={{ width: 80, height: 80,bgcolor:`${colorGetter()}` }}>A</Avatar>
+            <Avatar sx={{ width: 80, height: 80,bgcolor:`${colorGetter()}` }}>{currentUser?.userName.toUpperCase()[0]}</Avatar>
         </IconButton>
-        <HiddenText>Hello, {currentUser.firstName +" "+ currentUser.lastName}</HiddenText>
+        <HiddenText>Hello, {currentUser?.firstName +" "+ currentUser?.lastName}</HiddenText>
             
             
         </Box>
@@ -53,12 +54,14 @@ const AdminAccountMenu = () => {
             <Avatar /> Profile
             </MenuItem>
             <Divider />        
-            <MenuItem onClick={handleClose}>
-            <ListItemIcon>
-                <Logout fontSize="small" />
-            </ListItemIcon>
-            Logout
-            </MenuItem>
+            <Link to="/signout">
+              <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                  <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+              </MenuItem>
+            </Link>
         </Menu>
     </>
   )

@@ -11,7 +11,7 @@ import { useEffect } from "react";
 // }
 
 const SnapBarAlter =  ({alert, handleCloseSnackBar}) => {
-
+  console.log(alert)
   return (
     <Snackbar
     sx={{maxWidth:400}}
@@ -20,7 +20,7 @@ const SnapBarAlter =  ({alert, handleCloseSnackBar}) => {
     anchorOrigin={{vertical:'top',horizontal:'right'}}
     // handle close snackbar
     // set autoHide duration minisecond
-    autoHideDuration={2000}
+    autoHideDuration={3000}
     onClose={handleCloseSnackBar}
     // message="Hello world"
     action={<IconButton
