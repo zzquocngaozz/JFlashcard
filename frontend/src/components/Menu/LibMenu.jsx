@@ -1,11 +1,13 @@
-import {Box,  IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Tooltip } from '@mui/material';
 import React from 'react'
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import SchoolIcon from '@mui/icons-material/School';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import { Link } from 'react-router-dom';
 
-const AddMenu = () => {
+const LibMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -18,18 +20,18 @@ const AddMenu = () => {
 
   return (
     <>
-    <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title="Thêm">
+    <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', ml:2 }} onClick={handleClick}>
+      <Tooltip title="Thư viên của bạn">
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2, color:"#007fe3" }}
+            sx={{ ml: 0, color:"#fb9805" }}
           >
-            <AddCircleIcon sx={{width:45,height:45}}/> 
+            <LocalLibraryIcon sx={{width:45,height:45}}/> 
           </IconButton>
         </Tooltip>
       </Box>
-      <Menu
+    <Menu
         anchorEl={anchorEl}
         id="add-menu"
         open={open}
@@ -48,7 +50,7 @@ const AddMenu = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose} LinkComponent={Link} to="/">
           <ListItemIcon>
             <NoteAddIcon />
             </ListItemIcon>
@@ -56,21 +58,20 @@ const AddMenu = () => {
             Bộ flashcard
           </ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose}  LinkComponent={Link} to="/">
         <ListItemIcon>
             <CreateNewFolderIcon />
         </ListItemIcon>
         <ListItemText>
             Thư mục
         </ListItemText>
-        
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose}  LinkComponent={Link} to="/">
           <ListItemIcon>
             <SchoolIcon />
           </ListItemIcon>
           <ListItemText>
-            Vào lớp học
+            Lớp học
           </ListItemText>
         </MenuItem>      
       </Menu>
@@ -78,4 +79,4 @@ const AddMenu = () => {
   )
 }
 
-export default AddMenu
+export default LibMenu

@@ -3,8 +3,12 @@ import React from 'react'
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import { Link } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const AccountMenu = () => {
+
+  const {currentUser} = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -24,7 +28,7 @@ const AccountMenu = () => {
             size="small"
             sx={{ ml: 2 }}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 40, height: 40 }}>{currentUser?.userName.toUpperCase()[0]}</Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -54,12 +58,14 @@ const AccountMenu = () => {
           <Avatar /> My account
         </MenuItem>
         <Divider />        
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        <Link to="/signout">
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </Link>
       </Menu>
     </>
   )

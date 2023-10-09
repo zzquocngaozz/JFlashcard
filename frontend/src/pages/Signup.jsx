@@ -1,41 +1,45 @@
 import { Alert, AlertTitle, Box, Button, IconButton, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { isBirthDate } from '../utils/datetimeCalc'
 import {MUIAlert,alert} from '../components/FeedBack/AlterError';
 import { role } from '../utils/regexRole';
+import useSnapBarAlert from '../hooks/useSnapBarAlert';
+import useRegister from '../hooks/useRegister';
 
-
-
+import Logo from '../assets/images/Logo.svg'
+import registerbanner from '../assets/images/registerbanner.png'
+import SnapBarAlter from '../components/FeedBack/SnapBarAlter';
 
 
 const Signup = () => {
     const {register,handleSubmit,watch,setError,clearErrors,formState:{errors}} = useForm()
     // 
-    const [errorMessage,setErrorMessage] = useState(null)
+    // const isAdding = useRef(false);
 
-    console.log('check reload')
+    const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert();
 
-    
+    const {loading,registerAccount} = useRegister({setAlert});
+
     const onSubmit = (data)=>{
-        console.log(data)
+        registerAccount(data)
     }
 
     // handle validate birthday
-    const birth = watch('birthday')
+    const birth = watch('birth')
     useEffect(()=>{
         console.log(birth==='')
         // neu birthday nhap roi va lon hon current date thi set loi
         if(!isBirthDate(birth)&&birth!==''){
-            setError('birthday',{
+            setError('birth',{
                 type:'manual',
                 message:'Ngày sinh của bạn không hợp lệ!'
             })
         } else{
-            console.log(isBirthDate(birth),'is birthday')
-            clearErrors('birthday');}
+            console.log(isBirthDate(birth),'is birth')
+            clearErrors('birth');}
     },[birth])
 
   return (
@@ -71,19 +75,34 @@ const Signup = () => {
               }
             }}
           > 
+             <Stack sx={{flexDirection:"row",gap:5}}>
+                <TextField
+                  {...register("firstName",
+                  role['firstName']
+                  )}
+                  id="firstName-helper-text"
+                  type='text'
+                  label="Họ"
+                  error={!!errors.firstName}
+                  helperText={errors.firstName?.message}
+                  variant="standard"
+                  sx={{width:"50%"}}
+                />
+                <TextField
+                  {...register("lastName",
+                  role['lastName']
+                  )}
+                  id="lastName-helper-text"
+                  type='text'
+                  label="Tên"
+                  error={!!errors.lastName}
+                  helperText={errors.lastName?.message}
+                  variant="standard"
+                  sx={{width:"50%"}}
+                />
+            </Stack>
             <TextField
-              {...register("fullname",
-              role['fullname']
-              )}
-              id="fullname-helper-text"
-              type='text'
-              label="Tên đầy đủ"
-              error={!!errors.fullname}
-              helperText={errors.fullname?.message}
-              variant="standard"
-            />
-            <TextField
-              {...register("birthday",
+              {...register("birth",
               {required:'Vui lòng nhập ngày sinh của bạn'}
               )}
               id="birthday-helper-text"
@@ -92,19 +111,19 @@ const Signup = () => {
               InputLabelProps={{
                 shrink: true,
               }}
-              error={!!errors.birthday}
-              helperText={errors.birthday?errors.birthday.message:"JFlashcards thu thập ngày sinh để chắc bạn đủ tuổi dùng thiết bị di động"}
+              error={!!errors.birth}
+              helperText={errors.birth?errors.birth.message:"JFlashcards thu thập ngày sinh để chắc bạn đủ tuổi dùng thiết bị di động"}
               variant="standard"
             />
             <TextField
-              {...register("username",
-              role['username']
+              {...register("userName",
+              role['userName']
               )}
               id="username-helper-text"
               type='text'
-              label="Username"
-              error={!!errors.username}
-              helperText={errors.username?.message}
+              label="Tên tài khoản"
+              error={!!errors.userName}
+              helperText={errors.userName?.message}
               variant="standard"
             />
             <TextField
@@ -123,13 +142,13 @@ const Signup = () => {
               ,role['password']
               )}
               id="password-helper-text"
-              label="Password"
+              label="Mật khẩu"
               type='password'
               error={!!errors.password}
               helperText={errors.password?.message}
               variant="standard"
             />
-            <Button type='submit' variant='contained'>Đăng ký</Button>
+            <Button type='submit' variant='contained' disabled={loading}>Đăng ký</Button>
             <Stack sx={{ border:'1px solid blue', 
                         borderStyle:"double dashed"
                         , padding:'10px' 
@@ -141,23 +160,23 @@ const Signup = () => {
           </Stack >
         </form>
       </Box>
-      <Box flex={1}
-        sx={{bgcolor:'rgba(250,255,23,0.5)',padding:'10px'}}>
-          <Button onClick={()=>{
-            setErrorMessage("Đây là một lỗi server rất nghiêm trọng và bạn phải đợi máy chủ reset camonw vi da doc den day");
-          }}
-          >
-            Lỗi sever
-          </Button>
-          <Button onClick={()=>{
-            setErrorMessage(null);
-          }}
-          >
-            Submit
-          </Button>
-        <Typography variant='h3'>Tạo bộ thẻ của chính bạn và bắt đầu học ngay hôm nay</Typography>
+      <Box 
+        flex={1.25}
+        sx={{bgcolor:'#09092D',padding:'10px', position:"relative", display:"flex", flexDirection:"column",alignItems:"center"}}
+      > 
+        <Link to="/">
+          <Box width={70} height={70} sx={{position:"absolute", top:10,left:30}}>
+            <img src={Logo} loading='lazy' alt='logo' style={{objectFit:'fill',objectPosition:"center"}}/>
+          </Box>
+        </Link>
+        <Box width={600} height={500}>
+          <img src={registerbanner} loading='lazy' alt='logo' style={{objectFit:'cover',objectPosition:"center"}}/>
+        </Box>
+        <Typography variant='h5' sx={{color:'#FFF', textAlign:"center",mt:5, padding:"0 20%"}}>
+          Thời điểm tốt nhất để bắt đầu học là ngay lúc này với JFlash!
+        </Typography>
       </Box>
-      {(errorMessage!=null)?<MUIAlert severity="error" message={errorMessage}/>:""}
+      {alert.open?<SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar}/>:""}
     </Stack>
   )
 }

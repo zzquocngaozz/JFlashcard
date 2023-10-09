@@ -81,7 +81,6 @@ const UserAdd = () => {
                 width:"100%",
                 padding:"10px 80px",
                 marginTop:"20px",
-                gap:3,
                 "& input,& label":{
                   fontSize:"18px"
                 }

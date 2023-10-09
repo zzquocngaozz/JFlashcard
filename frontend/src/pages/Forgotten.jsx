@@ -10,7 +10,7 @@ import SnapBarAlter from '../components/FeedBack/SnapBarAlter'
 import useSnapBarAlert from '../hooks/useSnapBarAlert'
 import Logo from '../assets/images/Logo.svg'
 import loginbanner from '../assets/images/loginbanner.png'
-const Signin = () => {
+const Forgotten = () => {
   const {login} = useAuth()
   const navigate = useNavigate()
   const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert()
@@ -136,14 +136,12 @@ const Signin = () => {
       </Box>
       <Box 
         flex={1.5}
-        sx={{bgcolor:'#09092D',padding:'10px', position:"relative", }}
+        sx={{bgcolor:'#09092D',padding:'10px', position:"relative"}}
       > 
-        <Link to="/">
-          <Box width={70} height={70} sx={{position:"absolute", top:10,left:30}}>
-            <img src={Logo} loading='lazy' alt='logo' style={{objectFit:'fill',objectPosition:"center"}}/>
-          </Box>
-        </Link>
-        <Box minWidth={500} height={500}>
+        <Box width={70} height={70} sx={{position:"absolute", top:10,left:10}}>
+          <img src={Logo} loading='lazy' alt='logo' style={{objectFit:'fill',objectPosition:"center"}}/>
+        </Box>
+        <Box width={600} height={500}>
           <img src={loginbanner} loading='lazy' alt='logo' style={{objectFit:'cover',objectPosition:"center"}}/>
         </Box>
         <Typography variant='h5' sx={{color:'#FFF', textAlign:"center",mt:10}}>Học và ghi nhớ thật hiệu quả với JFlashcard!</Typography>
@@ -153,4 +151,4 @@ const Signin = () => {
   )
 }
 
-export default Signin
+export default Forgotten

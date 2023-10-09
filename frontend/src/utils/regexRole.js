@@ -10,7 +10,7 @@ export const role={
       required:"Vui lòng nhập mật khẩu",
       pattern:{
         value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-        message: "Mật khẩu phải có từ 8 ký tự bao gồm chữ hoa, chữ thường và chữ số"      
+        message: "Mật khẩu phải có từ 8 ký tự chỉ bao gồm chữ hoa, chữ thường và chữ số"      
       }
     },
     fullname:{
@@ -24,11 +24,11 @@ export const role={
             message: 'Họ và tên dài nhất có 30 chữ cái'
         },
         pattern:{
-            value:/^[^@#$%^&*()+=\[\]{}|;:'",<>/?\\]*$/,
-            message:"Họ và tên không được chứa những ký tự đặc biệt"
+            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
+            message:"Họ và tên không được chứa những ký tự đặc biệt và ký tự trắng thừa"
         }
     },
-    fisrtName:{
+    firstName:{
         required:"Vui lòng nhập họ",
         minLength:{
             value:2,
@@ -39,8 +39,8 @@ export const role={
             message: 'Họ dài nhất có 30 chữ cái'
         },
         pattern:{
-            value:/^[^@#$%^&*()+=\[\]{}|;:'",<>/?\\]*$/,
-            message:"Họ không được chứa những ký tự đặc biệt"
+            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
+            message:"Họ không được chứa những ký tự đặc biệt và ký tự trắng thừa"
         }
     },
     lastName:{
@@ -54,8 +54,8 @@ export const role={
             message: 'Tên dài nhất có 30 chữ cái'
         },
         pattern:{
-            value:/^[^@#$%^&*()+=\[\]{}|;:'",<>/?\\]*$/,
-            message:"Tên không được chứa những ký tự đặc biệt"
+            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
+            message:"Tên không được chứa những ký tự đặc biệt và ký tự trắng thừa"
         }
     },
     userName:{
