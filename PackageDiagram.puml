@@ -1,0 +1,50 @@
+@startuml
+package "jflashcardsv0_9" {
+    package "controller" {
+    }
+
+    package "dto" {
+    }
+
+    package "entities" {
+    }
+
+    package "exception" {
+    }
+
+    package "mapper" {
+    }
+
+    package "repository" {
+    }
+
+    package "security" {
+    }
+
+    package "service" {
+    }
+
+    package "service.implement" {
+    }
+
+    package "util" {
+    }
+}
+controller -.-> service
+controller -.-> dto
+mapper -.-> dto
+mapper -.-> service
+mapper -.-> entities
+repository -.-> entities
+security -.-> util
+security -.-> entities
+security -.-> dto
+security -.-> repository
+security -.-> mapper
+service -.-> dto
+implement -.-> exception
+implement -.-> entities
+implement -.-> util
+implement -.-> mapper
+left to right direction
+@enduml

@@ -5,18 +5,17 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum Error {
-    DUPLICATED_USER("there is duplicated user information", HttpStatus.UNPROCESSABLE_ENTITY),
-    LOGIN_INFO_INVALID("login information is invalid", HttpStatus.UNPROCESSABLE_ENTITY),
-    ALREADY_FOLLOWED_USER("already followed user", HttpStatus.UNPROCESSABLE_ENTITY),
-    ALREADY_FAVORITED_ARTICLE("already followed user", HttpStatus.UNPROCESSABLE_ENTITY),
-    USER_BLOCK("user is block", HttpStatus.UNPROCESSABLE_ENTITY),
+    DUPLICATED_USER("trùng thông tin người dùng", HttpStatus.UNPROCESSABLE_ENTITY),
+    EMAIL_USER_NULL("email người dùng không thể để trống", HttpStatus.UNPROCESSABLE_ENTITY),
+    USERNAME_USER_NULL("username người dùng không thể để trống", HttpStatus.UNPROCESSABLE_ENTITY),
+    EMAIL_USER_EXIST("email đã tồn tại", HttpStatus.UNPROCESSABLE_ENTITY),
+    USERNAME_USER_EXIST("user name đã tồn tại", HttpStatus.UNPROCESSABLE_ENTITY),
+    LOGIN_INFO_INVALID("thông tin đăng nhập không hợp lệ", HttpStatus.UNPROCESSABLE_ENTITY),
+    USER_BLOCK("người dùng bị chặn", HttpStatus.UNPROCESSABLE_ENTITY),
 
-    USER_NOT_FOUND("user not found", HttpStatus.NOT_FOUND),
-    TOKEN_NOT_FOUND("token not found", HttpStatus.NOT_FOUND),
-    FOLLOW_NOT_FOUND("such follow not found", HttpStatus.NOT_FOUND),
-    ARTICLE_NOT_FOUND("article not found", HttpStatus.NOT_FOUND),
-    FAVORITE_NOT_FOUND("favorite not found", HttpStatus.NOT_FOUND),
-    COMMENT_NOT_FOUND("comment not found", HttpStatus.NOT_FOUND),
+    USER_NOT_FOUND("không tìm thấy người dùng", HttpStatus.NOT_FOUND),
+    TOKEN_NOT_FOUND("không tìm thấy mã thông báo", HttpStatus.NOT_FOUND),
+    COMMENT_NOT_FOUND("không tìm thấy bình luận", HttpStatus.NOT_FOUND),
     ;
 
     private final String message;

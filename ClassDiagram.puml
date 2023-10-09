@@ -1,0 +1,12 @@
+@startuml LoginClassDiagram
+skinparam Style strictuml
+database UserRepository
+User -> DashboardUserController: getAllUser()
+DashboardUserController -> UserService: findAllUser()
+UserService -> UserRepository: findAll()
+UserRepository --> UserService: User data
+UserService -> UserDTO: UserMapper.toUserDTOResponse()
+UserDTO --> DashboardUserController: UserDTO list
+DashboardUserController --> User: Display User List
+
+@enduml

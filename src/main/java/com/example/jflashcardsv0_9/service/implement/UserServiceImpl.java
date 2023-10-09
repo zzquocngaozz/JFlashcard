@@ -53,31 +53,31 @@ public class UserServiceImpl implements UserService {
 
     private void CheckRegisterDTO(RegisterDTO registerDTO) {
         if (registerDTO.getUserName() == null) {
-            throw new AppException(Error.DUPLICATED_USER);
+            throw new AppException(Error.USERNAME_USER_NULL);
         }
         if(registerDTO.getEmail() == null){
-            throw new AppException(Error.DUPLICATED_USER);
+            throw new AppException(Error.EMAIL_USER_NULL);
         }
         if(userRepository.existsByUserName(registerDTO.getUserName())){
-            throw new AppException(Error.DUPLICATED_USER);
+            throw new AppException(Error.USERNAME_USER_EXIST);
         }
         if(userRepository.existsByEmail(registerDTO.getEmail())){
-            throw new AppException(Error.DUPLICATED_USER);
+            throw new AppException(Error.EMAIL_USER_EXIST);
         }
 
     }
     private void CheckUserDTO(UserDTO userDTO) {
         if (userDTO.getUserName() == null) {
-            throw new AppException(Error.DUPLICATED_USER);
+            throw new AppException(Error.USERNAME_USER_NULL);
         }
         if(userDTO.getEmail() == null){
-            throw new AppException(Error.DUPLICATED_USER);
+            throw new AppException(Error.EMAIL_USER_NULL);
         }
         if(userRepository.existsByUserName(userDTO.getUserName())){
-            throw new AppException(Error.DUPLICATED_USER);
+            throw new AppException(Error.USERNAME_USER_EXIST);
         }
         if(userRepository.existsByEmail(userDTO.getEmail())){
-            throw new AppException(Error.DUPLICATED_USER);
+            throw new AppException(Error.EMAIL_USER_EXIST);
         }
 
     }
