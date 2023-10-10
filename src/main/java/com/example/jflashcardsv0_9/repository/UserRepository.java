@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUserId(long  userId);
 
     List<User> findAll();
-    public User save(User user);
+    User save(User user);
     boolean existsByUserName(String username);
     boolean existsByEmail(String email);
 }

@@ -49,8 +49,6 @@ public class DashboardUserController {
     }
     @PostMapping("/addUser")
     public ResponseEntity<String>  addUser(@RequestBody UserDTO userDTO){
-        System.out.println("hiiiiiiiiiiiiiiiiiii");
-        System.out.println(userDTO.getPassword());
         userService.addUser(userDTO);
         return ResponseEntity.ok("add User successfully");
     }

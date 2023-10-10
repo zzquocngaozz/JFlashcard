@@ -12,6 +12,8 @@ public enum Error {
     USERNAME_USER_EXIST("User name đã tồn tại", HttpStatus.UNPROCESSABLE_ENTITY),
     LOGIN_INFO_INVALID("Thông tin đăng nhập không hợp lệ", HttpStatus.UNPROCESSABLE_ENTITY),
     USER_BLOCK("Người dùng bị chặn", HttpStatus.UNPROCESSABLE_ENTITY),
+    PASSWORD_FALSE("Mật khẩu không đúng ", HttpStatus.UNPROCESSABLE_ENTITY),
+    VERIFY_FALSE("Mã xác nhận không đúng ", HttpStatus.UNPROCESSABLE_ENTITY),
 
     USER_NOT_FOUND("Không tìm thấy người dùng", HttpStatus.NOT_FOUND),
     TOKEN_NOT_FOUND("Không tìm thấy mã thông báo", HttpStatus.NOT_FOUND),

@@ -52,18 +52,14 @@ public class FlashcardSet implements Serializable {
     @ManyToOne // Mối quan hệ nhiều flashcardset đến một User
     @JoinColumn(name = "user") // Đặt tên cột foreign key là "user_id"
     private User user;
-
-    @ManyToMany(mappedBy = "flashcardSets")
-    private Set<FolderSet> folderSets = new HashSet<>();
-
-    public String getRoleString(){
-        if(setType ==1){
-            return "Kanji";
-        }else if (setType ==2) {
-            return "Vocabulary";
-        }else if (setType ==3) {
-            return "Grammar";
-        }
-        return "";
-    }
+//    public String getRoleString(){
+//        if(setType == 1){
+//            return "Kanji";
+//        }else if (setType ==2) {
+//            return "Từ vựng";
+//        }else if (setType ==3) {
+//            return "Ngữ pháp";
+//        }
+//        return "";
+//    }
 }
