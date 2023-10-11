@@ -16,6 +16,7 @@ import Profile from './pages/Profile';
 import LearnHistory from './pages/LearnHistory';
 import SearchPage from './pages/SearchPage';
 import ChangePass from './pages/ChangePass';
+import SetEdit from './pages/SetEdit';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/history" element={<AuthenRoute element={<LearnHistory/>}/>}/>
         <Route path="/latest" element={<AuthenRoute element={<NotFound />}/>}/>
         <Route path="/create-set" element={<AuthenRoute element={<CreateSet />}/>}/>
+        <Route path="/:setId/edit" element={<AuthenRoute element={<SetEdit />}/>}/>
         <Route path="/my-sets" element={<AuthenRoute element={<NotFound />}/>}/>
         <Route path="/my-folder" element={<AuthenRoute element={<NotFound />}/>}/>
         <Route path="/my-class" element={<AuthenRoute element={<NotFound />}/>}/>
