@@ -32,5 +32,6 @@ const EnglishColorEnum = {
 
 // Hàm để lấy mã màu từ enum
 export const getColorFromEnum = (character) =>{
+    if(!character) return "#012C7E";
     return EnglishColorEnum[character.toLowerCase()] || "#012C7E"; // Chuyển đổi ký tự thành chữ thường và trả về màu tương ứng hoặc null nếu không tìm thấy
 }

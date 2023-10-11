@@ -1,8 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Parts/Navbar'
-import { Avatar, Box, Button, Chip, Divider, List, ListItem, Stack, TextField, Typography } from '@mui/material'
+import { Avatar, Box, Button, Chip, List, ListItem, Stack, TextField, Typography } from '@mui/material'
 import { getColorFromEnum } from '../utils/colorGetter'
-import useAuth from '../hooks/useAuth'
 import SendIcon from '@mui/icons-material/Send';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import SchoolIcon from '@mui/icons-material/School';
@@ -14,22 +13,29 @@ import useSnapBarAlert from '../hooks/useSnapBarAlert'
 import DialogChangeRole from '../components/Dialog/DialogChangeRole'
 import DialogVerifyPrompt from '../components/Dialog/DialogVerifyPrompt'
 import { NavLink } from 'react-router-dom'
+import useProfile from '../hooks/useProfile'
+import BackdropLoading from '../components/FeedBack/BackdropLoading'
 
 
-// TODO: useProfile, useVerify
-// REQUEST: ask be to have end point get profile, ask role, verify, update profile
 const Profile = () => {
-    const {currentUser,updateUser} = useAuth()
+
     const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert()
     
-    const [openVerifyNotify, setOpenVerifyNotify] = React.useState(!currentUser.verify);
-    console.log(currentUser)
+    const handleCloseUpdate = () => {
+        setOpenUpdate(false);
+    };
     const [openVerify, setOpenVerify] = React.useState(false);
+
+    const {profile:currentUser,loading,updateProfile,getToken,verifyUser}= useProfile({setAlert, handleCloseUpdate,setOpenVerify})
+    
+    const [openVerifyNotify, setOpenVerifyNotify] = React.useState((currentUser?.verify)===false);
+
     const [openUpdate, setOpenUpdate] = React.useState(false);
     const [openChangeRole, setOpenChangeRole] = React.useState(false);
     
     const handleClickOpen = () => {
-        setOpenVerify(true);
+        getToken()
+        // setOpenVerify(true);
     };
     
     const handleOpenChangeRole = () => {
@@ -44,21 +50,13 @@ const Profile = () => {
         setOpenVerify(false);
     };
 
-    const handleCloseUpdate = () => {
-        setOpenUpdate(false);
-    };
-
     const handleCloseChangeRole = () => {
         setOpenChangeRole(false);
     };
     
     
     const verify = (data)=>{
-        console.log(data)
-    }
-
-    const updateProfile = (data)=>{
-        console.log(data)
+        verifyUser(data)
     }
 
 
@@ -96,18 +94,21 @@ const Profile = () => {
                     p:5
                 }}>
                     <Typography variant='h5' textAlign="left" mb={2}>Thông tin cá nhân</Typography>
+                    {loading?<BackdropLoading/>:
                     <Stack sx={{flexDirection:"row",justifyContent:"center",alignItems:"center", gap:2}}>
                         <Stack flex={1} sx={{flexDirection:"column",justifyContent:"center",alignItems:"center", gap:"10px"}}>
-                            <Avatar sx={{  width: 80, height: 80, bgcolor:`${getColorFromEnum(currentUser?.userName[0])}` }}>
-                                {currentUser?.userName.toUpperCase()[0]}
-                            </Avatar>
+                            
+                                {!loading?<Avatar sx={{  width: 80, height: 80, bgcolor:`${getColorFromEnum(currentUser?.userName[0])}` }}>
+                                    {currentUser?.userName.toUpperCase()[0]}
+                                </Avatar>:""}
+                            
                             <Box sx={{cursor:"default"}}>
-                                <Chip label={ROLE[currentUser.role]} color="info" variant="outlined" sx={{mr:1}} />
-                                {currentUser.verify?<Chip label="Đã xác minh" color='success' variant="outlined" />
+                                <Chip label={ROLE[currentUser?.role]} color="info" variant="outlined" sx={{mr:1}} />
+                                {(currentUser?.verify)?<Chip label="Đã xác minh" color='success' variant="outlined" />
                                 :<Chip label="Chưa xác minh" sx={{ borderColor:"#ff9900", color:"#ff9900"}} variant="outlined" />}
                             </Box>
 
-                            {(currentUser.verify&&currentUser.role===1)?<Button variant='outlined' color='secondary' sx={{mt:3,borderRadius:"20px"}} endIcon={<SendIcon />} onClick={handleClickOpen} >Lấy mã xác minh</Button>:
+                            {(!currentUser?.verify&&currentUser?.role===1)?<Button variant='outlined' color='secondary' sx={{mt:3,borderRadius:"20px"}} endIcon={<SendIcon />} onClick={handleClickOpen} >Lấy mã xác minh</Button>:
                             <Button endIcon={<SchoolIcon/>} color='success' variant='outlined' sx={{textTransform:"none",mt:3,  borderRadius:"25px"}} onClick={handleOpenChangeRole}>Tôi là giáo viên</Button>}
                             <Button endIcon={<ModeEditIcon/>} onClick={handleOpenUpdate} variant='contained' sx={{borderRadius:"25px"}}>Cập nhật</Button>
                             
@@ -129,7 +130,7 @@ const Profile = () => {
                             label="Họ"
                             variant="standard"
                             sx={{width:"50%"}}
-                            defaultValue={currentUser.firstName}
+                            defaultValue={currentUser?.firstName}
                             inputProps={
                                 { readOnly: true, }
                             }
@@ -139,7 +140,7 @@ const Profile = () => {
                             id="lastName-helper-text"
                             type='text'
                             label="Tên"
-                            defaultValue={currentUser.lastName}
+                            defaultValue={currentUser?.lastName}
                             variant="standard"
                             sx={{width:"50%"}}
                             inputProps={
@@ -150,7 +151,7 @@ const Profile = () => {
                         <TextField
                         id="birthday-helper-text"
                         type='date'
-                        defaultValue={currentUser.birth}
+                        defaultValue={currentUser?.birth}
                         label="Sinh nhật bạn"
                         InputLabelProps={{
                             shrink: true,
@@ -164,7 +165,7 @@ const Profile = () => {
                         id="username-helper-text"
                         type='text'
                         label="Tên tài khoản"
-                        defaultValue={currentUser.userName}
+                        defaultValue={currentUser?.userName}
                         variant="standard"
                         inputProps={
                             { readOnly: true, }
@@ -174,7 +175,7 @@ const Profile = () => {
                             id="email-helper-text"
                             type='email'
                             label="Email"
-                            defaultValue={currentUser.email}
+                            defaultValue={currentUser?.email}
                             variant="standard"
                             inputProps={
                                 { readOnly: true, }
@@ -182,7 +183,8 @@ const Profile = () => {
                         />
                     </Stack>
 
-                </Stack>           
+                    </Stack>
+                }         
                 </Box>
             </Box>
         </Stack>

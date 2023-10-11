@@ -1,7 +1,7 @@
 import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography, styled } from '@mui/material';
 import React from 'react'
 import Logout from '@mui/icons-material/Logout';
-import {colorGetter} from '../../utils/colorGetter'
+import {colorGetter, getColorFromEnum} from '../../utils/colorGetter'
 import useAuth from '../../hooks/useAuth';
 import { Link } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ const AdminAccountMenu = () => {
             size="small"
             sx={{ ml: 2 }}
         >
-            <Avatar sx={{ width: 80, height: 80,bgcolor:`${colorGetter()}` }}>{currentUser?.userName.toUpperCase()[0]}</Avatar>
+            <Avatar sx={{ width: 80, height: 80,bgcolor:`${getColorFromEnum(currentUser?.userName[0])}` }}>{currentUser?.userName.toUpperCase()[0]}</Avatar>
         </IconButton>
         <HiddenText>Hello, {currentUser?.firstName +" "+ currentUser?.lastName}</HiddenText>
             
