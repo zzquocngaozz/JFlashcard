@@ -15,6 +15,9 @@ public enum Error {
     PASSWORD_FALSE("Mật khẩu không đúng ", HttpStatus.UNPROCESSABLE_ENTITY),
     VERIFY_FALSE("Mã xác nhận không đúng ", HttpStatus.UNPROCESSABLE_ENTITY),
 
+    AUTH_GI_DO("Bạn không có quyền",HttpStatus.UNAUTHORIZED),
+    SET_NOT_FOUND("Không tìm bộ thẻ dùng", HttpStatus.NOT_FOUND),
+
     USER_NOT_FOUND("Không tìm thấy người dùng", HttpStatus.NOT_FOUND),
     TOKEN_NOT_FOUND("Không tìm thấy mã thông báo", HttpStatus.NOT_FOUND),
     COMMENT_NOT_FOUND("Không tìm thấy bình luận", HttpStatus.NOT_FOUND),

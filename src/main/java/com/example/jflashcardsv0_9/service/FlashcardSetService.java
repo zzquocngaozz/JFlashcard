@@ -1,10 +1,16 @@
 package com.example.jflashcardsv0_9.service;
 
-import com.example.jflashcardsv0_9.dto.FlashcardSetDTORequest;
-import com.example.jflashcardsv0_9.dto.FlashcardSetDTOResponse;
-import com.example.jflashcardsv0_9.dto.IdDTO;
+import com.example.jflashcardsv0_9.dto.*;
+
+import java.util.List;
 
 public interface FlashcardSetService {
     IdDTO createFlashcardSet(FlashcardSetDTORequest flashcardSetDTORequest, long userID);
-    FlashcardSetDTOResponse updateFlashcardSetResponse(long setid,long userid);
+    FlashcardSetDTOResponse viewFlashcardSetResponse(long setid,long userid);
+    FlashcardSetDTOResponse updateFlashcardSetResponse(FlashcardSetDTORequest flashcardSetDTORequest,long setid,long userid);
+//    updateFlashcardSet
+    List<KanjiDTO> findAllKanjiDTOBySetId(long setid,long userid) ;
+    List<GrammarDTO> findAllGrammarDTOBySetId(long setid,long userid) ;
+    List<VocabDTO> findAllVocabDTOBySetId(long setid,long userid) ;
+    void deleteFlashcardSetById(long setid,long userid);
 }

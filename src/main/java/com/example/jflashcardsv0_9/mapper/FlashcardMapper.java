@@ -37,7 +37,7 @@ public class FlashcardMapper {
 
     public static KanjiDTO convertKanjiDTO(FlashcardKanji flashcardKanji,FlashcardSet flashcardSet){
         return KanjiDTO.builder()
-                .flashcardSetId(flashcardKanji.getCardKanjiId())
+                .cardKanjiId(flashcardKanji.getCardKanjiId())
                 .onSound(flashcardKanji.getOnSound())
                 .kunSound(flashcardKanji.getKunSound())
                 .chineseSound(flashcardKanji.getChineseSound())
@@ -61,9 +61,7 @@ public class FlashcardMapper {
                 .build();
     }
 
-    public  static FlashcardSetDTOResponse convertFlashcardSetDTOResponse(
-            FlashcardSet flashcardSet, User user, List<GrammarDTO> grammarDTOS, List<KanjiDTO> kanjiDTOS, List<VocabDTO> vocabDTOS
-            ){
+    public  static FlashcardSetDTOResponse convertFlashcardSetDTOResponse(FlashcardSet flashcardSet, User user){
         return FlashcardSetDTOResponse.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
@@ -71,9 +69,6 @@ public class FlashcardMapper {
                 .setType(flashcardSet.getSetType())
                 .isPrivate(flashcardSet.isPrivate())
                 .authDTO(UserMapper.toAuthDTO(user))
-                .grammarDTOS(grammarDTOS)
-                .kanjiDTOS(kanjiDTOS)
-                .vocabDTOS(vocabDTOS)
                 .build();
     }
 

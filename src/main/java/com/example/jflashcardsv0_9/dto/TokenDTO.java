@@ -16,4 +16,5 @@ public class TokenDTO {
     String newPassword;
     String cfPassword;
     String password;
+    String email;
 }

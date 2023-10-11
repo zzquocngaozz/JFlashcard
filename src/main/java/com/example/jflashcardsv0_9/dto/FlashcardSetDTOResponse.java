@@ -21,7 +21,4 @@ public class FlashcardSetDTOResponse {
     int setType;
     boolean isPrivate;
     AuthDTO authDTO;
-    List<GrammarDTO> grammarDTOS;
-    List<KanjiDTO> kanjiDTOS;
-    List<VocabDTO> vocabDTOS;
 }

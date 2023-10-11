@@ -48,6 +48,14 @@ public class FlashcardSet implements Serializable {
     @ManyToOne // Mối quan hệ nhiều flashcardset đến một User
     @JoinColumn(name = "user") // Đặt tên cột foreign key là "user_id"
     private User user;
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<FlashcardGrammar> flashcardGrammars;
+
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<FlashcardKanji> flashcardKanjis;
+
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<FlashcardVocab> flashcardVocabs;
 //    public String getRoleString(){
 //        if(setType == 1){
 //            return "Kanji";
