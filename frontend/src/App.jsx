@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
 import NotFound from './pages/NotFound';
+import Forgotten from './pages/Forgotten';
 import AccessDenied from './pages/AccessDenied';
 import CreateSet from './pages/CreateSet';
 import UserAdd from './pages/UserAdd';
@@ -25,7 +26,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path='/signin' element={<Signin/>}/>
         <Route path="/signup" element={<Signup/>} />
-        <Route path="/forgotten" element={<Signup/>} />
+        <Route path="/forgotten" element={<Forgotten/>} />
         <Route path="/profile" element={<AuthenRoute element={<Profile/>}/>}/>
         <Route path="/changepass" element={<AuthenRoute element={<ChangePass/>}/>}/>
         <Route  path="/dashboard" element={<AdminRoute element={<Dashboard/>} />}/>

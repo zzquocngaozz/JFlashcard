@@ -4,12 +4,13 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { role } from '../utils/regexRole'
-import { BASE_URL } from '../utils/constant'
 import useAuth from '../hooks/useAuth'
 import SnapBarAlter from '../components/FeedBack/SnapBarAlter'
 import useSnapBarAlert from '../hooks/useSnapBarAlert'
 import Logo from '../assets/images/Logo.svg'
-import loginbanner from '../assets/images/loginbanner.png'
+import forgottenbanner from '../assets/images/searhbanner.png'
+
+
 const Forgotten = () => {
   const {login} = useAuth()
   const navigate = useNavigate()
@@ -23,8 +24,7 @@ const Forgotten = () => {
     formState:{errors}
   } = useForm({
     defaultValues:{
-      email:"",
-      password:""
+      email:""
     }
   })
 
@@ -32,7 +32,6 @@ const Forgotten = () => {
       
       const trimData = {
         email: data.email.trim(),
-        password: data.password.trim(),
       };
       
       const config = {
@@ -40,30 +39,6 @@ const Forgotten = () => {
           'Content-Type': 'application/json',
         },
       };
-    
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/login`,
-          JSON.stringify({ ...trimData }),
-          config
-        );
-    
-        const responseData = response.data;
-    
-        login(responseData);
-    
-        if (responseData.user && responseData.user.role === 3) {
-          navigate('/dashboard');
-        } else {
-          navigate('/');
-        }
-      } catch (error) {
-        setAlert({
-          open: true,
-          severity: 'error',
-          message: error.response?.data?.errors?.body[0] || 'Lỗi trả về không xác định',
-        });
-      }
     };
 
   return (
@@ -84,7 +59,13 @@ const Forgotten = () => {
         }}
         
       >
-        <Typography variant='h3' textAlign='center'>Đăng nhập</Typography>
+        <Typography variant='h4' textAlign='center'>
+                    Quên mật khẩu
+                </Typography>
+                <Typography variant='h5' textAlign='center'>
+                    Vui lòng nhập lại email đã đăng ký chúng tôi sẽ gửi cho bạn mã để đổi lại mật khẩu
+                </Typography>
+
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Stack 
             spacing={5}
@@ -111,38 +92,27 @@ const Forgotten = () => {
               variant="standard"
               
             />
-            <TextField
-              {...register("password"
-              ,role['password']
-              )}
-              id="password-helper-text"
-              label="Password"
-              type='password'
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              variant="standard"
-            />
-            <Box textAlign='end'><Link to="/signin">Quên mật khẩu ?</Link></Box>
-            <Button type='submit' variant='contained'>Đăng nhập</Button>
+            
+            <Button type='submit' variant='contained'>Gửi mã xác nhận</Button>
             <Stack sx={{ border:'1px solid blue', borderStyle:"double dashed"
-                        , padding:'10px' 
+                        , padding:'8px' 
                         ,flexDirection:'row', alignItems:'center', justifyContent:'center'
                       }}>
-              <Typography variant='a'>Mới dùng JFlashcard ?</Typography>
-              <Link to="/signup">Tạo tài khoản mới</Link>
+              
+              <Link to="/signin">Quay lại đăng nhập</Link>
             </Stack>
           </Stack >
         </form>
       </Box>
       <Box 
-        flex={1.5}
+        flex={1}
         sx={{bgcolor:'#09092D',padding:'10px', position:"relative"}}
       > 
         <Box width={70} height={70} sx={{position:"absolute", top:10,left:10}}>
           <img src={Logo} loading='lazy' alt='logo' style={{objectFit:'fill',objectPosition:"center"}}/>
         </Box>
-        <Box width={600} height={500}>
-          <img src={loginbanner} loading='lazy' alt='logo' style={{objectFit:'cover',objectPosition:"center"}}/>
+        <Box width={200} height={100} sx={{position: "center" , margin:'200px 0px 0px 200px'}}>
+          <img src={forgottenbanner} loading='lazy' alt='logo' style={{objectFit:'cover',objectPosition:"center"}}/>
         </Box>
         <Typography variant='h5' sx={{color:'#FFF', textAlign:"center",mt:10}}>Học và ghi nhớ thật hiệu quả với JFlashcard!</Typography>
       </Box>
