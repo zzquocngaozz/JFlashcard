@@ -122,7 +122,7 @@ const Signin = () => {
               helperText={errors.password?.message}
               variant="standard"
             />
-            <Box textAlign='end'><Link to="/signin">Quên mật khẩu ?</Link></Box>
+            <Box textAlign='end'><Link to="/forgotten">Quên mật khẩu ?</Link></Box>
             <Button type='submit' variant='contained'>Đăng nhập</Button>
             <Stack sx={{ border:'1px solid blue', borderStyle:"double dashed"
                         , padding:'10px' 
