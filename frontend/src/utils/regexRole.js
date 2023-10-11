@@ -24,7 +24,7 @@ export const role={
             message: 'Họ và tên dài nhất có 30 chữ cái'
         },
         pattern:{
-            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
+            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
             message:"Họ và tên không được chứa những ký tự đặc biệt và ký tự trắng thừa"
         }
     },
@@ -39,7 +39,7 @@ export const role={
             message: 'Họ dài nhất có 30 chữ cái'
         },
         pattern:{
-            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
+            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
             message:"Họ không được chứa những ký tự đặc biệt và ký tự trắng thừa"
         }
     },
@@ -54,7 +54,7 @@ export const role={
             message: 'Tên dài nhất có 30 chữ cái'
         },
         pattern:{
-            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
+            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
             message:"Tên không được chứa những ký tự đặc biệt và ký tự trắng thừa"
         }
     },
@@ -86,6 +86,28 @@ export const role={
         pattern:{
             value:/^[a-zA-Z0-9]+$/,
             message:"Mã xác nhận chỉ có chữ và số"
+        }
+    },
+    title:{
+        required:"Vui lòng nhập tiêu đề của bộ bạn muốn tạo",
+        minLength:{
+            value:2,
+            message:'Tiêu đề phải nhiều hơn hoặc bằng 2 kí tự'
+        },
+        maxLength:{
+            value:50,
+            message:'Bạn không nên để tiêu đề quá dài! Tối đa 50 ký tự'
+        },
+        pattern:{
+            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
+            message:"Tiêu đề không chứa các ký tự đặc biệt và dấu cách ở đầu, cuối"
+        }
+
+    },
+    description:{
+        maxLength:{
+            value:500,
+            message:'Bạn không nên để tiêu đề quá dài! Tối đa 500 ký tự'
         }
     }
 }

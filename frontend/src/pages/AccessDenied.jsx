@@ -15,9 +15,9 @@ const NotFound = () => {
         height:'100vh'
     }}>
       <Typography variant='h3'>
-        Truy cập bị cấm
+        Truy cập bị từ chối
       </Typography>
-      <Typography maxWidth={500} textAlign='center'>Xin lỗi! Có vẻ bạn đã đi lạc đến khu vực cấm. Yêu cầu truy cập của bạn không được chấp nhận. Vui lòng quay trở lại
+      <Typography maxWidth={500} textAlign='center'>Xin lỗi! Có vẻ bạn đã đi lạc đến khu vực riêng tư. Yêu cầu truy cập của bạn không được chấp nhận. Vui lòng quay trở lại
       </Typography>
       <img src={notfoundsvg} loading="lazy" alt='not found' style={{width:400, height:300, objectFit:'cover'}}/>
       <Stack  flexDirection="row" sx={{ gap:5}}>

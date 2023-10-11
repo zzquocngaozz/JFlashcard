@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, IconButton, Stack, Toolbar} from '@mui/material'
+import { AppBar, Box, Button, IconButton, Paper, Stack, Toolbar} from '@mui/material'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import AccountMenu from '../Menu/AccountMenu';
@@ -14,8 +14,8 @@ const Navbar = () => {
 
   return (
     <>
-        <AppBar position='static' color="default">
-                <Toolbar>
+        <AppBar position='static' color="default" sx={{ boxShadow:"none", borderBottom:"1px solid rgba(0,0,0,0.2)"}}>
+                <Toolbar >
                     <Link to="/"><img src={Logo} alt='logo' style={{width:50, height:60}}/></Link>
                     <Stack justifyContent="space-between" alignItems='center' flexDirection='row' width='calc(100% - 100px)'>
                         {/* left box */}
