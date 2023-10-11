@@ -9,8 +9,9 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Admin
@@ -34,11 +35,16 @@ public class Folder implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "createdAt")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern="dd-MM-yyyy")
+    private Date createdAt;
+
     @ManyToOne // Mối quan hệ nhiều ClassMember đến một User
     @JoinColumn(name = "userId") // Đặt tên cột foreign key là "user_id"
     private User user;
 
-    @OneToMany(mappedBy = "folder")
-    private List<FolderSet> folderSets;
+    @ManyToMany
+    private Set<FlashcardSet> flashcardSets;
 
 }
