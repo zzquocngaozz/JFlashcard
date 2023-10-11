@@ -1,6 +1,6 @@
-import { AppBar, Box, Button, IconButton, Stack, Toolbar} from '@mui/material'
+import { AppBar, Box, Button, IconButton, Paper, Stack, Toolbar} from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import AccountMenu from '../Menu/AccountMenu';
 import AddMenu from '../Menu/AddMenu';
 import useAuth from '../../hooks/useAuth';
@@ -14,30 +14,38 @@ const Navbar = () => {
 
   return (
     <>
-        <AppBar position='static' color="default">
-                <Toolbar>
+        <AppBar position='static' color="default" sx={{ boxShadow:"none", borderBottom:"1px solid rgba(0,0,0,0.2)"}}>
+                <Toolbar >
                     <Link to="/"><img src={Logo} alt='logo' style={{width:50, height:60}}/></Link>
                     <Stack justifyContent="space-between" alignItems='center' flexDirection='row' width='calc(100% - 100px)'>
                         {/* left box */}
                         <Box
-                        sx={{marginLeft:'20px', display:"flex", alignItems:"center"}}>
+                        sx={{marginLeft:'20px', display:"flex", alignItems:"center",
+                            "& a:hover":{
+                                borderBottom:"1px solid #0019FC"
+                            },
+
+                            "& a.active":{
+                                borderBottom:"1px solid #0019FC"
+                            }
+                        }}>
                             {isLogin()?<>
-                            <Link 
+                            <NavLink 
                                 style={{marginLeft:'10px'}}
-                                to="#"
+                                to="/search"
                             >
                                 Tìm kiếm
-                            </Link>
+                            </NavLink>
                             <LibMenu/>
                             </>
                             
                             :
-                            <Link 
+                            <NavLink 
                                 style={{marginLeft:'10px'}}
-                                to="#"
+                                to="/search"
                             >
                                 Tìm kiếm
-                            </Link>
+                            </NavLink>
                             }
                         </Box>
                         {/* Right box */}
