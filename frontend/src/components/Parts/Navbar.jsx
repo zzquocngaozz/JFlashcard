@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, IconButton, Stack, Toolbar} from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import AccountMenu from '../Menu/AccountMenu';
 import AddMenu from '../Menu/AddMenu';
 import useAuth from '../../hooks/useAuth';
@@ -20,24 +20,32 @@ const Navbar = () => {
                     <Stack justifyContent="space-between" alignItems='center' flexDirection='row' width='calc(100% - 100px)'>
                         {/* left box */}
                         <Box
-                        sx={{marginLeft:'20px', display:"flex", alignItems:"center"}}>
+                        sx={{marginLeft:'20px', display:"flex", alignItems:"center",
+                            "& a:hover":{
+                                borderBottom:"1px solid #0019FC"
+                            },
+
+                            "& a.active":{
+                                borderBottom:"1px solid #0019FC"
+                            }
+                        }}>
                             {isLogin()?<>
-                            <Link 
+                            <NavLink 
                                 style={{marginLeft:'10px'}}
-                                to="#"
+                                to="/search"
                             >
                                 Tìm kiếm
-                            </Link>
+                            </NavLink>
                             <LibMenu/>
                             </>
                             
                             :
-                            <Link 
+                            <NavLink 
                                 style={{marginLeft:'10px'}}
-                                to="#"
+                                to="/search"
                             >
                                 Tìm kiếm
-                            </Link>
+                            </NavLink>
                             }
                         </Box>
                         {/* Right box */}

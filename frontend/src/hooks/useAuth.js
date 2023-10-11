@@ -28,12 +28,17 @@ const useAuth = ()=>{
         if (data.accessToken!==null) {
             localStorage.setItem("accessToken",data.accessToken)
             setAccessToken(data.accessToken)
-            
         }
+    }
+    // TODO: bo comment sau khi lay dc user o be
+    const updateUser = (data)=>{
+        console.log(data)
+        // localStorage.setItem("jwtUser",btoa(encodeURI(JSON.stringify(data.user))))
+        // currentUser(data.user)
+        // setCurrentUser(data.user)
     }
 
     const logout = ()=>{
-        localStorage.removeItem("jwtUser")
         setCurrentUser(null)
         setAccessToken(null)
         localStorage.removeItem("jwtUser")
@@ -41,7 +46,7 @@ const useAuth = ()=>{
     }
 
 
-    return {currentUser,accessToken,isLogin,login,logout}
+    return {currentUser,accessToken,updateUser,isLogin,login,logout}
 }
 
 export default useAuth

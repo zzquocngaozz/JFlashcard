@@ -69,8 +69,23 @@ export const role={
             message: 'Tên tài khoản dài nhất có 30 chữ cái'
         },
         pattern:{
-            value:/^[^@#$%^&*()+=\[\]{}|;:'",<>/?\\]*$/,
-            message:"Tên tài khoản không được chứa những ký tự đặc biệt"
+            value:/^[a-zA-Z0-9]+$/,
+            message:"Tên tài khoản chỉ chứa chữ và số"
+        }
+    },
+    token:{
+        required:"Vui lòng nhập mã xác nhận",
+        minLength:{
+            value:6,
+            message:'Mã xác nhận có 6-8 ký tự'
+        },
+        maxLength:{
+            value:8,
+            message: 'Mã xác nhận có 6-8 ký tự'
+        },
+        pattern:{
+            value:/^[a-zA-Z0-9]+$/,
+            message:"Mã xác nhận chỉ có chữ và số"
         }
     }
 }

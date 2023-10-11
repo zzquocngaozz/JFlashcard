@@ -1,11 +1,10 @@
-import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
+import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
 import React from 'react'
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-
+import { getColorFromEnum } from '../../utils/colorGetter';
+import HistoryIcon from '@mui/icons-material/History';
 const AccountMenu = () => {
 
   const {currentUser} = useAuth();
@@ -28,7 +27,7 @@ const AccountMenu = () => {
             size="small"
             sx={{ ml: 2 }}
           >
-            <Avatar sx={{ width: 40, height: 40 }}>{currentUser?.userName.toUpperCase()[0]}</Avatar>
+            <Avatar sx={{ width: 40, height: 40, bgcolor:`${getColorFromEnum(currentUser?.userName[0])}` }}>{currentUser?.userName.toUpperCase()[0]}</Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -51,19 +50,26 @@ const AccountMenu = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
+        <Link to='/profile'>
+          <MenuItem onClick={handleClose}>
+            <Avatar  /> Profile
+          </MenuItem>
+        </Link>
+        <Link to='/history'>
+          <MenuItem onClick={handleClose}>
+          <ListItemIcon>
+            <HistoryIcon />
+          </ListItemIcon>
+            Lịch sử học
+          </MenuItem>
+        </Link>
         <Divider />        
         <Link to="/signout">
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
-            Logout
+            Đăng xuất
           </MenuItem>
         </Link>
       </Menu>
