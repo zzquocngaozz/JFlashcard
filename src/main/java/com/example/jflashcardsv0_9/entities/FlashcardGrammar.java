@@ -1,10 +1,7 @@
 package com.example.jflashcardsv0_9.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 @NoArgsConstructor
@@ -13,6 +10,7 @@ import java.io.Serializable;
 @Setter
 @Table(name = "flashcardGrammar")
 @Entity
+@Builder
 public class FlashcardGrammar implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

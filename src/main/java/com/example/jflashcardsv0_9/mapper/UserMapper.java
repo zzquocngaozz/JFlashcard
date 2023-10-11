@@ -1,5 +1,6 @@
 package com.example.jflashcardsv0_9.mapper;
 
+import com.example.jflashcardsv0_9.dto.AuthDTO;
 import com.example.jflashcardsv0_9.dto.RegisterDTO;
 import com.example.jflashcardsv0_9.dto.UserDTO;
 import com.example.jflashcardsv0_9.entities.Role;
@@ -72,6 +73,28 @@ public class UserMapper {
                 .role(roleId)
                 .isLooked(user.isLooked())
                 .isVerify(user.isVerify())
+                .build();
+    }
+    public static AuthDTO toAuthDTO(User user) {
+        Set<Role> roles = user.getRoles();
+        List<String> roleNames = new ArrayList<>();
+
+        if (roles != null) {
+            for (Role role : roles) {
+                roleNames.add(role.getName());
+            }
+        }
+
+        Integer roleId = null;
+        if (!roleNames.isEmpty()) {
+            // Lấy tên của vai trò đầu tiên trong danh sách
+            String roleName = roleNames.get(0);
+            roleId = roleService.getRoleIdByRoleName(roleName);
+        }
+        return AuthDTO.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .role(roleId)
                 .build();
     }
 

@@ -8,4 +8,5 @@ import java.util.Optional;
 @Repository
 public interface FlashcardSetRepository extends JpaRepository<FlashcardSet, Integer>{
     FlashcardSet save(FlashcardSet flashcardSet);
+    FlashcardSet getFlashcardSetByFlashcardSetId(long setId);
 }

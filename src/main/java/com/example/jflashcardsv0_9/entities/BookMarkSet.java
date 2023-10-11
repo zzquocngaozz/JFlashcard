@@ -1,10 +1,7 @@
 package com.example.jflashcardsv0_9.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,6 +11,7 @@ import java.io.Serializable;
 @Setter
 @Table(name = "bookMarkSet")
 @Entity
+@Builder
 public class BookMarkSet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

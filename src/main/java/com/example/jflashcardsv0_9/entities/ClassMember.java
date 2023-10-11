@@ -3,10 +3,7 @@ package com.example.jflashcardsv0_9.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 //import javax.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -21,6 +18,7 @@ import java.util.Date;
 @Setter
 @Table(name = "classmember")
 @Entity
+@Builder
 //@IdClass(ClassMemberId.class) // Sử dụng lớp ClassMemberId để đại diện cho composite primary key
 public class ClassMember implements Serializable {
     @Id

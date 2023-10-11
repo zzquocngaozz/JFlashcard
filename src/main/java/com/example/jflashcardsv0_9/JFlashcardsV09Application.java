@@ -2,6 +2,8 @@ package com.example.jflashcardsv0_9;
 
 import com.example.jflashcardsv0_9.dto.RegisterDTO;
 import com.example.jflashcardsv0_9.entities.Role;
+import com.example.jflashcardsv0_9.exception.AppException;
+import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.repository.RoleRepository;
 import com.example.jflashcardsv0_9.repository.UserRepository;
 import com.example.jflashcardsv0_9.service.UserService;
@@ -24,6 +26,8 @@ public class JFlashcardsV09Application implements CommandLineRunner{
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private UserService userService;
 
     @Override
@@ -45,15 +49,17 @@ public class JFlashcardsV09Application implements CommandLineRunner{
             role.setName("ROLE_ADMIN");
             roleRepository.save(role);
         }
-//        RegisterDTO registerDTO = RegisterDTO.builder()
-//                .userName("huuu")
-//                .password("Qwer1234")
-//                .email("12345abc@gmail.com")
-//                .birth(Date.valueOf("2001-12-12"))
-//                .firstName("hoang")
-//                .lastName("hieu")
-//                .build();
-//        userService.registrationADMIN(registerDTO);
+        RegisterDTO registerDTO = RegisterDTO.builder()
+                .userName("huuu")
+                .password("Qwer1234")
+                .email("12345abc@gmail.com")
+                .birth(Date.valueOf("2001-12-12"))
+                .firstName("hoang")
+                .lastName("hieu")
+                .build();
+        if(userRepository.existsByUserName(registerDTO.getUserName()) == false){
+            userService.registrationADMIN(registerDTO);
+        }
     }
 
 }

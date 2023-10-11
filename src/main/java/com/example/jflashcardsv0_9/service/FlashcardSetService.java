@@ -1,8 +1,10 @@
 package com.example.jflashcardsv0_9.service;
 
-import com.example.jflashcardsv0_9.dto.FlashcardSetDTO;
-import com.example.jflashcardsv0_9.dto.UserDTO;
+import com.example.jflashcardsv0_9.dto.FlashcardSetDTORequest;
+import com.example.jflashcardsv0_9.dto.FlashcardSetDTOResponse;
+import com.example.jflashcardsv0_9.dto.IdDTO;
 
 public interface FlashcardSetService {
-    FlashcardSetDTO createFlashcardSet(FlashcardSetDTO flashcardSetDTO);
+    IdDTO createFlashcardSet(FlashcardSetDTORequest flashcardSetDTORequest, long userID);
+    FlashcardSetDTOResponse updateFlashcardSetResponse(long setid,long userid);
 }
