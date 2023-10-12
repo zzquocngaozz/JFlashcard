@@ -1,5 +1,4 @@
-import axios from 'axios'
-import {useState} from 'react'
+import { useState} from 'react'
 
 const getJwtUser= ()=>{
     const jwtUser = localStorage.getItem('jwtUser')
@@ -17,6 +16,7 @@ const useAuth = ()=>{
     const [accessToken,setAccessToken] = useState(getAccessToken())
     const [currentUser,setCurrentUser] = useState(getJwtUser())
 
+    
     const isLogin = ()=>{ 
         return (currentUser !== null)}
     
@@ -30,12 +30,12 @@ const useAuth = ()=>{
             setAccessToken(data.accessToken)
         }
     }
-    // TODO: bo comment sau khi lay dc user o be
+    
     const updateUser = (data)=>{
-        console.log(data)
-        // localStorage.setItem("jwtUser",btoa(encodeURI(JSON.stringify(data.user))))
-        // currentUser(data.user)
-        // setCurrentUser(data.user)
+        
+        localStorage.setItem("jwtUser",btoa(encodeURI(JSON.stringify(data.user))))
+        currentUser(data.user)
+        setCurrentUser(data.user)
     }
 
     const logout = ()=>{
@@ -43,8 +43,8 @@ const useAuth = ()=>{
         setAccessToken(null)
         localStorage.removeItem("jwtUser")
         localStorage.removeItem("accessToken")
+        // TODO: call api to logout be :)
     }
-
 
     return {currentUser,accessToken,updateUser,isLogin,login,logout}
 }

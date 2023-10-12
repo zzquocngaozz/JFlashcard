@@ -43,8 +43,9 @@ public class DashboardUserController {
         return ResponseEntity.ok("User unblocked successfully");
     }
     @PutMapping("/changeRole/{userId}")
-    public ResponseEntity<String> changeUserRole(@PathVariable Long userId, @RequestBody int role) {
-        userService.changeUserRole(userId, role);
+    public ResponseEntity<String> changeUserRole(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
+        System.out.println(userId+" "+ userDTO.getRole());
+        userService.changeUserRole(userId, userDTO.getRole());
         return ResponseEntity.ok("User roles changed successfully");
     }
     @PostMapping("/addUser")

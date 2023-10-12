@@ -18,6 +18,7 @@ import LearnHistory from './pages/LearnHistory';
 import SearchPage from './pages/SearchPage';
 import ChangePass from './pages/ChangePass';
 import SetEdit from './pages/SetEdit';
+import { UserView } from './pages/UserView';
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
         <Route path="/users">
             <Route index path="/users/list" element={<AdminRoute element={<UserList/>}/>}/>
             <Route path="/users/add" element={<AdminRoute element={<UserAdd/>} />}/>
-            <Route path="/users/:id" element={<AdminRoute element={<NotFound/>} />}/>
+            <Route path="/users/:id" element={<AdminRoute element={<UserView/>} />}/>
         </Route>
         <Route path="/search" element={<SearchPage />}/>
         <Route path="/history" element={<AuthenRoute element={<LearnHistory/>}/>}/>

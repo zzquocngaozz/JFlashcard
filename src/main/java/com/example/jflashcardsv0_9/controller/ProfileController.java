@@ -45,4 +45,11 @@ public class ProfileController {
         profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
         return ResponseEntity.ok("ok");
     }
+
+    @PostMapping("/profile/wish")
+    public ResponseEntity<?> wishTeacherRole(@AuthenticationPrincipal MyUserDetail myUserDetail){
+        profileService.askTeacherRole(myUserDetail.getUser().getEmail());
+        return ResponseEntity.ok("ok");
+    }
+
 }

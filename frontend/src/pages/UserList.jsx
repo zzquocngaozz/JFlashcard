@@ -1,21 +1,20 @@
 import React from 'react'
 import UsersTable from '../components/UsersTable'
-import { Box, Stack, Typography } from '@mui/material'
-import SideNavAdmin from '../components/SideNavAdmin'
-import useFetchUser from '../hooks/useFetchUser'
+import useFetchUsers from '../hooks/useFetchUsers'
 import BackdropLoading from '../components/FeedBack/BackdropLoading'
+import LayoutAdmin from '../components/Parts/LayoutAdmin'
+
 
 const UserList = () => {
-  const {data, loading} = useFetchUser()
-  console.log(data,' ',loading)
+  const {data, loading,changing,lockUser,unLockUser} = useFetchUsers()
 
   return (
-    <Stack flexDirection="row" sx={{width:'100%', height:'100vh'}}>
-      <SideNavAdmin/>
-      <Box flex={10} sx={{padding:"2rem",overflowY:"scroll"}} >
-        {(loading)?<BackdropLoading/>:<UsersTable data = {data} />}
-      </Box>
-    </Stack>
+    <LayoutAdmin>
+        <>
+          {(loading)?<BackdropLoading/>:<UsersTable data = {data} lockUser={lockUser} unLockUser={unLockUser} />}
+          {changing?<BackdropLoading/>:""}
+        </>
+    </LayoutAdmin>
   )
 }
 

@@ -7,26 +7,36 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TablePaginationActions from './datatable/TablePaginationActions';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ROLE } from '../utils/constant';
 import { parseBirth } from '../utils/datetimeCalc';
 import { getColorFromEnum } from '../utils/colorGetter';
+import { Link } from 'react-router-dom';
+import useViewUser from '../hooks/useViewUser';
 
   
  
   
 
-const UsersTable = ({data}) => {  
+const UsersTable = ({data, unLockUser,lockUser}) => {  
 
     const [users,setUsers] = useState(data);
-
+         
+    
     const [filter,setFilter] = useState(1);
     const [searchParam,setSearchParam] = useState("");
+
+    const handleUnLock = (userId)=>{
+      unLockUser(userId)
+    }
+    const handleLock = (userId)=>{
+      lockUser(userId)
+    }
 
 
   // trang hien tai
@@ -76,6 +86,11 @@ const UsersTable = ({data}) => {
       setUsersPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
+
+    // Sử dụng useEffect để cập nhật users khi data thay đổi
+    useEffect(() => {
+      setUsers(data);
+    }, [data]);
 
     //--------------------------Styled component--------------------------
     const StackActionTable = styled(Stack)({
@@ -143,18 +158,20 @@ const UsersTable = ({data}) => {
                 
                 <TableCell  align="center">
                   <StackActionTable>
-                    <Tooltip title='Xem'>
-                      <IconButton sx={{color:"#00d6ff"}}  
-                        onClick={()=>{console.log(`${user.name} clicked`)}}
-                      >
-                        <VisibilityIcon />
-                      </IconButton>
-                    </Tooltip>
+                    <Link to={`/users/${user.userId}`}>
+                      <Tooltip title='Xem'>
+                          <IconButton sx={{color:"#00d6ff"}}  
+                            onClick={()=>{console.log(`${user.name} clicked`)}}
+                          >
+                            <VisibilityIcon />
+                          </IconButton>
+                      </Tooltip>
+                    </Link>
                     {user.looked?
                       <Tooltip title="Mở khoá">
                         <IconButton 
                           mt={0}
-                          onClick={()=>{console.log(`${user.id} clicked blocked`)}}
+                          onClick={()=>handleUnLock(user.userId)}
                         >
                           <LockOpenIcon color='success' />
                         </IconButton>
@@ -163,7 +180,7 @@ const UsersTable = ({data}) => {
                       <Tooltip title="Khoá">
                         <IconButton 
                           mt={0}
-                          onClick={()=>{console.log(`${user.id} clicked blocked`)}}
+                          onClick={()=>handleLock(user.userId)}
                         >
                           <LockOutlinedIcon color='error' />
                         </IconButton>

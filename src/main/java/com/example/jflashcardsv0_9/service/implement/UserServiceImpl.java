@@ -22,9 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -165,8 +163,12 @@ public class UserServiceImpl implements UserService {
         }
         User user = userOptional.get();
         Role roles = roleRepository.findByRoleId(role).get();
-        user.setRoles(Collections.singleton(roles));
+        System.out.println(roles.getName());
+        Set<Role> rs = new HashSet<>();
+        rs.add(roles);
+        user.setRoles(rs);
         userRepository.save(user);
+
     }
     @Override
     public void addUser(UserDTO userDTO) {
