@@ -1,10 +1,9 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import {useForm} from 'react-hook-form'
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { role } from '../utils/regexRole'
-import { BASE_URL } from '../utils/constant'
 import useAuth from '../hooks/useAuth'
 import SnapBarAlter from '../components/FeedBack/SnapBarAlter'
 import useSnapBarAlert from '../hooks/useSnapBarAlert'
@@ -35,21 +34,10 @@ const Signin = () => {
         password: data.password.trim(),
       };
       
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-    
       try {
-        const response = await axios.post(
-          `${BASE_URL}/login`,
-          JSON.stringify({ ...trimData }),
-          config
-        );
-    
+        const response = await axios.post(`/login`,JSON.stringify({ ...trimData }));
         const responseData = response.data;
-    
+        // save into local storage
         login(responseData);
     
         if (responseData.user && responseData.user.role === 3) {

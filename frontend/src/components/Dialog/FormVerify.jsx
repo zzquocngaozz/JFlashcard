@@ -10,15 +10,15 @@ import {useForm} from 'react-hook-form'
 import { role } from '../../utils/regexRole';
 
 
-export default function FormVerify({handleClose}) {
+export default function FormVerify({handleClose, verify}) {
   // const [openVerify, setOpenVerify] = React.useState(false);
   const {register,handleSubmit,formState:{errors}} = useForm()
 
   
   // send token to be
-  const verify = (data)=>{
-    console.log(data)
-  }
+  // const verify = (data)=>{
+  //   console.log(data)
+  // }
 
   return (
     <>

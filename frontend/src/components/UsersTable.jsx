@@ -7,23 +7,36 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TablePaginationActions from './datatable/TablePaginationActions';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BlockIcon from '@mui/icons-material/Block';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ROLE } from '../utils/constant';
 import { parseBirth } from '../utils/datetimeCalc';
+import { getColorFromEnum } from '../utils/colorGetter';
+import { Link } from 'react-router-dom';
+import useViewUser from '../hooks/useViewUser';
+
   
  
   
 
-const UsersTable = ({data}) => {  
+const UsersTable = ({data, unLockUser,lockUser}) => {  
 
     const [users,setUsers] = useState(data);
-
-    const [filter,setFilter] = useState("fullname");
+         
+    
+    const [filter,setFilter] = useState(1);
     const [searchParam,setSearchParam] = useState("");
+
+    const handleUnLock = (userId)=>{
+      unLockUser(userId)
+    }
+    const handleLock = (userId)=>{
+      lockUser(userId)
+    }
 
 
   // trang hien tai
@@ -40,7 +53,25 @@ const UsersTable = ({data}) => {
 
     function handleSearch(){
       console.log(data)
-      const filterData = data.filter((user)=>user.userName.includes(searchParam))
+      setPage(0)
+      let filterData = data.filter((user)=>user.userName.includes(searchParam))
+      switch(filter){
+        case 1:
+            filterData = data.filter((user)=>(user.firstName+" "+user.lastName).includes(searchParam.trim()))
+          break;
+        case 2:
+            filterData = data.filter((user)=>user.userName.includes(searchParam))
+          break;
+        case 3: 
+            filterData = data.filter((user)=>user.email.includes(searchParam))
+         break;
+        case 4:
+            filterData = data.filter((user)=>(ROLE[user.role]) === searchParam)
+          break;
+        default:
+            console.log('noc out: line61')
+          
+      }
       setUsers(filterData)
     }
 
@@ -56,6 +87,11 @@ const UsersTable = ({data}) => {
       setPage(0);
     };
 
+    // Sử dụng useEffect để cập nhật users khi data thay đổi
+    useEffect(() => {
+      setUsers(data);
+    }, [data]);
+
     //--------------------------Styled component--------------------------
     const StackActionTable = styled(Stack)({
       spacing:'1px',
@@ -68,22 +104,27 @@ const UsersTable = ({data}) => {
     <>
       <Typography variant='h5'>Quản lý người dùng</Typography>
       {/* Search user action */}
-      <Stack flexDirection="row" sx={{ gap:"10px", float:'right', padding:'10px 0', margin:'10px 0' }}>
-        <TextField placeholder='Search'/>
+      <Stack flexDirection="row" sx={{ gap:"10px", float:'right', padding:'10px 0',height:65, margin:'10px 0' }}>
+        <TextField placeholder='Tìm kiếm'
+        sx={{"& input":{padding:"11px 14px"}}}
+        value={searchParam}
+        type="search"
+        onChange={(e)=>{setSearchParam(e.target.value)}}
+        />
           <Select
             id="filter-select"
             value={filter}
-            defaultValue="fullname"
+            defaultValue={1}
             // label="Filter by"
             onChange={(e)=>{setFilter(e.target.value)}}
             sx={{width:"150px"}}
           >
-            <MenuItem value='fullname'>Họ và tên</MenuItem>
-            <MenuItem value='username'>Tên tài khoản</MenuItem>
-            <MenuItem value='email'>Email</MenuItem>
-            <MenuItem value='role'>Tài khoản</MenuItem>
+            <MenuItem value={1}>Họ và tên</MenuItem>
+            <MenuItem value={2}>Tên tài khoản</MenuItem>
+            <MenuItem value={3}>Email</MenuItem>
+            <MenuItem value={4}>Loại tài khoản</MenuItem>
           </Select>
-        <Button variant='contained' onClick ={()=>handleSearch()} >Search</Button>
+        <Button variant='contained' onClick ={()=>handleSearch()} startIcon={<SearchOutlinedIcon/>} >Tìm kiếm</Button>
       </Stack>
       <TableContainer component={Paper} elevation={3}>
         <Table sx={{ minWidth: 500 }}>
@@ -107,7 +148,7 @@ const UsersTable = ({data}) => {
               <TableRow key={user.userId}>
                 <TableCell align="center">{user.userId}</TableCell>
                 <TableCell align="left">{user.firstName+" "+ user.lastName}</TableCell>
-                <TableCell  align="left"><Avatar sx={{width:30, height:30,display:"inline-flex", mr:1}}>{(user.userName.toUpperCase())[0]}</Avatar>{user.userName}</TableCell>
+                <TableCell  align="left"><Avatar sx={{width:30, height:30,display:"inline-flex", mr:1, backgroundColor:`${getColorFromEnum(user.userName.charAt(0))}`}}>{(user.userName.toUpperCase())[0]}</Avatar>{user.userName}</TableCell>
                 <TableCell  align="left">{user.email}</TableCell>
                 <TableCell  align="left">{parseBirth(user.birth)}</TableCell>
                 <TableCell  align="left">{ROLE[user.role]}</TableCell>
@@ -117,29 +158,34 @@ const UsersTable = ({data}) => {
                 
                 <TableCell  align="center">
                   <StackActionTable>
-                    <Tooltip title='Edit'>
-                      <IconButton color="yellow"  
-                        onClick={()=>{console.log(`${user.name} clicked`)}}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <IconButton color="error" 
-                        mt={0}
-                        onClick={()=>{console.log(`${user.id} clicked delete`)}}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Block">
-                      <IconButton 
-                        mt={0}
-                        onClick={()=>{console.log(`${user.id} clicked blocked`)}}
-                      >
-                        <BlockIcon color='success' />
-                      </IconButton>
-                    </Tooltip>
+                    <Link to={`/users/${user.userId}`}>
+                      <Tooltip title='Xem'>
+                          <IconButton sx={{color:"#00d6ff"}}  
+                            onClick={()=>{console.log(`${user.name} clicked`)}}
+                          >
+                            <VisibilityIcon />
+                          </IconButton>
+                      </Tooltip>
+                    </Link>
+                    {user.looked?
+                      <Tooltip title="Mở khoá">
+                        <IconButton 
+                          mt={0}
+                          onClick={()=>handleUnLock(user.userId)}
+                        >
+                          <LockOpenIcon color='success' />
+                        </IconButton>
+                      </Tooltip>
+                    :
+                      <Tooltip title="Khoá">
+                        <IconButton 
+                          mt={0}
+                          onClick={()=>handleLock(user.userId)}
+                        >
+                          <LockOutlinedIcon color='error' />
+                        </IconButton>
+                      </Tooltip>
+                    }
                   </StackActionTable>
                 </TableCell>
               </TableRow>

@@ -14,8 +14,8 @@ export default function FormProfile({handleCloseUpdate,updateProfile,currentUser
   // const [openVerify, setOpenVerify] = React.useState(false);
   const {register,handleSubmit,reset,formState:{isDirty,errors}} = useForm({
     defaultValues:{
-      firstName:currentUser.lastName,
-      lastName:currentUser.firstName,
+      firstName:currentUser.firstName,
+      lastName:currentUser.lastName,
       birth:currentUser.birth
     }
   })
@@ -32,7 +32,7 @@ export default function FormProfile({handleCloseUpdate,updateProfile,currentUser
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open form dialog
       </Button> */}
-      <Dialog open={true}>
+      <Dialog open={true} className='profile-edit-de'>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <DialogTitle>Cập nhật thông tin</DialogTitle>
         <DialogContent>

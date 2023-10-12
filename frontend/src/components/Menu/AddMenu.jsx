@@ -4,9 +4,12 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import SchoolIcon from '@mui/icons-material/School';
+import useAuth from '../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 const AddMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const {currentUser} = useAuth()
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -49,30 +52,50 @@ const AddMenu = () => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <NoteAddIcon />
-            </ListItemIcon>
-          <ListItemText>
-            Bộ flashcard
-          </ListItemText>
+          <Link to="/create-set">
+            <ListItemIcon>
+              <NoteAddIcon />
+              </ListItemIcon>
+            <ListItemText>
+              Bộ flashcard
+            </ListItemText>
+          </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
-        <ListItemIcon>
-            <CreateNewFolderIcon />
-        </ListItemIcon>
-        <ListItemText>
-            Thư mục
-        </ListItemText>
-        
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <Link to={"/create-folder"}>
           <ListItemIcon>
-            <SchoolIcon />
+              <CreateNewFolderIcon />
           </ListItemIcon>
           <ListItemText>
-            Vào lớp học
+              Thư mục
           </ListItemText>
-        </MenuItem>      
+        </Link>
+        
+        </MenuItem>
+        {currentUser.role===1?
+          <MenuItem onClick={handleClose}>
+            <Link to="/join-class">
+              <ListItemIcon>
+                <SchoolIcon />
+              </ListItemIcon>
+              <ListItemText>
+                Vào lớp học
+              </ListItemText>
+            </Link>
+          </MenuItem>      
+
+        :
+          <MenuItem onClick={handleClose}>
+            <Link to="/create-class">
+              <ListItemIcon>
+                <SchoolIcon />
+              </ListItemIcon>
+              <ListItemText>
+                Lớp học
+              </ListItemText>
+            </Link>
+          </MenuItem> 
+        }
       </Menu>
     </>
   )

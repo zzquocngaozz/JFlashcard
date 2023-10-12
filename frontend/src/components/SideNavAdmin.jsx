@@ -11,7 +11,7 @@ const SideNavAdmin = ()=>{
 
     return (
     
-      <Box flex={2} sx={{boxShadow:"1px 0 1px 1px rgba(0,0,0,0.25)"}}>
+      <Box flex={2.5} sx={{boxShadow:"1px 0 1px 1px rgba(0,0,0,0.08)"}}>
         
           <List sx={{ padding:"10px 20px 0 20px"}}>
               <AdminAccountMenu/>

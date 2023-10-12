@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const useSnapBarAlert = () => {
     const [alert,setAlert] = useState({open:false,severity:"error",message:""})

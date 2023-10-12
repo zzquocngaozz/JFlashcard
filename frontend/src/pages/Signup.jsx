@@ -1,14 +1,11 @@
-import { Alert, AlertTitle, Box, Button, IconButton, Snackbar, Stack, TextField, Typography } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close';
-import React, { useEffect, useRef, useState } from 'react'
+import {  Box, Button, Stack, TextField, Typography } from '@mui/material'
+import React, { useEffect} from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { isBirthDate } from '../utils/datetimeCalc'
-import {MUIAlert,alert} from '../components/FeedBack/AlterError';
 import { role } from '../utils/regexRole';
 import useSnapBarAlert from '../hooks/useSnapBarAlert';
 import useRegister from '../hooks/useRegister';
-
 import Logo from '../assets/images/Logo.svg'
 import registerbanner from '../assets/images/registerbanner.png'
 import SnapBarAlter from '../components/FeedBack/SnapBarAlter';
@@ -38,7 +35,6 @@ const Signup = () => {
                 message:'Ngày sinh của bạn không hợp lệ!'
             })
         } else{
-            console.log(isBirthDate(birth),'is birth')
             clearErrors('birth');}
     },[birth])
 
