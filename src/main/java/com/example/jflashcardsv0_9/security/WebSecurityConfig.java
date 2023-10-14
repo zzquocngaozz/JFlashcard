@@ -36,6 +36,7 @@ public class WebSecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/v1", "/api/v1/login", "/api/v1/register").permitAll()
                                 .requestMatchers("/api/v1/dashboard/**").hasRole("ADMIN")
+//                                .requestMatchers("/api/v1/classroom/**").hasRole("TEACHER")
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
