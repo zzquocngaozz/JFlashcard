@@ -16,6 +16,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name = "classroom")
 @Entity
 @Builder
@@ -28,6 +29,9 @@ public class ClassRoom implements Serializable {
     @Column(name = "classRoomName")
     private String classRoomName;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "classRoomCode",unique = true)
     private String classRoomCode;
 
@@ -36,9 +40,10 @@ public class ClassRoom implements Serializable {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date createdAt;
 
-    @ManyToOne // Đây là mối quan hệ nhiều Class đến một User
+    @ManyToOne(cascade = CascadeType.REMOVE) // Đây là mối quan hệ nhiều Class đến một User
     @JoinColumn(name = "teacherId") // Đặt tên cột foreign key là "teacher_id"
-    private User teacherID;
+    private User teacher;
+
 
 
 
