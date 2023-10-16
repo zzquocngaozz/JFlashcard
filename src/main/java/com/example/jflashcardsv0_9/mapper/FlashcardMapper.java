@@ -14,7 +14,10 @@ import java.util.List;
 @Component
 public class FlashcardMapper {
     @Autowired
-    private static FlashcardSetRepository flashcardSetRepository;
+    static FlashcardSetRepository flashcardSetRepository;
+    public FlashcardMapper(FlashcardSetRepository flashcardSetRepository) {
+        this.flashcardSetRepository = flashcardSetRepository;
+    }
 
     public static FlashcardSet convertFlS(FlashcardSetDTORequest flashcardSetDTORequest, User user){
         return FlashcardSet.builder()

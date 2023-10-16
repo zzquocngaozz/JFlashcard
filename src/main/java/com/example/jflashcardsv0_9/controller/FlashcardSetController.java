@@ -50,7 +50,9 @@ public class FlashcardSetController {
         return ResponseEntity.ok("Xóa thành công");
     }
     @PostMapping("/{setId}/edit/kanji-card")
-    public KanjiDTO createKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,KanjiDTO kanjiDTO,@PathVariable long setId){
+    public KanjiDTO createKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
+        System.out.println(kanjiDTO.getOnSound());
+        System.out.println("hiiiiiiiiiiiiiiiiii");
         return flashcardSetService.createFlashcardKanji(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/kanji-card/{cardId}")
