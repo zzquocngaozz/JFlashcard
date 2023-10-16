@@ -32,6 +32,8 @@ public class FlashcardKanji implements Serializable {
     private String exampleMean;
     @Column(name = "imgUrl")
     private String imgUrl;
+    @Column(name = "trick")
+    private String trick;
     @ManyToOne
     @JoinColumn(name = "flashcardSetId") // Tên cột khoá ngoại trong bảng FlashcardKanji
     private FlashcardSet flashcardSet;

@@ -10,4 +10,8 @@ import java.util.List;
 
 public interface FlashcardVocabRepository extends JpaRepository<FlashcardVocab, Integer> {
     List<FlashcardVocab> findAllByFlashcardSet(FlashcardSet flashcardSet);
+    FlashcardVocab getFlashcardVocabByCardVocabId(long cardId);
+    FlashcardVocab save(FlashcardVocab flashcardVocab);
+    @Override
+    void delete(FlashcardVocab flashcardVocab);
 }

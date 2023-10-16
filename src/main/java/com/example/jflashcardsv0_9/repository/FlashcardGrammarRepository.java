@@ -10,4 +10,8 @@ import java.util.List;
 
 public interface FlashcardGrammarRepository extends JpaRepository<FlashcardGrammar, Integer> {
     List<FlashcardGrammar> findAllByFlashcardSet(FlashcardSet flashcardSet);
+    FlashcardGrammar getFlashcardGrammarByCardGrammarId(long cardId);
+    FlashcardGrammar save(FlashcardGrammar flashcardGrammar);
+    @Override
+    void delete(FlashcardGrammar flashcardGrammar);
 }

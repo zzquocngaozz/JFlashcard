@@ -2,6 +2,9 @@ package com.example.jflashcardsv0_9.mapper;
 
 import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.entities.*;
+import com.example.jflashcardsv0_9.repository.FlashcardKanjiRepository;
+import com.example.jflashcardsv0_9.repository.FlashcardSetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -10,6 +13,9 @@ import java.util.List;
 
 @Component
 public class FlashcardMapper {
+    @Autowired
+    private static FlashcardSetRepository flashcardSetRepository;
+
     public static FlashcardSet convertFlS(FlashcardSetDTORequest flashcardSetDTORequest, User user){
         return FlashcardSet.builder()
                 .title(flashcardSetDTORequest.getTitle())
@@ -46,6 +52,7 @@ public class FlashcardMapper {
                 .example(flashcardKanji.getExample())
                 .exampleMean(flashcardKanji.getExampleMean())
                 .imgUrl(flashcardKanji.getImgUrl())
+                .trick(flashcardKanji.getTrick())
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .build();
     }
@@ -69,6 +76,42 @@ public class FlashcardMapper {
                 .setType(flashcardSet.getSetType())
                 .isPrivate(flashcardSet.isPrivate())
                 .authDTO(UserMapper.toAuthDTO(user))
+                .build();
+    }
+    public static FlashcardKanji convertToFlashcardKanjiEntity(KanjiDTO dto,long setId) {
+        return FlashcardKanji.builder()
+                .onSound(dto.getOnSound())
+                .kunSound(dto.getKunSound())
+                .chineseSound(dto.getChineseSound())
+                .term(dto.getTerm())
+                .mean(dto.getMean())
+                .example(dto.getExample())
+                .exampleMean(dto.getExampleMean())
+                .imgUrl(dto.getImgUrl())
+                .trick(dto.getTrick())
+                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId))
+                .build();
+    }
+    public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto) {
+        return FlashcardVocab.builder()
+                .term(dto.getTerm())
+                .mean(dto.getMean())
+                .example(dto.getExample())
+                .exampleMean(dto.getExampleMean())
+                .imgUrl(dto.getImgUrl())
+                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(dto.getFlashcardSetId()))
+                .build();
+    }
+    public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto) {
+        return FlashcardGrammar.builder()
+                .combination(dto.getCombination())
+                .note(dto.getNote())
+                .term(dto.getTerm())
+                .mean(dto.getMean())
+                .example(dto.getExample())
+                .exampleMean(dto.getExampleMean())
+                .imgUrl(dto.getImgUrl())
+                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(dto.getFlashcardSetId()))
                 .build();
     }
 

@@ -19,5 +19,6 @@ public class KanjiDTO {
     String example;
     String exampleMean;
     String imgUrl;
+    String trick;
     Long flashcardSetId;
 }

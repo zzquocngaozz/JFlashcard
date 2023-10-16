@@ -10,4 +10,10 @@ import java.util.List;
 
 public interface FlashcardKanjiRepository extends JpaRepository<FlashcardKanji, Integer> {
     List<FlashcardKanji> findAllByFlashcardSet(FlashcardSet flashcardSet);
+    FlashcardKanji getFlashcardKanjiByCardKanjiId(long cardId);
+    List<FlashcardKanji> saveAll(List<FlashcardKanji> flashcardKanjis);
+    FlashcardKanji save(FlashcardKanji flashcardKanji);
+    @Override
+    void delete(FlashcardKanji flashcardKanji);
+
 }

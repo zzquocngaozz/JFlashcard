@@ -107,4 +107,41 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         flashcardSetRepository.delete(flashcardSet);
     }
+
+    @Override
+    public KanjiDTO createFlashcardKanji(KanjiDTO kanjiDTO, long userID,long setId) {
+        FlashcardKanji flashcardKanji = FlashcardMapper.convertToFlashcardKanjiEntity(kanjiDTO,setId);
+        FlashcardKanji flashcardKanji1 = flashcardKanjiRepository.save(flashcardKanji);
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        return FlashcardMapper.convertKanjiDTO(flashcardKanji1,flashcardSet);
+    }
+
+    @Override
+    public void deleteFlKanji(long cardId) {
+        FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(cardId);
+        flashcardKanjiRepository.delete(flashcardKanji);
+
+    }
+
+    @Override
+    public GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID) {
+        return null;
+    }
+
+    @Override
+    public void deleteFlGrammar(long cardId) {
+         FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(cardId);
+         flashcardGrammarRepository.delete(flashcardGrammar);
+    }
+
+    @Override
+    public VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID) {
+        return null;
+    }
+
+    @Override
+    public void deleteFlvocab(long cardId) {
+        FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(cardId);
+        flashcardVocabRepository.delete(flashcardVocab);
+    }
 }

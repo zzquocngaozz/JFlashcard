@@ -13,4 +13,19 @@ public interface FlashcardSetService {
     List<GrammarDTO> findAllGrammarDTOBySetId(long setid,long userid) ;
     List<VocabDTO> findAllVocabDTOBySetId(long setid,long userid) ;
     void deleteFlashcardSetById(long setid,long userid);
+
+    // card kanji
+    KanjiDTO createFlashcardKanji(KanjiDTO kanjiDTO, long userID, long setId);
+
+    void deleteFlKanji(long cardId);
+    // card grammar
+    GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID);
+
+    void deleteFlGrammar(long cardId);
+
+    // card vocab
+    VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID);
+
+    void deleteFlvocab(long cardId);
+
 }
