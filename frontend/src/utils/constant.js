@@ -9,3 +9,9 @@ export const ROLE = {
     3:"Quản trị viên"
 }
 
+export const SET_TYPE = {
+    1:"Hán tự",
+    2:"Từ vựng",
+    3:"Ngữ pháp",
+}
+

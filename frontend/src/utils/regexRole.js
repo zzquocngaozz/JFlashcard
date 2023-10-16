@@ -99,8 +99,8 @@ export const role={
             message:'Bạn không nên để tiêu đề quá dài! Tối đa 50 ký tự'
         },
         pattern:{
-            value:/^[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\|\/\-][^!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]*[^\s!@#$%^&*()_+{}\[\]:;<>,.?~\\\|\/\-]$/,
-            message:"Tiêu đề không chứa các ký tự đặc biệt và dấu cách ở đầu, cuối"
+            value:/^[^\s][^?.]*[^\s]$/,
+            message:"Tiêu đề không chứa dấu cách ở đầu, cuối"
         }
 
     },
@@ -108,6 +108,51 @@ export const role={
         maxLength:{
             value:500,
             message:'Bạn không nên để tiêu đề quá dài! Tối đa 500 ký tự'
+        }
+    },
+    term:{
+        required:"Thuật ngữ không thể để trống",
+        maxLength:{
+            value:50,
+            message:'Thuật ngữ không được quá 50 ký tự'
+        },
+        pattern:{
+            value:/^[^\s][^?.]*[^\s]{2,}$/,
+            message:"Thuật ngữ không chứa dấu cách ở đầu, cuối"
+        }
+    },
+    mean:{
+        required:"Ý nghĩa không thể để trống",
+        maxLength:{
+            value:50,
+            message:'Ý nghĩa không được quá 50 ký tự'
+        },
+        pattern:{
+            value:/^[^\s][^?.]*[^\s]$/,
+            message:"Ý nghĩa không chứa dấu cách ở đầu, cuối"
+        }
+    },
+    nomarlRegex:{
+        required:"không thể để trống",
+        maxLength:{
+            value:50,
+            message:'không được vượt quá 50 ký tự'
+        },
+        pattern:{
+            value:/^[^\s][^?.]*[^\s]$/,
+            message:"không chứa dấu cách ở đầu, cuối"
+        }
+    },checkLength:{
+        maxLength:{
+            value:750,
+            message:'không quá 750 ký tự'
+        }
+    }
+    ,
+    imgUrl:{
+        maxLength:{
+            value:5000,
+            message:'Link ảnh không quá 5000 ký tự'
         }
     }
 }

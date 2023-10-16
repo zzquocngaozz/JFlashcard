@@ -105,21 +105,19 @@ public class ProfileServiceImpl implements ProfileService {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty())
             throw new AppException(Error.USER_NOT_FOUND);
-        // xem đã có request trước đó chưa
+        // xem da co request truoc do chua
         Optional<UserRequest> optionalUR = userRequestRepository.findByRequestTypeAndUserEmail(3, email);
         if (optionalUR.isPresent()) {
             throw new AppException(Error.USER_NOT_FOUND);// clear neu ton tai otp truoc do
         }
-        // get token
+        // luu request user
         userRequestRepository.save(UserRequest.builder()
-                .requestType(2)
+                .requestType(3)
                 .token("")
                 .createAt(new Date(System.currentTimeMillis()))
-                .expireAt(new Date(System.currentTimeMillis() + 15 * 60 * 1000))// 15 phut
+                .expireAt(null)// 15 phut
                 .user(optionalUser.get())
                 .build());
-        sendEmailService.sendChangeRole(email);
-
         return false;
     }
 }

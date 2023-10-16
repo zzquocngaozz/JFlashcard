@@ -20,7 +20,7 @@ public class UserRequest {
     private int requestType;//1: OTP  quen mk, 2: verify email, 3: change role
     private String token;
     private Date createAt;
-    private Date expireAt;
+    private Date expireAt;// default 15 phu
 
     @ManyToOne
     @JoinColumn( name = "user_id")

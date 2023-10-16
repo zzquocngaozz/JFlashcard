@@ -16,31 +16,23 @@ const useChagePass = ({setAlert}) => {
                   'Content-Type': 'application/json',
                 },
         }
-        const url = "#"
+        
         try {
             setLoading(true)
-            await axios.post(url,JSON.stringify(data),config)
-            
+            await axios.put('/change-password',JSON.stringify(data),config)
             setAlert({
                 open:true,
                 severity:"success",
                 message:"Thay đổi mật khẩu thành công",
             })
-
             setLoading()
         } catch (error) {
             setLoading(false)
             setAlert({
                 open:true,
                 severity:"error",
-                message:"Lỗi máy chủ gửi về"// 
-            })
-            // setAlert({
-            //     open:true,
-            //     severity:"error",
-            //     message:(error.response?.data?.errors?.body[0]),
-            // })
-            
+                message:(error.response?.data?.errors?.body[0])// 
+            })            
         }
     }
 

@@ -1,4 +1,4 @@
-import { useState} from 'react'
+import { useEffect, useState} from 'react'
 
 const getJwtUser= ()=>{
     const jwtUser = localStorage.getItem('jwtUser')
@@ -15,7 +15,6 @@ const getAccessToken= ()=>{
 const useAuth = ()=>{
     const [accessToken,setAccessToken] = useState(getAccessToken())
     const [currentUser,setCurrentUser] = useState(getJwtUser())
-
     
     const isLogin = ()=>{ 
         return (currentUser !== null)}

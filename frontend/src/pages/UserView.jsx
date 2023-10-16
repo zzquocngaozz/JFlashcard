@@ -28,8 +28,8 @@ export const UserView = () => {
 
   return (
     <LayoutAdmin>
-        <Box mb={2}>
-            <img src={Logo} alt='Logo' width={90} height={70}/>
+        <Box mb={2} width={90} height={70}>
+            <img src={Logo} alt='Logo' />
         </Box>
         <Box 
             sx={{

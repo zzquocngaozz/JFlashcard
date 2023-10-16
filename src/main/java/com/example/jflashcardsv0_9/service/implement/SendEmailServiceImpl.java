@@ -47,6 +47,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     @Override
     public void sendChangeRole(String email) {
-
+        sendEmail(email,"Về yêu cầu nâng cấp tài khoản giáo viên", "Sau khi nhận được yêu cầu của bạn " +
+                "chúng tôi đã xem xét và quyết định nâng tài khoản của bạn lên thành tài khoản giáo viên. Hãy chia sẻ những bài học bổ ích đến học sinh của bạn\nBest regards!");
     }
 }

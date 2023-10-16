@@ -1,16 +1,12 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {useForm} from 'react-hook-form'
-import { role } from '../../utils/regexRole';
-import { Alert, Snackbar } from '@mui/material';
 
-export default function DialogChangeRole({handleCloseChangeRole}) {
+export default function DialogChangeRole({handleCloseChangeRole,requestRole}) {
   
   
 
@@ -30,7 +26,7 @@ export default function DialogChangeRole({handleCloseChangeRole}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseChangeRole} type='button' color='error' variant='outlined'>Huỷ</Button>
-          <Button  onClick={handleCloseChangeRole} type='button'  color='success' variant='outlined'>Đồng ý</Button>
+          <Button  onClick={requestRole} type='button'  color='success' variant='outlined'>Đồng ý</Button>
         </DialogActions>
         
       </Dialog>

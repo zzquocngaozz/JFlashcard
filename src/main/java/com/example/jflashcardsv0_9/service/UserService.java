@@ -1,9 +1,7 @@
 package com.example.jflashcardsv0_9.service;
 
-import com.example.jflashcardsv0_9.dto.LoginDTORequest;
-import com.example.jflashcardsv0_9.dto.LoginDTOResponse;
-import com.example.jflashcardsv0_9.dto.RegisterDTO;
-import com.example.jflashcardsv0_9.dto.UserDTO;
+import com.example.jflashcardsv0_9.dto.*;
+import com.example.jflashcardsv0_9.security.MyUserDetail;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -25,5 +23,7 @@ public interface UserService {
     void blockUser(Long userId);
     void unblockUser(Long userId);
     void changeUserRole(Long userId, int newRoles);
-    void addUser(UserDTO userDTO) ;
+    void addUser(UserDTO userDTO);
+
+    void changePassword(TokenDTO tokenDTO, MyUserDetail myUserDetail);
 }

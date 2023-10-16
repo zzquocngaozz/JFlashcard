@@ -32,34 +32,34 @@ public class JFlashcardsV09Application implements CommandLineRunner{
 
     @Override
     public  void run(String... arg) throws Exception{
-        if (roleRepository.findRoleByName("ROLE_LEARNER") == null) {
-            Role role = new Role();
-            role.setName("ROLE_LEARNER");
-            roleRepository.save(role);
-        }
-
-        if (roleRepository.findRoleByName("ROLE_TEACHER") == null) {
-            Role role = new Role();
-            role.setName("ROLE_TEACHER");
-            roleRepository.save(role);
-        }
-
-        if (roleRepository.findRoleByName("ROLE_ADMIN") == null) {
-            Role role = new Role();
-            role.setName("ROLE_ADMIN");
-            roleRepository.save(role);
-        }
-        RegisterDTO registerDTO = RegisterDTO.builder()
-                .userName("huuu")
-                .password("Qwer1234")
-                .email("12345abc@gmail.com")
-                .birth(Date.valueOf("2001-12-12"))
-                .firstName("hoang")
-                .lastName("hieu")
-                .build();
-        if(userRepository.existsByUserName(registerDTO.getUserName()) == false){
-            userService.registrationADMIN(registerDTO);
-        }
+//        if (roleRepository.findRoleByName("ROLE_LEARNER") == null) {
+//            Role role = new Role();
+//            role.setName("ROLE_LEARNER");
+//            roleRepository.save(role);
+//        }
+//
+//        if (roleRepository.findRoleByName("ROLE_TEACHER") == null) {
+//            Role role = new Role();
+//            role.setName("ROLE_TEACHER");
+//            roleRepository.save(role);
+//        }
+//
+//        if (roleRepository.findRoleByName("ROLE_ADMIN") == null) {
+//            Role role = new Role();
+//            role.setName("ROLE_ADMIN");
+//            roleRepository.save(role);
+//        }
+//        RegisterDTO registerDTO = RegisterDTO.builder()
+//                .userName("huuu")
+//                .password("Qwer1234")
+//                .email("12345abc@gmail.com")
+//                .birth(Date.valueOf("2001-12-12"))
+//                .firstName("hoang")
+//                .lastName("hieu")
+//                .build();
+//        if(userRepository.existsByUserName(registerDTO.getUserName()) == false){
+//            userService.registrationADMIN(registerDTO);
+//        }
     }
 
 }

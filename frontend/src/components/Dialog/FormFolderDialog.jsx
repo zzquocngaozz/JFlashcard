@@ -6,53 +6,56 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useForm } from 'react-hook-form';
+import { role } from '../../utils/regexRole';
 
-// truyền vào openDialog, setOpenDialog, defaultValue(optional)
-export default function FormFolderDialog() {
+// truyền vào defaultValue(optional) togglefunc updatefunc
+// TODO: 
+export default function FormFolderDialog({folder, handleToggle, updateFolder}) {
   const [open, setOpen] = React.useState(false);
+  const {register, handleSubmit, formState:{errors,isDirty}} = useForm()
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Tạo thư mục mới</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Nhóm các bộ thẻ liên quan vào một thư mục để việc học tập hiệu quả hơn
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Tên thư mục"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Mô tả ngắn gọn"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Huỷ</Button>
-          <Button onClick={handleClose}>Tạo thư mục</Button>
-        </DialogActions>
+      <Dialog open={true} onClose={handleToggle}>
+        <form noValidate onSubmit={handleSubmit(updateFolder)}>
+          <DialogTitle>Tạo thư mục mới</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Nhóm các bộ thẻ liên quan vào một thư mục để việc học tập hiệu quả hơn
+            </DialogContentText>
+            <TextField
+              {...register('title',{...role['title'],required:"Tiêu đề của thư mục không thể để trông"})}
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Tên thư mục*"
+              type="text"
+              error={!!errors.title}
+              helperText={errors?.title?.message}
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              {...register('description',role['description'])}
+              margin="dense"
+              id="name"
+              label="Mô tả ngắn gọn"
+              type="text"
+              multiline
+              maxRows={4}
+              error={!!errors.description}
+              helperText={errors?.description?.message}
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button type='button' onClick={handleToggle}>Huỷ</Button>
+            <Button type='submit' disabled={!isDirty} >Cập nhật</Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </>
   );
