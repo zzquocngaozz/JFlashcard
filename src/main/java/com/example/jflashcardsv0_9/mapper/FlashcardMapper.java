@@ -95,17 +95,17 @@ public class FlashcardMapper {
                 .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId))
                 .build();
     }
-    public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto) {
+    public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto,long setId) {
         return FlashcardVocab.builder()
                 .term(dto.getTerm())
                 .mean(dto.getMean())
                 .example(dto.getExample())
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
-                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(dto.getFlashcardSetId()))
+                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId))
                 .build();
     }
-    public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto) {
+    public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto,long setId) {
         return FlashcardGrammar.builder()
                 .combination(dto.getCombination())
                 .note(dto.getNote())
@@ -114,7 +114,7 @@ public class FlashcardMapper {
                 .example(dto.getExample())
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
-                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(dto.getFlashcardSetId()))
+                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId))
                 .build();
     }
 

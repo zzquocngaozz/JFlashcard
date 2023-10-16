@@ -19,12 +19,14 @@ public interface FlashcardSetService {
     void updateKanjiCard(KanjiDTO kanjiDTO, long userID, long setId);
     void deleteFlKanji(long cardId);
     // card grammar
-    GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID);
+    GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID, long setId);
+    void updateGrammarCard(GrammarDTO grammarDTO, long userID, long setId);
 
     void deleteFlGrammar(long cardId);
 
     // card vocab
-    VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID);
+    VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID, long setId);
+    void updateVocabCard(VocabDTO vocabDTO, long userID, long setId);
 
     void deleteFlvocab(long cardId);
 

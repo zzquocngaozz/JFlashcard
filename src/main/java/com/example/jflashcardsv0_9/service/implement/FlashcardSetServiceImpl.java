@@ -137,11 +137,29 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardKanjiRepository.delete(flashcardKanji);
 
     }
+// xu lu ngu phap
+    @Override
+    public GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID, long setId) {
+        FlashcardGrammar flashcardGrammar = FlashcardMapper.convertToFlashcardGrammarEntity(grammarDTO,setId);
+        FlashcardGrammar flashcardGrammar1 = flashcardGrammarRepository.save(flashcardGrammar);
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        return FlashcardMapper.convertGrammarDTO(flashcardGrammar1,flashcardSet);
+    }
 
     @Override
-    public GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID) {
-        return null;
+    public void updateGrammarCard(GrammarDTO grammarDTO, long userID, long setId) {
+        FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardGrammarId());
+        flashcardGrammar.setCombination(grammarDTO.getCombination());
+        flashcardGrammar.setNote(grammarDTO.getNote());
+        flashcardGrammar.setTerm(grammarDTO.getTerm());
+        flashcardGrammar.setMean(grammarDTO.getMean());
+        flashcardGrammar.setExample(grammarDTO.getExample());
+        flashcardGrammar.setExampleMean(grammarDTO.getExampleMean());
+        flashcardGrammar.setImgUrl(grammarDTO.getImgUrl());
+        flashcardGrammarRepository.save(flashcardGrammar);
+
     }
+
 
     @Override
     public void deleteFlGrammar(long cardId) {
@@ -150,9 +168,25 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
 
     @Override
-    public VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID) {
-        return null;
+    public VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID, long setId) {
+        FlashcardVocab flashcardVocab = FlashcardMapper.convertToFlashcardVocabEntity(vocabDTO,setId);
+        FlashcardVocab flashcardVocab1 = flashcardVocabRepository.save(flashcardVocab);
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        return FlashcardMapper.convertVocabDTO(flashcardVocab1,flashcardSet);
     }
+
+    @Override
+    public void updateVocabCard(VocabDTO vocabDTO, long userID, long setId) {
+        FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardVocabId());
+        flashcardVocab.setTerm(vocabDTO.getTerm());
+        flashcardVocab.setMean(vocabDTO.getMean());
+        flashcardVocab.setExample(vocabDTO.getExample());
+        flashcardVocab.setExampleMean(vocabDTO.getExampleMean());
+        flashcardVocab.setImgUrl(vocabDTO.getImgUrl());
+        flashcardVocabRepository.save(flashcardVocab);
+    }
+
+// xu ly vocab
 
     @Override
     public void deleteFlvocab(long cardId) {

@@ -49,6 +49,8 @@ public class FlashcardSetController {
         flashcardSetService.deleteFlashcardSetById(setId,myUserDetail.getUser().getUserId());
         return ResponseEntity.ok("Xóa thành công");
     }
+
+    // phần xử lý kanji card
     @PostMapping("/{setId}/edit/kanji-card")
     public KanjiDTO createKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
         return flashcardSetService.createFlashcardKanji(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
@@ -61,6 +63,37 @@ public class FlashcardSetController {
     @PutMapping ("/{setId}/edit/kanji-card")
     public ResponseEntity<?> updateKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
         flashcardSetService.updateKanjiCard(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
+        return ResponseEntity.ok("update thành công");
+    }
+    // phần xử lý Grammar card
+    @PostMapping("/{setId}/edit/grammar-card")
+    public GrammarDTO createGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody GrammarDTO grammarDTO,@PathVariable long setId){
+        return flashcardSetService.createFlashcardGrammar(grammarDTO,myUserDetail.getUser().getUserId(),setId);
+    }
+    @DeleteMapping ("/{setId}/edit/grammar-card/{cardId}")
+    public ResponseEntity<?> deleteGrammarCard(@PathVariable long cardId){
+        flashcardSetService.deleteFlGrammar(cardId);
+        return ResponseEntity.ok("Xóa thành công");
+    }
+    @PutMapping ("/{setId}/edit/grammar-card")
+    public ResponseEntity<?> updateGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody GrammarDTO grammarDTO,@PathVariable long setId){
+        flashcardSetService.updateGrammarCard(grammarDTO,myUserDetail.getUser().getUserId(),setId);
+        return ResponseEntity.ok("update thành công");
+    }
+
+    // phần xử lý Vocab card
+    @PostMapping("/{setId}/edit/vocab-card")
+    public VocabDTO createVocabCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody VocabDTO vocabDTO,@PathVariable long setId){
+        return flashcardSetService.createFlashcardVocab(vocabDTO,myUserDetail.getUser().getUserId(),setId);
+    }
+    @DeleteMapping ("/{setId}/edit/vocab-card/{cardId}")
+    public ResponseEntity<?> deleteVocabCard(@PathVariable long cardId){
+        flashcardSetService.deleteFlvocab(cardId);
+        return ResponseEntity.ok("Xóa thành công");
+    }
+    @PutMapping ("/{setId}/edit/vocab-card")
+    public ResponseEntity<?> updateVocabCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody VocabDTO vocabDTO,@PathVariable long setId){
+        flashcardSetService.updateVocabCard(vocabDTO,myUserDetail.getUser().getUserId(),setId);
         return ResponseEntity.ok("update thành công");
     }
 
