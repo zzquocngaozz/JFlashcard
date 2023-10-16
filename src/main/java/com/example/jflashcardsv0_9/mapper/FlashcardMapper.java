@@ -25,7 +25,7 @@ public class FlashcardMapper {
                 .description(flashcardSetDTORequest.getDescription())
                 .isPrivate(flashcardSetDTORequest.isPrivate())
                 .createdAt(new Date(System.currentTimeMillis()))
-                .setType(flashcardSetDTORequest.getType())
+                .type(flashcardSetDTORequest.getType())
                 .user(user)
                 .build();
     }
@@ -76,7 +76,7 @@ public class FlashcardMapper {
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
                 .description(flashcardSet.getDescription())
-                .setType(flashcardSet.getSetType())
+                .type(flashcardSet.getType())
                 .isPrivate(flashcardSet.isPrivate())
                 .authDTO(UserMapper.toAuthDTO(user))
                 .build();

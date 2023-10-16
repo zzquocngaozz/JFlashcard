@@ -16,7 +16,7 @@ public interface FlashcardSetService {
 
     // card kanji
     KanjiDTO createFlashcardKanji(KanjiDTO kanjiDTO, long userID, long setId);
-
+    void updateKanjiCard(KanjiDTO kanjiDTO, long userID, long setId);
     void deleteFlKanji(long cardId);
     // card grammar
     GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID);
@@ -27,5 +27,7 @@ public interface FlashcardSetService {
     VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID);
 
     void deleteFlvocab(long cardId);
+
+
 
 }

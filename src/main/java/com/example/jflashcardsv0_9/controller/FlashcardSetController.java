@@ -51,14 +51,17 @@ public class FlashcardSetController {
     }
     @PostMapping("/{setId}/edit/kanji-card")
     public KanjiDTO createKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
-        System.out.println(kanjiDTO.getOnSound());
-        System.out.println("hiiiiiiiiiiiiiiiiii");
         return flashcardSetService.createFlashcardKanji(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/kanji-card/{cardId}")
     public ResponseEntity<?> deleteKanjiCard(@PathVariable long cardId){
         flashcardSetService.deleteFlKanji(cardId);
         return ResponseEntity.ok("Xóa thành công");
+    }
+    @PutMapping ("/{setId}/edit/kanji-card")
+    public ResponseEntity<?> updateKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
+        flashcardSetService.updateKanjiCard(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
+        return ResponseEntity.ok("update thành công");
     }
 
 }

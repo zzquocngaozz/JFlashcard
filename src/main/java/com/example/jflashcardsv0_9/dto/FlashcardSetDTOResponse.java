@@ -18,7 +18,7 @@ public class FlashcardSetDTOResponse {
     long flashcardSetId;
     String title;
     String description;
-    int setType;
+    int type;
     boolean isPrivate;
     AuthDTO authDTO;
 }

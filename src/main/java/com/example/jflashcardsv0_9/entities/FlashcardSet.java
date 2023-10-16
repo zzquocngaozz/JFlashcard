@@ -42,8 +42,8 @@ public class FlashcardSet implements Serializable {
     @Column(name = "isprivate",columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isPrivate = false ;
 
-    @Column(name = "setType")
-    private int setType;
+    @Column(name = "type")
+    private int type;
 
     @ManyToOne // Mối quan hệ nhiều flashcardset đến một User
     @JoinColumn(name = "user") // Đặt tên cột foreign key là "user_id"

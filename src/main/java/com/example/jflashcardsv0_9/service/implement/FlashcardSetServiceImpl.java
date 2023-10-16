@@ -117,6 +117,21 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
 
     @Override
+    public void updateKanjiCard(KanjiDTO kanjiDTO, long userID, long setId) {
+        FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(kanjiDTO.getCardKanjiId());
+        flashcardKanji.setOnSound(kanjiDTO.getOnSound());
+        flashcardKanji.setKunSound(kanjiDTO.getKunSound());
+        flashcardKanji.setChineseSound(kanjiDTO.getChineseSound());
+        flashcardKanji.setTerm(kanjiDTO.getTerm());
+        flashcardKanji.setMean(kanjiDTO.getMean());
+        flashcardKanji.setExample(kanjiDTO.getExample());
+        flashcardKanji.setExampleMean(kanjiDTO.getExampleMean());
+        flashcardKanji.setImgUrl(kanjiDTO.getImgUrl());
+        flashcardKanji.setTrick(kanjiDTO.getTrick());
+        flashcardKanjiRepository.save(flashcardKanji);
+    }
+
+    @Override
     public void deleteFlKanji(long cardId) {
         FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(cardId);
         flashcardKanjiRepository.delete(flashcardKanji);
