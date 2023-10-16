@@ -4,7 +4,7 @@ import useAuth from "./useAuth";
 
 //REQUEST: need end point to get profile and update profile, ask role, ask token verify, check token
 // TODO: 
-const useProfile = ({setAlert,handleCloseUpdate,setOpenVerify}) => {
+const useProfile = ({setAlert,handleCloseUpdate,setOpenVerify,handleCloseChangeRole}) => {
     // chứa dữ liệu trả về 
     const {accessToken,updateUser} = useAuth()
     const [profile, setProfile] = useState()
@@ -67,6 +67,33 @@ const useProfile = ({setAlert,handleCloseUpdate,setOpenVerify}) => {
             message:'Lỗi chưa xác định ở máy chủ'
           })
           console.log("104: useProfile")
+        }
+      }
+
+      const requestRole = async ()=>{
+        setLoading(true)
+        const config = {
+          headers: {
+            'Authorization': `${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        };
+        try {
+          const response = await axios.post('/profile/wish', "",config);
+            setAlert({
+              open:true,
+              severity:'success',
+              message:'Yêu cầu của bạn đã được lưu lại trong hệ thống'
+            })
+            handleCloseChangeRole();
+            setLoading(false); 
+        } catch (error) {
+          setLoading(false)
+          setAlert({
+            open:true,
+            severity:'error',
+            message:'Lỗi chưa xác định ở máy chủ'
+          })
         }
       }
 
@@ -133,7 +160,7 @@ const useProfile = ({setAlert,handleCloseUpdate,setOpenVerify}) => {
         getProfile()
       },[])
     
-      return {loading,profile,updateProfile,getToken,verifyUser};
+      return {loading,profile,updateProfile,getToken,verifyUser,requestRole};
     };
     
     export default useProfile;

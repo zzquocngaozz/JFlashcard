@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <>
-        <AppBar position='static' color="default" sx={{ boxShadow:"none", borderBottom:"1px solid rgba(0,0,0,0.2)"}}>
+        <AppBar position='static' color="default" sx={{ bgcolor:'#fff', boxShadow:"none", borderBottom:"1px solid rgba(0,0,0,0.2)"}}>
                 <Toolbar >
                     <Link to="/"><img src={Logo} alt='logo' style={{width:50, height:60}}/></Link>
                     <Stack justifyContent="space-between" alignItems='center' flexDirection='row' width='calc(100% - 100px)'>

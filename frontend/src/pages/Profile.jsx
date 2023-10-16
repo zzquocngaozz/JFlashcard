@@ -24,9 +24,16 @@ const Profile = () => {
     const handleCloseUpdate = () => {
         setOpenUpdate(false);
     };
+
+    const handleCloseChangeRole = () => {
+        setOpenChangeRole(false);
+    };
+    
+
+
     const [openVerify, setOpenVerify] = React.useState(false);
 
-    const {profile:currentUser,loading,updateProfile,getToken,verifyUser}= useProfile({setAlert, handleCloseUpdate,setOpenVerify})
+    const {profile:currentUser,loading,updateProfile,getToken,verifyUser,requestRole}= useProfile({setAlert, handleCloseUpdate,setOpenVerify,handleCloseChangeRole})
     
     const [openVerifyNotify, setOpenVerifyNotify] = React.useState((currentUser?.verify)===false);
 
@@ -50,10 +57,7 @@ const Profile = () => {
         setOpenVerify(false);
     };
 
-    const handleCloseChangeRole = () => {
-        setOpenChangeRole(false);
-    };
-    
+
     
     const verify = (data)=>{
         verifyUser(data)
@@ -191,7 +195,7 @@ const Profile = () => {
         {openVerifyNotify?<DialogVerifyPrompt setOpenVerifyNotify={setOpenVerifyNotify}/>:""}
         {alert.open?<SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar}/>:""}
         {openVerify?<FormVerify handleClose={handleClose} verify={verify}/>:""}
-        {openChangeRole?<DialogChangeRole handleCloseChangeRole={handleCloseChangeRole}/>:""}
+        {openChangeRole?<DialogChangeRole handleCloseChangeRole={handleCloseChangeRole} requestRole={requestRole}/>:""}
         {openUpdate?<FormProfile handleCloseUpdate={handleCloseUpdate} updateProfile={updateProfile} currentUser={currentUser}/>:""}
     </>
   )

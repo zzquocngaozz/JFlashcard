@@ -7,6 +7,7 @@ import useSnapBarAlert from '../hooks/useSnapBarAlert'
 import { useForm } from 'react-hook-form'
 import { role } from '../utils/regexRole'
 import useChagePass from '../hooks/useChagePass'
+import BackdropLoading from '../components/FeedBack/BackdropLoading'
 
 
 
@@ -14,11 +15,11 @@ import useChagePass from '../hooks/useChagePass'
 const ChangePass = () => {
     const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert()
     const {register,handleSubmit,watch,setError,clearErrors,formState:{isDirty,errors}} = useForm({defaultValues:{
-        currentPassword:"",
+        password:"",
         newPassword:"",
         cfPassword:""
     }})
-    const {loaing, changePass} = useChagePass({setAlert})
+    const {loading, changePass} = useChagePass({setAlert})
     
     
     const onSubmit = (data)=>{
@@ -35,6 +36,7 @@ const ChangePass = () => {
         } else{
             clearErrors('newPassword');
             clearErrors('cfPassword');
+            changePass(data)
             console.log(data)
         }
         //
@@ -86,14 +88,14 @@ const ChangePass = () => {
                     <form noValidate onSubmit={handleSubmit(onSubmit)}>
                         <Stack spacing={2} >
                             <TextField
-                                {...register("currentPassword"
+                                {...register("password"
                                 ,role['password']
                                 )}
                                 id="password-helper-text"
                                 label="Mật khẩu"
                                 type='password'
-                                error={!!errors.currentPassword}
-                                helperText={errors.currentPassword?.message}
+                                error={!!errors.password}
+                                helperText={errors.password?.message}
                                 variant="standard"
                             />
                             <TextField
@@ -124,6 +126,7 @@ const ChangePass = () => {
                 </Box>
             </Box>
         </Stack>
+        {loading?<BackdropLoading/>:""}
         {alert.open?<SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar}/>:""}
         </>
   )

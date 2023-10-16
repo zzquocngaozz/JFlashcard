@@ -1,15 +1,13 @@
 package com.example.jflashcardsv0_9.service.implement;
 
-import com.example.jflashcardsv0_9.dto.RegisterDTO;
-import com.example.jflashcardsv0_9.dto.UserDTO;
-import com.example.jflashcardsv0_9.dto.LoginDTORequest;
-import com.example.jflashcardsv0_9.dto.LoginDTOResponse;
+import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.entities.Role;
 import com.example.jflashcardsv0_9.entities.User;
 import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.RoleRepository;
 import com.example.jflashcardsv0_9.repository.UserRepository;
+import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.UserService;
 import com.example.jflashcardsv0_9.util.JwtTokenUtil;
 import com.example.jflashcardsv0_9.exception.*;
@@ -177,6 +175,16 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.toUserDTO(userDTO);
         Role roles = roleRepository.findRoleByRoleId(userDTO.getRole());
         user.setRoles(Collections.singleton(roles));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changePassword(TokenDTO tokenDTO, MyUserDetail myUserDetail) {
+        User user = userRepository.getUserByUserId(myUserDetail.getUser().getUserId());
+        boolean isCorrectPass = passwordEncoder.matches(tokenDTO.getPassword(),user.getPassword());
+        System.out.println("Print here 185 change pass" +tokenDTO.getPassword()+" "+tokenDTO.getNewPassword());
+        if(!isCorrectPass) throw new AppException(Error.PASSWORD_FALSE);
+        user.setPassword(passwordEncoder.encode(tokenDTO.getNewPassword()));
         userRepository.save(user);
     }
 }

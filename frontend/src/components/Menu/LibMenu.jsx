@@ -47,8 +47,8 @@ const LibMenu = () => {
               mr: 1,
             }
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose} LinkComponent={Link} to="/">
           <ListItemIcon>

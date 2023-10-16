@@ -52,4 +52,10 @@ public class ProfileController {
         return ResponseEntity.ok("ok");
     }
 
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail){
+        userService.changePassword(tokenDTO,myUserDetail);
+        return ResponseEntity.ok("ok");
+    }
+
 }
