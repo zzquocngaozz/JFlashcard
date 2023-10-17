@@ -20,8 +20,8 @@ const useAddSet = () => {
         try{
             const response = await axios.post("/createfls", JSON.stringify(data) ,config )
             // const url = `/${1}/edit`
-            // const url = `${response.data.id}/edit`
-            // navigate(url)
+            const url = `/${response.data.id}/edit`
+            navigate(url)
             console.log(response.data)
         } catch(error){
             setLoading(false)

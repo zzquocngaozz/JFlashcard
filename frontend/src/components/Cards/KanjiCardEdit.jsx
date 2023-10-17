@@ -13,21 +13,23 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 
-const KanjiCardEdit = ({ card, index, updateCard, deleteCard }) => {
-    const [openForm,setOpenForm] = useState(false)
-    const [openDelete, setOpenDelete] = useState(false)
-  
-    const handleToggleForm = useCallback(()=>{
-      setOpenForm(!openForm)
-      console.log("toggle")
-    },[openForm])
+const KanjiCardEdit = ({ card, index, onUpdate, onDelete }) => {
+  const [openForm, setOpenForm] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
-    const  handleToggleDelete = useCallback(()=>{
-        setOpenDelete(!openDelete)
-        console.log("toggle")
-      },[openDelete])
+  const handleToggleForm = useCallback(() => {
+    setOpenForm(!openForm);
+    console.log("toggle");
+  }, [openForm]);
 
-
+  const handleToggleDelete = useCallback(() => {
+    setOpenDelete(!openDelete);
+    console.log("toggle");
+  }, [openDelete]);
+  // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
+  const handleUpdate = (data)=>{
+    onUpdate(data,handleToggleForm)
+  }
   return (
     <Stack
       key={index}
@@ -104,24 +106,46 @@ const KanjiCardEdit = ({ card, index, updateCard, deleteCard }) => {
             <Typography variant="span" sx={{ fontWeight: 500 }}>
               Mẹo nhớ:
             </Typography>
-            <Typography>{card?.hint}</Typography>
+            <Typography>{card?.trick}</Typography>
           </Stack>
-          <Stack>
-            <Typography variant="span" sx={{ fontWeight: 500 }}>
-              Ví dụ:
-            </Typography>
-            <Typography>{card?.example}</Typography>
-            <Typography>{card?.exampleMean}</Typography>
-          </Stack>
+          {(!!card?.example||!!card?.exampleMean)?
+            <Stack>
+              <Typography variant="span" sx={{ fontWeight: 500 }}>
+                Ví dụ:
+              </Typography>
+              <Typography>{card?.example}</Typography>
+              <Typography>{card?.exampleMean}</Typography>
+            </Stack>
+          :
+            <></>
+          }
           <Box
-            sx={{ position: "absolute", right: 10, width: 150, height: 150, }}
+            sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
           >
-            <img srcSet={card?.imgUrl} alt="hint" />
+            <img srcSet={card?.imgUrl} alt="trick remeber" />
           </Box>
         </Stack>
       </Stack>
-      {openForm?<KanjiDialogForm handleToggle={handleToggleForm} dataInit={card} onSubmit={(data)=>{console.log(data)}} />:""}
-      {openDelete?<DialogAlertDeleteCard handleToggle={handleToggleDelete} onDelete = {()=>{console.log('click on delete '+card?.cardKanjiId)}}/>:""}
+      {openForm ? (
+        <KanjiDialogForm
+          handleToggle={handleToggleForm}
+          dataInit={card}
+          onSubmit={handleUpdate}
+        />
+      ) : (
+        <></>
+      )}
+      {openDelete ? (
+        <DialogAlertDeleteCard
+          handleToggle={handleToggleDelete}
+          onDelete={() => {
+            onDelete(card?.cardKanjiId, handleToggleDelete);
+            console.log("click on delete " + card?.cardKanjiId);
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </Stack>
   );
 };

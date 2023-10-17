@@ -99,7 +99,7 @@ export const role={
             message:'Bạn không nên để tiêu đề quá dài! Tối đa 50 ký tự'
         },
         pattern:{
-            value:/^[^\s][^?.]*[^\s]$/,
+            value:/^[^\s][^?.]*$/gmi,
             message:"Tiêu đề không chứa dấu cách ở đầu, cuối"
         }
 
@@ -117,7 +117,7 @@ export const role={
             message:'Thuật ngữ không được quá 50 ký tự'
         },
         pattern:{
-            value:/^[^\s][^?.]*[^\s]{2,}$/,
+            value:/^[^\s][^?.]*$/,
             message:"Thuật ngữ không chứa dấu cách ở đầu, cuối"
         }
     },
@@ -128,7 +128,7 @@ export const role={
             message:'Ý nghĩa không được quá 50 ký tự'
         },
         pattern:{
-            value:/^[^\s][^?.]*[^\s]$/,
+            value:/^[^\s][^?.]*$/gmi,
             message:"Ý nghĩa không chứa dấu cách ở đầu, cuối"
         }
     },
@@ -139,7 +139,7 @@ export const role={
             message:'không được vượt quá 50 ký tự'
         },
         pattern:{
-            value:/^[^\s][^?.]*[^\s]$/,
+            value:/^[^\s][^?.]*$/gmi,
             message:"không chứa dấu cách ở đầu, cuối"
         }
     },checkLength:{

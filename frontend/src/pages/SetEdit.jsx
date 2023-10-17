@@ -36,15 +36,6 @@ const SetEdit = () => {
   //   type: 2,
   //   private: false,
   // });
-  const [openEditForm, setOpenEditFrom] = useState(false);
-  const [alertDelete, setAlertDelete] = useState({
-    open: false,
-    message:
-      "Thao tác này không thể hoàn lại. Bạn muốn tiếp tục xoá bộ thẻ này không",
-    url: "",
-  });
-  const {data:flashcardSet, loading} = useSetEdit()
-
   // handle func
   // ------------------ Handle delete alert show and hide
   const handleToggleAlertDelete = () => {
@@ -55,8 +46,16 @@ const SetEdit = () => {
   };
 
   const handleToggleUpdateSet = () => {
-    setOpenEditFrom((prev) => !prev);
+    setOpenEditFrom(!openEditForm);
   };
+  const [openEditForm, setOpenEditFrom] = useState(false);
+  const [alertDelete, setAlertDelete] = useState({
+    open: false,
+    message:
+      "Thao tác này không thể hoàn lại. Bạn muốn tiếp tục xoá bộ thẻ này không"
+  });
+  const {dataSet:flashcardSet,mutationing, loading,updateSet,deleteSet} = useSetEdit({handleToggleUpdateSet})
+
   return (
     <LayoutNormal>
       {loading?
@@ -151,21 +150,21 @@ const SetEdit = () => {
         <DialogAlertDelete
           alertDelete={alertDelete}
           handleToggleAlertDelete={handleToggleAlertDelete}
+          onDelete = {deleteSet}
         />
       ) : (
-        ""
+        <></>
       )}
       {openEditForm ? (
         <FormEditSetDiaolog
           flashcardSet={flashcardSet}
           handleToggleUpdateSet={handleToggleUpdateSet}
-          updateSet={(data) => {
-            console.log(data);
-          }}
+          updateSet={updateSet}
         />
       ) : (
-        ""
+        <></>
       )}
+      {mutationing?<BackdropLoading></BackdropLoading>:<></>}
     </LayoutNormal>
   );
 };
