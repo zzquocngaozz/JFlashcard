@@ -70,7 +70,7 @@ const KanjiCardEditContainer = () => {
       ) : (
         <></>
       )}
-      {mutationing ? <BackdropLoading /> : <></>}
+      {mutationing ? <BackdropLoading/> : <></>}
     </Stack>
   );
 };

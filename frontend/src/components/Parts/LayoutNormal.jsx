@@ -6,7 +6,7 @@ const LayoutNormal = ({children}) => {
   return (
     <>
         <Navbar/>
-        <Box sx={{minHeight:"calc(100vh - 65px)",  backgroundColor:"rgba(0,0,0,0.05)",
+        <Box sx={{minHeight:"calc(100vh - 65px)",  backgroundColor:"rgba(0,0,0,0.05)", overflow:"hidden",
         }}>
             {children}
         </Box>

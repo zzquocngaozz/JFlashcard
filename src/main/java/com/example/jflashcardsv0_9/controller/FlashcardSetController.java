@@ -31,12 +31,12 @@ public class FlashcardSetController {
     public List<KanjiDTO> listCardKanji(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long setId) {
         return flashcardSetService.findAllKanjiDTOBySetId(setId,myUserDetail.getUser().getUserId());
     }
-    @GetMapping("/{setId}/cardvpcab")
-    public List<GrammarDTO> listCardVocab(@AuthenticationPrincipal MyUserDetail myUserDetail,@PathVariable long setId) {
+    @GetMapping("/{setId}/cardgrammar")
+    public List<GrammarDTO> listCardGrammar(@AuthenticationPrincipal MyUserDetail myUserDetail,@PathVariable long setId) {
         return flashcardSetService.findAllGrammarDTOBySetId(setId,myUserDetail.getUser().getUserId());
     }
-    @GetMapping("/{setId}/cardgrammar")
-    public List<VocabDTO> listCardGrammar(@AuthenticationPrincipal MyUserDetail myUserDetail,@PathVariable long setId) {
+    @GetMapping("/{setId}/cardvpcab")
+    public List<VocabDTO> listCardVocab(@AuthenticationPrincipal MyUserDetail myUserDetail,@PathVariable long setId) {
         return flashcardSetService.findAllVocabDTOBySetId(setId,myUserDetail.getUser().getUserId());
     }
     @PutMapping("/{setId}")//hàm  sửa lại thông tin bộ set
