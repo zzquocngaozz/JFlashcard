@@ -10,23 +10,25 @@ import {
 import React, { useCallback, useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
 
-const VocaCardEdit = ({ card, index, updateCard, deleteCard }) => {
+const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
-    console.log("toggle");
+    
   }, [openForm]);
 
   const handleToggleDelete = useCallback(() => {
     setOpenDelete(!openDelete);
-    console.log("toggle");
+    
   }, [openDelete]);
+  const handleUpdate = (data)=>{
+    onUpdate(data,handleToggleForm)
+  }
 
   return (
     <Stack
@@ -104,22 +106,21 @@ const VocaCardEdit = ({ card, index, updateCard, deleteCard }) => {
         <VocaDialogForm
           handleToggle={handleToggleForm}
           dataInit={card}
-          onSubmit={(data) => {
-            console.log(data);
-          }}
+          onSubmit={handleUpdate}
+          mutationing={mutationing}
         />
       ) : (
-        ""
+        <></>
       )}
       {openDelete ? (
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            console.log("click on delete " + card?.cardKanjiId);
+            onDelete(card?.cardVocabId,handleToggleDelete);
           }}
         />
       ) : (
-        ""
+        <></>
       )}
     </Stack>
   );

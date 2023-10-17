@@ -14,7 +14,6 @@ const GrammarCardEditConainer = () => {
 
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
-    console.log("toggle");
   }, [openForm]);
 
   const { grammarList, loading, mutationing, addCard, updateCard, deleteCard } =
@@ -58,6 +57,7 @@ const GrammarCardEditConainer = () => {
             card={card}
             updateCard={updateCard}
             deleteCard={deleteCard}
+            mutationing={mutationing}
           />
         ))
       )}
@@ -70,52 +70,13 @@ const GrammarCardEditConainer = () => {
         Thêm thẻ ngữ pháp
       </Button>
       {openForm ? (
-        <GrammarDialogForm handleToggle={handleToggleForm} onSubmit={addCard} />
+        <GrammarDialogForm handleToggle={handleToggleForm} onSubmit={addCard} mutationing={mutationing} />
       ) : (
         <></>
       )}
-      {mutationing?<BackdropLoading/>:<></>}
     </Stack>
   );
 };
 
 export default GrammarCardEditConainer;
 
-// const [data, setData] = useState([
-//   {
-//     cardGrammarId: 1,
-//     combination: "[Ｎ＋において]",
-//     note: "あし",
-//     term: "〜において／〜における",
-//     mean: "Tại, ở (chỉ địa điểm)",
-//     example:
-//       "ウェルカムパーティーはさくら公園において行(おこな)われる予定です.",
-//     exampleMean: "Tiệc chào mừng thì dự kiến tổ chức ở công viên sakura",
-//     imgUrl: "https://tuhoconline.net/wp-content/uploads/141-Ashi.jpg",
-//     flashcardSetId: 123,
-//   },
-//   {
-//     cardGrammarId: 2,
-//     combination: "[V-テ形・ナイ形ないで＋ほしい］",
-//     note: "あし",
-//     term: "〜てほしい／〜てもらいたい",
-//     mean: "Tại, ở (chỉ địa điểm)",
-//     example:
-//       "ウェルカムパーティーはさくら公園において行(おこな)われる予定です。",
-//     exampleMean: "Tiệc chào mừng thì dự kiến tổ chức ở công viên sakura",
-//     imgUrl: "https://tuhoconline.net/wp-content/uploads/141-Ashi.jpg",
-//     flashcardSetId: 123,
-//   },
-//   {
-//     cardGrammarId: 3,
-//     combination: "[Ｎ＋において]",
-//     note: "あし",
-//     term: "〜において／〜における",
-//     mean: "Tại, ở (chỉ địa điểm)",
-//     example:
-//       "ウェルカムパーティーはさくら公園において行(おこな)われる予定です。",
-//     exampleMean: "Tiệc chào mừng thì dự kiến tổ chức ở công viên sakura",
-//     imgUrl: "https://tuhoconline.net/wp-content/uploads/141-Ashi.jpg",
-//     flashcardSetId: 123,
-//   },
-// ]);

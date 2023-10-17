@@ -13,18 +13,16 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 
-const KanjiCardEdit = ({ card, index, onUpdate, onDelete }) => {
+const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
-    console.log("toggle");
   }, [openForm]);
 
   const handleToggleDelete = useCallback(() => {
     setOpenDelete(!openDelete);
-    console.log("toggle");
   }, [openDelete]);
   // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
   const handleUpdate = (data)=>{
@@ -132,6 +130,7 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete }) => {
           handleToggle={handleToggleForm}
           dataInit={card}
           onSubmit={handleUpdate}
+          mutationing={mutationing}
         />
       ) : (
         <></>
@@ -141,7 +140,6 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete }) => {
           handleToggle={handleToggleDelete}
           onDelete={() => {
             onDelete(card?.cardKanjiId, handleToggleDelete);
-            console.log("click on delete " + card?.cardKanjiId);
           }}
         />
       ) : (
