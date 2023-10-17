@@ -39,8 +39,8 @@ export default function KanjiDialogForm({dataInit, handleToggle, onSubmit}) {
           });
         });
         console.log(errors?.imgUrl);
-    
         if (!errors?.imgUrl) {
+          console.log(data)
           onSubmit(data);
         }
       } catch (error) {
@@ -143,12 +143,12 @@ export default function KanjiDialogForm({dataInit, handleToggle, onSubmit}) {
                sx={{width:'40%'}}
              />
              <TextField
-               {...register('hint',role['checkLength'])}
+               {...register('trick',role['checkLength'])}
                label="Mẹo nhớ"
                type="text"
-               defaultValue={dataInit?.hint}
-               error={!!errors.hint}
-               helperText={(!!errors.hint)?(`Mẹo nhớ ${errors?.hint?.message}`):""}
+               defaultValue={dataInit?.trick}
+               error={!!errors.trick}
+               helperText={(!!errors.trick)?(`Mẹo nhớ ${errors?.trick?.message}`):""}
                InputLabelProps={{ shrink: true }}
                variant="standard"
                sx={{width:'40%'}}

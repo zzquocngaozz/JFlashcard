@@ -18,7 +18,7 @@ export default function FormEditSetDiaolog({flashcardSet, handleToggleUpdateSet,
 
   return (
     <>
-      <Dialog open={true} onClose={handleToggleUpdateSet}>
+      <Dialog open={true}>
         <form noValidate onSubmit={handleSubmit(updateSet)}>
           <DialogTitle>Cập nhật thông tin của bộ flashcard</DialogTitle>
           <DialogContent  >

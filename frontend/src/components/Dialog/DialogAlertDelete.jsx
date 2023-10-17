@@ -10,7 +10,7 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Box, Zoom } from '@mui/material';
 
 
-export default function DialogAlertDelete({alertDelete,handleToggleAlertDelete}) {
+export default function DialogAlertDelete({alertDelete,handleToggleAlertDelete,onDelete}) {
 
     const handleClose = ()=>{
         handleToggleAlertDelete()
@@ -34,7 +34,7 @@ export default function DialogAlertDelete({alertDelete,handleToggleAlertDelete})
         </DialogContent>
         <DialogActions>
           <Button  onClick={handleClose} type='button'  color='info' variant='contained'>Huỷ</Button>
-          <Button  onClick={handleClose} type='button'  color='error' variant='contained'>Tiếp tục</Button>
+          <Button  onClick={onDelete} type='button'  color='error' variant='contained'>Tiếp tục</Button>
         </DialogActions>
         
       </Dialog>
