@@ -100,7 +100,7 @@ export const role={
         },
         pattern:{
             value:/^[^\s][^?.]*$/gmi,
-            message:"Tiêu đề không chứa dấu cách ở đầu, cuối"
+            message:"Tiêu đề không chứa dấu cách ở đầu"
         }
 
     },
@@ -118,7 +118,7 @@ export const role={
         },
         pattern:{
             value:/^[^\s][^?.]*$/,
-            message:"Thuật ngữ không chứa dấu cách ở đầu, cuối"
+            message:"Thuật ngữ không chứa dấu cách ở đầu"
         }
     },
     mean:{
@@ -129,7 +129,7 @@ export const role={
         },
         pattern:{
             value:/^[^\s][^?.]*$/gmi,
-            message:"Ý nghĩa không chứa dấu cách ở đầu, cuối"
+            message:"Ý nghĩa không chứa dấu cách ở đầu"
         }
     },
     nomarlRegex:{
@@ -140,7 +140,7 @@ export const role={
         },
         pattern:{
             value:/^[^\s][^?.]*$/gmi,
-            message:"không chứa dấu cách ở đầu, cuối"
+            message:"không chứa dấu cách ở đầu"
         }
     },checkLength:{
         maxLength:{
