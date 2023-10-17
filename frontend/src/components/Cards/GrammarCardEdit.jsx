@@ -27,6 +27,9 @@ const GrammarCardEdit = ({ card, index, updateCard, deleteCard }) => {
     console.log("toggle");
   }, [openDelete]);
 
+  const handleUpdate = (data) => {
+    updateCard(data, handleToggleForm);
+  };
   return (
     <Stack
       key={index}
@@ -82,18 +85,26 @@ const GrammarCardEdit = ({ card, index, updateCard, deleteCard }) => {
             </Typography>
             <Typography>{card?.mean}</Typography>
           </Stack>
-          <Stack>
-            <Typography variant="span" sx={{ fontWeight: 500 }}>
-              Cách chia:
-            </Typography>
-            <Typography>{card?.combination}</Typography>
-          </Stack>
-          <Stack>
-            <Typography variant="span" sx={{ fontWeight: 500 }}>
-              Lưu ý
-            </Typography>
-            <Typography>{card?.note}</Typography>
-          </Stack>
+          {!!card?.combination ? (
+            <Stack>
+              <Typography variant="span" sx={{ fontWeight: 500 }}>
+                Cách chia:
+              </Typography>
+              <Typography>{card?.combination}</Typography>
+            </Stack>
+          ) : (
+            <></>
+          )}
+          {!!card?.note ? (
+            <Stack>
+              <Typography variant="span" sx={{ fontWeight: 500 }}>
+                Lưu ý
+              </Typography>
+              <Typography>{card?.note}</Typography>
+            </Stack>
+          ) : (
+            <></>
+          )}
           {!!card?.example || !!card?.exampleMean ? (
             <Stack>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
@@ -105,11 +116,10 @@ const GrammarCardEdit = ({ card, index, updateCard, deleteCard }) => {
           ) : (
             <></>
           )}
-
           <Box
             sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
           >
-            <img srcSet={card?.imgUrl} alt="hint" />
+            {!!card?.imgUrl?<img srcSet={card?.imgUrl} alt="hint" />:<></>}
           </Box>
         </Stack>
       </Stack>
@@ -117,7 +127,7 @@ const GrammarCardEdit = ({ card, index, updateCard, deleteCard }) => {
         <GrammarDialogForm
           handleToggle={handleToggleForm}
           dataInit={card}
-          onSubmit={(data)=>{updateCard(data);handleToggleForm();}}
+          onSubmit={handleUpdate}
         />
       ) : (
         ""
@@ -126,8 +136,7 @@ const GrammarCardEdit = ({ card, index, updateCard, deleteCard }) => {
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            
-            deleteCard(card?.cardGrammarId)
+            deleteCard(card?.cardGrammarId, handleToggleDelete);
           }}
         />
       ) : (

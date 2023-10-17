@@ -12,7 +12,6 @@ const useSetEdit = ({handleToggleUpdateSet}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('15 useSetEdit')
     const getSet = async () => {
       setLoading(true);
       try {
@@ -25,14 +24,12 @@ const useSetEdit = ({handleToggleUpdateSet}) => {
         const response = await axios.get(`/createfls/${setId}`, config);
         setDataSet(response.data);
         setLoading(false);
-    
       } catch (error) {
         // log ra status
         // TODO: navigate to not found or accessdenied
         const errorCode = error.response.status
         if(errorCode === 404 )navigate('/not-found') // not found
         if(errorCode === 401) navigate('/access-denied') // not authorize
-        console.log(error.response.status,'useSetEdit 35');
         setLoading(false);
       }
     };
@@ -40,7 +37,7 @@ const useSetEdit = ({handleToggleUpdateSet}) => {
   }, [setId]);
 
   const updateSet = async (newSet) => {
-    console.log(newSet)
+    
     try {
       setMutationing(true);
       const config = {
