@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
-import xlsx from "xlsx";
 
-const useVocaCardEdit = ({ handleToggleForm }) => {
+const useVocaCardEdit = ({ handleToggleForm,importing }) => {
   const [vocaList, setVocaList] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -33,8 +32,11 @@ const useVocaCardEdit = ({ handleToggleForm }) => {
         setLoading(false);
       }
     };
-    getVocaCard();
-  }, [setId]);
+    if(!importing) {
+      console.log("sao k reload");
+      getVocaCard();
+    }
+  }, [setId,importing]);
 
   const addCard = async (newVocaCard) => {
     try {

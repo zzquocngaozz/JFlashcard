@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
+import { utils, read } from "xlsx";
 
-const useSetEdit = ({handleToggleUpdateSet}) => {
+const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
   const [dataSet, setDataSet] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
+  const [importing, setImporting] = useState(false);
   const { setId } = useParams();
   const { accessToken } = useAuth();
   const navigate = useNavigate();
@@ -27,9 +29,9 @@ const useSetEdit = ({handleToggleUpdateSet}) => {
       } catch (error) {
         // log ra status
         // TODO: navigate to not found or accessdenied
-        const errorCode = error.response.status
-        if(errorCode === 404 )navigate('/not-found') // not found
-        if(errorCode === 401) navigate('/access-denied') // not authorize
+        const errorCode = error.response.status;
+        if (errorCode === 404) navigate("/not-found"); // not found
+        if (errorCode === 401) navigate("/access-denied"); // not authorize
         setLoading(false);
       }
     };
@@ -37,7 +39,6 @@ const useSetEdit = ({handleToggleUpdateSet}) => {
   }, [setId]);
 
   const updateSet = async (newSet) => {
-    
     try {
       setMutationing(true);
       const config = {
@@ -52,7 +53,7 @@ const useSetEdit = ({handleToggleUpdateSet}) => {
         JSON.stringify(newSet),
         config
       );
-      const newFlashSet = {...dataSet,...newSet}
+      const newFlashSet = { ...dataSet, ...newSet };
       setDataSet(newFlashSet);
       handleToggleUpdateSet();
       setMutationing(false);
@@ -72,9 +73,7 @@ const useSetEdit = ({handleToggleUpdateSet}) => {
         },
       };
       // Gửi yêu cầu delete để xoá dữ liệu
-      const response = await axios.delete(
-        `/createfls/${setId}`,config
-      );
+      const response = await axios.delete(`/createfls/${setId}`, config);
       navigate("/");
       setMutationing(false);
     } catch (error) {
@@ -82,7 +81,94 @@ const useSetEdit = ({handleToggleUpdateSet}) => {
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
-  return { dataSet, loading, mutationing, deleteSet, updateSet };
+
+  const importFile = async (e) => {
+    e.preventDefault();
+    if (!e.target.files) {
+      setAlert({
+        open: true,
+        severity: "error",
+        message: "File không tồn tại",
+      });
+      return console.log("file khong ton tai");
+    }
+
+    const file = e.target.files[0];
+    if (
+      file.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      setAlert({
+        open: true,
+        severity: "error",
+        message: "Chỉ nhận định dạng file excel",
+      });
+      return console.log("Chỉ nhận định dạng file excel");
+    }
+    if (file.size >= 1 * 1024 * 1024) {
+      setAlert({
+        open: true,
+        severity: "error",
+        message:
+          "Bạn không nên nhập quá nhiều thẻ trong một bộ! Tối đa 1000 thẻ. File size max 1MB",
+      });
+      return console.log(
+        "Bạn không nên nhập quá nhiều thẻ trong một bộ! Tối đa 1000 thẻ. File size max 1MB"
+      );
+    }
+    const reader = new FileReader();
+    setImporting(true);
+    reader.onload = async (e) => {
+      const data = e.target.result;
+      const workbook = read(data, { type: "array" });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const json = utils.sheet_to_json(worksheet);
+      const jsonWithoutRowNum = json.map((item) => {
+        // Sử dụng destructuring để tạo một bản sao của đối tượng
+        const { __rownum__, ...newItem } = item;
+        return newItem;
+      });
+      console.log(JSON.stringify(jsonWithoutRowNum));
+      console.log("test async");
+      // gui ve backend
+      try {
+        const config = {
+          headers: {
+            Authorization: `${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+        const url =
+          dataSet.type === 1
+            ? `/createfls/${setId}/edit/kanji-card`
+            : dataSet.type === 2
+            ? `/createfls/${setId}/edit/vocab-card`
+            : `/createfls/${setId}/edit/grammar-card`;
+        // Gửi yêu cầu post để thêm mới dữ liệu
+        // const response = await axios.put(
+        //   url,
+        //   JSON.stringify(JSON.stringify(jsonWithoutRowNum)),
+        //   config
+        // );
+        console.log('come 154')
+        setImporting(false);
+      } catch (error) {
+        setImporting(false);
+        console.log("Error:", error.response?.data?.errors?.body[0]);
+      }
+    };
+    reader.readAsArrayBuffer(e.target.files[0]);
+  };
+  return {
+    dataSet,
+    loading,
+    mutationing,
+    importing,
+    deleteSet,
+    updateSet,
+    importFile,
+  };
 };
 
 export default useSetEdit;
