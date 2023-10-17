@@ -102,12 +102,13 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete }) => {
               <Typography>{card?.kunSound}</Typography>
             </Stack>
           </Stack>
-          <Stack>
+          {!!card?.trick?
+          (<Stack>
             <Typography variant="span" sx={{ fontWeight: 500 }}>
               Mẹo nhớ:
             </Typography>
             <Typography>{card?.trick}</Typography>
-          </Stack>
+          </Stack>):<></>}
           {(!!card?.example||!!card?.exampleMean)?
             <Stack>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
