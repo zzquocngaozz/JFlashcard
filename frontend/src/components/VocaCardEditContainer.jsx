@@ -7,7 +7,7 @@ import VocaCardEdit from "./Cards/VocaCardEdit";
 import VocaDialogForm from "./Dialog/VocaDialogForm";
 import useVocaCardEdit from "../hooks/useVocaCardEdit";
 // TODO: create hook get list kanji
-const VocaCardEditContainer = () => {
+const VocaCardEditContainer = ({importing}) => {
   //     const [data,setData] = useState([{
   //       cardVocabId: 1,
   //       term: "足",
@@ -43,11 +43,11 @@ const VocaCardEditContainer = () => {
   }, [openForm]);
 
   const { vocaList, loading, mutationing, addCard, updateCard, deleteCard } =
-    useVocaCardEdit({ handleToggleForm });
-
+    useVocaCardEdit({ handleToggleForm , importing});
+  console.log(importing)
   return (
     <Stack>
-      {loading ? (
+      {loading || importing ? (
         <Box>
           <Skeleton
             variant="rectangular"
