@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
+import xlsx from "xlsx";
 
-const useGrammarCardEdit = ({ handleToggleForm }) => {
-  const [grammarList, setGrammarList] = useState(null);
+const useVocaCardEdit = ({ handleToggleForm }) => {
+  const [vocaList, setVocaList] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
   const { setId } = useParams();
   const { accessToken } = useAuth();
 
   useEffect(() => {
-    const getGrammarList = async () => {
+    const getVocaCard = async () => {
       setLoading(true);
       try {
         const config = {
@@ -21,21 +22,21 @@ const useGrammarCardEdit = ({ handleToggleForm }) => {
           },
         };
         const response = await axios.get(
-          `/createfls/${setId}/cardgrammar`,
+          `/createfls/${setId}/cardvpcab`,
           config
         );
-        setGrammarList(response.data);
+        setVocaList(response.data);
         setLoading(false);
-        console.log(response.data);
+        
       } catch (error) {
         console.log(error.response.status);
         setLoading(false);
       }
     };
-    getGrammarList();
+    getVocaCard();
   }, [setId]);
 
-  const addCard = async (newGrammarCard) => {
+  const addCard = async (newVocaCard) => {
     try {
       setMutationing(true);
       const config = {
@@ -46,13 +47,13 @@ const useGrammarCardEdit = ({ handleToggleForm }) => {
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
       const response = await axios.post(
-        `/createfls/${setId}/edit/grammar-card`,
-        JSON.stringify(newGrammarCard),
+        `/createfls/${setId}/edit/vocab-card`,
+        JSON.stringify(newVocaCard),
         config
       );
-      grammarList.push(response.data)
-      console.log(grammarList)
-      setGrammarList(grammarList);
+      vocaList.push(response.data)
+      
+      setVocaList(vocaList);
       handleToggleForm();
       setMutationing(false);
     } catch (error) {
@@ -62,7 +63,7 @@ const useGrammarCardEdit = ({ handleToggleForm }) => {
   };
 
 
-  const updateCard = async (newGrammarCard,handleToggle) => {
+  const updateCard = async (newVocaCard,handleToggle) => {
     try {
       setMutationing(true);
       const config = {
@@ -73,17 +74,17 @@ const useGrammarCardEdit = ({ handleToggleForm }) => {
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
       const response = await axios.put(
-        `/createfls/${setId}/edit/grammar-card`,
-        JSON.stringify(newGrammarCard),
+        `/createfls/${setId}/edit/vocab-card`,
+        JSON.stringify(newVocaCard),
         config
       );
-      const newGrammarList = grammarList.map((grammarCard) =>
-           grammarCard.cardGrammarId === newGrammarCard.cardGrammarId
-          ? newGrammarCard
-          : grammarCard
+      const newKanjiList = vocaList.map((vocaCard) =>
+        vocaCard.cardKanjiId === newVocaCard.cardVocaId
+          ? newVocaCard
+          : vocaCard
       );
-      setGrammarList(newGrammarList);
-      handleToggle();
+      setVocaList(newKanjiList);
+      handleToggle();// dong from update nay la callback gui ve tu voca form
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
@@ -101,17 +102,19 @@ const useGrammarCardEdit = ({ handleToggleForm }) => {
         },
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
-      const response = await axios.delete(`/createfls/${setId}/edit/grammar-card/${cardId}`, config);
-      const newGrammarList = grammarList.filter((grammarCard) =>grammarCard.cardGrammarId !== cardId);
-      setGrammarList(newGrammarList)
-      handleToggle()
+      const response = await axios.delete(`/createfls/${setId}/edit/vocab-card/${cardId}`, config);
+      const newVocaList = vocaList.filter((voca) =>voca.cardVocabId !== cardId);
+      setVocaList(newVocaList)
+      handleToggle()//dong form sau khi add
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
-  return { grammarList, loading, mutationing, deleteCard, updateCard,addCard};
+
+  
+  return { vocaList, loading, mutationing, deleteCard, updateCard,addCard };
 };
 
-export default useGrammarCardEdit;
+export default useVocaCardEdit;

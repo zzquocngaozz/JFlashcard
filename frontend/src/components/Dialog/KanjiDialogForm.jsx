@@ -13,7 +13,7 @@ import {checkImg} from '../../utils/manualTesting'
 
 // truyền vào defaultValue(optional) togglefunc updatefunc
 // TODO: lam edit form
-export default function KanjiDialogForm({dataInit, handleToggle, onSubmit}) {
+export default function KanjiDialogForm({dataInit, handleToggle, onSubmit,mutationing}) {
   const {register, handleSubmit,watch,setError,clearErrors,reset, formState:{errors,isDirty}} = useForm(((!!dataInit)?{defaultValues:{...dataInit}}:{}))
   const [imgPreview,setImgPreview] = React.useState(dataInit?.imgUrl);
   const imgUrl = watch('imgUrl');
@@ -22,13 +22,11 @@ export default function KanjiDialogForm({dataInit, handleToggle, onSubmit}) {
     try {
         await new Promise((resolve, reject) => {
           checkImg(imgUrl, function () {
-            console.log('Hình ảnh tồn tại');
             setImgPreview(imgUrl);
             clearErrors('imgUrl');
             resolve(); // Khi kiểm tra hình ảnh hoàn thành thành công
           }, function () {
             if (isDirty) {
-              console.log('Hình ảnh không tồn tại');
               setImgPreview(null);
               setError('imgUrl', {
                 type: 'manual',
@@ -38,15 +36,12 @@ export default function KanjiDialogForm({dataInit, handleToggle, onSubmit}) {
             reject(); // Khi có lỗi kiểm tra hình ảnh
           });
         });
-        console.log(errors?.imgUrl);
         if (!errors?.imgUrl) {
-          console.log(data)
           onSubmit(data);
         }
       } catch (error) {
         // Xử lý lỗi va link imgUrl empty thì cho qua va submit
         if (imgUrl === '') {
-            console.log('clear');
             clearErrors('imgUrl');
             onSubmit(data);
           }
@@ -56,13 +51,11 @@ export default function KanjiDialogForm({dataInit, handleToggle, onSubmit}) {
   React.useEffect(()=>{
     // check neu nguoi dung co nhap url truyen vao link anh, call back neu load dc va call back neu load error
      if(!!imgUrl) checkImg(imgUrl,function() {
-        console.log('Hình ảnh tồn tại');
         setImgPreview(imgUrl)
         clearErrors('imgUrl')
       },
       function() {
         if(isDirty) {
-        console.log('Hình ảnh không tồn tại');
         setImgPreview(null)
         setError('imgUrl',{
             type:'manual',
@@ -191,9 +184,9 @@ export default function KanjiDialogForm({dataInit, handleToggle, onSubmit}) {
            </Stack>
           </DialogContent>
           <DialogActions>
-          <Button type='button' variant='contained' onClick={()=>reset()} color='secondary' disabled={!isDirty}>Cài lại</Button>
-            <Button type='button' onClick={handleToggle} variant='contained' color='error'>Huỷ</Button>
-            <Button type='submit' disabled={!isDirty} variant='contained'>{!dataInit?"Tạo":"Cập nhật"}</Button>
+            <Button type='button' variant='contained' onClick={()=>reset()} color='secondary' disabled={!isDirty||mutationing}>Cài lại</Button>
+            <Button type='button' onClick={handleToggle} disabled={mutationing} variant='contained' color='error'>Huỷ</Button>
+            <Button type='submit' disabled={!isDirty||mutationing} variant='contained'>{!dataInit?"Tạo":"Cập nhật"}</Button>
           </DialogActions>
         </form>
       </Dialog>

@@ -10,10 +10,12 @@ import {
   Stack,
   Tooltip,
   Typography,
+  styled,
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DoneIcon from "@mui/icons-material/Done";
 import { SET_TYPE } from "../utils/constant";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
@@ -23,7 +25,19 @@ import KanjiCardEditContainer from "../components/KanjiCardEditContainer";
 import GrammarCardEditConainer from "../components/GrammarCardEditConainer";
 import VocaCardEditContainer from "../components/VocaCardEditContainer";
 import useSetEdit from "../hooks/useSetEdit";
+import {utils,read} from 'xlsx';
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 const SetEdit = () => {
   // hook
   const { setId } = useParams();
@@ -55,6 +69,31 @@ const SetEdit = () => {
       "Thao tác này không thể hoàn lại. Bạn muốn tiếp tục xoá bộ thẻ này không"
   });
   const {dataSet:flashcardSet,mutationing, loading,updateSet,deleteSet} = useSetEdit({handleToggleUpdateSet})
+
+
+  const importFile = (e)=>{
+    e.preventDefault();
+    if (e.target.files) {
+        const reader = new FileReader();
+        console.log(e.target.files[0])
+        reader.onload = (e) => {
+            console.log("test async")
+            const data = e.target.result;
+            const workbook = read(data, { type: "array" });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const json = utils.sheet_to_json(worksheet);
+            const jsonWithoutRowNum = json.map(item => {
+              // Sử dụng destructuring để tạo một bản sao của đối tượng
+            const { __rownum__, ...newItem } = item;
+              return newItem;
+            });
+            console.log(JSON.stringify(jsonWithoutRowNum));
+            console.log("test async")
+        };
+        reader.readAsArrayBuffer(e.target.files[0]);
+    }
+  }
 
   return (
     <LayoutNormal>
@@ -106,6 +145,12 @@ const SetEdit = () => {
               <Tooltip title={"Xoá bộ"}>
                 <IconButton onClick={handleToggleAlertDelete}>
                   <DeleteForeverIcon color="error" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={"Nhập bằng file"}>
+                <IconButton component={'label'}>
+                  <CloudUploadIcon />
+                  <VisuallyHiddenInput type="file" onChange={importFile} />
                 </IconButton>
               </Tooltip>
             </Box>
