@@ -17,6 +17,7 @@ export default function GrammarDialogForm({
   dataInit,
   handleToggle,
   onSubmit,
+  mutationing
 }) {
   const {
     register,
@@ -36,14 +37,14 @@ export default function GrammarDialogForm({
         checkImg(
           imgUrl,
           function () {
-            console.log("Hình ảnh tồn tại");
+            
             setImgPreview(imgUrl);
             clearErrors("imgUrl");
             resolve(); // Khi kiểm tra hình ảnh hoàn thành thành công
           },
           function () {
             if (isDirty) {
-              console.log("Hình ảnh không tồn tại");
+              
               setImgPreview(null);
               setError("imgUrl", {
                 type: "manual",
@@ -222,7 +223,7 @@ export default function GrammarDialogForm({
               variant="contained"
               onClick={() => reset()}
               color="secondary"
-              disabled={!isDirty}
+              disabled={!isDirty||mutationing}
             >
               Cài lại
             </Button>
@@ -231,10 +232,11 @@ export default function GrammarDialogForm({
               onClick={handleToggle}
               variant="contained"
               color="error"
+              disabled={mutationing}
             >
               Huỷ
             </Button>
-            <Button type="submit" disabled={!isDirty} variant="contained">
+            <Button type="submit" disabled={!isDirty||mutationing} variant="contained">
               {!dataInit ? "Tạo" : "Cập nhật"}
             </Button>
           </DialogActions>

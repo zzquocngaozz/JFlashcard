@@ -2,8 +2,6 @@ import React, { useCallback, useState } from "react";
 
 import { Box, Button, Skeleton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
-import BackdropLoading from "./FeedBack/BackdropLoading";
 import searhbanner from "../assets/images/searhbanner.png";
 import KanjiDialogForm from "./Dialog/KanjiDialogForm";
 import KanjiCardEdit from "./Cards/KanjiCardEdit";
@@ -14,7 +12,6 @@ const KanjiCardEditContainer = () => {
 
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
-    console.log("toggle");
   }, [openForm]);
 
   const { kanjiList, loading, mutationing, addCard, updateCard, deleteCard } =
@@ -54,6 +51,7 @@ const KanjiCardEditContainer = () => {
             card={card}
             onUpdate={updateCard}
             onDelete={deleteCard}
+            mutationing={mutationing}
           />
         ))
       )}
@@ -66,53 +64,12 @@ const KanjiCardEditContainer = () => {
         Thêm thẻ hán tự
       </Button>
       {openForm ? (
-        <KanjiDialogForm handleToggle={handleToggleForm} onSubmit={addCard} />
+        <KanjiDialogForm handleToggle={handleToggleForm} onSubmit={addCard} mutationing={mutationing} />
       ) : (
         <></>
       )}
-      {mutationing ? <BackdropLoading/> : <></>}
     </Stack>
   );
 };
 
 export default KanjiCardEditContainer;
-// const kanjiList = useState([{
-//   cardKanjiId: 1,
-//   onSound: "そく",
-//   kunSound: "あし",
-//   chineseSound: "Túc",
-//   term: "足",
-//   trick: 'Chân(足) không đủ(不足) dài để chạy',
-//   mean: "Đầy đủ, chân",
-//   example: "1万円じゃ不足よ",
-//   exampleMean: "1 man là không đủ đâu",
-//   imgUrl: "https://tuhoconline.net/wp-content/uploads/141-Ashi.jpg",
-//   flashcardSetId: 123
-// },{
-// cardKanjiId: 2,
-// onSound: "そく",
-// kunSound: "あし",
-// chineseSound: "Túc",
-// trick: 'Chân(足) không đủ(不足) dài để chạy',
-// term: "足",
-// mean: "Đầy đủ, chân",
-// example: "1万円じゃ不足よ",
-// exampleMean: "1 man là không đủ đâu",
-// imgUrl: "https://tuhoconline.net/wp-content/uploads/141-Ashi.jpg",
-// flashcardSetId: 123
-// },
-// {
-// cardKanjiId: 2,
-// onSound: "そく",
-// kunSound: "あし",
-// chineseSound: "Túc",
-// trick: 'Chân(足) không đủ(不足) dài để chạy',
-// term: "足",
-// mean: "Đầy đủ, chân",
-// example: "1万円じゃ不足よ",
-// exampleMean: "1 man là không đủ đâu",
-// imgUrl: "https://tuhoconline.net/wp-content/uploads/141-Ashi.jpg",
-// flashcardSetId: 123
-// }
-
-// ])

@@ -13,18 +13,18 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 
-const GrammarCardEdit = ({ card, index, updateCard, deleteCard }) => {
+const GrammarCardEdit = ({ card, index, updateCard, deleteCard, mutationing }) => {
   const [openFormEdit, setOpenFormEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
   const handleToggleForm = useCallback(() => {
     setOpenFormEdit(!openFormEdit);
-    console.log("toggle");
+    
   }, [openFormEdit]);
 
   const handleToggleDelete = useCallback(() => {
     setOpenDelete(!openDelete);
-    console.log("toggle");
+    
   }, [openDelete]);
 
   const handleUpdate = (data) => {
@@ -128,6 +128,7 @@ const GrammarCardEdit = ({ card, index, updateCard, deleteCard }) => {
           handleToggle={handleToggleForm}
           dataInit={card}
           onSubmit={handleUpdate}
+          mutationing={mutationing}
         />
       ) : (
         ""

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 
-const useSetEdit = ({ handleToggleForm }) => {
+const useKanjiCardEdit = ({ handleToggleForm }) => {
   const [kanjiList, setKanjiList] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -114,4 +114,4 @@ const useSetEdit = ({ handleToggleForm }) => {
   return { kanjiList, loading, mutationing, deleteCard, updateCard,addCard };
 };
 
-export default useSetEdit;
+export default useKanjiCardEdit;
