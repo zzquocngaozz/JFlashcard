@@ -14,4 +14,8 @@ public interface FlashcardVocabRepository extends JpaRepository<FlashcardVocab, 
     FlashcardVocab save(FlashcardVocab flashcardVocab);
     @Override
     void delete(FlashcardVocab flashcardVocab);
+
+    @Override
+    <S extends FlashcardVocab> List<S> saveAll(Iterable<S> entities);
+
 }

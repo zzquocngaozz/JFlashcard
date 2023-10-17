@@ -16,16 +16,19 @@ public interface FlashcardSetService {
 
     // card kanji
     KanjiDTO createFlashcardKanji(KanjiDTO kanjiDTO, long userID, long setId);
+    List<KanjiDTO> createFlashcardKanjiList(List<KanjiDTO> kanjiDTOs, long userID, long setId);
     void updateKanjiCard(KanjiDTO kanjiDTO, long userID, long setId);
     void deleteFlKanji(long cardId);
     // card grammar
     GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID, long setId);
+    List<GrammarDTO> createFlashcardGrammarList(List<GrammarDTO> grammarDTOs, long userID, long setId);
     void updateGrammarCard(GrammarDTO grammarDTO, long userID, long setId);
 
     void deleteFlGrammar(long cardId);
 
     // card vocab
     VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID, long setId);
+    List<VocabDTO> createFlashcardVocabList(List<VocabDTO> vocabDTOs, long userID, long setId);
     void updateVocabCard(VocabDTO vocabDTO, long userID, long setId);
 
     void deleteFlvocab(long cardId);

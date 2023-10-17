@@ -14,4 +14,7 @@ public interface FlashcardGrammarRepository extends JpaRepository<FlashcardGramm
     FlashcardGrammar save(FlashcardGrammar flashcardGrammar);
     @Override
     void delete(FlashcardGrammar flashcardGrammar);
+
+    @Override
+    <S extends FlashcardGrammar> List<S> saveAll(Iterable<S> entities);
 }

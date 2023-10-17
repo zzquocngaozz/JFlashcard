@@ -4,7 +4,6 @@ import com.example.jflashcardsv0_9.entities.*;
 import com.example.jflashcardsv0_9.exception.AppException;
 import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
-import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.*;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
 import lombok.AccessLevel;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,10 +33,10 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     private void CheckAuthandsetfound(long userid,long setid) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         User user = userRepository.getUserByUserId(userid);
-        if(flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setid) == false){
+        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setid)){
             throw new AppException(Error.SET_NOT_FOUND);
         }
-        if(flashcardSet.getUser().getUserId() !=  user.getUserId()){
+        if(!Objects.equals(flashcardSet.getUser().getUserId(), user.getUserId())){
             throw new AppException(Error.AUTH_GI_DO);
         }
 
@@ -73,32 +73,25 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public List<KanjiDTO> findAllKanjiDTOBySetId(long setid, long userid) {
         CheckAuthandsetfound(userid,setid);
-        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
-        List<FlashcardKanji> flashcardKanjis = flashcardKanjiRepository.findAllByFlashcardSet(flashcardSet);
-        List<KanjiDTO> kanjiDTOS = flashcardKanjis.stream()
-                .map((FlashcardKanji flashcardKanji) -> FlashcardMapper.convertKanjiDTO(flashcardKanji,flashcardSet)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
-                .collect(Collectors.toList());
-        return kanjiDTOS;
+        return getKanjiDTOS(setid);
     }
     @Override
     public List<GrammarDTO> findAllGrammarDTOBySetId(long setid, long userid) {
         CheckAuthandsetfound(userid,setid);
-        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
-        List<FlashcardGrammar> flashcardGrammars = flashcardGrammarRepository.findAllByFlashcardSet(flashcardSet);
-        List<GrammarDTO> grammarDTOS = flashcardGrammars.stream()
-                .map((FlashcardGrammar flashcardGrammar) -> FlashcardMapper.convertGrammarDTO(flashcardGrammar,flashcardSet)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
-                .collect(Collectors.toList());
-        return grammarDTOS;
+        return getGrammarDTOS(setid);
     }
     @Override
     public List<VocabDTO> findAllVocabDTOBySetId(long setid, long userid) {
         CheckAuthandsetfound(userid,setid);
+        return getVocabDTOS(setid);
+    }
+
+    public List<VocabDTO> getVocabDTOS(long setid) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         List<FlashcardVocab> flashcardVocabs = flashcardVocabRepository.findAllByFlashcardSet(flashcardSet);
-        List<VocabDTO> vocabDTOS = flashcardVocabs.stream()
+        return flashcardVocabs.stream()
                 .map((FlashcardVocab flashcardVocab) -> FlashcardMapper.convertVocabDTO(flashcardVocab,flashcardSet)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
                 .collect(Collectors.toList());
-        return vocabDTOS;
     }
 
     @Override
@@ -114,6 +107,23 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         FlashcardKanji flashcardKanji1 = flashcardKanjiRepository.save(flashcardKanji);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         return FlashcardMapper.convertKanjiDTO(flashcardKanji1,flashcardSet);
+    }
+
+    @Override
+    public List<KanjiDTO> createFlashcardKanjiList(List<KanjiDTO> kanjiDTOs, long userID, long setId) {
+        List<FlashcardKanji> entities = kanjiDTOs.stream()
+                .map((KanjiDTO dto) -> FlashcardMapper.convertToFlashcardKanjiEntity(dto,setId))
+                .collect(Collectors.toList());
+        flashcardKanjiRepository.saveAll(entities);
+        return getKanjiDTOS(setId);
+    }
+
+    public List<KanjiDTO> getKanjiDTOS(long setId) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        List<FlashcardKanji> flashcardKanjis = flashcardKanjiRepository.findAllByFlashcardSet(flashcardSet);
+        return flashcardKanjis.stream()
+                .map((FlashcardKanji flashcardKanji) -> FlashcardMapper.convertKanjiDTO(flashcardKanji,flashcardSet)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -147,6 +157,23 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
 
     @Override
+    public List<GrammarDTO> createFlashcardGrammarList(List<GrammarDTO> grammarDTOs, long userID, long setId) {
+        List<FlashcardGrammar> entities = grammarDTOs.stream()
+                .map((GrammarDTO dto) -> FlashcardMapper.convertToFlashcardGrammarEntity(dto,setId))
+                .collect(Collectors.toList());
+        flashcardGrammarRepository.saveAll(entities);
+        return getGrammarDTOS(setId);
+    }
+
+    public List<GrammarDTO> getGrammarDTOS(long setId) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        List<FlashcardGrammar> flashcardGrammars = flashcardGrammarRepository.findAllByFlashcardSet(flashcardSet);
+        return flashcardGrammars.stream()
+                .map((FlashcardGrammar flashcardGrammar) -> FlashcardMapper.convertGrammarDTO(flashcardGrammar,flashcardSet)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void updateGrammarCard(GrammarDTO grammarDTO, long userID, long setId) {
         FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardGrammarId());
         flashcardGrammar.setCombination(grammarDTO.getCombination());
@@ -173,6 +200,15 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         FlashcardVocab flashcardVocab1 = flashcardVocabRepository.save(flashcardVocab);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         return FlashcardMapper.convertVocabDTO(flashcardVocab1,flashcardSet);
+    }
+
+    @Override
+    public List<VocabDTO> createFlashcardVocabList(List<VocabDTO> vocabDTOs, long userID, long setId) {
+        List<FlashcardVocab> entities = vocabDTOs.stream()
+                .map((VocabDTO dto) -> FlashcardMapper.convertToFlashcardVocabEntity(dto,setId))
+                .collect(Collectors.toList());
+        flashcardVocabRepository.saveAll(entities);
+        return getVocabDTOS(setId);
     }
 
     @Override

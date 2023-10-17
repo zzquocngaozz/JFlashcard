@@ -51,9 +51,13 @@ public class FlashcardSetController {
     }
 
     // phần xử lý kanji card
+//    @PostMapping("/{setId}/edit/kanji-card")
+//    public KanjiDTO createKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
+//        return flashcardSetService.createFlashcardKanji(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
+//    }
     @PostMapping("/{setId}/edit/kanji-card")
-    public KanjiDTO createKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
-        return flashcardSetService.createFlashcardKanji(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
+    public List<KanjiDTO> createKanjiCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<KanjiDTO> kanjiDTOs,@PathVariable long setId){
+        return flashcardSetService.createFlashcardKanjiList(kanjiDTOs,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/kanji-card/{cardId}")
     public ResponseEntity<?> deleteKanjiCard(@PathVariable long cardId){
@@ -66,9 +70,13 @@ public class FlashcardSetController {
         return ResponseEntity.ok("update thành công");
     }
     // phần xử lý Grammar card
+//    @PostMapping("/{setId}/edit/grammar-card")
+//    public GrammarDTO createGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody GrammarDTO grammarDTO,@PathVariable long setId){
+//        return flashcardSetService.createFlashcardGrammar(grammarDTO,myUserDetail.getUser().getUserId(),setId);
+//    }
     @PostMapping("/{setId}/edit/grammar-card")
-    public GrammarDTO createGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody GrammarDTO grammarDTO,@PathVariable long setId){
-        return flashcardSetService.createFlashcardGrammar(grammarDTO,myUserDetail.getUser().getUserId(),setId);
+    public List<GrammarDTO> createGrammarCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<GrammarDTO> grammarDTOs,@PathVariable long setId){
+        return flashcardSetService.createFlashcardGrammarList(grammarDTOs,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/grammar-card/{cardId}")
     public ResponseEntity<?> deleteGrammarCard(@PathVariable long cardId){
@@ -82,9 +90,13 @@ public class FlashcardSetController {
     }
 
     // phần xử lý Vocab card
+//    @PostMapping("/{setId}/edit/vocab-card")
+//    public VocabDTO createVocabCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody VocabDTO vocabDTO,@PathVariable long setId){
+//        return flashcardSetService.createFlashcardVocab(vocabDTO,myUserDetail.getUser().getUserId(),setId);
+//    }
     @PostMapping("/{setId}/edit/vocab-card")
-    public VocabDTO createVocabCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody VocabDTO vocabDTO,@PathVariable long setId){
-        return flashcardSetService.createFlashcardVocab(vocabDTO,myUserDetail.getUser().getUserId(),setId);
+    public List<VocabDTO> createVocabCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<VocabDTO> vocabDTOs,@PathVariable long setId){
+        return flashcardSetService.createFlashcardVocabList(vocabDTOs,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/vocab-card/{cardId}")
     public ResponseEntity<?> deleteVocabCard(@PathVariable long cardId){
