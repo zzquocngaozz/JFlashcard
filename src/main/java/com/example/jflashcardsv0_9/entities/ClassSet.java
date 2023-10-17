@@ -16,31 +16,32 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "classpost")
+@Table(name = "classset")
 @Entity
 @Builder
-public class ClassPost implements Serializable{
+public class ClassSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "classPostId")
-    private Long classPostId; // Trường primary key
-
-    @Column(name = "content")
-    private String content;
-
-    @Column(name = "downloadUrl")
-    private String downloadUrl;
+    @Column(name = "classSetId")
+    private Long classSetId; // Trường primary key
 
     @Column(name = "createdAt")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Timestamp createdAt;
 
-    @ManyToOne // Mối quan hệ nhiều ClassPost đến một Classroom
-    @JoinColumn(name = "classId") // Đặt tên cột foreign key là "class_id"
-    private ClassRoom classroom;
+    @Column(name = "dueAt")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Timestamp dueAt;
 
-    @ManyToOne // Mối quan hệ nhiều ClassPost đến một User
-    @JoinColumn(name = "creatorId") // Đặt tên cột foreign key là "class_id"
-    private User user;
+    @ManyToOne // Mối quan hệ nhiều Comment đến một User
+    @JoinColumn(name = "classId") // Đặt tên cột foreign key là "class_id"
+    private ClassRoom classRoom;
+
+    @ManyToOne // Mối quan hệ nhiều Comment đến một User
+    @JoinColumn(name = "setId") // Đặt tên cột foreign key là "class_id"
+    private FlashcardSet flashcardSet;
+
+
 }
