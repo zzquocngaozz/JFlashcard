@@ -11,9 +11,11 @@ import java.sql.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class FolderDTO {
+public class FolderSetDTO {
+     long folderId;
      String title;
      String description;
      Date createdAt;
      long userId;
+     long numberSet;
 }

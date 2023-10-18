@@ -83,6 +83,7 @@ public class FlashcardMapper {
     }
     public static FlashcardKanji convertToFlashcardKanjiEntity(KanjiDTO dto,long setId) {
         return FlashcardKanji.builder()
+                .cardKanjiId(dto.getCardKanjiId())
                 .onSound(dto.getOnSound())
                 .kunSound(dto.getKunSound())
                 .chineseSound(dto.getChineseSound())
@@ -97,6 +98,7 @@ public class FlashcardMapper {
     }
     public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto,long setId) {
         return FlashcardVocab.builder()
+                .cardVocabId(dto.getCardVocabId())
                 .term(dto.getTerm())
                 .mean(dto.getMean())
                 .example(dto.getExample())
@@ -107,6 +109,7 @@ public class FlashcardMapper {
     }
     public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto,long setId) {
         return FlashcardGrammar.builder()
+                .cardGrammarId(dto.getCardGrammarId())
                 .combination(dto.getCombination())
                 .note(dto.getNote())
                 .term(dto.getTerm())
