@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, IconButton, Paper, Stack, Toolbar} from '@mui/material'
+import { AppBar, Box, Button, IconButton, Paper, Stack, Toolbar, styled} from '@mui/material'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import AccountMenu from '../Menu/AccountMenu';
@@ -20,22 +20,14 @@ const Navbar = () => {
                     <Stack justifyContent="space-between" alignItems='center' flexDirection='row' width='calc(100% - 100px)'>
                         {/* left box */}
                         <Box
-                        sx={{marginLeft:'20px', display:"flex", alignItems:"center",
-                            "& a:hover":{
-                                borderBottom:"1px solid #0019FC"
-                            },
-
-                            "& a.active":{
-                                borderBottom:"1px solid #0019FC"
-                            }
+                        sx={{marginLeft:'20px', display:"flex", alignItems:"center"
                         }}>
                             {isLogin()?<>
-                            <NavLink 
-                                style={{marginLeft:'10px'}}
+                            <StyleLink 
                                 to="/search"
                             >
                                 Tìm kiếm
-                            </NavLink>
+                            </StyleLink>
                             <LibMenu/>
                             </>
                             
@@ -70,5 +62,33 @@ const Navbar = () => {
     </>
   )
 }
+
+const StyleLink = styled(NavLink)({
+    "&": {
+        position: "relative",
+        "&:after": {
+            // Sử dụng "&" để liên kết với lớp active của thẻ a
+            content: '""',
+            position: "absolute",
+            bottom:"-5px",
+            left: "1px",
+            right: "1px",
+            // width: '50px',
+            height: "0px",
+            backgroundColor: "#007fe3",
+            transition: "all 120ms cubic-bezier(0.4, 0, 0.2, 1) 10ms",
+        },
+        "&:hover:after": {
+            // Sử dụng "&" để liên kết với lớp active của thẻ a
+            height: "3px",
+            borderRadius: "3px",
+        },
+        "&.active:after": {
+            // Sử dụng "&" để liên kết với lớp active của thẻ a
+            height: "3px",
+            backgroundColor: "#007fe3",
+        },
+    }
+})
 
 export default Navbar

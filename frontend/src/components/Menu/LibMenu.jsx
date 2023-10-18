@@ -50,30 +50,36 @@ const LibMenu = () => {
         transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose} LinkComponent={Link} to="/">
+        <Link to={'/my-lib/sets'}>
+          <MenuItem onClick={handleClose} LinkComponent={Link} to="/">
+            <ListItemIcon>
+              <NoteAddIcon />
+              </ListItemIcon>
+            <ListItemText>
+              Bộ flashcard
+            </ListItemText>
+          </MenuItem>
+        </Link>
+        <Link to={'/my-lib/folders'}>
+          <MenuItem onClick={handleClose}  LinkComponent={Link} to="/">
           <ListItemIcon>
-            <NoteAddIcon />
-            </ListItemIcon>
-          <ListItemText>
-            Bộ flashcard
-          </ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleClose}  LinkComponent={Link} to="/">
-        <ListItemIcon>
-            <CreateNewFolderIcon />
-        </ListItemIcon>
-        <ListItemText>
-            Thư mục
-        </ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleClose}  LinkComponent={Link} to="/">
-          <ListItemIcon>
-            <SchoolIcon />
+              <CreateNewFolderIcon />
           </ListItemIcon>
           <ListItemText>
-            Lớp học
+              Thư mục
           </ListItemText>
-        </MenuItem>      
+          </MenuItem>
+        </Link>
+        <Link to={'/my-lib/classes'}>
+          <MenuItem onClick={handleClose}  LinkComponent={Link} to="/">
+            <ListItemIcon>
+              <SchoolIcon />
+            </ListItemIcon>
+            <ListItemText>
+              Lớp học
+            </ListItemText>
+          </MenuItem> 
+        </Link>     
       </Menu>
     </>
   )

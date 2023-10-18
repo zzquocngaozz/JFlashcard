@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from './Navbar'
 import { Box, Stack } from '@mui/material'
+import Footer from './Footer'
 
 const LayoutNormal = ({children}) => {
   return (
@@ -10,6 +11,7 @@ const LayoutNormal = ({children}) => {
         }}>
             {children}
         </Box>
+        <Footer/>
     </>
   )
 }
