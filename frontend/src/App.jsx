@@ -20,7 +20,7 @@ import ChangePass from './pages/ChangePass';
 import SetEdit from './pages/SetEdit';
 import { UserView } from './pages/UserView';
 import LibRoot from './routes/LibRoot';
-import { LibSets } from './pages/LibSets';
+import LibSets from './pages/LibSets';
 import LibBookMarked from './pages/LibBookMarked';
 import LibClasses from './pages/LibClasses';
 import LibFolders from './pages/LibFolders';
