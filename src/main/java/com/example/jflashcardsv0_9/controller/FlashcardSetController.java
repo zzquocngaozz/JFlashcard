@@ -50,13 +50,13 @@ public class FlashcardSetController {
         return ResponseEntity.ok("Xóa thành công");
     }
 
-    // phần xử lý kanji card
-//    @PostMapping("/{setId}/edit/kanji-card")
-//    public KanjiDTO createKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
-//        return flashcardSetService.createFlashcardKanji(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
-//    }
+//     phần xu ly kanji card
     @PostMapping("/{setId}/edit/kanji-card")
-    public List<KanjiDTO> createKanjiCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<KanjiDTO> kanjiDTOs,@PathVariable long setId){
+    public KanjiDTO createKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO,@PathVariable long setId){
+        return flashcardSetService.createFlashcardKanji(kanjiDTO,myUserDetail.getUser().getUserId(),setId);
+    }
+    @PostMapping("/{setId}/import/kanji-card")
+    public List<KanjiDTO> importKanjiCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<KanjiDTO> kanjiDTOs,@PathVariable long setId){
         return flashcardSetService.createFlashcardKanjiList(kanjiDTOs,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/kanji-card/{cardId}")
@@ -70,12 +70,12 @@ public class FlashcardSetController {
         return ResponseEntity.ok("update thành công");
     }
     // phần xử lý Grammar card
-//    @PostMapping("/{setId}/edit/grammar-card")
-//    public GrammarDTO createGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody GrammarDTO grammarDTO,@PathVariable long setId){
-//        return flashcardSetService.createFlashcardGrammar(grammarDTO,myUserDetail.getUser().getUserId(),setId);
-//    }
     @PostMapping("/{setId}/edit/grammar-card")
-    public List<GrammarDTO> createGrammarCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<GrammarDTO> grammarDTOs,@PathVariable long setId){
+    public GrammarDTO createGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody GrammarDTO grammarDTO,@PathVariable long setId){
+        return flashcardSetService.createFlashcardGrammar(grammarDTO,myUserDetail.getUser().getUserId(),setId);
+    }
+    @PostMapping("/{setId}/import/grammar-card")
+    public List<GrammarDTO> importGrammarCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<GrammarDTO> grammarDTOs,@PathVariable long setId){
         return flashcardSetService.createFlashcardGrammarList(grammarDTOs,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/grammar-card/{cardId}")
@@ -89,13 +89,13 @@ public class FlashcardSetController {
         return ResponseEntity.ok("update thành công");
     }
 
-    // phần xử lý Vocab card
-//    @PostMapping("/{setId}/edit/vocab-card")
-//    public VocabDTO createVocabCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody VocabDTO vocabDTO,@PathVariable long setId){
-//        return flashcardSetService.createFlashcardVocab(vocabDTO,myUserDetail.getUser().getUserId(),setId);
-//    }
+//     phan xu ly Vocab card
     @PostMapping("/{setId}/edit/vocab-card")
-    public List<VocabDTO> createVocabCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<VocabDTO> vocabDTOs,@PathVariable long setId){
+    public VocabDTO createVocabCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody VocabDTO vocabDTO,@PathVariable long setId){
+        return flashcardSetService.createFlashcardVocab(vocabDTO,myUserDetail.getUser().getUserId(),setId);
+    }
+    @PostMapping("/{setId}/import/vocab-card")
+    public List<VocabDTO> importVocabCardList(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<VocabDTO> vocabDTOs,@PathVariable long setId){
         return flashcardSetService.createFlashcardVocabList(vocabDTOs,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/vocab-card/{cardId}")

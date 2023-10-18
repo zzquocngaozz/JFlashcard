@@ -102,7 +102,7 @@ const VocaCardEditContainer = ({importing}) => {
           mutationing={mutationing}
         />
       ) : (
-        ""
+        <></>
       )}
     </Stack>
   );

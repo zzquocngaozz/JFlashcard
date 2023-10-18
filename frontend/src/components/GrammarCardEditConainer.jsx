@@ -9,7 +9,7 @@ import GrammarCardEdit from "./Cards/GrammarCardEdit";
 import GrammarDialogForm from "./Dialog/GrammarDialogForm";
 import useGrammarCardEdit from "../hooks/useGrammarCardEdit";
 // TODO: create hook get grammar list
-const GrammarCardEditConainer = () => {
+const GrammarCardEditConainer = ({importing}) => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleToggleForm = useCallback(() => {
@@ -17,11 +17,11 @@ const GrammarCardEditConainer = () => {
   }, [openForm]);
 
   const { grammarList, loading, mutationing, addCard, updateCard, deleteCard } =
-    useGrammarCardEdit({ handleToggleForm });
+    useGrammarCardEdit({ handleToggleForm,importing });
 
   return (
     <Stack>
-      {loading ?(
+      {loading ||importing?(
         <Box>
           <Skeleton
             variant="rectangular"

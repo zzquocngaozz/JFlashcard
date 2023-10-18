@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 
-const useKanjiCardEdit = ({ handleToggleForm }) => {
+const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
   const [kanjiList, setKanjiList] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -32,8 +32,8 @@ const useKanjiCardEdit = ({ handleToggleForm }) => {
         setLoading(false);
       }
     };
-    getKanjiList();
-  }, [setId]);
+    if(!importing) getKanjiList();
+  }, [setId,importing]);
 
   const addCard = async (newKanjiCard) => {
     try {

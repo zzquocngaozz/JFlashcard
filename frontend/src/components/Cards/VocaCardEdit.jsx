@@ -12,6 +12,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
+import placeholder from '../../assets/images/placeholder.png'
 
 const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -19,16 +20,14 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
 
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
-    
   }, [openForm]);
 
   const handleToggleDelete = useCallback(() => {
     setOpenDelete(!openDelete);
-    
   }, [openDelete]);
-  const handleUpdate = (data)=>{
-    onUpdate(data,handleToggleForm)
-  }
+  const handleUpdate = (data) => {
+    onUpdate(data, handleToggleForm);
+  };
 
   return (
     <Stack
@@ -88,17 +87,31 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
               {card?.mean}
             </Typography>
           </Stack>
-          <Stack>
-            <Typography variant="span" sx={{ fontWeight: 500 }}>
-              Ví dụ:
-            </Typography>
-            <Typography>{card?.example}</Typography>
-            <Typography>{card?.exampleMean}</Typography>
-          </Stack>
+          {!!card?.example || !!card?.exampleMean ? (
+            <Stack>
+              <Typography variant="span" sx={{ fontWeight: 500 }}>
+                Ví dụ:
+              </Typography>
+              <Typography>{card?.example}</Typography>
+              <Typography>{card?.exampleMean}</Typography>
+            </Stack>
+          ) : (
+            <></>
+          )}
           <Box
             sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
           >
-            <img srcSet={card?.imgUrl} alt="hint" />
+            {!!card?.imgUrl ? (
+              <img
+                src={card?.imgUrl}
+                onError={(e) => {
+                  e.target.src = placeholder;
+                }}
+                alt="hint"
+              />
+            ) : (
+              <></>
+            )}
           </Box>
         </Stack>
       </Stack>
@@ -116,7 +129,7 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            onDelete(card?.cardVocabId,handleToggleDelete);
+            onDelete(card?.cardVocabId, handleToggleDelete);
           }}
         />
       ) : (

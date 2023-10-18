@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 
-const useGrammarCardEdit = ({ handleToggleForm }) => {
+const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
   const [grammarList, setGrammarList] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -32,8 +32,8 @@ const useGrammarCardEdit = ({ handleToggleForm }) => {
         setLoading(false);
       }
     };
-    getGrammarList();
-  }, [setId]);
+    if(!importing) getGrammarList();
+  }, [setId,importing]);
 
   const addCard = async (newGrammarCard) => {
     try {

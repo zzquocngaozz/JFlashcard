@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 import { utils, read } from "xlsx";
+import {parseVocaExcel,parseGrammaExcel,parseKanjiExcel} from '../utils/parseData'
 
 const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
   const [dataSet, setDataSet] = useState(null);
@@ -124,13 +125,15 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const json = utils.sheet_to_json(worksheet);
-      const jsonWithoutRowNum = json.map((item) => {
-        // Sử dụng destructuring để tạo một bản sao của đối tượng
-        const { __rownum__, ...newItem } = item;
-        return newItem;
-      });
-      console.log(JSON.stringify(jsonWithoutRowNum));
-      console.log("test async");
+      console.log(json)
+      // Modify the JSON keys as needed
+      const jsonParsed = dataSet.type === 1
+      ? parseKanjiExcel(json)
+      : dataSet.type === 2
+      ? parseVocaExcel(json)
+      : parseGrammaExcel(json)
+      
+      
       // gui ve backend
       try {
         const config = {
@@ -141,21 +144,27 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
         };
         const url =
           dataSet.type === 1
-            ? `/createfls/${setId}/edit/kanji-card`
+            ? `/createfls/${setId}/import/kanji-card`
             : dataSet.type === 2
-            ? `/createfls/${setId}/edit/vocab-card`
-            : `/createfls/${setId}/edit/grammar-card`;
+            ? `/createfls/${setId}/import/vocab-card`
+            : `/createfls/${setId}/import/grammar-card`;
         // Gửi yêu cầu post để thêm mới dữ liệu
-        // const response = await axios.put(
-        //   url,
-        //   JSON.stringify(JSON.stringify(jsonWithoutRowNum)),
-        //   config
-        // );
-        console.log('come 154')
+        const response = await axios.post(
+          url,
+          JSON.stringify(jsonParsed),
+          config
+        );
+        
         setImporting(false);
       } catch (error) {
         setImporting(false);
         console.log("Error:", error.response?.data?.errors?.body[0]);
+        setAlert({
+          open: true,
+          severity: "error",
+          message:
+            "Nhập không thành công vui lòng đổi tên cột giống trong phần hướng dẫn",
+        });
       }
     };
     reader.readAsArrayBuffer(e.target.files[0]);

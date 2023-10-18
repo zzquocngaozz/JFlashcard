@@ -7,7 +7,7 @@ import KanjiDialogForm from "./Dialog/KanjiDialogForm";
 import KanjiCardEdit from "./Cards/KanjiCardEdit";
 import useKanjiCardEdit from "../hooks/useKanjiCardEdit";
 // TODO: create hook get list kanji
-const KanjiCardEditContainer = () => {
+const KanjiCardEditContainer = ({importing}) => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleToggleForm = useCallback(() => {
@@ -15,11 +15,11 @@ const KanjiCardEditContainer = () => {
   }, [openForm]);
 
   const { kanjiList, loading, mutationing, addCard, updateCard, deleteCard } =
-    useKanjiCardEdit({ handleToggleForm });
+    useKanjiCardEdit({ handleToggleForm,importing });
 
   return (
     <Stack>
-      {loading ? (
+      {loading||importing ? (
         <Box>
           <Skeleton
             variant="rectangular"

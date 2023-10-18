@@ -12,6 +12,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
+import placeholder from "../../assets/images/placeholder.png";
 
 const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -121,7 +122,17 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
           <Box
             sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
           >
-            <img srcSet={card?.imgUrl} alt="trick remeber" />
+            {!!card?.imgUrl ? (
+              <img
+                src={card?.imgUrl}
+                onError={(e) => {
+                  e.target.src = placeholder;
+                }}
+                alt="hint"
+              />
+            ) : (
+              <></>
+            )}
           </Box>
         </Stack>
       </Stack>

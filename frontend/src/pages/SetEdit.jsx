@@ -41,8 +41,6 @@ const VisuallyHiddenInput = styled("input")({
 });
 const SetEdit = () => {
   // hook
-  const { setId } = useParams();
-
   // -------------- State area
   // const [flashcardSet, setFlashcardSet] = useState({
   //   flashcardSetId: 123,
@@ -174,11 +172,11 @@ const SetEdit = () => {
           </Stack>
           <Stack sx={{ margin: "20px 150px" }}>
             {flashcardSet.type === 1 ? (
-              <KanjiCardEditContainer />
+              <KanjiCardEditContainer importing={importing}/>
             ) : flashcardSet.type === 2 ? (
               <VocaCardEditContainer importing={importing} />
             ) : (
-              <GrammarCardEditConainer />
+              <GrammarCardEditConainer importing={importing} />
             )}
           </Stack>
         </>

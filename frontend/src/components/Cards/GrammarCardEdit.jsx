@@ -12,19 +12,24 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
+import placeholder from "../../assets/images/placeholder.png";
 
-const GrammarCardEdit = ({ card, index, updateCard, deleteCard, mutationing }) => {
+const GrammarCardEdit = ({
+  card,
+  index,
+  updateCard,
+  deleteCard,
+  mutationing,
+}) => {
   const [openFormEdit, setOpenFormEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
   const handleToggleForm = useCallback(() => {
     setOpenFormEdit(!openFormEdit);
-    
   }, [openFormEdit]);
 
   const handleToggleDelete = useCallback(() => {
     setOpenDelete(!openDelete);
-    
   }, [openDelete]);
 
   const handleUpdate = (data) => {
@@ -119,7 +124,17 @@ const GrammarCardEdit = ({ card, index, updateCard, deleteCard, mutationing }) =
           <Box
             sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
           >
-            {!!card?.imgUrl?<img srcSet={card?.imgUrl} alt="hint" />:<></>}
+            {!!card?.imgUrl ? (
+              <img
+                src={card?.imgUrl}
+                onError={(e) => {
+                  e.target.src = placeholder;
+                }}
+                alt="hint"
+              />
+            ) : (
+              <></>
+            )}
           </Box>
         </Stack>
       </Stack>
