@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { role } from '../utils/regexRole';
-import useCreateFolder from '../hooks/useCreateFolder';
+import useSnapBarAlert from '../hooks/useSnapBarAlert';
+import SnapBarAlter from '../components/FeedBack/SnapBarAlter';
+import useJoinClass from '../hooks/useJoinClass';
 
-const CreateFolder = () => {
+const JoinClass = () => {
   const {
     register,
     handleSubmit,
@@ -15,9 +17,10 @@ const CreateFolder = () => {
   } = useForm();
   const navigate = useNavigate();
 
-  const { loading, createFolder } = useCreateFolder();
+  const {alert, setAlert,handleCloseSnackBar} = useSnapBarAlert()
+  const { loading, joinClass } = useJoinClass({setAlert});
 
-
+  
   return (
     <>
     <LayoutNormal>
@@ -30,30 +33,18 @@ const CreateFolder = () => {
         }}
       >
         <Paper sx={{ padding: "30px", width: 500, maxHeight: 500 }}>
-          <Typography variant="h5">Tạo thư mục</Typography>
-          <Typography variant="h7">Nhóm những học phần liên quan vào để việc tìm và ôn tập chúng dễ dàng hơn</Typography>
+          <Typography variant="h5">Tham gia lớp học</Typography>
+          <Typography variant="h7">Tham gia vào lớp học để có những bộ flashcard chất lượng cho việc học tiếng Nhật của bạn</Typography>
           <br />
-          <form onSubmit={handleSubmit(createFolder)} noValidate>
-            <Stack flexDirection={"column"} sx={{ gap: "20px", mt:"40px" }}>
+          <form onSubmit={handleSubmit(joinClass)} noValidate>
+            <Stack flexDirection={"column"} sx={{ mt:"40px" }}>
               <TextField
-                {...register("title", role["title"])}
+                {...register("classCode", role["classCode"])}
                 id="title-helper-text"
                 type="text"
-                label="Tiêu đề*"
-                error={!!errors.title}
-                helperText={errors.title?.message}
-                variant="outlined"
-              />
-              <TextField
-                {...register("description", role["description"])}
-                id="description-helper-text"
-                type="text"
-                label="Mô tả"
-                multiline
-                rows={2}
-                maxRows={4}
-                error={!!errors.description}
-                helperText={errors.description?.message}
+                label="Mã lớp học*"
+                error={!!errors.classCode}
+                helperText={errors.classCode?.message}
                 variant="outlined"
               />
               <Stack
@@ -65,7 +56,7 @@ const CreateFolder = () => {
                 }}
               >
                 <Button disabled={!isDirty} type="submit" variant="contained">
-                  Tạo
+                  Tham gia
                 </Button>
                 <Button
                   color="error"
@@ -82,9 +73,10 @@ const CreateFolder = () => {
           </form>
         </Paper>
       </Stack>
+      {alert.open?<SnapBarAlter handleCloseSnackBar={handleCloseSnackBar} alert={alert}/>:<></>} 
     </LayoutNormal>
     </>
   )
 }
 
-export default CreateFolder
+export default JoinClass
