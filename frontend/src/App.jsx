@@ -19,6 +19,15 @@ import SearchPage from './pages/SearchPage';
 import ChangePass from './pages/ChangePass';
 import SetEdit from './pages/SetEdit';
 import { UserView } from './pages/UserView';
+import LibRoot from './routes/LibRoot';
+import { LibSets } from './pages/LibSets';
+import LibBookMarked from './pages/LibBookMarked';
+import LibClasses from './pages/LibClasses';
+import LibFolders from './pages/LibFolders';
+import CreateFolder from './pages/CreateFolder';
+import JoinClass from './pages/JoinClass';
+import CreateClass from './pages/CreateClass';
+import AuthoRoute from './routes/AuthoRoute';
 
 function App() {
   return (
@@ -40,10 +49,19 @@ function App() {
         <Route path="/history" element={<AuthenRoute element={<LearnHistory/>}/>}/>
         <Route path="/latest" element={<AuthenRoute element={<NotFound />}/>}/>
         <Route path="/create-set" element={<AuthenRoute element={<CreateSet />}/>}/>
+        <Route path="/create-folder" element={<AuthenRoute element={<CreateFolder />}/>}/>
+        <Route path="/join-class" element={<AuthenRoute element={<JoinClass />}/>}/>
+
+        <Route path="/create-class" element={<AuthoRoute role={1} element={<CreateClass/>}/>}/>
+
         <Route path="/:setId/edit" element={<AuthenRoute element={<SetEdit />}/>}/>
-        <Route path="/my-sets" element={<AuthenRoute element={<NotFound />}/>}/>
-        <Route path="/my-folder" element={<AuthenRoute element={<NotFound />}/>}/>
-        <Route path="/my-class" element={<AuthenRoute element={<NotFound />}/>}/>
+        <Route path="/my-lib"  element={<AuthenRoute element={<LibRoot />}/>}>
+          <Route path="/my-lib/recent" index element={<AuthenRoute element={<LearnHistory />}/>}/>
+          <Route path="/my-lib/sets" element={<AuthenRoute element={<LibSets />}/>}/>
+          <Route path="/my-lib/folders" element={<AuthenRoute element={<LibFolders />}/>}/>
+          <Route path="/my-lib/classes" element={<AuthenRoute element={<LibClasses />}/>}/>
+          <Route path="/my-lib/marked" element={<AuthenRoute element={<LibBookMarked />}/>}/>
+        </Route>
         <Route path='/signout' element={<LogoutRoute/>}/>
         <Route path='/access-denied' element={<AccessDenied/>}/>
         <Route path='*' element={<NotFound/>}/>

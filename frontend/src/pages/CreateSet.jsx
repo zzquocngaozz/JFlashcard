@@ -27,7 +27,6 @@ const CreateSet = () => {
   const navigate = useNavigate();
 
   const { loading, createSet } = useAddSet();
-  const { color, setColor } = useAuth();
 
   return (
     <LayoutNormal>
@@ -40,7 +39,7 @@ const CreateSet = () => {
         }}
       >
         <Paper sx={{ padding: "30px", width: 500, maxHeight: 500 }}>
-          <Typography variant="h5">Tạo bộ mới {color}</Typography>
+          <Typography variant="h5">Tạo bộ mới</Typography>
           <br />
           <form onSubmit={handleSubmit(createSet)} noValidate>
             <Stack flexDirection={"column"} sx={{ gap: "20px" }}>

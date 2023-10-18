@@ -154,5 +154,16 @@ export const role={
             value:5000,
             message:'Link ảnh không quá 5000 ký tự'
         }
+    },
+    classCode:{
+        required:"Mã lớp không thể để trống",
+        maxLength:{
+            value:8,
+            message:"Mã lớp không quá 8 ký tự"
+        },
+        pattern:{
+            value:/^[a-z0-9]$/i,
+            message:"Chỉ bao gồm số và chữ thường"
+        }
     }
 }
