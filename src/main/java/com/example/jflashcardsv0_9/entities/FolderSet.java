@@ -7,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,10 +16,10 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "folder")
+@Table(name = "folderset")
 @Entity
 @Builder
-public class Folder implements Serializable {
+public class FolderSet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "folderId")
