@@ -26,4 +26,9 @@ public interface UserService {
     void addUser(UserDTO userDTO);
 
     void changePassword(TokenDTO tokenDTO, MyUserDetail myUserDetail);
+
+
+    void forgotPassword(TokenDTO tokenDTO);
+
+    public boolean sendOTP(String email);
 }
