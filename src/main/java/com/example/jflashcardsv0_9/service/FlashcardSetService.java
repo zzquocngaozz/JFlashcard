@@ -1,8 +1,10 @@
 package com.example.jflashcardsv0_9.service;
 
 import com.example.jflashcardsv0_9.dto.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
 
 public interface FlashcardSetService {
     IdDTO createFlashcardSet(FlashcardSetDTORequest flashcardSetDTORequest, long userID);
@@ -32,6 +34,9 @@ public interface FlashcardSetService {
     void updateVocabCard(VocabDTO vocabDTO, long userID, long setId);
 
     void deleteFlvocab(long cardId);
+
+    // tính count cua các card bang type
+    long numberCard(long setId,int type);
 
 
 

@@ -54,8 +54,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public FlashcardSetDTOResponse viewFlashcardSetResponse(long setid, long userid) {
         CheckAuthandsetfound(userid,setid);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
-        User user = userRepository.getUserByUserId(userid);
-        return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet,user);
+        return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet);
     }
     @Override
     public FlashcardSetDTOResponse updateFlashcardSetResponse(FlashcardSetDTORequest flashcardSetDTORequest, long setid, long userid) {
@@ -66,8 +65,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardSet.setPrivate(flashcardSetDTORequest.isPrivate());
         flashcardSetRepository.save(flashcardSet);
         flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
-        User user = userRepository.getUserByUserId(userid);
-        return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet,user);
+        return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet);
     }
 
     @Override
@@ -228,5 +226,26 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void deleteFlvocab(long cardId) {
         FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(cardId);
         flashcardVocabRepository.delete(flashcardVocab);
+    }
+
+    @Override
+    public long numberCard(long setId, int type) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        //kanji
+        if(type == 1){
+            List<FlashcardKanji> flashcardKanjis = flashcardKanjiRepository.findAllByFlashcardSet(flashcardSet);
+            return flashcardKanjis.size();
+        }
+        // tu vựng
+        else if (type == 2){
+            List<FlashcardVocab> flashcardVocabs = flashcardVocabRepository.findAllByFlashcardSet(flashcardSet);
+            return flashcardVocabs.size();
+        }
+        // ngữ pháp
+        else if (type == 3){
+            List<FlashcardGrammar> flashcardGrammars = flashcardGrammarRepository.findAllByFlashcardSet(flashcardSet);
+            return flashcardGrammars.size();
+        }
+        return 0;
     }
 }
