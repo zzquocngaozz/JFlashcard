@@ -3,15 +3,19 @@ package com.example.jflashcardsv0_9.service.implement;
 import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.entities.Role;
 import com.example.jflashcardsv0_9.entities.User;
+import com.example.jflashcardsv0_9.entities.UserRequest;
 import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.RoleRepository;
 import com.example.jflashcardsv0_9.repository.UserRepository;
+import com.example.jflashcardsv0_9.repository.UserRequestRepository;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
+import com.example.jflashcardsv0_9.service.SendEmailService;
 import com.example.jflashcardsv0_9.service.UserService;
 import com.example.jflashcardsv0_9.util.JwtTokenUtil;
 import com.example.jflashcardsv0_9.exception.*;
 
+import com.example.jflashcardsv0_9.util.RandomTokenUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,6 +40,12 @@ public class UserServiceImpl implements UserService {
     JwtTokenUtil jwtTokenUtil;
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    UserRequestRepository userRequestRepository;
+
+    @Autowired
+    SendEmailService sendEmailService;
     @Override
     public UserDTO registration( RegisterDTO registerDTO) {
         CheckRegisterDTO(registerDTO);
@@ -186,5 +196,46 @@ public class UserServiceImpl implements UserService {
         if(!isCorrectPass) throw new AppException(Error.PASSWORD_FALSE);
         user.setPassword(passwordEncoder.encode(tokenDTO.getNewPassword()));
         userRepository.save(user);
+    }
+
+    @Override
+    public void forgotPassword(TokenDTO tokenDTO) {
+        Optional<UserRequest> optionalUserRequest = userRequestRepository.findByToken(tokenDTO.getToken());
+
+        if (optionalUserRequest.isEmpty())
+            throw new AppException(Error.VERIFY_FALSE);
+
+        UserRequest userRequest = optionalUserRequest.get();
+        if (RandomTokenUtil.checkExpire(userRequest.getExpireAt()))
+            throw new AppException(Error.TOKEN_EXPIRE);
+        userRequestRepository.delete(userRequest);// clearn token after verify
+        User verifyUser = userRequest.getUser();
+        System.out.println(tokenDTO.toString());
+        verifyUser.setPassword(passwordEncoder.encode(tokenDTO.getNewPassword()));
+        User updatedUser = userRepository.save(verifyUser);
+        System.out.print(verifyUser.toString());
+    }
+
+    @Override
+    public boolean sendOTP(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty())
+            throw new AppException(Error.USER_NOT_FOUND);
+        Optional<UserRequest> optionalUR = userRequestRepository.findByRequestTypeAndUserEmail(1, email);
+        if (optionalUR.isPresent()) {
+            userRequestRepository.delete(optionalUR.get());// clear neu ton tai otp truoc do
+        }
+        String token = RandomTokenUtil.generateToken();
+        // get token
+        userRequestRepository.save(UserRequest.builder()
+                .requestType(1)
+                .token(token)
+                .createAt(new Date(System.currentTimeMillis()))
+                .expireAt(new Date(System.currentTimeMillis() + 15 * 60 * 1000))// 15 phut
+                .user(optionalUser.get())
+                .build());
+        sendEmailService.sendOTPToken(email, token);//send token
+        //
+        return true;
     }
 }
