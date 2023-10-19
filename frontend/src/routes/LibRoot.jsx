@@ -26,7 +26,7 @@ const LibRoot = () => {
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    if (location.pathname === "/my-lib") navigate("/my-lib/sets");
+    // if (location.pathname === "/my-lib") navigate("/my-lib/sets");
   }, [navigate]);
 
   const linkRefs = [
@@ -87,7 +87,7 @@ const LibRoot = () => {
               {currentUser?.userName.toUpperCase()[0]}
             </Avatar>
             <Stack>
-              <Typography variant="h5" pl={2}>
+              <Typography variant="h5" component={'div'} pl={2}>
                 {currentUser.firstName + " "} {currentUser.lastName}
                 <Chip
                   label={ROLE[currentUser.role]}
