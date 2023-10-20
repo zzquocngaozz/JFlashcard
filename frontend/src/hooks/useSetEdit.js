@@ -132,7 +132,8 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
       : dataSet.type === 2
       ? parseVocaExcel(json)
       : parseGrammaExcel(json)
-      
+
+      console.log(jsonParsed)
       
       // gui ve backend
       try {

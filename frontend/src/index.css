@@ -44,3 +44,13 @@ img{
 .text--up{
   text-transform: uppercase;
 }
+
+.text--cap{
+  text-transform: capitalize;
+}
+
+.text--overflow{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

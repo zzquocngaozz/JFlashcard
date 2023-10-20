@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate,  useLocation } from 'react-router-dom'
 import useAuth from '../hooks/useAuth';
 
-const AuthoRoute = ({element,}) => {
+const AdminRoute = ({element}) => {
     const {isLogin,currentUser} = useAuth();
     const location = useLocation()
     console.log(currentUser?.userId," ",)
@@ -14,4 +14,4 @@ const AuthoRoute = ({element,}) => {
   )
 }
 
-export default AuthoRoute
+export default AdminRoute

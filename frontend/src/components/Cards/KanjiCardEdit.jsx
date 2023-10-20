@@ -74,7 +74,7 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Typography variant="h3">{card?.term}</Typography>
+          <Typography variant="h6">{card?.term}</Typography>
         </Stack>
 
         <Stack flex={7} height={"100%"} p={1} position={"relative"} spacing={1}>

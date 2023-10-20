@@ -1,9 +1,12 @@
 import { Button, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import notfoundsvg from '../assets/images/notfound.svg'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-const NotFound = () => {
+const AccessDenied = () => {
+    useEffect(()=>{
+      document.title="Truy cập bị chặn"
+    },[])
     const navigate = useNavigate()
   return (
     <Stack sx={{
@@ -28,4 +31,4 @@ const NotFound = () => {
   )
 }
 
-export default NotFound
+export default AccessDenied
