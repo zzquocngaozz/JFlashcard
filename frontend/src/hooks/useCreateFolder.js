@@ -19,10 +19,10 @@ const useCreateFolder = () => {
         }
         try{
             console.log(data)
-            // const response = await axios.post("/createfls", JSON.stringify(data) ,config )
-            // const url = `/${1}/edit`
-            // const url = `/${response.data.id}/edit`
-           // navigate(url)
+            const response = await axios.post("/createfolder", JSON.stringify(data) ,config )
+            // const url = `folder/${1}`
+            const url = `/folders/${response.data.id}`
+            navigate(url)
             //console.log(response.data)
         } catch(error){
             setLoading(false)

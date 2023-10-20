@@ -12,7 +12,9 @@ const useFolder = ({ handleToggleUpdate }) => {
   const navigate = useNavigate();
 
   const updateNumSet = (isAcs)=>{
-    dataFolder.numberSet = isAcs?dataFolder.numberSet++:dataFolder.numberSet--
+    const numberSet = isAcs?(dataFolder.numberSet+1):(dataFolder.numberSet-1)
+    const newFolder = {...dataFolder,numberSet:numberSet}
+    setDataFolder(newFolder)    
   }
 
   useEffect(() => {
@@ -25,16 +27,16 @@ const useFolder = ({ handleToggleUpdate }) => {
             Authorization: accessToken,
           },
         };
-        // const response = await axios.get(`/createfls/${setId}`, config);
-        // setDataFolder(response.data);
-        setDataFolder({
-          folderId: 1,
-          title: "Từ vựng tiếng nhật",
-          description: "Từ vựng tiếng nhật",
-          createdAt: "2023-10-04",
-          numberSet: 1,
-          userId: 6,
-        })
+        const response = await axios.get(`/createfolder/${folderId}/view-folder`, config);
+        setDataFolder(response.data);
+        // setDataFolder({
+        //   folderId: 1,
+        //   title: "Từ vựng tiếng nhật",
+        //   description: "Từ vựng tiếng nhật",
+        //   createdAt: "2023-10-04",
+        //   numberSet: 1,
+        //   userId: 6,
+        // })
         setLoading(false);
       } catch (error) {
         // log ra status
@@ -57,12 +59,12 @@ const useFolder = ({ handleToggleUpdate }) => {
           "Content-Type": "application/json",
         },
       };
-      // Gửi yêu cầu post để thêm mới dữ liệu
-      // const response = await axios.put(
-      //   `/createfls/${folderId}`,
-      //   JSON.stringify(data),
-      //   config
-      // );
+      // Gửi yêu cầu put để update
+      const response = await axios.put(
+        `/createfolder/${folderId}/edit`,
+        JSON.stringify(data),
+        config
+      );
       const newFlashFolder = { ...dataFolder, ...data };
       setDataFolder(newFlashFolder);
       handleToggleUpdate();
@@ -83,8 +85,9 @@ const useFolder = ({ handleToggleUpdate }) => {
         },
       };
       // Gửi yêu cầu delete để xoá dữ liệu
-      // const response = await axios.delete(`/createfls/${folderId}`, config);
-      // navigate("/");
+      const response = await axios.delete(`/createfolder/${folderId}/edit`, config);
+      navigate("/");
+      console.log("?")
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);

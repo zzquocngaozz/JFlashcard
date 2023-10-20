@@ -8,7 +8,7 @@ import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import { parseBirth } from "../../utils/datetimeCalc";
 const FolderSingle = ({ folder }) => {
   return (
-    <StackCardLink to={"#"}>
+    <StackCardLink to={`/folders/${folder.folderId}`}>
       <Stack spacing={1}>
         <StackList>
           <FolderOpenIcon />

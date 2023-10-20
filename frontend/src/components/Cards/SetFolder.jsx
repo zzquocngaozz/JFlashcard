@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Avatar, Chip, IconButton, Stack, Tooltip, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
@@ -17,37 +17,47 @@ import { ActionHolderStack, StackList, StarHolderStack } from "../Styled/StyledS
  * 
 */
 const SetFolder = ({ flashcardSet,onDelete }) => {
+  const [isNavigationDisabled, setIsNavigationDisabled] = useState(false);
+
+  const handleDelete = (flashcardSetId) => {
+    setIsNavigationDisabled(true); // Ngăn chặn điều hướng
+    onDelete(flashcardSetId);
+  };
+
   return (
-    <StackCardLink to={"/"}>
+    <StackCardLink to={"/"}  onClick={(e) => isNavigationDisabled && e.preventDefault()}>
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />
-          <Typography variant="h5">{flashcardSet.title}</Typography>
+          <Typography variant="h5">{flashcardSet?.title}</Typography>
         </StackList>
         <Chip
-        label={SET_TYPE[flashcardSet.type]}
+        label={SET_TYPE[flashcardSet?.type]}
         sx={{width:'100px'}}
         />
         <StackList>
           <NoteOutlinedIcon />
-          <Typography>{flashcardSet.numberCard + " "} thẻ flashcard</Typography>
+          <Typography>{flashcardSet?.numberCard + " "} thẻ flashcard</Typography>
         </StackList>
         <StackList>
           <AccessTimeIcon sx={{ color: "#079" }} />
-          <Typography>{parseBirth(flashcardSet.createdAt)}</Typography>
+          <Typography>{parseBirth(flashcardSet?.createdAt)}</Typography>
         </StackList>
       </Stack>
-      <Tooltip title={`${flashcardSet.numberVote} người đã đánh giá`}>
+      <Tooltip title={`${flashcardSet?.numberVote} người đã đánh giá`}>
         <StarHolderStack>
           <StarIcon sx={{ color: "#ff9800" }} />
           <Typography>
-            {flashcardSet.votePoint + " "}({flashcardSet.numberVote})
+            {flashcardSet?.votePoint + " "}({flashcardSet?.numberVote})
           </Typography>
         </StarHolderStack>
       </Tooltip>
       <Tooltip title={`Xoá khỏi thư mục`}>
         <ActionHolderStack>
-        <IconButton onClick={()=>onDelete(flashcardSet.flashcardSetId)}>
+        <IconButton onClick={(event)=>{
+          event.preventDefault()
+          onDelete(flashcardSet?.flashcardSetId)
+          }}>
           <DeleteForeverIcon color="error" />
         </IconButton>
         </ActionHolderStack>
@@ -57,16 +67,16 @@ const SetFolder = ({ flashcardSet,onDelete }) => {
           sx={{
             width: 40,
             height: 40,
-            bgcolor: `${getColorFromEnum(flashcardSet.authoDTO?.userName[0])}`,
+            bgcolor: `${getColorFromEnum(flashcardSet?.authDTO?.userName[0])}`,
           }}
         >
-          {flashcardSet.authoDTO?.userName.toUpperCase()[0]}
+          {flashcardSet?.authDTO?.userName.toUpperCase()[0]}
         </Avatar>
         <Typography>
-          {flashcardSet.authoDTO.userName + " "}
+          {flashcardSet?.authDTO?.userName + " "}
         </Typography>
         <Chip
-        label={ROLE[flashcardSet.authoDTO.role]}
+        label={ROLE[flashcardSet?.authDTO.role]}
         width={50}
         />
       </StackList>
