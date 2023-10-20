@@ -29,13 +29,17 @@ import { fuzzySearch } from "../../utils/search";
 
 // truyền vào defaultValue(optional) togglefunc updatefunc
 // TODO: lam edit form
-export default function AddFolderSetDialog({ handleToggle, setAdding }) {
+export default function AddFolderSetDialog({
+  handleToggle,
+  setAdding,
+  updateNumSet,
+}) {
   const [searchParam, setSearchParam] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [listSet, setListSet] = React.useState(null)
-  const [pagingList, setPaginList] = React.useState(null)
+  const [listSet, setListSet] = React.useState(null);
+  const [pagingList, setPaginList] = React.useState(null);
   const { listExist, loading, mutationing, addSetToFolder } = useListCreatedSet(
-    { setAdding }
+    { setAdding, updateNumSet }
   );
   const handleSearch = (e) => {
     setSearchParam(e.target.value.trim());
@@ -44,9 +48,8 @@ export default function AddFolderSetDialog({ handleToggle, setAdding }) {
   useEffect(() => {
     const filterData = setTimeout(() => {
       if (!!listExist) {
-        const result = listExist.filter(
-          (set) =>
-          fuzzySearch(searchParam,set?.title)
+        const result = listExist.filter((set) =>
+          fuzzySearch(searchParam, set?.title)
         );
         setListSet(result);
 
@@ -65,9 +68,9 @@ export default function AddFolderSetDialog({ handleToggle, setAdding }) {
     setPaginList(pagingList);
   }, [currentPage, listSet]);
 
-  useEffect(()=>{
-    setListSet(listExist)
-  },[listExist])
+  useEffect(() => {
+    setListSet(listExist);
+  }, [listExist]);
   const handleChangePaging = (e, value) => {
     setCurrentPage(value);
   };
@@ -78,15 +81,13 @@ export default function AddFolderSetDialog({ handleToggle, setAdding }) {
         sx={{ "& .MuiPaper-root": { maxWidth: "calc(100vw - 100px)" } }}
         onClose={handleToggle}
       >
-        <DialogTitle>
-          Thêm bộ flashcard
-        </DialogTitle>
-          <TextField
-            onChange={handleSearch}
-            label="Tìm kiếm"
-            variant="outlined"
-            sx={{margin:"0 35px 0 25px"}}
-          />
+        <DialogTitle>Thêm bộ flashcard</DialogTitle>
+        <TextField
+          onChange={handleSearch}
+          label="Tìm kiếm"
+          variant="outlined"
+          sx={{ margin: "0 35px 0 25px" }}
+        />
         <DialogContent sx={{ width: "600px", height: "700px" }}>
           <Stack
             sx={{
@@ -164,24 +165,29 @@ export default function AddFolderSetDialog({ handleToggle, setAdding }) {
                     variant="contained"
                     disabled={mutationing}
                     color="secondary"
-                    
                     onClick={() => addSetToFolder(set.flashcardSetId)}
                   >
-                    <AddCircleIcon sx={{width:"40px", height:"40px"}} />
+                    <AddCircleIcon sx={{ width: "40px", height: "40px" }} />
                   </IconButton>
                 </StackList>
               ))
             )}
           </Stack>
         </DialogContent>
-        <DialogActions sx={{justifyContent:"space-between"}}>
-        {(
-          <Pagination
-            count={Math.ceil(listSet?.length / 4.0)}
-            color="primary"
-            onChange={handleChangePaging}
-          />
-        )}
+        <DialogActions sx={{ justifyContent: "space-between" }}>
+          {!!listSet ? (
+            <Pagination
+              count={Math.ceil(listSet?.length / 4.0)}
+              color="primary"
+              onChange={handleChangePaging}
+            />
+          ) : (
+            <Pagination
+              count={1}
+              color="primary"
+              onChange={handleChangePaging}
+            />
+          )}
           <Button
             startIcon={<DoneIcon />}
             onClick={handleToggle}

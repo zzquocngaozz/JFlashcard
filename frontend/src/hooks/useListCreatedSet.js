@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 
-const useListCreatedSet = ({ setAdding }) => {
+const useListCreatedSet = ({ setAdding,updateNumSet }) => {
   const [listExist, setListExist] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -20,128 +20,129 @@ const useListCreatedSet = ({ setAdding }) => {
             Authorization: accessToken,
           },
         };
-        // const response = await axios.get(`/createfls/${setId}`, config);
-        // setDataFolder(response.data);
-        setListExist([{
-          flashcardSetId: 1,
-          title: "Từ vựng thông dụng",
-          description:
-            "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-          numberCard: 60,
-          createdAt: "2023/10/10",
-          type: 1,
-          private: false,
-          authoDTO: {
-            userId: 1,
-            userName: "ducpa01",
-            role: 1,
-          },
-        },
-        {
-          flashcardSetId: 2,
-          title: "Từ vựng thông dụng",
-          description:
-            "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-          numberCard: 60,
-          createdAt: "2023/10/10",
-          type: 1,
-          private: false,
-          authoDTO: {
-            userId: 1,
-            userName: "ducpa01",
-            role: 1,
-          },
-        },
-        {
-          flashcardSetId: 3,
-          title: "Từ vựng thông dụng",
-          description:
-            "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-          numberCard: 60,
-          createdAt: "2023/10/10",
-          type: 3,
-          private: false,
-          authoDTO: {
-            userId: 1,
-            userName: "ducpa01",
-            role: 1,
-          },
-        },
-        {
-          flashcardSetId: 4,
-          title: "Từ vựng thông dụng",
-          description:
-            "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-          numberCard: 60,
-          createdAt: "2023/10/10",
-          type: 3,
-          private: false,
-          authoDTO: {
-            userId: 1,
-            userName: "ducpa01",
-            role: 2,
-          },
-        },
-        {
-          flashcardSetId: 5,
-          title: "Từ vựng thông dụng",
-          description:
-            "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-          numberCard: 60,
-          createdAt: "2023/10/10",
-          type: 2,
-          private: false,
-          authoDTO: {
-            userId: 1,
-            userName: "ducpa01",
-            role: 1,
-          },
-        },
-        {
-          flashcardSetId: 6,
-          title: "Từ vựng giáo trình minanonihongo",
-          description:
-            "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-          numberCard: 60,
-          createdAt: "2023/10/10",
-          type: 2,
-          private: false,
-          authoDTO: {
-            userId: 1,
-            userName: "ducpa01",
-            role: 1,
-          },
-        },
-        {
-          flashcardSetId: 7,
-          title: "Từ vựng minna",
-          description:
-            "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-          numberCard: 60,
-          createdAt: "2023/10/10",
-          type: 2,
-          private: false,
-          authoDTO: {
-            userId: 1,
-            userName: "ducpa01",
-            role: 1,
-          },
-        },
-        {
-          flashcardSetId: 8,
-          title: "Từ vựng thông dụng",
-          description:
-            "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-          numberCard: 60,
-          createdAt: "2023/10/10",
-          type: 2,
-          private: false,
-          authoDTO: {
-            userId: 1,
-            userName: "ducpa01",
-            role: 1,
-          }
-        }])
+        const response = await axios.get(`/createfolder/${folderId}/get-all-set`, config);
+        console.log(response.data)
+        setListExist(response.data);
+        // setListExist([{
+        //   flashcardSetId: 1,
+        //   title: "Từ vựng thông dụng",
+        //   description:
+        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //   numberCard: 60,
+        //   createdAt: "2023/10/10",
+        //   type: 1,
+        //   private: false,
+        //   authoDTO: {
+        //     userId: 1,
+        //     userName: "ducpa01",
+        //     role: 1,
+        //   },
+        // },
+        // {
+        //   flashcardSetId: 2,
+        //   title: "Từ vựng thông dụng",
+        //   description:
+        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //   numberCard: 60,
+        //   createdAt: "2023/10/10",
+        //   type: 1,
+        //   private: false,
+        //   authoDTO: {
+        //     userId: 1,
+        //     userName: "ducpa01",
+        //     role: 1,
+        //   },
+        // },
+        // {
+        //   flashcardSetId: 3,
+        //   title: "Từ vựng thông dụng",
+        //   description:
+        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //   numberCard: 60,
+        //   createdAt: "2023/10/10",
+        //   type: 3,
+        //   private: false,
+        //   authoDTO: {
+        //     userId: 1,
+        //     userName: "ducpa01",
+        //     role: 1,
+        //   },
+        // },
+        // {
+        //   flashcardSetId: 4,
+        //   title: "Từ vựng thông dụng",
+        //   description:
+        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //   numberCard: 60,
+        //   createdAt: "2023/10/10",
+        //   type: 3,
+        //   private: false,
+        //   authoDTO: {
+        //     userId: 1,
+        //     userName: "ducpa01",
+        //     role: 2,
+        //   },
+        // },
+        // {
+        //   flashcardSetId: 5,
+        //   title: "Từ vựng thông dụng",
+        //   description:
+        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //   numberCard: 60,
+        //   createdAt: "2023/10/10",
+        //   type: 2,
+        //   private: false,
+        //   authoDTO: {
+        //     userId: 1,
+        //     userName: "ducpa01",
+        //     role: 1,
+        //   },
+        // },
+        // {
+        //   flashcardSetId: 6,
+        //   title: "Từ vựng giáo trình minanonihongo",
+        //   description:
+        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //   numberCard: 60,
+        //   createdAt: "2023/10/10",
+        //   type: 2,
+        //   private: false,
+        //   authoDTO: {
+        //     userId: 1,
+        //     userName: "ducpa01",
+        //     role: 1,
+        //   },
+        // },
+        // {
+        //   flashcardSetId: 7,
+        //   title: "Từ vựng minna",
+        //   description:
+        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //   numberCard: 60,
+        //   createdAt: "2023/10/10",
+        //   type: 2,
+        //   private: false,
+        //   authoDTO: {
+        //     userId: 1,
+        //     userName: "ducpa01",
+        //     role: 1,
+        //   },
+        // },
+        // {
+        //   flashcardSetId: 8,
+        //   title: "Từ vựng thông dụng",
+        //   description:
+        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //   numberCard: 60,
+        //   createdAt: "2023/10/10",
+        //   type: 2,
+        //   private: false,
+        //   authoDTO: {
+        //     userId: 1,
+        //     userName: "ducpa01",
+        //     role: 1,
+        //   }
+        // }])
         setLoading(false);
       } catch (error) {
         // log ra status
@@ -155,7 +156,7 @@ const useListCreatedSet = ({ setAdding }) => {
     getSet();
   }, [folderId]);
 
-  const addSetToFolder = async (cardId) => {
+  const addSetToFolder = async (setId) => {
     try {
       setMutationing(true);
       const config = {
@@ -165,15 +166,15 @@ const useListCreatedSet = ({ setAdding }) => {
         },
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
-      // const response = await axios.put(
-      //   `/createfls/${folderId}`,
-      //   JSON.stringify({flashcardSetId:cardId}),
-      //   config
-      // );
-      const newList = listExist.filter((card)=>card.flashcardSetId !== cardId)
+      const response = await axios.post(
+        `/createfolder/${folderId}/get-all-set/${setId}`,
+        "",
+        config
+      );
+      const newList = listExist.filter((card)=>card.flashcardSetId !== setId)
       setListExist(newList);
-      setAdding(prev=>!prev);
-      setAdding(prev=>!prev);
+      updateNumSet(true)
+      setAdding(prev=>!prev)
       setMutationing(false);
     } catch (error) {
       setMutationing(false);

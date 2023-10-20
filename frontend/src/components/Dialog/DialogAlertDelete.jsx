@@ -1,21 +1,23 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import InfoIcon from '@mui/icons-material/Info';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import { Box, Zoom } from '@mui/material';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import InfoIcon from "@mui/icons-material/Info";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { Box, CircularProgress, Stack, Zoom } from "@mui/material";
 
-
-export default function DialogAlertDelete({alertDelete,handleToggleAlertDelete,onDelete}) {
-
-    const handleClose = ()=>{
-        handleToggleAlertDelete()
-    }
-  
+export default function DialogAlertDelete({
+  alertDelete,
+  handleToggleAlertDelete,
+  onDelete,
+  mutationing,
+}) {
+  const handleClose = () => {
+    handleToggleAlertDelete();
+  };
 
   return (
     <>
@@ -23,20 +25,68 @@ export default function DialogAlertDelete({alertDelete,handleToggleAlertDelete,o
         Open form dialog
       </Button> */}
 
-
-      <Dialog open={alertDelete.open} onClose={handleClose}>
+      <Dialog
+        open={alertDelete.open}
+        onClose={handleClose}
+        sx={{ "& .MuiPaper-root": { width: "500px", height: "300px" } }}
+      >
         <DialogTitle>Cảnh báo của hệ thống</DialogTitle>
-        <DialogContent><Zoom in={true}>
-          <Box sx={{color:"blue", mb:3, textAlign:"center"}}><WarningAmberIcon sx={{color:"#d8a200",fontSize:54}}/></Box></Zoom>
-          <DialogContentText textAlign="center">
-             {alertDelete.message}
-          </DialogContentText>
+        <DialogContent>
+          {mutationing ? (
+            <Stack
+              width={"100%"}
+              height={"100%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              sx={{ rowGap: "20px" }}
+            >
+              <Zoom in={true}>
+                <CircularProgress />
+              </Zoom>
+                <DialogContentText textAlign="center">
+                  Đang xoá ....
+                </DialogContentText>
+            </Stack>
+          ) : (
+            <>
+              <Stack
+                width={"100%"}
+                height={"100%"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Zoom in={true}>
+                  <Box sx={{ color: "blue", mb: 3, textAlign: "center" }}>
+                    <WarningAmberIcon sx={{ color: "#d8a200", fontSize: 54 }} />
+                  </Box>
+                </Zoom>
+                <DialogContentText textAlign="center">
+                  {alertDelete.message}
+                </DialogContentText>
+              </Stack>
+            </>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button  onClick={handleClose} type='button'  color='info' variant='contained'>Huỷ</Button>
-          <Button  onClick={onDelete} type='button'  color='error' variant='contained'>Tiếp tục</Button>
+          <Button
+            onClick={handleClose}
+            type="button"
+            color="info"
+            variant="contained"
+            disabled={mutationing}
+          >
+            Huỷ
+          </Button>
+          <Button
+            onClick={onDelete}
+            type="button"
+            color="error"
+            variant="contained"
+            disabled={mutationing}
+          >
+            Tiếp tục
+          </Button>
         </DialogActions>
-        
       </Dialog>
     </>
   );

@@ -1,7 +1,6 @@
 import React from 'react'
 import useFolderSet from '../hooks/useFolderSet'
-import SetSingle from './Cards/SetSingle'
-import { Stack } from '@mui/material'
+import { Box, Skeleton, Stack } from '@mui/material'
 import SetFolder from './Cards/SetFolder'
 
 const FolderSetHolder = ({adding,updateNumSet}) => {
@@ -9,6 +8,7 @@ const FolderSetHolder = ({adding,updateNumSet}) => {
 
 
   const handleDelete = (flashcardSetId)=>{
+    
     deleteFolderSet(flashcardSetId)
     updateNumSet(false)
   }
@@ -26,7 +26,14 @@ const FolderSetHolder = ({adding,updateNumSet}) => {
           transition: "all 1s ease",
         }}
       >
-        {folderSet?.map((flashcardSet) => (
+        {loading?(
+        <Box>
+          <Skeleton
+            variant="rectangular"
+            sx={{ height: "100px", borderRadius: "20px", margin: "10px 0" }}
+          />
+        </Box>
+      ):folderSet?.map((flashcardSet) => (
           <SetFolder
             key={flashcardSet.flashcardSetId}
             flashcardSet={flashcardSet}

@@ -1,37 +1,27 @@
-import React, { createContext, useState } from "react";
+import React, { useState } from "react";
 import LayoutNormal from "../components/Parts/LayoutNormal";
 import {
   Box,
-  Button,
-  Chip,
   IconButton,
-  ListItem,
   Paper,
   Stack,
   Tooltip,
   Typography,
-  styled,
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddIcon from "@mui/icons-material/Add";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
-import { SET_TYPE } from "../utils/constant";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
-import FormEditSetDiaolog from "../components/Dialog/FormEditSetDiaolog";
-import KanjiCardEditContainer from "../components/KanjiCardEditContainer";
-import GrammarCardEditConainer from "../components/GrammarCardEditConainer";
-import VocaCardEditContainer from "../components/VocaCardEditContainer";
-import useSetEdit from "../hooks/useSetEdit";
-import SnapBarAlter from "../components/FeedBack/SnapBarAlter";
-import useSnapBarAlert from "../hooks/useSnapBarAlert";
 import useFolder from "../hooks/useFolder";
 import { StackList } from "../components/Styled/StyledStack";
 import FormFolderDialog from "../components/Dialog/FormFolderDialog";
 import FolderSetHolder from "../components/FolderSetHolder";
 import AddFolderSetDialog from "../components/Dialog/AddFolderSetDialog";
-
+import searhbanner from "../assets/images/searhbanner.png";
+import { Link } from "react-router-dom";
 
 const FolderSet = () => {
   // hook
@@ -56,9 +46,8 @@ const FolderSet = () => {
     setOpenEditFrom(!openEditForm);
   };
 
-
   const handleToggleAdd = () => {
-    console.log('toggled')
+    console.log("toggled");
     setOpenAddSet(!openAddSet);
   };
   const [openEditForm, setOpenEditFrom] = useState(false);
@@ -77,9 +66,10 @@ const FolderSet = () => {
     updateNumSet,
   } = useFolder({ handleToggleUpdate });
 
-  const [adding,setAdding] = useState(false);
+  const [adding, setAdding] = useState(false);
 
-  
+
+  console.log(adding)
   return (
     <LayoutNormal>
       {loading ? (
@@ -89,8 +79,9 @@ const FolderSet = () => {
           <Stack
             component={Paper}
             sx={{
+              position:"relative",
               flexDirection: "row",
-              alignItems:"flex-end",
+              alignItems: "flex-end",
               margin: "20px 150px",
               p: "10px 20px",
               borderRadius: "8px",
@@ -100,10 +91,18 @@ const FolderSet = () => {
               <Typography variant="h5">{dataFolder?.title}</Typography>
               <Typography>{dataFolder?.description}</Typography>
               <StackList>
-                <FilterNoneIcon/><Typography>{dataFolder?.numberSet} bộ flashcard</Typography>
+                <FilterNoneIcon />
+                <Typography>{dataFolder?.numberSet} bộ flashcard</Typography>
               </StackList>
             </Stack>
             <Stack flex={1.5} sx={{ justifyContent: "space-between" }}>
+                <Box component={Link} to={"/my-lib/folders"}  sx={{top:"10px",right:"30px", display:"inline-block", position:"absolute"}}>
+                  <Tooltip title={"Quay lại"}>
+                    <IconButton onClick={handleToggleAdd}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               <Box
                 sx={{
                   display: "flex",
@@ -130,9 +129,24 @@ const FolderSet = () => {
               </Box>
             </Stack>
           </Stack>
-          <Stack sx={{ margin: "20px 150px" }}>
-            <FolderSetHolder adding={adding} updateNumSet={updateNumSet}/>
-          </Stack>
+          {dataFolder.numberSet === 0 ? (
+            <Stack
+              minHeight={150}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Box width={70} height={70}>
+                <img src={searhbanner} loading="lazy" alt="notfound" />
+              </Box>
+              <Typography textAlign={"center"}>
+                Chưa có bộ flashcard nào trong thư mục này của bạn
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack sx={{ margin: "20px 150px" }}>
+              <FolderSetHolder adding={adding} updateNumSet={updateNumSet} />
+            </Stack>
+          )}
         </>
       )}
       {alertDelete.open ? (
@@ -140,6 +154,7 @@ const FolderSet = () => {
           alertDelete={alertDelete}
           handleToggleAlertDelete={handleToggleAlertDelete}
           onDelete={deleteFolder}
+          mutationing={mutationing}
         />
       ) : (
         <></>
@@ -149,14 +164,16 @@ const FolderSet = () => {
           folder={dataFolder}
           handleToggle={handleToggleUpdate}
           updateFolder={updateFolder}
+          
         />
       ) : (
         <></>
       )}
       {openAddSet ? (
         <AddFolderSetDialog
-          setAdding = {setAdding}
+          setAdding={setAdding}
           handleToggle={handleToggleAdd}
+          updateNumSet = {updateNumSet}
         />
       ) : (
         <></>
