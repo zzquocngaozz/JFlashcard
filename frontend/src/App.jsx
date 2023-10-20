@@ -12,7 +12,7 @@ import CreateSet from './pages/CreateSet';
 import UserAdd from './pages/UserAdd';
 import LogoutRoute from './routes/LogoutRoute';
 import AuthenRoute from './routes/AuthenRoute';
-import AdminRoute from './routes/AuthenRoute';
+import AdminRoute from './routes/AdminRoute';
 import Profile from './pages/Profile';
 import LearnHistory from './pages/LearnHistory';
 import SearchPage from './pages/SearchPage';
@@ -28,12 +28,17 @@ import CreateFolder from './pages/CreateFolder';
 import JoinClass from './pages/JoinClass';
 import CreateClass from './pages/CreateClass';
 import AuthoRoute from './routes/AuthoRoute';
+import Recents from './pages/Recents';
+import LayoutNormal from './components/Parts/LayoutNormal';
+import UnAuthenRoute from './routes/UnAuthenRoute';
+import FolderSet from './pages/FolderSet';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<UnAuthenRoute><Home /></UnAuthenRoute> } />
+        <Route path="/home" element={<LayoutNormal><Recents /></LayoutNormal>} />
         <Route path='/signin' element={<Signin/>}/>
         <Route path="/signup" element={<Signup/>} />
         <Route path="/forgotten" element={<Forgotten/>} />
@@ -52,7 +57,7 @@ function App() {
         <Route path="/create-folder" element={<AuthenRoute element={<CreateFolder />}/>}/>
         <Route path="/join-class" element={<AuthenRoute element={<JoinClass />}/>}/>
 
-        <Route path="/create-class" element={<AuthoRoute role={1} element={<CreateClass/>}/>}/>
+        <Route path="/create-class" element={<AuthoRoute role={2} element={<CreateClass/>}/>}/>
 
         <Route path="/:setId/edit" element={<AuthenRoute element={<SetEdit />}/>}/>
         <Route path="/my-lib"  element={<AuthenRoute element={<LibRoot />}/>}>
@@ -62,6 +67,7 @@ function App() {
           <Route path="/my-lib/classes" element={<AuthenRoute element={<LibClasses />}/>}/>
           <Route path="/my-lib/marked" element={<AuthenRoute element={<LibBookMarked />}/>}/>
         </Route>
+        <Route path="/folders/:folderId" element={<AuthenRoute element={<FolderSet />}/>}/>
         <Route path='/signout' element={<LogoutRoute/>}/>
         <Route path='/access-denied' element={<AccessDenied/>}/>
         <Route path='*' element={<NotFound/>}/>

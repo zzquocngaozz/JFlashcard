@@ -4,16 +4,16 @@ import useAuth from '../hooks/useAuth';
 
 
 // route chan nguoi dung chua dang nhap
-const AuthenRoute = ({path,element}) => {
+const UnAuthenRoute = ({path,element}) => {
     const {isLogin} = useAuth();
 
     const location = useLocation()
 
   return (
     <> 
-       {isLogin()? element : <Navigate to="/access-denied" state={{from:location}} replace />}
+       {!isLogin()? element : <Navigate to="/home" state={{from:location}} replace />}
     </>
   )
 }
 
-export default AuthenRoute
+export default UnAuthenRoute

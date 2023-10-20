@@ -17,7 +17,8 @@ const useAuth = ()=>{
     const [currentUser,setCurrentUser] = useState(getJwtUser())
     
     const isLogin = ()=>{ 
-        return (currentUser !== null)}
+        return (currentUser !== null)
+    }
     
     const login=(data)=>{
         if (data.user !== null){

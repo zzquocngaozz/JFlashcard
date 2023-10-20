@@ -1,6 +1,6 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import {useForm} from 'react-hook-form'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { role } from '../utils/regexRole'
@@ -10,6 +10,10 @@ import useSnapBarAlert from '../hooks/useSnapBarAlert'
 import Logo from '../assets/images/Logo.svg'
 import loginbanner from '../assets/images/loginbanner.png'
 const Signin = () => {
+  useEffect(() => {
+    document.title = "Đăng nhập";
+  }, []);
+
   const {login} = useAuth()
   const navigate = useNavigate()
   const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert()
@@ -39,7 +43,7 @@ const Signin = () => {
         const responseData = response.data;
         // save into local storage
         login(responseData);
-    
+        console.log(responseData)
         if (responseData.user && responseData.user.role === 3) {
           navigate('/dashboard');
         } else {

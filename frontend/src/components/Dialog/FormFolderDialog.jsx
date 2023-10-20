@@ -11,20 +11,17 @@ import { role } from '../../utils/regexRole';
 
 // truyền vào defaultValue(optional) togglefunc updatefunc
 // TODO: 
-export default function FormFolderDialog({folder, handleToggle, updateFolder}) {
+export default function FormFolderDialog({folder, handleToggle, updateFolder,mutationing}) {
   const [open, setOpen] = React.useState(false);
-  const {register, handleSubmit, formState:{errors,isDirty}} = useForm()
+  const {register, handleSubmit,reset, formState:{errors,isDirty}} = useForm({defaultValues:{title:folder.title,description:folder.description}})
 
 
   return (
     <>
-      <Dialog open={true} onClose={handleToggle}>
+      <Dialog open={true}>
         <form noValidate onSubmit={handleSubmit(updateFolder)}>
-          <DialogTitle>Tạo thư mục mới</DialogTitle>
+          <DialogTitle>Cập nhật thư mục</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Nhóm các bộ thẻ liên quan vào một thư mục để việc học tập hiệu quả hơn
-            </DialogContentText>
             <TextField
               {...register('title',{...role['title'],required:"Tiêu đề của thư mục không thể để trông"})}
               autoFocus
@@ -52,8 +49,17 @@ export default function FormFolderDialog({folder, handleToggle, updateFolder}) {
             />
           </DialogContent>
           <DialogActions>
-            <Button type='button' onClick={handleToggle}>Huỷ</Button>
-            <Button type='submit' disabled={!isDirty} >Cập nhật</Button>
+          <Button
+              type="button"
+              variant="contained"
+              onClick={() => reset()}
+              color="secondary"
+              disabled={!isDirty||mutationing}
+            >
+              Cài lại
+            </Button>
+            <Button type='button' disabled={mutationing} onClick={handleToggle}>Huỷ</Button>
+            <Button type='submit' disabled={!isDirty||mutationing} >Cập nhật</Button>
           </DialogActions>
         </form>
       </Dialog>

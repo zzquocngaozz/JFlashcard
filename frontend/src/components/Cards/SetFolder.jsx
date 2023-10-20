@@ -1,20 +1,24 @@
 import styled from "@emotion/styled";
-import { Avatar, Chip, Stack, Tooltip, Typography } from "@mui/material";
+import { Avatar, Chip, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import StarIcon from "@mui/icons-material/Star";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { getColorFromEnum } from "../../utils/colorGetter";
 import { ROLE, SET_TYPE } from "../../utils/constant";
 import { parseBirth } from "../../utils/datetimeCalc";
-import { StackList, StarHolderStack } from "../Styled/StyledStack";
+import { ActionHolderStack, StackList, StarHolderStack } from "../Styled/StyledStack";
 
-const SetSingle = ({ flashcardSet }) => {
-  
+/**
+ * Single Set trong folder
+ * 
+*/
+const SetFolder = ({ flashcardSet,onDelete }) => {
   return (
-    <StackCardLink to={"#"}>
+    <StackCardLink to={"/"}>
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />
@@ -40,6 +44,13 @@ const SetSingle = ({ flashcardSet }) => {
             {flashcardSet.votePoint + " "}({flashcardSet.numberVote})
           </Typography>
         </StarHolderStack>
+      </Tooltip>
+      <Tooltip title={`Xoá khỏi thư mục`}>
+        <ActionHolderStack>
+        <IconButton onClick={()=>onDelete(flashcardSet.flashcardSetId)}>
+          <DeleteForeverIcon color="error" />
+        </IconButton>
+        </ActionHolderStack>
       </Tooltip>
       <StackList>
         <Avatar
@@ -84,4 +95,4 @@ const StackCardLink = styled(Link)({
 
 
 
-export default SetSingle;
+export default SetFolder;
