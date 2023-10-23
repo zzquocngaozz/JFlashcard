@@ -26,9 +26,7 @@ const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
         );
         setGrammarList(response.data);
         setLoading(false);
-        console.log(response.data);
       } catch (error) {
-        console.log(error.response.status);
         setLoading(false);
       }
     };
@@ -51,7 +49,6 @@ const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
         config
       );
       grammarList.push(response.data)
-      console.log(grammarList)
       setGrammarList(grammarList);
       handleToggleForm();
       setMutationing(false);
@@ -101,7 +98,7 @@ const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
         },
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
-      const response = await axios.delete(`/createfls/${setId}/edit/grammar-card/${cardId}`, config);
+      await axios.delete(`/createfls/${setId}/edit/grammar-card/${cardId}`, config);
       const newGrammarList = grammarList.filter((grammarCard) =>grammarCard.cardGrammarId !== cardId);
       setGrammarList(newGrammarList)
       handleToggle()

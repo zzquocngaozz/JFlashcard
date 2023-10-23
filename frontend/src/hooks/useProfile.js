@@ -31,7 +31,6 @@ const useProfile = ({setAlert,handleCloseUpdate,setOpenVerify,handleCloseChangeR
         } catch (error) {
     
           setLoading(false);
-          console.log("Error:", error);
           setAlert({
               open:true,
               severity:"error",
@@ -66,7 +65,6 @@ const useProfile = ({setAlert,handleCloseUpdate,setOpenVerify,handleCloseChangeR
             severity:'error',
             message:'Lỗi chưa xác định ở máy chủ'
           })
-          console.log("104: useProfile")
         }
       }
 
@@ -107,7 +105,7 @@ const useProfile = ({setAlert,handleCloseUpdate,setOpenVerify,handleCloseChangeR
         };
         try {
           const response = await axios.put(
-            'http://localhost:8081/api/v1/profile/verify',JSON.stringify(data), config);
+            'http://localhost:8081/api/v1/profile/verify',JSON.stringify({...data}), config);
             setAlert({
               open:true,
               severity:'success',
@@ -140,14 +138,12 @@ const useProfile = ({setAlert,handleCloseUpdate,setOpenVerify,handleCloseChangeR
                 };
             // Gửi yêu cầu GET để thêm mới dữ liệu
             const response = await axios.get('http://localhost:8081/api/v1/profile', config);
-            console.log(response.data)
             setProfile(response.data)
             setLoading(false);
             
           } catch (error) {
       
             setLoading(false);
-            console.log("Error:", error);
             setAlert({
                 open:true,
                 severity:"error",

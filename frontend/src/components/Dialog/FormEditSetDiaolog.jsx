@@ -14,7 +14,6 @@ import { FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material'
 export default function FormEditSetDiaolog({flashcardSet, handleToggleUpdateSet, updateSet}) {
   const {register, handleSubmit,control, formState:{errors,isDirty}} = useForm()
 
-  console.log(flashcardSet)
 
   return (
     <>

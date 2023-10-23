@@ -8,20 +8,14 @@ import DoneIcon from "@mui/icons-material/Done";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useForm } from "react-hook-form";
-import { role } from "../../utils/regexRole";
 import {
   Box,
-  Divider,
-  Icon,
   IconButton,
   Pagination,
   Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
-import placeholder from "../../assets/images/placeholder.png";
-import { checkImg } from "../../utils/manualTesting";
 import useListCreatedSet from "../../hooks/useListCreatedSet";
 import { StackList } from "../Styled/StyledStack";
 import { useEffect } from "react";
@@ -152,10 +146,10 @@ export default function AddFolderSetDialog({
                   key={set.flashcardSetId}
                   sx={{
                     padding: "10px",
-                    border: "1px solid rgba(0,0,0,0.2)",
+                    // border: "1px solid rgba(0,0,0,0.2)",
                     borderRadius: "8px",
                     boxShadow:
-                      "0px 2px 1px -1px rgba(0,0,0,0.6), 0px 1px 1px 0px rgba(0,0,0,0.30), 0px 1px 3px 0px rgba(0,0,0,0.20)",
+                      "0px 2px 5px -1px rgba(0,0,0,0.45)",
                   }}
                 >
                   <StackList flexGrow={1} flexBasis={"50px"}>

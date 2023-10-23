@@ -9,6 +9,7 @@ import useRegister from '../hooks/useRegister';
 import Logo from '../assets/images/Logo.svg'
 import registerbanner from '../assets/images/registerbanner.png'
 import SnapBarAlter from '../components/FeedBack/SnapBarAlter';
+import BackdropLoading from '../components/FeedBack/BackdropLoading'
 
 
 const Signup = () => {
@@ -19,15 +20,21 @@ const Signup = () => {
     const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert();
 
     const {loading,registerAccount} = useRegister({setAlert});
-
     const onSubmit = (data)=>{
-        registerAccount(data)
+      if(!isBirthDate(birth)&&birth!==''){
+        setError('birth',{
+            type:'manual',
+            message:'Ngày sinh của bạn không hợp lệ!'
+        })
+      } else{
+          clearErrors('birth');
+          registerAccount(data)
+      }
     }
 
     // handle validate birthday
     const birth = watch('birth')
     useEffect(()=>{
-        console.log(birth==='')
         // neu birthday nhap roi va lon hon current date thi set loi
         if(!isBirthDate(birth)&&birth!==''){
             setError('birth',{
@@ -35,7 +42,8 @@ const Signup = () => {
                 message:'Ngày sinh của bạn không hợp lệ!'
             })
         } else{
-            clearErrors('birth');}
+            clearErrors('birth');
+        }
     },[birth])
 
   return (
@@ -173,6 +181,7 @@ const Signup = () => {
         </Typography>
       </Box>
       {alert.open?<SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar}/>:""}
+      {loading?<BackdropLoading/>:<></>}
     </Stack>
   )
 }

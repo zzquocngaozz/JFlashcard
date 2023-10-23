@@ -19,12 +19,8 @@ export const UserView = () => {
 
     const wrole = watch("role")
     useEffect(()=>{
-        console.log(wrole,"25")
-        console.log(currentUser?.role ===wrole,'26')
         if(!!wrole&& isDirty) changeRole(id,wrole)
     },[wrole])
-
-    console.log(loadingUser," ",!currentUser,":29")
 
   return (
     <LayoutAdmin>

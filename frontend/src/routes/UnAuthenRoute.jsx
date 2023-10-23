@@ -4,14 +4,13 @@ import useAuth from '../hooks/useAuth';
 
 
 // route chan nguoi dung chua dang nhap
-const UnAuthenRoute = ({path,element}) => {
+const UnAuthenRoute = ({path,children}) => {
     const {isLogin} = useAuth();
 
     const location = useLocation()
-
   return (
     <> 
-       {!isLogin()? element : <Navigate to="/home" state={{from:location}} replace />}
+       {(!isLogin())? children : <Navigate to="/home" state={{from:location}} replace />}
     </>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 const LogoutRoute = () => {
@@ -8,7 +8,6 @@ const LogoutRoute = () => {
 
     useEffect(()=>{
         logout()
-        console.log('logout')
     })
     
   return (

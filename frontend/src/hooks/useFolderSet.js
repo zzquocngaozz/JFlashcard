@@ -83,10 +83,8 @@ const useFolderSet = ({ adding }) => {
         if (errorCode === 401) navigate("/access-denied"); // not authorize
         setLoading(false);
       }
-      console.log("sao khong vao day nhe",adding)
     };
     getSet();
-    console.log("use folder set",adding)
   }, [folderId,adding]);
 
   const deleteFolderSet = async (setId) => {
@@ -99,10 +97,9 @@ const useFolderSet = ({ adding }) => {
         },
       };
       // Gửi yêu cầu delete để xoá dữ liệu
-      const response = await axios.delete(`/createfolder/${folderId}/get-all-set/${setId}`, config);
+      await axios.delete(`/createfolder/${folderId}/get-all-set/${setId}`, config);
       const deletedList = folderSet.filter(set=>set.flashcardSetId!==setId)
       setFolderSet(deletedList);
-      console.log(setId)
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);

@@ -87,7 +87,6 @@ const useFolder = ({ handleToggleUpdate }) => {
       // Gửi yêu cầu delete để xoá dữ liệu
       const response = await axios.delete(`/createfolder/${folderId}/edit`, config);
       navigate("/");
-      console.log("?")
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);

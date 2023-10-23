@@ -78,7 +78,6 @@ const SetEdit = () => {
     deleteSet,
   } = useSetEdit({ handleToggleUpdateSet, setAlert });
 
-  console.log(importing)
   return (
     <LayoutNormal>
       {loading ? (

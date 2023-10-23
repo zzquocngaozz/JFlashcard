@@ -8,7 +8,7 @@ const useFetchUsers = () => {
     const [changing, setChanging] = useState(false);
     const [error, setError] = useState(null);
     const {accessToken} =  useAuth();
-    console.log('render nay')
+
     const lockUser = async (id) =>{
       try{
         setChanging(true)
@@ -43,7 +43,7 @@ const useFetchUsers = () => {
           setChanging(false)
       }catch(error){
         setChanging(false)
-          console.log(error)
+
       }
   }
   
@@ -64,11 +64,8 @@ const useFetchUsers = () => {
               // sau khi du lieu duoc tra ve thi set vao state va cap nhat lai loading
               setData(users);
               setLoading(false);
-          
-        //   console.log(data)
+
         } catch (error) {
-          // Xử lý lỗi
-          console.log(error)
           setError(error);
           setLoading(false);
         }

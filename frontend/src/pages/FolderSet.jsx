@@ -24,17 +24,7 @@ import searhbanner from "../assets/images/searhbanner.png";
 import { Link } from "react-router-dom";
 
 const FolderSet = () => {
-  // hook
-  // -------------- State area
-  // const [flashcardSet, setFlashcardSet] = useState({
-  //   flashcardSetId: 123,
-  //   title: "Kanji chủ đề xe cộ",
-  //   description: "Danh sách các từ kanji cấp độ N5",
-  //   type: 2,
-  //   private: false,
-  // });
-  // handle func
-  // ------------------ Handle delete alert show and hide
+
   const handleToggleAlertDelete = () => {
     setAlertDelete({
       ...alertDelete,
@@ -43,11 +33,11 @@ const FolderSet = () => {
   };
 
   const handleToggleUpdate = () => {
+    console.log("Toggle")
     setOpenEditFrom(!openEditForm);
   };
 
   const handleToggleAdd = () => {
-    console.log("toggled");
     setOpenAddSet(!openAddSet);
   };
   const [openEditForm, setOpenEditFrom] = useState(false);
@@ -68,8 +58,6 @@ const FolderSet = () => {
 
   const [adding, setAdding] = useState(false);
 
-
-  console.log(adding)
   return (
     <LayoutNormal>
       {loading ? (
@@ -98,7 +86,7 @@ const FolderSet = () => {
             <Stack flex={1.5} sx={{ justifyContent: "space-between" }}>
                 <Box component={Link} to={"/my-lib/folders"}  sx={{top:"10px",right:"30px", display:"inline-block", position:"absolute"}}>
                   <Tooltip title={"Quay lại"}>
-                    <IconButton onClick={handleToggleAdd}>
+                    <IconButton>
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Tooltip>
@@ -178,7 +166,7 @@ const FolderSet = () => {
       ) : (
         <></>
       )}
-      {mutationing ? <BackdropLoading></BackdropLoading> : <></>}
+      {mutationing ? <BackdropLoading/> : <></>}
     </LayoutNormal>
   );
 };

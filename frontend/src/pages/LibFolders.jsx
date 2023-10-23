@@ -39,8 +39,8 @@ export default function LibFolders() {
   }, [searchParam]);
 
   useEffect(() => {
-    const startSet = 5 * (currentPage - 1);
-    const endSet = startSet + 5;
+    const startSet = 6 * (currentPage - 1);
+    const endSet = startSet + 6;
     const pagingList = folderList?.slice(startSet, endSet);
     setPaginList(pagingList);
   }, [currentPage, folderList]);
@@ -85,9 +85,9 @@ export default function LibFolders() {
               />
             </Stack>
 
-            {folderList?.length > 5 ? (
+            {folderList?.length > 6 ? (
               <Pagination
-                count={Math.ceil(folderList?.length / 5.0)}
+                count={Math.ceil(folderList?.length / 6.0)}
                 color="primary"
                 onChange={handleChangePaging}
               />

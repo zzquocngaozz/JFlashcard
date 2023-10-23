@@ -51,7 +51,6 @@ const CreateFolder = () => {
                 label="Mô tả"
                 multiline
                 rows={2}
-                maxRows={4}
                 error={!!errors.description}
                 helperText={errors.description?.message}
                 variant="outlined"

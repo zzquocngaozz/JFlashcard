@@ -8,7 +8,6 @@ const useChagePass = ({setAlert}) => {
     const {accessToken} = useAuth()
 
     const changePass = async  (data) => {
-        console.log(JSON.stringify(data))
 
         const config = {
             headers: {
