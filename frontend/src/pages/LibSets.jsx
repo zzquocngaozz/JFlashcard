@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SetSingle from "../components/Cards/SetSingle";
-import {fuzzySearch} from "../utils/search"
+import { fuzzySearch } from "../utils/search";
 
 // TODO: lam hook get list class by userid
 const LibSets = () => {
@@ -80,7 +80,7 @@ const LibSets = () => {
       authoDTO: {
         userId: 1,
         userName: "ducpa01",
-        role: 2,
+        role: 1,
       },
     },
     {
@@ -171,7 +171,7 @@ const LibSets = () => {
       if (!!data) {
         const result = data.filter(
           (set) =>
-          fuzzySearch(searchParam,set.title)&&
+            fuzzySearch(searchParam, set.title) &&
             (paramFilter === 0 ? true : set.type === paramFilter)
         );
         setFlashcardList(result);
@@ -191,7 +191,6 @@ const LibSets = () => {
     setPaginList(pagingList);
   }, [currentPage, flashcardSetList]);
 
-  
   const handleChangePaging = (e, value) => {
     setCurrentPage(value);
   };
@@ -251,8 +250,9 @@ const LibSets = () => {
           paddingTop: "20px",
           flexDirection: "row",
           flexWrap: "wrap",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           rowGap: "30px",
+          columnGap: "25px",
           transition: "all 1s ease",
         }}
       >

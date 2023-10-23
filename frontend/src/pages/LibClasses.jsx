@@ -1,11 +1,20 @@
-import { FormControl, InputLabel, MenuItem, Pagination, Select, Stack, TextField, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ClassSingle from "../components/Cards/ClassSingle";
 import { fuzzySearch } from "../utils/search";
-import useAuth from '../hooks/useAuth'
+import useAuth from "../hooks/useAuth";
 
 const LibClasses = () => {
-  const {currentUser} = useAuth()
+  const { currentUser } = useAuth();
   const data = [
     {
       classRoomId: 1,
@@ -139,8 +148,15 @@ const LibClasses = () => {
       if (!!data) {
         const result = data.filter(
           (clazz) =>
-          fuzzySearch(searchParam,clazz.classRoomName+clazz.teacher.userName)&&
-            (paramFilter === 0 ? true : paramFilter === 2 ? clazz.teacher.userId === currentUser.userId :  clazz.teacher.userId !== currentUser.userId)
+            fuzzySearch(
+              searchParam,
+              clazz.classRoomName + clazz.teacher.userName
+            ) &&
+            (paramFilter === 0
+              ? true
+              : paramFilter === 2
+              ? clazz.teacher.userId === currentUser.userId
+              : clazz.teacher.userId !== currentUser.userId)
         );
         setClassList(result);
 
@@ -159,7 +175,6 @@ const LibClasses = () => {
     setPaginList(pagingList);
   }, [currentPage, classList]);
 
-  
   const handleChangePaging = (e, value) => {
     setCurrentPage(value);
   };
@@ -211,23 +226,23 @@ const LibClasses = () => {
           <></>
         )}
       </Stack>
-    <Stack
-      sx={{
-        width: "100%",
-        height: "100%",
-        paddingTop:"20px",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-        rowGap: "30px",
-      }}
-    >
-      {paginList.map((clazz) => (
-        <ClassSingle key={clazz.classRoomId} clazz={clazz} />
-      ))}
-    </Stack>
-  </>
+      <Stack
+        sx={{
+          width: "100%",
+          height: "100%",
+          paddingTop: "20px",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "flex-start",
+          rowGap: "30px",
+          columnGap: "25px",
+        }}
+      >
+        {paginList.map((clazz) => (
+          <ClassSingle key={clazz.classRoomId} clazz={clazz} />
+        ))}
+      </Stack>
+    </>
   );
-  
 };
 export default LibClasses;
