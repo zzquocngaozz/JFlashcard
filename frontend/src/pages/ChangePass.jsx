@@ -37,7 +37,6 @@ const ChangePass = () => {
             clearErrors('newPassword');
             clearErrors('cfPassword');
             changePass(data)
-            console.log(data)
         }
         //
     }
@@ -114,7 +113,7 @@ const ChangePass = () => {
                                 ,role['password']
                                 )}
                                 id="cf-password-helper-text"
-                                label="Mật khẩu mới"
+                                label="Mật khẩu xác nhận"
                                 type='password'
                                 error={!!errors.cfPassword}
                                 helperText={errors.cfPassword?.message}
@@ -126,8 +125,8 @@ const ChangePass = () => {
                 </Box>
             </Box>
         </Stack>
-        {loading?<BackdropLoading/>:""}
-        {alert.open?<SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar}/>:""}
+        {loading?<BackdropLoading/>:<></>}
+        {alert.open?<SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar}/>:<></>}
         </>
   )
 }

@@ -10,7 +10,6 @@ const useCreateFolder = () => {
 
     const createFolder = async (data)=>{
         setLoading(true);
-        console.log(JSON.stringify(data))
         const config = {
             headers:{
                 "Content-Type":"application/json",
@@ -18,15 +17,11 @@ const useCreateFolder = () => {
             }
         }
         try{
-            console.log(data)
             const response = await axios.post("/createfolder", JSON.stringify(data) ,config )
-            // const url = `folder/${1}`
             const url = `/folders/${response.data.id}`
             navigate(url)
-            //console.log(response.data)
         } catch(error){
             setLoading(false)
-            console.log("lỗi rồi")
         }
     }
 

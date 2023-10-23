@@ -21,14 +21,12 @@ const UserAdd = () => {
 
     const onSubmit = (data)=>{
         isAdding.current = true
-        console.log("submit")
         console.log(data)
         addUser(data)
         
     }
 
     useEffect(()=>{
-      console.log(loading," ", error," ",isAdding.current)
       // TH1 loading xong roi va error null == success, đang add
       if(!loading && !error && isAdding.current){
         setAlert({
@@ -53,7 +51,6 @@ const UserAdd = () => {
     // handle validate birthday
     const birth = watch('birth')
     useEffect(()=>{
-        console.log(birth==='')
         // neu birthday nhap roi va lon hon current date thi set loi
         if(!isBirthDate(birth)&&birth!==''){
             setError('birthday',{
@@ -61,7 +58,6 @@ const UserAdd = () => {
                 message:'Ngày sinh của bạn không hợp lệ!'
             })
         } else{
-            console.log(isBirthDate(birth),'is birthday')
             clearErrors('birthday');}
     },[birth])
 

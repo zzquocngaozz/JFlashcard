@@ -91,7 +91,7 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
         severity: "error",
         message: "File không tồn tại",
       });
-      return console.log("file khong ton tai");
+      return
     }
 
     const file = e.target.files[0];
@@ -113,9 +113,7 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
         message:
           "Bạn không nên nhập quá nhiều thẻ trong một bộ! Tối đa 1000 thẻ. File size max 1MB",
       });
-      return console.log(
-        "Bạn không nên nhập quá nhiều thẻ trong một bộ! Tối đa 1000 thẻ. File size max 1MB"
-      );
+      return
     }
     const reader = new FileReader();
     setImporting(true);

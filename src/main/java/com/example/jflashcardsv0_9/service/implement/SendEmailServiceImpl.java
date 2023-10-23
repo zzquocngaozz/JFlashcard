@@ -1,13 +1,18 @@
 package com.example.jflashcardsv0_9.service.implement;
 
+import com.example.jflashcardsv0_9.exception.AppException;
+import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.service.SendEmailService;
 import com.example.jflashcardsv0_9.util.RandomTokenUtil;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,35 +24,119 @@ public class SendEmailServiceImpl implements SendEmailService {
     private JavaMailSender javaMailSender;
 
     @Override
-    public void sendEmail(String to, String subject, String body) {
+    public void sendEmail(String to, String subject, String htmlContent) {
         System.out.println("send roi");
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-
-        javaMailSender.send(message);
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+            helper.setFrom("jflashcardsg50@gmail.com");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            throw new AppException(Error.valueOf("Gửi mail không thành công"));
+        }
 
     }
 
     @Override
-    public void sendVerifyToken(String email,String token) {
-        sendEmail(email,"Mã xác nhận tài khoản", "Đây là mã xác nhận tài khoản của bạn. " +
-                "Đừng chia sẻ với bất kỳ ài: "+ token
-                +" .Mã sẽ có hiệu lực trong vòng 15 phút");
+    public void sendVerifyToken(String email, String token) {
+
+        String htmlContent = "    <!doctype html>\n" +
+                "    <html>\n" +
+                "      <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "      </head>\n" +
+                "      <body style=\"font-family: sans-serif;\">\n" +
+                "        <div style=\"font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;\">\n" +
+                "            <div style=\"margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);\">\n" +
+                "            <div style=\"border-bottom:1px solid #eee;display: flex;column-gap: 10px;\">\n" +
+                "            <a href=\"#\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">\n" +
+                "            JFlashcard\n" +
+                "            </a>\n" +
+                "            </div>\n" +
+                "            <p style=\"font-size:1.1em\">Xin chào,</p>\n" +
+                "            <p>Cảm ơn bạn cho JFlashcards có cơ hội đồng hành cùng việc học tiếng nhật của bạn</p>\n" +
+                "            <p>Đây là mã OTP của bạn, hãy sử dụng để xác minh tài khoản của bạn. OTP có hiệu lực trong vòng 15 phút</p>\n" +
+                "            <h2 style=\"background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;\">" + token + "</h2>\n" +
+                "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
+                "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
+                "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
+                "            <p>JFlashcard</p>\n" +
+                "        </div>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "      </body>\n" +
+                "    </html>";
+
+        sendEmail(email, "Mã xác nhận tài khoản", htmlContent);
     }
 
     @Override
-    public void sendOTPToken(String email,String token) {
-        sendEmail(email,"Mã đổi mật khẩu", "Đây là mã mã đổi mật khẩu của bạn. " +
-                "Đừng chia sẻ với bất kỳ ài: "+ token
-                +". Mã sẽ có hiệu lực trong vòng 15 phút");
+    public void sendOTPToken(String email, String token) {
+
+        String htmlContent = "    <!doctype html>\n" +
+                "    <html>\n" +
+                "      <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "      </head>\n" +
+                "      <body style=\"font-family: sans-serif;\">\n" +
+                "        <div style=\"font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;\">\n" +
+                "            <div style=\"margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);\">\n" +
+                "            <div style=\"border-bottom:1px solid #eee;display: flex;column-gap: 10px;\">\n" +
+                "            <a href=\"#\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">\n" +
+                "            JFlashcard\n" +
+                "            </a>\n" +
+                "            </div>\n" +
+                "            <p style=\"font-size:1.1em\">Xin chào,</p>\n" +
+                "            <p>Đây là mã OTP của bạn, dùng nó để hoàn thành việc đổi mật khẩu mới. OTP có hiệu lực trong vòng 15 phút</p>\n" +
+                "            <h2 style=\"background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;\">" + token + "</h2>\n" +
+                "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
+                "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
+                "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
+                "            <p>JFlashcard</p>\n" +
+                "        </div>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "      </body>\n" +
+                "    </html>";
+
+        sendEmail(email, "Mã đổi mật khẩu", htmlContent);
+
+
     }
 
     @Override
     public void sendChangeRole(String email) {
-        sendEmail(email,"Về yêu cầu nâng cấp tài khoản giáo viên", "Sau khi nhận được yêu cầu của bạn " +
-                "chúng tôi đã xem xét và quyết định nâng tài khoản của bạn lên thành tài khoản giáo viên. Hãy chia sẻ những bài học bổ ích đến học sinh của bạn\nBest regards!");
+        String htmlContent = "    <!doctype html>\n" +
+                "    <html>\n" +
+                "      <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "      </head>\n" +
+                "      <body style=\"font-family: sans-serif;\">\n" +
+                "        <div style=\"font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;\">\n" +
+                "            <div style=\"margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);\">\n" +
+                "            <div style=\"border-bottom:1px solid #eee;display: flex;column-gap: 10px;\">\n" +
+                "            <a href=\"#\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">\n" +
+                "            JFlashcard\n" +
+                "            </a>\n" +
+                "            </div>\n" +
+                "            <p style=\"font-size:1.1em\">Chào [Tên người dùng],</p>\n" +
+                "            <p>Chúng tôi rất vui thông báo rằng yêu cầu của bạn để nâng cấp tài khoản từ học sinh lên tài khoản giáo viên đã được chấp thuận. Chúc mừng bạn đã trở thành một giáo viên trên JFlashcard</p>\n" +
+                "            <p>Chúng tôi chân thành cảm ơn bạn đã sử dụng dịch vụ của chúng tôi và mong rằng bạn sẽ có trải nghiệm tuyệt vời với tài khoản giáo viên của mình.\n" +
+                "\n" +
+                "Chúc mừng và chúc bạn có nhiều trải nghiêm trong vai trò giáo viên trên JFlashcards!</p>\n" +
+                "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
+                "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
+                "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
+                "            <p>JFlashcard</p>\n" +
+                "        </div>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "      </body>\n" +
+                "    </html>";
+
+        sendEmail(email, "Về yêu cầu nâng cấp tài khoản giáo viên", htmlContent);
     }
 }
