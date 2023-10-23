@@ -1,4 +1,13 @@
-import { FormControl, InputLabel, MenuItem, Pagination, Select, Stack, TextField, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SetSingle from "../components/Cards/SetSingle";
 import { fuzzySearch } from "../utils/search";
@@ -62,7 +71,7 @@ const LibBookMarked = () => {
       title: "Từ vựng thông dụng",
       description:
         "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-        numberVote: 27,
+      numberVote: 27,
       votePoint: 4.5,
       numberCard: 60,
       createdAt: "2023/10/10",
@@ -79,7 +88,7 @@ const LibBookMarked = () => {
       title: "Từ vựng thông dụng",
       description:
         "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-        numberVote: 27,
+      numberVote: 27,
       votePoint: 4.5,
       numberCard: 60,
       createdAt: "2023/10/10",
@@ -96,7 +105,7 @@ const LibBookMarked = () => {
       title: "Từ vựng thông dụng",
       description:
         "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-        numberVote: 27,
+      numberVote: 27,
       votePoint: 4.5,
       numberCard: 60,
       createdAt: "2023/10/10",
@@ -113,7 +122,7 @@ const LibBookMarked = () => {
       title: "Từ vựng thông dụng",
       description:
         "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-        numberVote: 27,
+      numberVote: 27,
       votePoint: 4.5,
       numberCard: 60,
       createdAt: "2023/10/10",
@@ -130,7 +139,7 @@ const LibBookMarked = () => {
       title: "Từ vựng thông dụng",
       description:
         "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-        numberVote: 27,
+      numberVote: 27,
       votePoint: 4.5,
       numberCard: 60,
       createdAt: "2023/10/10",
@@ -161,13 +170,13 @@ const LibBookMarked = () => {
 
   useEffect(() => {
     console.log(data);
-    console.log(searchParam," ",paramFilter);
-    
+    console.log(searchParam, " ", paramFilter);
+
     const filterData = setTimeout(() => {
       if (!!data) {
         const result = data.filter(
           (set) =>
-            fuzzySearch(searchParam,set.title)&&
+            fuzzySearch(searchParam, set.title) &&
             (paramFilter === 0 ? true : set.type === paramFilter)
         );
         setFlashcardList(result);
@@ -181,8 +190,8 @@ const LibBookMarked = () => {
   }, [searchParam, paramFilter]);
 
   useEffect(() => {
-    const startSet = 5 * (currentPage - 1);
-    const endSet = startSet + 5;
+    const startSet = 6 * (currentPage - 1);
+    const endSet = startSet + 6;
     const pagingList = flashcardSetList?.slice(startSet, endSet);
     console.log(endSet);
     setPaginList(pagingList);
@@ -197,10 +206,9 @@ const LibBookMarked = () => {
     setCurrentPage(value);
   };
 
-
-  useEffect(()=>{
-    document.title = ("Bộ đã đánh dấu")
-  },[])
+  useEffect(() => {
+    document.title = "Bộ đã đánh dấu";
+  }, []);
   return (
     <>
       <Typography variant="h6" sx={{ mt: "15px" }}>
@@ -239,11 +247,11 @@ const LibBookMarked = () => {
             </Select>
           </FormControl>
         </Stack>
-        {flashcardSetList.length > 5 ? (
-          <Stack flexDirection={'row'} alignItems={'center'}>
-            <Typography>Có {flashcardSetList.length} bộ flashcard</Typography> 
+        {flashcardSetList.length > 6 ? (
+          <Stack flexDirection={"row"} alignItems={"center"}>
+            <Typography>Có {flashcardSetList.length} bộ flashcard</Typography>
             <Pagination
-              count={Math.ceil(flashcardSetList.length / 5.0)}
+              count={Math.ceil(flashcardSetList.length / 6.0)}
               color="primary"
               onChange={handleChangePaging}
             />
@@ -259,8 +267,9 @@ const LibBookMarked = () => {
           paddingTop: "20px",
           flexDirection: "row",
           flexWrap: "wrap",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           rowGap: "30px",
+          columnGap: "25px",
           transition: "all 1s ease",
         }}
       >
