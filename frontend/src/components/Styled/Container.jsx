@@ -9,3 +9,13 @@ export const StackContain = styled(Stack)({
   width: "100%",
   columnGap: "20px",
 });
+
+export const StackContainer = styled(Stack)({
+  flexDirection: "row",
+  justifyContent: "flex-start",
+  flexWrap: "wrap",
+  paddingTop: "20px",
+  width: "100%",
+  columnGap: "20px",
+  rowGap: "30px",
+});

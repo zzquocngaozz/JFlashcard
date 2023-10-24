@@ -1,6 +1,6 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { role } from "../utils/regexRole";
@@ -81,7 +81,7 @@ export default function Forgotten() {
 }
 
 function RequestCodeForm({ handleChangeStep, setAlert }) {
-  const [loading, setLoading]  = useState(false)
+  const [loading, setLoading] = useState(false);
   const {
     register, // ref 1 value in form hook
     handleSubmit, //
@@ -93,17 +93,17 @@ function RequestCodeForm({ handleChangeStep, setAlert }) {
   });
   const onSubmit = async (data) => {
     try {
-      setLoading(true)
-      await axios.post("/forgot",JSON.stringify(data));
+      setLoading(true);
+      await axios.post("/forgot", JSON.stringify(data));
       setAlert({
         open: true,
         severity: "success",
-        message:"Mã OTP đã được gửi tới email của bạn",
+        message: "Mã OTP đã được gửi tới email của bạn",
       });
-      setLoading(false)
+      setLoading(false);
       handleChangeStep(2);
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       setAlert({
         open: true,
         severity: "error",
@@ -112,7 +112,9 @@ function RequestCodeForm({ handleChangeStep, setAlert }) {
       });
     }
   };
-
+  useEffect(() => {
+    document.title = "Quên mật khẩu";
+  }, []);
   return (
     <Box
       flex={1}
@@ -171,13 +173,13 @@ function RequestCodeForm({ handleChangeStep, setAlert }) {
           </Stack>
         </Stack>
       </form>
-      {loading?<BackdropLoading/>:<></>}
+      {loading ? <BackdropLoading /> : <></>}
     </Box>
   );
 }
 
 function ChangePass({ handleChangeStep, setAlert }) {
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
     register, // ref 1 value in form hook
@@ -190,12 +192,12 @@ function ChangePass({ handleChangeStep, setAlert }) {
   });
   const onSubmit = async (data) => {
     try {
-      setLoading(true)
-      await axios.put("/forgot",JSON.stringify(data));
-      
+      setLoading(true);
+      await axios.put("/forgot", JSON.stringify(data));
+
       // handleChangeStep(1);
-      navigate('/signin')
-      setLoading(false)
+      navigate("/signin");
+      setLoading(false);
     } catch (error) {
       setAlert({
         open: true,
@@ -203,7 +205,7 @@ function ChangePass({ handleChangeStep, setAlert }) {
         message:
           error.response?.data?.errors?.body[0] || "Lỗi trả về không xác định",
       });
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -278,15 +280,18 @@ function ChangePass({ handleChangeStep, setAlert }) {
               justifyContent: "center",
             }}
           >
-            <Box onClick={()=>{
-              handleChangeStep(1);
-            }}
-              sx={{cursor:"pointer"}}
-            >Nhập lại mail</Box>
+            <Box
+              onClick={() => {
+                handleChangeStep(1);
+              }}
+              sx={{ cursor: "pointer" }}
+            >
+              Nhập lại mail
+            </Box>
           </Stack>
         </Stack>
       </form>
-      {loading?<BackdropLoading/>:<></>}
+      {loading ? <BackdropLoading /> : <></>}
     </Box>
   );
 }

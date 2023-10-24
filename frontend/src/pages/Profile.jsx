@@ -82,7 +82,9 @@ const Profile = () => {
   useEffect(() => {
     setOpenVerifyNotify(currentUser?.verify === false);
   }, [currentUser]);
-
+  useEffect(() => {
+    document.title = "Hồ sơ cá nhân";
+  }, []);
   return (
     <>
       <Navbar />
@@ -167,7 +169,7 @@ const Profile = () => {
                     ""
                   )}
 
-                  <Box sx={{ cursor: "default", display:'flex' }}>
+                  <Box sx={{ cursor: "default", display: "flex" }}>
                     <Chip
                       label={ROLE[currentUser?.role]}
                       color="info"
@@ -189,7 +191,7 @@ const Profile = () => {
                     )}
                   </Box>
 
-                  {!currentUser?.verify? (
+                  {!currentUser?.verify ? (
                     <Button
                       variant="outlined"
                       color="secondary"
@@ -199,7 +201,7 @@ const Profile = () => {
                     >
                       Lấy mã xác minh
                     </Button>
-                  ) :currentUser?.role === 1?(
+                  ) : currentUser?.role === 1 ? (
                     <Button
                       endIcon={<SchoolIcon />}
                       color="success"
@@ -213,7 +215,9 @@ const Profile = () => {
                     >
                       Tôi là giáo viên
                     </Button>
-                  ):(<></>)}
+                  ) : (
+                    <></>
+                  )}
                   <Button
                     endIcon={<ModeEditIcon />}
                     onClick={handleOpenUpdate}

@@ -21,9 +21,17 @@ const SetSingle = ({ flashcardSet }) => {
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />
-          <Typography variant="h5">{flashcardSet.title}</Typography>
+          <Typography
+            className="text--overflow2line"
+            variant="h5"
+            sx={{
+              width: "65%",
+            }}
+          >
+            {flashcardSet.title}
+          </Typography>
         </StackList>
-        <Chip label={SET_TYPE[flashcardSet.type]} sx={{ width: "100px" }} />
+        <Chip label={SET_TYPE[flashcardSet.type]} sx={{ width: "90px" }} />
         <StackList>
           <NoteOutlinedIcon />
           <Typography>{flashcardSet.numberCard + " "} thẻ flashcard</Typography>

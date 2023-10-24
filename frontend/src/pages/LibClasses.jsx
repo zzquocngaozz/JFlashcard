@@ -178,6 +178,9 @@ const LibClasses = () => {
   const handleChangePaging = (e, value) => {
     setCurrentPage(value);
   };
+  useEffect(() => {
+    document.title = "Danh sách lớp";
+  }, []);
   return (
     <>
       <Typography variant="h6" sx={{ mt: "15px" }}>
