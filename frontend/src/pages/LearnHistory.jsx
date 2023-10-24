@@ -1,4 +1,13 @@
-import { FormControl, InputLabel, MenuItem, Pagination, Select, Stack, TextField, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SetSingle from "../components/Cards/SetSingle";
 import SetRecent from "../components/Cards/SetRecent";
@@ -141,32 +150,27 @@ const LearnHistory = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const handleSearch = (e) => {
-    
     setSearchParam(e.target.value.trim());
   };
   const handleChangeFilter = (e) => {
-    
     setParamFilter(e.target.value);
   };
   const handleChangePaging = (e, value) => {
-    
     setCurrentPage(value);
   };
 
   useEffect(() => {
-
     const filterData = setTimeout(() => {
       if (!!data) {
         const result = data.filter(
           (set) =>
-            fuzzySearch(searchParam,set.title) &&
+            fuzzySearch(searchParam, set.title) &&
             (paramFilter === 0 ? true : set.type === paramFilter)
         );
         setFlashcardList(result);
-        
+
         setCurrentPage(1);
       }
-      
     }, [100]);
 
     return () => clearTimeout(filterData);
@@ -177,9 +181,10 @@ const LearnHistory = () => {
     const endSet = startSet + 5;
     const pagingList = flashcardSetList?.slice(startSet, endSet);
     setPaginList(pagingList);
-    
   }, [currentPage, flashcardSetList]);
-
+  useEffect(() => {
+    document.title = "Lịch sử học";
+  }, []);
   return (
     <>
       <Typography variant="h6" sx={{ mt: "15px" }}>

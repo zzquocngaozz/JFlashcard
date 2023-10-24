@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LayoutNormal from "../components/Parts/LayoutNormal";
 import { useParams } from "react-router-dom";
 import {
@@ -78,6 +78,9 @@ const SetEdit = () => {
     deleteSet,
   } = useSetEdit({ handleToggleUpdateSet, setAlert });
 
+  useEffect(() => {
+    document.title = "Chỉnh sửa bộ flashcards";
+  }, []);
   return (
     <LayoutNormal>
       {loading ? (
@@ -171,7 +174,7 @@ const SetEdit = () => {
           </Stack>
           <Stack sx={{ margin: "20px 150px" }}>
             {flashcardSet.type === 1 ? (
-              <KanjiCardEditContainer importing={importing}/>
+              <KanjiCardEditContainer importing={importing} />
             ) : flashcardSet.type === 2 ? (
               <VocaCardEditContainer importing={importing} />
             ) : (

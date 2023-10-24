@@ -9,8 +9,8 @@ export const StackList = styled(Stack)({
 
 export const StarHolderStack = styled(Stack)({
   position: "absolute",
-  top: "15px",
-  right: "25px",
+  top: "22px",
+  right: "20px",
   flexDirection: "row",
   columnGap: "5px",
   alignItems: "center",

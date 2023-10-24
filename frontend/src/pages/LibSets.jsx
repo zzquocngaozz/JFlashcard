@@ -194,6 +194,9 @@ const LibSets = () => {
   const handleChangePaging = (e, value) => {
     setCurrentPage(value);
   };
+  useEffect(() => {
+    document.title = "Bộ flashcard của bạn";
+  }, []);
   return (
     <>
       <Typography variant="h6" sx={{ mt: "15px" }}>

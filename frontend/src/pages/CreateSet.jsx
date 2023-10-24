@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LayoutNormal from "../components/Parts/LayoutNormal";
 import {
   Button,
@@ -27,6 +27,10 @@ const CreateSet = () => {
   const navigate = useNavigate();
 
   const { loading, createSet } = useAddSet();
+
+  useEffect(() => {
+    document.title = "Tạo bộ flashcard";
+  }, []);
 
   return (
     <LayoutNormal>
