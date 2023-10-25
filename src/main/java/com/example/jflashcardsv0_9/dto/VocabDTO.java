@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VocabDTO {
-    Long cardVocabId;
+    Long cardId;
     String term;
     String mean;
     String example;

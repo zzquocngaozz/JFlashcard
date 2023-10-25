@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GrammarDTO {
-    Long cardGrammarId;
+    Long cardId;
     String combination;
     String note;
     String term;

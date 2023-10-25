@@ -84,7 +84,6 @@ public class UserMapper {
                 roleNames.add(role.getName());
             }
         }
-
         Integer roleId = null;
         if (!roleNames.isEmpty()) {
             // Lấy tên của vai trò đầu tiên trong danh sách

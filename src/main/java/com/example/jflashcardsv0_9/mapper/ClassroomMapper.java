@@ -2,10 +2,12 @@ package com.example.jflashcardsv0_9.mapper;
 
 import com.example.jflashcardsv0_9.dto.AuthDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomDTO;
+import com.example.jflashcardsv0_9.dto.ClassRoomSingleDTO;
 import com.example.jflashcardsv0_9.entities.ClassRoom;
 import com.example.jflashcardsv0_9.entities.Role;
 import com.example.jflashcardsv0_9.entities.User;
-import com.example.jflashcardsv0_9.service.RoleService;
+import com.example.jflashcardsv0_9.repository.ClassMemberRepository;
+import com.example.jflashcardsv0_9.repository.ClassSetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +26,13 @@ public class ClassroomMapper {
 //    public ClassroomMapper(RoleService roleService) {
 //        this.roleService = roleService;
 //    }
+    static ClassMemberRepository classMemberRepository;
+    static ClassSetRepository classSetRepository;
+    @Autowired
+    public ClassroomMapper(ClassMemberRepository classMemberRepository,ClassSetRepository classSetRepository) {
+        this.classMemberRepository = classMemberRepository;
+        this.classSetRepository = classSetRepository;
+    }
 
     public static ClassRoom toEntity(ClassRoomDTO classRoomDTO) {
         return ClassRoom.builder()
@@ -54,6 +63,19 @@ public class ClassroomMapper {
                 .teacher(AuthDTO.builder().userId(classRoom.getTeacher().getUserId())
                         .userName(classRoom.getTeacher().getUserName())
                         .role(roleId).build())
+                .build();
+    }
+
+    public static ClassRoomSingleDTO convertClasRoomToClassRoomSingleDTO(ClassRoom classRoom) {
+        return ClassRoomSingleDTO.builder()
+                .classRoomId(classRoom.getClassRoomId())
+                .classRoomName(classRoom.getClassRoomName())
+                .classRoomCode(classRoom.getClassRoomCode())
+                .description(classRoom.getDescription())
+                .createdAt(classRoom.getCreatedAt())
+                .numberMember(classMemberRepository.findAllByClassroom(classRoom).size())
+                .numberSet(classSetRepository.findAllByClassRoom(classRoom).size())
+                .teacher(UserMapper.toAuthDTO(classRoom.getTeacher()))
                 .build();
     }
 }

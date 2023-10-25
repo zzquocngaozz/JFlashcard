@@ -17,7 +17,8 @@ const useAuth = ()=>{
     const [currentUser,setCurrentUser] = useState(getJwtUser())
     
     const isLogin = ()=>{ 
-        return (currentUser !== null)}
+        return (currentUser !== null)
+    }
     
     const login=(data)=>{
         if (data.user !== null){
@@ -32,9 +33,8 @@ const useAuth = ()=>{
     
     const updateUser = (data)=>{
         
-        localStorage.setItem("jwtUser",btoa(encodeURI(JSON.stringify(data.user))))
-        currentUser(data.user)
-        setCurrentUser(data.user)
+        localStorage.setItem("jwtUser",btoa(encodeURI(JSON.stringify(data))))
+        setCurrentUser(data)
     }
 
     const logout = ()=>{

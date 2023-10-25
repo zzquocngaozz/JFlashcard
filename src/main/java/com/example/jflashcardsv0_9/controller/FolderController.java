@@ -24,8 +24,6 @@ public class FolderController {
 
     @PostMapping
     public IdDTO createFolderSet(@AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody FolderSetDTO folderSetDTO) {
-        System.out.println("hiiiiiiiiiiiiiiiiiiii");
-        System.out.println(myUserDetail.getUser().getUserId());
         return folderService.createFolder(folderSetDTO,myUserDetail.getUser().getUserId());
     }
     @PutMapping("/{folderId}/edit")
@@ -38,5 +36,31 @@ public class FolderController {
         folderService.deleteFolder(folderId,myUserDetail.getUser().getUserId());
         return ResponseEntity.ok("xóa thành công");
     }
+    @GetMapping("/{folderId}/view-folder")
+    public FolderSetDTO viewFolderById(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long folderId) {
+        return folderService.viewFolderById(myUserDetail.getUser().getUserId(),folderId);
+    }
+    @GetMapping("/{folderId}/view-set-folder")
+    public List<SetSingleDTO> viewListFolderSetById(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long folderId) {
+        return folderService.viewListSetByFolderId(myUserDetail.getUser().getUserId(),folderId);
+    }
+
+    @GetMapping("/{folderId}/get-all-set")
+    public List<FlashcardSetDTOResponse> getListSetOfUserInFolder(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long folderId) {
+        return folderService.getListSetOfUser(myUserDetail.getUser().getUserId(),folderId);
+    }
+    @PostMapping("/{folderId}/get-all-set/{setId}")
+    public ResponseEntity<?> addSetInFolder(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long folderId, @PathVariable long setId) {
+        folderService.addSetInFolder(myUserDetail.getUser().getUserId(),folderId,setId);
+        return ResponseEntity.ok("thêm thành công");
+
+    }
+    @DeleteMapping("/{folderId}/get-all-set/{setId}")
+    public ResponseEntity<?> deleteSetInFolder(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long folderId, @PathVariable long setId) {
+        folderService.deleteSetInFolder(myUserDetail.getUser().getUserId(),folderId,setId);
+        return ResponseEntity.ok("xóa thành công");
+    }
+
+
 
 }

@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface UserRequestRepository extends JpaRepository<UserRequest,Long> {
 
         Optional<UserRequest> findByTokenAndUserEmail(String token, String email);
+        Optional<UserRequest> findByToken(String token);
 
         Optional<UserRequest> findByRequestTypeAndUserEmail(int requestType, String email);
 

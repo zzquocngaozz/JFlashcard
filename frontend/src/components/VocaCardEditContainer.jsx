@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { Box, Button, Skeleton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import searhbanner from "../assets/images/searhbanner.png";
-import KanjiDialogForm from "./Dialog/KanjiDialogForm";
 import VocaCardEdit from "./Cards/VocaCardEdit";
 import VocaDialogForm from "./Dialog/VocaDialogForm";
 import useVocaCardEdit from "../hooks/useVocaCardEdit";
@@ -44,7 +43,7 @@ const VocaCardEditContainer = ({importing}) => {
 
   const { vocaList, loading, mutationing, addCard, updateCard, deleteCard } =
     useVocaCardEdit({ handleToggleForm , importing});
-  console.log(importing)
+
   return (
     <Stack>
       {loading || importing ? (

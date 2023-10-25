@@ -4,6 +4,8 @@ import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.entities.*;
 import com.example.jflashcardsv0_9.repository.FlashcardKanjiRepository;
 import com.example.jflashcardsv0_9.repository.FlashcardSetRepository;
+import com.example.jflashcardsv0_9.service.FlashcardSetService;
+import com.example.jflashcardsv0_9.service.VotePointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +15,30 @@ import java.util.List;
 
 @Component
 public class FlashcardMapper {
-    @Autowired
+
     static FlashcardSetRepository flashcardSetRepository;
-    public FlashcardMapper(FlashcardSetRepository flashcardSetRepository) {
+    static VotePointService votePointService;
+    static FlashcardSetService flashcardSetService;
+    @Autowired
+    public FlashcardMapper(FlashcardSetRepository flashcardSetRepository,VotePointService votePointService,FlashcardSetService flashcardSetService) {
         this.flashcardSetRepository = flashcardSetRepository;
+        this.votePointService = votePointService;
+        this.flashcardSetService = flashcardSetService;
+    }
+
+    public  static SetSingleDTO convertSetSingleDTO(FlashcardSet flashcardSet){
+        return SetSingleDTO.builder()
+                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .title(flashcardSet.getTitle())
+                .description(flashcardSet.getDescription())
+                .createdAt(flashcardSet.getCreatedAt())
+                .type(flashcardSet.getType())
+                .isPrivate(flashcardSet.isPrivate())
+                .numberCard(flashcardSetService.numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
+                .votePoint(votePointService.countNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
+                .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
+                .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
+                .build();
     }
 
     public static FlashcardSet convertFlS(FlashcardSetDTORequest flashcardSetDTORequest, User user){
@@ -32,7 +54,7 @@ public class FlashcardMapper {
 
     public static GrammarDTO convertGrammarDTO(FlashcardGrammar flashcardGrammar,FlashcardSet flashcardSet){
         return GrammarDTO.builder()
-                .cardGrammarId(flashcardGrammar.getCardGrammarId())
+                .cardId(flashcardGrammar.getCardGrammarId())
                 .combination(flashcardGrammar.getCombination())
                 .note(flashcardGrammar.getNote())
                 .term(flashcardGrammar.getTerm())
@@ -46,7 +68,7 @@ public class FlashcardMapper {
 
     public static KanjiDTO convertKanjiDTO(FlashcardKanji flashcardKanji,FlashcardSet flashcardSet){
         return KanjiDTO.builder()
-                .cardKanjiId(flashcardKanji.getCardKanjiId())
+                .cardId(flashcardKanji.getCardKanjiId())
                 .onSound(flashcardKanji.getOnSound())
                 .kunSound(flashcardKanji.getKunSound())
                 .chineseSound(flashcardKanji.getChineseSound())
@@ -61,7 +83,7 @@ public class FlashcardMapper {
     }
     public static VocabDTO convertVocabDTO(FlashcardVocab flashcardVocab,FlashcardSet flashcardSet){
         return VocabDTO.builder()
-                .cardVocabId(flashcardVocab.getCardVocabId())
+                .cardId(flashcardVocab.getCardVocabId())
                 .term(flashcardVocab.getTerm())
                 .mean(flashcardVocab.getMean())
                 .example(flashcardVocab.getExample())
@@ -71,19 +93,19 @@ public class FlashcardMapper {
                 .build();
     }
 
-    public  static FlashcardSetDTOResponse convertFlashcardSetDTOResponse(FlashcardSet flashcardSet, User user){
+    public  static FlashcardSetDTOResponse convertFlashcardSetDTOResponse(FlashcardSet flashcardSet){
         return FlashcardSetDTOResponse.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
                 .description(flashcardSet.getDescription())
                 .type(flashcardSet.getType())
                 .isPrivate(flashcardSet.isPrivate())
-                .authDTO(UserMapper.toAuthDTO(user))
+                .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
                 .build();
     }
     public static FlashcardKanji convertToFlashcardKanjiEntity(KanjiDTO dto,long setId) {
         return FlashcardKanji.builder()
-                .cardKanjiId(dto.getCardKanjiId())
+                .cardKanjiId(dto.getCardId())
                 .onSound(dto.getOnSound())
                 .kunSound(dto.getKunSound())
                 .chineseSound(dto.getChineseSound())
@@ -98,7 +120,7 @@ public class FlashcardMapper {
     }
     public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto,long setId) {
         return FlashcardVocab.builder()
-                .cardVocabId(dto.getCardVocabId())
+                .cardVocabId(dto.getCardId())
                 .term(dto.getTerm())
                 .mean(dto.getMean())
                 .example(dto.getExample())
@@ -109,7 +131,7 @@ public class FlashcardMapper {
     }
     public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto,long setId) {
         return FlashcardGrammar.builder()
-                .cardGrammarId(dto.getCardGrammarId())
+                .cardGrammarId(dto.getCardId())
                 .combination(dto.getCombination())
                 .note(dto.getNote())
                 .term(dto.getTerm())

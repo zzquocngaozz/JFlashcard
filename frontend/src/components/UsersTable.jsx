@@ -52,7 +52,7 @@ const UsersTable = ({data, unLockUser,lockUser}) => {
     // --------handle function
 
     function handleSearch(){
-      console.log(data)
+
       setPage(0)
       let filterData = data.filter((user)=>user.userName.includes(searchParam))
       switch(filter){
@@ -160,9 +160,7 @@ const UsersTable = ({data, unLockUser,lockUser}) => {
                   <StackActionTable>
                     <Link to={`/users/${user.userId}`}>
                       <Tooltip title='Xem'>
-                          <IconButton sx={{color:"#00d6ff"}}  
-                            onClick={()=>{console.log(`${user.name} clicked`)}}
-                          >
+                          <IconButton sx={{color:"#00d6ff"}}>
                             <VisibilityIcon />
                           </IconButton>
                       </Tooltip>

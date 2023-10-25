@@ -6,6 +6,7 @@ import useAuth from '../hooks/useAuth';
 // route chan nguoi dung chua dang nhap
 const AuthenRoute = ({path,element}) => {
     const {isLogin} = useAuth();
+
     const location = useLocation()
 
   return (

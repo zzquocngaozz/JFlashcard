@@ -1,6 +1,6 @@
 import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import {useForm} from 'react-hook-form'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { role } from '../utils/regexRole'
@@ -9,7 +9,13 @@ import SnapBarAlter from '../components/FeedBack/SnapBarAlter'
 import useSnapBarAlert from '../hooks/useSnapBarAlert'
 import Logo from '../assets/images/Logo.svg'
 import loginbanner from '../assets/images/loginbanner.png'
+import BackdropLoading from '../components/FeedBack/BackdropLoading'
 const Signin = () => {
+  useEffect(() => {
+    document.title = "Đăng nhập";
+  }, []);
+  
+
   const {login} = useAuth()
   const navigate = useNavigate()
   const {alert,setAlert,handleCloseSnackBar} = useSnapBarAlert()
@@ -26,9 +32,10 @@ const Signin = () => {
       password:""
     }
   })
+  const [loading,setLoading] = useState(false)
 
     const onSubmit = async (data) => {
-      
+      setLoading(true)
       const trimData = {
         email: data.email.trim(),
         password: data.password.trim(),
@@ -39,13 +46,15 @@ const Signin = () => {
         const responseData = response.data;
         // save into local storage
         login(responseData);
-    
+        console.log(responseData)
+        setLoading(false)
         if (responseData.user && responseData.user.role === 3) {
           navigate('/dashboard');
         } else {
           navigate('/');
         }
       } catch (error) {
+        setLoading(false)
         setAlert({
           open: true,
           severity: 'error',
@@ -137,6 +146,7 @@ const Signin = () => {
         <Typography variant='h5' sx={{color:'#FFF', textAlign:"center",mt:10}}>Học và ghi nhớ thật hiệu quả với JFlashcard!</Typography>
       </Box>
       {alert.open?<SnapBarAlter alert = {alert} handleCloseSnackBar={handleCloseSnackBar}/>:""}
+      {loading?<BackdropLoading/>:<></>}
     </Stack>
   )
 }

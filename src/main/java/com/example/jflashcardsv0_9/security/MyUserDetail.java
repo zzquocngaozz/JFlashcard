@@ -21,7 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class MyUserDetail implements UserDetails{
-        private User user;
+    private User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = user.getRoles();

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 
-const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
+const useGrammarCardEdit = ({ handleToggleForm, importing }) => {
   const [grammarList, setGrammarList] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -26,14 +26,12 @@ const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
         );
         setGrammarList(response.data);
         setLoading(false);
-        console.log(response.data);
       } catch (error) {
-        console.log(error.response.status);
         setLoading(false);
       }
     };
-    if(!importing) getGrammarList();
-  }, [setId,importing]);
+    if (!importing) getGrammarList();
+  }, [setId, importing]);
 
   const addCard = async (newGrammarCard) => {
     try {
@@ -50,8 +48,7 @@ const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
         JSON.stringify(newGrammarCard),
         config
       );
-      grammarList.push(response.data)
-      console.log(grammarList)
+      grammarList.push(response.data);
       setGrammarList(grammarList);
       handleToggleForm();
       setMutationing(false);
@@ -61,8 +58,7 @@ const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
     }
   };
 
-
-  const updateCard = async (newGrammarCard,handleToggle) => {
+  const updateCard = async (newGrammarCard, handleToggle) => {
     try {
       setMutationing(true);
       const config = {
@@ -78,7 +74,7 @@ const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
         config
       );
       const newGrammarList = grammarList.map((grammarCard) =>
-           grammarCard.cardGrammarId === newGrammarCard.cardGrammarId
+        grammarCard.cardId === newGrammarCard.cardId
           ? newGrammarCard
           : grammarCard
       );
@@ -101,17 +97,22 @@ const useGrammarCardEdit = ({ handleToggleForm,importing }) => {
         },
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
-      const response = await axios.delete(`/createfls/${setId}/edit/grammar-card/${cardId}`, config);
-      const newGrammarList = grammarList.filter((grammarCard) =>grammarCard.cardGrammarId !== cardId);
-      setGrammarList(newGrammarList)
-      handleToggle()
+      await axios.delete(
+        `/createfls/${setId}/edit/grammar-card/${cardId}`,
+        config
+      );
+      const newGrammarList = grammarList.filter(
+        (grammarCard) => grammarCard.cardId !== cardId
+      );
+      setGrammarList(newGrammarList);
+      handleToggle();
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
-  return { grammarList, loading, mutationing, deleteCard, updateCard,addCard};
+  return { grammarList, loading, mutationing, deleteCard, updateCard, addCard };
 };
 
 export default useGrammarCardEdit;

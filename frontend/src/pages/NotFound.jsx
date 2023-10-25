@@ -1,9 +1,13 @@
 import { Button, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import notfoundsvg from '../assets/images/notfound.svg'
 import { Link } from 'react-router-dom'
 
 const NotFound = () => {
+  useEffect(()=>{
+    document.title="Không tìm thấy | JFlashcards"
+  },[])
+
   return (
     <Stack sx={{
         flexDirection:'column',

@@ -152,7 +152,7 @@ const GrammarCardEdit = ({
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            deleteCard(card?.cardGrammarId, handleToggleDelete);
+            deleteCard(card?.cardId, handleToggleDelete);
           }}
         />
       ) : (

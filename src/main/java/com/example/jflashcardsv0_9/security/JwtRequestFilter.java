@@ -62,7 +62,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 //check token hop le
                 if (jwtTokenUtil.isValid(token, UserMapper.toTokenPayload(user))) {
 
-                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getUserName());
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
 
                     // Tạo đối tượng xác thực và đặt nó vào SecurityContextHolder
                     Authentication authentication = new UsernamePasswordAuthenticationToken(

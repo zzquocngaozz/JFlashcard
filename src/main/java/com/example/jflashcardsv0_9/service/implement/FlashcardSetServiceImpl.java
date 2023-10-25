@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -54,8 +55,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public FlashcardSetDTOResponse viewFlashcardSetResponse(long setid, long userid) {
         CheckAuthandsetfound(userid,setid);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
-        User user = userRepository.getUserByUserId(userid);
-        return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet,user);
+        return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet);
     }
     @Override
     public FlashcardSetDTOResponse updateFlashcardSetResponse(FlashcardSetDTORequest flashcardSetDTORequest, long setid, long userid) {
@@ -66,8 +66,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardSet.setPrivate(flashcardSetDTORequest.isPrivate());
         flashcardSetRepository.save(flashcardSet);
         flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
-        User user = userRepository.getUserByUserId(userid);
-        return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet,user);
+        return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet);
     }
 
     @Override
@@ -128,7 +127,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateKanjiCard(KanjiDTO kanjiDTO, long userID, long setId) {
-        FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(kanjiDTO.getCardKanjiId());
+        FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(kanjiDTO.getCardId());
         flashcardKanji.setOnSound(kanjiDTO.getOnSound());
         flashcardKanji.setKunSound(kanjiDTO.getKunSound());
         flashcardKanji.setChineseSound(kanjiDTO.getChineseSound());
@@ -175,7 +174,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateGrammarCard(GrammarDTO grammarDTO, long userID, long setId) {
-        FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardGrammarId());
+        FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardId());
         flashcardGrammar.setCombination(grammarDTO.getCombination());
         flashcardGrammar.setNote(grammarDTO.getNote());
         flashcardGrammar.setTerm(grammarDTO.getTerm());
@@ -213,7 +212,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateVocabCard(VocabDTO vocabDTO, long userID, long setId) {
-        FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardVocabId());
+        FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardId());
         flashcardVocab.setTerm(vocabDTO.getTerm());
         flashcardVocab.setMean(vocabDTO.getMean());
         flashcardVocab.setExample(vocabDTO.getExample());
@@ -228,5 +227,34 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void deleteFlvocab(long cardId) {
         FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(cardId);
         flashcardVocabRepository.delete(flashcardVocab);
+    }
+
+    @Override
+    public long numberCard(long setId, int type) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        //kanji
+        if(type == 1){
+            List<FlashcardKanji> flashcardKanjis = flashcardKanjiRepository.findAllByFlashcardSet(flashcardSet);
+            return flashcardKanjis.size();
+        }
+        // tu vựng
+        else if (type == 2){
+            List<FlashcardVocab> flashcardVocabs = flashcardVocabRepository.findAllByFlashcardSet(flashcardSet);
+            return flashcardVocabs.size();
+        }
+        // ngữ pháp
+        else if (type == 3){
+            List<FlashcardGrammar> flashcardGrammars = flashcardGrammarRepository.findAllByFlashcardSet(flashcardSet);
+            return flashcardGrammars.size();
+        }
+        return 0;
+    }
+
+    @Override
+    public List<SetSingleDTO> searchFlashcardSetPublic(String title) {
+        List<FlashcardSet> flashcardSets = flashcardSetRepository.findAllByTitleContainingAndIsPrivate(title,false);
+        return flashcardSets.stream()
+                .map((FlashcardSet flashcardSet) -> FlashcardMapper.convertSetSingleDTO(flashcardSet))
+                .collect(Collectors.toList());
     }
 }

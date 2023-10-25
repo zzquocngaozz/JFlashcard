@@ -1,5 +1,22 @@
 @startuml LoginClassDiagram
 skinparam Style strictuml
 
+actor User
+activate FlashcardSetController
+activate FlashcardSetService
+activate FlashcardSetRepository
+activate dto
+database db_flashcard
 
+User -> FlashcardSetController: get request updateFlashcardSetResponse
+FlashcardSetController --> FlashcardSetService : sends request updateFlashcardSetResponse()
+FlashcardSetService --> FlashcardSetRepository :call getFlashcardSetByFlashcardSetId()
+FlashcardSetRepository --> db_flashcard : sends Query
+db_flashcard --> FlashcardSetService : return Flashcard set
+FlashcardSetService --> FlashcardSetRepository :update Flashcard set and call save()
+FlashcardSetRepository --> db_flashcard : sends Query
+db_flashcard --> dto : convert to dto
+dto --> FlashcardSetService : return FlashcardSetDTOResponse
+FlashcardSetService --> FlashcardSetController : Confirmation
+FlashcardSetController --> User : return FlashcardSetDTOResponse
 @enduml
