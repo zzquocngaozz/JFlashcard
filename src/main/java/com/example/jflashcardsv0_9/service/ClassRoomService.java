@@ -1,6 +1,7 @@
 package com.example.jflashcardsv0_9.service;
 
 import com.example.jflashcardsv0_9.dto.ClassRoomDTO;
+import com.example.jflashcardsv0_9.dto.ClassRoomSingleDTO;
 import com.example.jflashcardsv0_9.dto.IdDTO;
 import com.example.jflashcardsv0_9.entities.ClassRoom;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
@@ -19,5 +20,6 @@ public interface ClassRoomService {
         ClassRoomDTO updateClassroom(ClassRoomDTO updatedClassroom, MyUserDetail myUserDetail);
 
         void deleteClassroom(Long id, MyUserDetail myUserDetail);
+        List<ClassRoomSingleDTO> getListClassRoomOfUser(long userId);
 
 }

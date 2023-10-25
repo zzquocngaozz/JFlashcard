@@ -44,8 +44,4 @@ public class ClassRoom implements Serializable {
     @JoinColumn(name = "teacherId") // Đặt tên cột foreign key là "teacher_id"
     private User teacher;
 
-
-
-
-
 }
