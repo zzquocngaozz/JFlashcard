@@ -69,12 +69,14 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     }
 
     @Override
-    public ClassRoomDTO getClassroomById(Long id, MyUserDetail myUserDetail) {
+    public ClassRoomSingleDTO getClassroomById(Long id, MyUserDetail myUserDetail) {
         Optional<ClassRoom> classRoom = classRoomRepository.findById(id);
         if(classRoom.isEmpty())
-            throw new AppException(Error.USER_BLOCK);
+            throw new AppException(Error.CLASSROOM_NOT_FOUND);
+        if(!classMemberRepository.existsClassMemberByClassroomAndUser(classRoom.get(),myUserDetail.getUser()))
+            throw new AppException(Error.AUTH_GI_DO);
 
-        return ClassroomMapper.toDto(classRoom.get());
+        return ClassroomMapper.convertClasRoomToClassRoomSingleDTO(classRoom.get());
     }
 
     @Override
@@ -93,15 +95,6 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         return ClassroomMapper.toDto(savedClass);
     }
 
-    @Override
-    public void deleteClassroom(Long id, MyUserDetail myUserDetail) {
-        Optional<ClassRoom> classRoom = classRoomRepository.findById(id);
-        if(classRoom.isEmpty())
-            throw new AppException(Error.USER_BLOCK);
-        if(classRoom.get().getTeacher().getUserId()!=myUserDetail.getUser().getUserId())
-            throw new AppException(Error.USER_BLOCK);
-        classRoomRepository.delete(classRoom.get());
-    }
 
     @Override
     public List<ClassRoomSingleDTO> getListClassRoomOfUser(long userId) {
@@ -114,5 +107,36 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         return classrooms.stream()
                 .map((ClassRoom classRoom) -> ClassroomMapper.convertClasRoomToClassRoomSingleDTO(classRoom))
                 .collect(Collectors.toList());
+    }
+    public void deleteClassroom(Long id, MyUserDetail myUserDetail) {
+        Optional<ClassRoom> classRoom = classRoomRepository.findById(id);
+        if(classRoom.isEmpty())
+            throw new AppException(Error.USER_BLOCK);
+        if(classRoom.get().getTeacher().getUserId()!=myUserDetail.getUser().getUserId())
+            throw new AppException(Error.USER_BLOCK);
+        ClassRoom classRoom1 = classRoom.get();
+        System.out.println("printed )" +classRoom1.toString());
+        classRoomRepository.delete(classRoom1);
+    }
+
+    @Override
+    public void joinClassRoom(long userId, String classCode) {
+        ClassMember classMember = new ClassMember();
+        classMember.setClassroom(classRoomRepository.getClassRoomByClassRoomCode(classCode));
+        classMember.setUser(userRepository.getUserByUserId(userId));
+        classMemberRepository.save(classMember);
+    }
+
+    @Override
+    public void deleteClassRoom(long auth,long userId, long  classCodeId) {
+        ClassMember classMember = classMemberRepository.getClassMemberByClassroomAndUser(classRoomRepository.getClassRoomByClassRoomId(classCodeId),userRepository.getUserByUserId(userId));
+        classMemberRepository.delete(classMember);
+    }
+
+    @Override
+    public List<ClassMember> getAllClassMembersByClassRoom(long classRoomId) {
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(classRoomId);
+        List<ClassMember> classMembers = classMemberRepository.getAllByClassroom(classRoom);
+        return classMembers;
     }
 }

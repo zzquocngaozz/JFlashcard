@@ -12,4 +12,11 @@ public interface ClassMemberRepository extends JpaRepository<ClassMember,Long> {
     List<ClassMember> findAllByClassroom(ClassRoom classRoom);
     List<ClassMember> findAllByUser(User user);
 
+    ClassMember save(ClassMember classMember);
+    ClassMember getClassMemberByClassroomAndUser(ClassRoom room, User user);
+
+    List<ClassMember> getAllByClassroom(ClassRoom room);
+
+    public boolean existsClassMemberByClassroomAndUser(ClassRoom room, User user);
+
 }

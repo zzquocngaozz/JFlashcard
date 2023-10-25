@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ClassRoomRepository extends JpaRepository<ClassRoom,Long> {
     ClassRoom getClassRoomByClassRoomId(long classId);
+    ClassRoom getClassRoomByClassRoomCode(String classCode);
 }

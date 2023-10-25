@@ -6,6 +6,7 @@ import com.example.jflashcardsv0_9.entities.ClassRoom;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.ClassRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class ClassRoomController {
 
     // Read (GET): Lấy thông tin ClassRoom dựa trên ID
     @GetMapping("/{id}")
-    public ClassRoomDTO getClassRoomById(@PathVariable Long id, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+    public ClassRoomSingleDTO getClassRoomById(@PathVariable Long id, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         System.out.println("cut roi getclassbyid line 38");
         return classRoomService.getClassroomById(id, myUserDetail);
     }
@@ -47,10 +48,31 @@ public class ClassRoomController {
     }
 
     // Delete (DELETE): Xóa ClassRoom dựa trên ID
+
     @DeleteMapping("/{id}")
     public void deleteClassRoom(@PathVariable Long id, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         classRoomService.deleteClassroom(id, myUserDetail);
     }
+
+    @PostMapping("/joinclass")
+    public ResponseEntity<?> joinClassRoom(@AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody ClassRoomDTO classRoomDTO){
+        classRoomService.joinClassRoom(myUserDetail.getUser().getUserId(),classRoomDTO.getClassRoomCode());
+        return  ResponseEntity.ok("Vào thành công");
+    }
+
+
+    @DeleteMapping("/{classId}/deleteMember/{userId}")
+    public ResponseEntity<?> deleteMember(@AuthenticationPrincipal MyUserDetail myUserDetail,@PathVariable long classId,@PathVariable long userId){
+        classRoomService.deleteClassRoom(myUserDetail.getUser().getUserId(),userId,classId);
+        return  ResponseEntity.ok("xoa thanh cong");
+    }
+
+    @GetMapping("/{classId}/listMemBer/{userId}")
+    public ResponseEntity<?> listMembers(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long classId) {
+        classRoomService.getAllClassMembersByClassRoom(classId);
+        return ResponseEntity.ok("Danh sách");
+    }
+
 
     // list classroom of user
     // learner
