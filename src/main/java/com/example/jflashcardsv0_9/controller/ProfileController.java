@@ -40,10 +40,10 @@ public class ProfileController {
     }
 
     @PutMapping("/profile/verify")
-    public ResponseEntity<?> verifyUser(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail){
+    public UserDTO verifyUser(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail){
         System.out.println(tokenDTO.getToken()+" "+myUserDetail.getUser().getEmail());
-        profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
-        return ResponseEntity.ok("ok");
+//        profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
+        return  profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
     }
 
     @PostMapping("/profile/wish")

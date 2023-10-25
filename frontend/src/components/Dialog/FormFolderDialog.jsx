@@ -4,10 +4,10 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form';
 import { role } from '../../utils/regexRole';
+import { Stack } from '@mui/material';
 
 // truyền vào defaultValue(optional) togglefunc updatefunc
 // TODO: 
@@ -18,9 +18,9 @@ export default function FormFolderDialog({folder, handleToggle, updateFolder,mut
 
   return (
     <>
-      <Dialog open={true}>
+      <Dialog open={true} fullWidth maxWidth={'sm'}>
         <form noValidate onSubmit={handleSubmit(updateFolder)}>
-          <DialogTitle>Cập nhật thư mục</DialogTitle>
+          <DialogTitle >Cập nhật thư mục</DialogTitle>
           <DialogContent>
             <TextField
               {...register('title',{...role['title'],required:"Tiêu đề của thư mục không thể để trông"})}
@@ -41,10 +41,11 @@ export default function FormFolderDialog({folder, handleToggle, updateFolder,mut
               label="Mô tả ngắn gọn"
               type="text"
               multiline
-              maxRows={4}
+              rows={3} // Đặt rows là 4 để đảm bảo chiều cao ban đầu
+              maxRows={4} // Đặt maxRows là 4 để giới hạn số dòng tối đa
+              fullWidth
               error={!!errors.description}
               helperText={errors?.description?.message}
-              fullWidth
               variant="standard"
             />
           </DialogContent>
@@ -58,8 +59,8 @@ export default function FormFolderDialog({folder, handleToggle, updateFolder,mut
             >
               Cài lại
             </Button>
-            <Button type='button' disabled={mutationing} onClick={handleToggle}>Huỷ</Button>
-            <Button type='submit' disabled={!isDirty||mutationing} >Cập nhật</Button>
+            <Button type='button' disabled={mutationing} variant="contained" color={"error"} onClick={handleToggle}>Huỷ</Button>
+            <Button type='submit' disabled={!isDirty||mutationing} variant="contained" >Cập nhật</Button>
           </DialogActions>
         </form>
       </Dialog>

@@ -19,14 +19,12 @@ const useViewUser = () => {
                     Authorization: accessToken
                 }
             }
-            const response = await axios.put(`/dashboard/listUser/block/${id}`,'',config)
+            await axios.put(`/dashboard/listUser/block/${id}`,'',config)
             const updateUser = {...user,looked:true};
-            console.log(updateUser)
             setUser(updateUser)
             setChanging(false)
         }catch(error){
             setChanging(false)
-            console.log(error)
         }
     }
 
@@ -39,14 +37,12 @@ const useViewUser = () => {
                     Authorization: accessToken
                 }
             }
-            const response = await axios.put(`/dashboard/listUser/unblock/${id}`,'',config)
+            await axios.put(`/dashboard/listUser/unblock/${id}`,'',config)
             const updateUser = {...user,looked:false};
-            console.log(updateUser)
             setUser(updateUser)
             setChanging(false)
         }catch(error){
             setChanging(false)
-            console.log(error)
         }
     }
 
@@ -66,7 +62,6 @@ const useViewUser = () => {
             setChanging(false)
         }catch(error){
             setChanging(false)
-            console.log(error)
         }
     }
 
@@ -85,7 +80,6 @@ const useViewUser = () => {
                 setLoadingUser(false)
             }catch(error){
                 setLoadingUser(false)
-                console.log(error)
             }
         }
             fetchUser(id)

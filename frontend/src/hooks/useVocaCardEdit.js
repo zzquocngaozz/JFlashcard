@@ -75,7 +75,7 @@ const useVocaCardEdit = ({ handleToggleForm,importing }) => {
         },
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
-      const response = await axios.put(
+      await axios.put(
         `/createfls/${setId}/edit/vocab-card`,
         JSON.stringify(newVocaCard),
         config

@@ -26,7 +26,6 @@ const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
         );
         setKanjiList(response.data);
         setLoading(false);
-        console.log(response.data);
       } catch (error) {
         console.log(error.response.status);
         setLoading(false);
@@ -51,7 +50,6 @@ const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
         config
       );
       const newKanjiList = kanjiList.push(response.data)
-      console.log(kanjiList)
       setKanjiList(kanjiList);
       handleToggleForm();
       setMutationing(false);
@@ -101,7 +99,7 @@ const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
         },
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
-      const response = await axios.delete(`/createfls/${setId}/edit/kanji-card/${cardId}`, config);
+      await axios.delete(`/createfls/${setId}/edit/kanji-card/${cardId}`, config);
       const newKanjiList = kanjiList.filter((kanjiCard) =>kanjiCard.cardKanjiId !== cardId);
       setKanjiList(newKanjiList)
       handleToggle()

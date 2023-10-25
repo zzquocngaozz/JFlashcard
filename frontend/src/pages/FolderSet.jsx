@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LayoutNormal from "../components/Parts/LayoutNormal";
 import {
   Box,
@@ -12,7 +12,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddIcon from "@mui/icons-material/Add";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 import useFolder from "../hooks/useFolder";
@@ -24,17 +24,6 @@ import searhbanner from "../assets/images/searhbanner.png";
 import { Link } from "react-router-dom";
 
 const FolderSet = () => {
-  // hook
-  // -------------- State area
-  // const [flashcardSet, setFlashcardSet] = useState({
-  //   flashcardSetId: 123,
-  //   title: "Kanji chủ đề xe cộ",
-  //   description: "Danh sách các từ kanji cấp độ N5",
-  //   type: 2,
-  //   private: false,
-  // });
-  // handle func
-  // ------------------ Handle delete alert show and hide
   const handleToggleAlertDelete = () => {
     setAlertDelete({
       ...alertDelete,
@@ -43,11 +32,11 @@ const FolderSet = () => {
   };
 
   const handleToggleUpdate = () => {
+    console.log("Toggle");
     setOpenEditFrom(!openEditForm);
   };
 
   const handleToggleAdd = () => {
-    console.log("toggled");
     setOpenAddSet(!openAddSet);
   };
   const [openEditForm, setOpenEditFrom] = useState(false);
@@ -68,8 +57,9 @@ const FolderSet = () => {
 
   const [adding, setAdding] = useState(false);
 
-
-  console.log(adding)
+  useEffect(() => {
+    document.title = "Xem thư mục";
+  }, []);
   return (
     <LayoutNormal>
       {loading ? (
@@ -79,7 +69,7 @@ const FolderSet = () => {
           <Stack
             component={Paper}
             sx={{
-              position:"relative",
+              position: "relative",
               flexDirection: "row",
               alignItems: "flex-end",
               margin: "20px 150px",
@@ -96,13 +86,22 @@ const FolderSet = () => {
               </StackList>
             </Stack>
             <Stack flex={1.5} sx={{ justifyContent: "space-between" }}>
-                <Box component={Link} to={"/my-lib/folders"}  sx={{top:"10px",right:"30px", display:"inline-block", position:"absolute"}}>
-                  <Tooltip title={"Quay lại"}>
-                    <IconButton onClick={handleToggleAdd}>
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
+              <Box
+                component={Link}
+                to={"/my-lib/folders"}
+                sx={{
+                  top: "10px",
+                  right: "30px",
+                  display: "inline-block",
+                  position: "absolute",
+                }}
+              >
+                <Tooltip title={"Quay lại"}>
+                  <IconButton>
+                    <ArrowForwardIosIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
               <Box
                 sx={{
                   display: "flex",
@@ -164,7 +163,6 @@ const FolderSet = () => {
           folder={dataFolder}
           handleToggle={handleToggleUpdate}
           updateFolder={updateFolder}
-          
         />
       ) : (
         <></>
@@ -173,12 +171,12 @@ const FolderSet = () => {
         <AddFolderSetDialog
           setAdding={setAdding}
           handleToggle={handleToggleAdd}
-          updateNumSet = {updateNumSet}
+          updateNumSet={updateNumSet}
         />
       ) : (
         <></>
       )}
-      {mutationing ? <BackdropLoading></BackdropLoading> : <></>}
+      {mutationing ? <BackdropLoading /> : <></>}
     </LayoutNormal>
   );
 };

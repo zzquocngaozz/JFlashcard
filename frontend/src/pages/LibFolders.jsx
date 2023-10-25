@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FolderSingle from "../components/Cards/FolderSingle";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import {
-  Pagination,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Pagination, Stack, TextField, Typography } from "@mui/material";
 import useLibFolders from "../hooks/useLibFolders";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 
@@ -39,13 +34,18 @@ export default function LibFolders() {
   }, [searchParam]);
 
   useEffect(() => {
-    const startSet = 5 * (currentPage - 1);
-    const endSet = startSet + 5;
+    const startSet = 6 * (currentPage - 1);
+    const endSet = startSet + 6;
     const pagingList = folderList?.slice(startSet, endSet);
     setPaginList(pagingList);
   }, [currentPage, folderList]);
 
-  useEffect(()=>{setFolderList(data)},[data])
+  useEffect(() => {
+    setFolderList(data);
+  }, [data]);
+  useEffect(() => {
+    document.title = "Danh sách thư mục";
+  }, []);
   return (
     <>
       {loading ? (
@@ -60,9 +60,7 @@ export default function LibFolders() {
           >
             <FolderOpenIcon sx={{ fontSize: "3rem" }} />
           </Stack>
-          <Typography textAlign={"center"}>
-            Bạn chưa có thư mục nào
-          </Typography>
+          <Typography textAlign={"center"}>Bạn chưa có thư mục nào</Typography>
         </Stack>
       ) : (
         <>
@@ -85,9 +83,9 @@ export default function LibFolders() {
               />
             </Stack>
 
-            {folderList?.length > 5 ? (
+            {folderList?.length > 6 ? (
               <Pagination
-                count={Math.ceil(folderList?.length / 5.0)}
+                count={Math.ceil(folderList?.length / 6.0)}
                 color="primary"
                 onChange={handleChangePaging}
               />

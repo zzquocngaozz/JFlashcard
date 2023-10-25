@@ -6,23 +6,17 @@ import { StackList } from "./Styled/StyledStack";
 import { Link } from "react-router-dom";
 import SetSingle from "./Cards/SetSingle";
 import searhbanner from "../assets/images/searhbanner.png";
+import useFetchTopSet from "../hooks/useFetchTopSet";
 
-const RecentsHome = ({ sets, loading }) => {
+const TopFlashcardSet = () => {
+  const { topSet: sets, loading } = useFetchTopSet();
+
   return (
     <Stack>
       <StackList justifyContent={"space-between"}>
-        <Typography variant="h6">Những bộ flashcard bạn học gần đây</Typography>
-        {sets?.length >= 3 ? (
-          <Box
-            component={Link}
-            sx={{ display: { xl: "none", sm: "block" }, mr: "15px" }}
-            to="/my-lib/recent"
-          >
-            Xem toàn bộ
-          </Box>
-        ) : (
-          <></>
-        )}
+        <Typography variant="h6">
+          Top 3 bộ flashcard có điểm cao nhất
+        </Typography>
       </StackList>
       {!loading ? (
         <StackContain>
@@ -51,4 +45,4 @@ const RecentsHome = ({ sets, loading }) => {
   );
 };
 
-export default RecentsHome;
+export default TopFlashcardSet;

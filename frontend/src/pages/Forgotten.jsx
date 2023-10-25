@@ -1,14 +1,14 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { role } from "../utils/regexRole";
-import useAuth from "../hooks/useAuth";
 import SnapBarAlter from "../components/FeedBack/SnapBarAlter";
 import useSnapBarAlert from "../hooks/useSnapBarAlert";
 import Logo from "../assets/images/Logo.svg";
 import forgottenbanner from "../assets/images/searhbanner.png";
+import BackdropLoading from "../components/FeedBack/BackdropLoading";
 
 export default function Forgotten() {
   const navigate = useNavigate();
@@ -81,6 +81,7 @@ export default function Forgotten() {
 }
 
 function RequestCodeForm({ handleChangeStep, setAlert }) {
+  const [loading, setLoading] = useState(false);
   const {
     register, // ref 1 value in form hook
     handleSubmit, //
@@ -92,11 +93,17 @@ function RequestCodeForm({ handleChangeStep, setAlert }) {
   });
   const onSubmit = async (data) => {
     try {
-      // const response = await axios.post(/login,JSON.stringify(data));
-      // const responseData = response.data;
-      console.log(data);
+      setLoading(true);
+      await axios.post("/forgot", JSON.stringify(data));
+      setAlert({
+        open: true,
+        severity: "success",
+        message: "Mã OTP đã được gửi tới email của bạn",
+      });
+      setLoading(false);
       handleChangeStep(2);
     } catch (error) {
+      setLoading(false);
       setAlert({
         open: true,
         severity: "error",
@@ -105,7 +112,9 @@ function RequestCodeForm({ handleChangeStep, setAlert }) {
       });
     }
   };
-
+  useEffect(() => {
+    document.title = "Quên mật khẩu";
+  }, []);
   return (
     <Box
       flex={1}
@@ -164,11 +173,13 @@ function RequestCodeForm({ handleChangeStep, setAlert }) {
           </Stack>
         </Stack>
       </form>
+      {loading ? <BackdropLoading /> : <></>}
     </Box>
   );
 }
 
 function ChangePass({ handleChangeStep, setAlert }) {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
     register, // ref 1 value in form hook
@@ -181,12 +192,12 @@ function ChangePass({ handleChangeStep, setAlert }) {
   });
   const onSubmit = async (data) => {
     try {
-      // const response = await axios.post(/login,JSON.stringify(data));
-      // const responseData = response.data;
-      console.log(data);
-      // save into local storage
-      handleChangeStep(1);
-      navigate('/signin')
+      setLoading(true);
+      await axios.put("/forgot", JSON.stringify(data));
+
+      // handleChangeStep(1);
+      navigate("/signin");
+      setLoading(false);
     } catch (error) {
       setAlert({
         open: true,
@@ -194,6 +205,7 @@ function ChangePass({ handleChangeStep, setAlert }) {
         message:
           error.response?.data?.errors?.body[0] || "Lỗi trả về không xác định",
       });
+      setLoading(false);
     }
   };
 
@@ -211,8 +223,7 @@ function ChangePass({ handleChangeStep, setAlert }) {
         Quên mật khẩu
       </Typography>
       <Typography variant="h5" textAlign="center">
-        Vui lòng nhập lại email đã đăng ký chúng tôi sẽ gửi cho bạn mã để đổi
-        lại mật khẩu
+        Nhập mã xác nhận cùng với mật khẩu mới để hoàn thành đổi mật khẩu
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -230,12 +241,12 @@ function ChangePass({ handleChangeStep, setAlert }) {
           }}
         >
           <TextField
-            {...register("otp", role["token"])}
+            {...register("token", role["token"])}
             id="Code"
-            label="Mã Otp"
+            label="Mã OTP"
             type="text"
-            error={!!errors.otp}
-            helperText={errors.otp?.message}
+            error={!!errors.token}
+            helperText={errors.token?.message}
             variant="standard"
           />
           <TextField
@@ -250,7 +261,7 @@ function ChangePass({ handleChangeStep, setAlert }) {
           <TextField
             {...register("cfPassword", role["password"])}
             id="cf-password-helper-text"
-            label="Mật khẩu mới"
+            label="Mật khẩu xác nhận"
             type="password"
             error={!!errors.cfPassword}
             helperText={errors.cfPassword?.message}
@@ -269,10 +280,18 @@ function ChangePass({ handleChangeStep, setAlert }) {
               justifyContent: "center",
             }}
           >
-            <Link to="/signin">Quay lại đăng nhập</Link>
+            <Box
+              onClick={() => {
+                handleChangeStep(1);
+              }}
+              sx={{ cursor: "pointer" }}
+            >
+              Nhập lại mail
+            </Box>
           </Stack>
         </Stack>
       </form>
+      {loading ? <BackdropLoading /> : <></>}
     </Box>
   );
 }

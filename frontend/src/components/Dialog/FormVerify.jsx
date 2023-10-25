@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -14,26 +14,15 @@ export default function FormVerify({handleClose, verify}) {
   // const [openVerify, setOpenVerify] = React.useState(false);
   const {register,handleSubmit,formState:{errors}} = useForm()
 
-  
-  // send token to be
-  // const verify = (data)=>{
-  //   console.log(data)
-  // }
-
   return (
     <>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button> */}
-      <Dialog open={true}>
-        
+      <Dialog open={true}>        
         <form onSubmit={handleSubmit(verify)} noValidate>
         <DialogTitle>Xác nhận email</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Mã xác nhận đã được gửi đến email của bạn. Kiểm tra và nhập đúng mã để xác minh tài khoản!
           </DialogContentText>
-        
           <TextField
               {...register("token",
               role['token']
@@ -49,8 +38,8 @@ export default function FormVerify({handleClose, verify}) {
             />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} type='button'>Cancel</Button>
-          <Button type='submit'>Verify</Button>
+          <Button onClick={handleClose} type='button' color='error'>Huỷ</Button>
+          <Button type='submit'>Xác nhận</Button>
         </DialogActions>
         </form>
       </Dialog>

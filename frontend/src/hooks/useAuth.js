@@ -33,9 +33,8 @@ const useAuth = ()=>{
     
     const updateUser = (data)=>{
         
-        localStorage.setItem("jwtUser",btoa(encodeURI(JSON.stringify(data.user))))
-        currentUser(data.user)
-        setCurrentUser(data.user)
+        localStorage.setItem("jwtUser",btoa(encodeURI(JSON.stringify(data))))
+        setCurrentUser(data)
     }
 
     const logout = ()=>{

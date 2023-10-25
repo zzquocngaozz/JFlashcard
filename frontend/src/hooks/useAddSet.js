@@ -10,7 +10,6 @@ const useAddSet = () => {
 
     const createSet = async (data)=>{
         setLoading(true);
-        console.log(JSON.stringify(data))
         const config = {
             headers:{
                 "Content-Type":"application/json",
@@ -22,10 +21,8 @@ const useAddSet = () => {
             // const url = `/${1}/edit`
             const url = `/${response.data.id}/edit`
             navigate(url)
-            console.log(response.data)
         } catch(error){
             setLoading(false)
-            console.log("lỗi rồi")
         }
     }
 
