@@ -35,8 +35,8 @@ public class HomePageServiceImpl implements HomePageService {
                 .collect(Collectors.toList());
 
         return HomePageDTO.builder()
-                .setSingleDTOs(null)
-                .classRoomSingleDTOs(classRoomSingleDTOS)
+                .flashcardSets(null)
+                .classRooms(classRoomSingleDTOS)
                 .build();
 
     }

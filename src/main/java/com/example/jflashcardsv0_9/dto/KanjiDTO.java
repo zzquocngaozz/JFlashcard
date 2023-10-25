@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KanjiDTO {
-    Long cardKanjiId;
+    Long cardId;
     String onSound;
     String kunSound;
     String chineseSound;

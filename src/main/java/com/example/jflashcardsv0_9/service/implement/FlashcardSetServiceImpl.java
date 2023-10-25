@@ -127,7 +127,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateKanjiCard(KanjiDTO kanjiDTO, long userID, long setId) {
-        FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(kanjiDTO.getCardKanjiId());
+        FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(kanjiDTO.getCardId());
         flashcardKanji.setOnSound(kanjiDTO.getOnSound());
         flashcardKanji.setKunSound(kanjiDTO.getKunSound());
         flashcardKanji.setChineseSound(kanjiDTO.getChineseSound());
@@ -174,7 +174,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateGrammarCard(GrammarDTO grammarDTO, long userID, long setId) {
-        FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardGrammarId());
+        FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardId());
         flashcardGrammar.setCombination(grammarDTO.getCombination());
         flashcardGrammar.setNote(grammarDTO.getNote());
         flashcardGrammar.setTerm(grammarDTO.getTerm());
@@ -212,7 +212,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateVocabCard(VocabDTO vocabDTO, long userID, long setId) {
-        FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardVocabId());
+        FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardId());
         flashcardVocab.setTerm(vocabDTO.getTerm());
         flashcardVocab.setMean(vocabDTO.getMean());
         flashcardVocab.setExample(vocabDTO.getExample());

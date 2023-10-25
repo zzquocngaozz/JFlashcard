@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class HomePageDTO {
-    List<SetSingleDTO> setSingleDTOs;
-    List<ClassRoomSingleDTO> classRoomSingleDTOs;
+    List<SetSingleDTO> flashcardSets;
+    List<ClassRoomSingleDTO> classRooms;
 }

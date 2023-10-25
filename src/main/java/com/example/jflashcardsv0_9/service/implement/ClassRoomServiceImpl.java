@@ -82,7 +82,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     @Override
     public ClassRoomDTO updateClassroom(ClassRoomDTO updatedClassroom, MyUserDetail myUserDetail) {
         System.out.println(updatedClassroom);
-        //TODO: tao exception cho khong tim thay class va chan quyen sua thong tin lop
+        // TODO: tao exception cho khong tim thay class va chan quyen sua thong tin lop
         Optional<ClassRoom> classRoom = classRoomRepository.findById(updatedClassroom.getClassRoomId());
         if(classRoom.isEmpty())
             throw new AppException(Error.USER_BLOCK);

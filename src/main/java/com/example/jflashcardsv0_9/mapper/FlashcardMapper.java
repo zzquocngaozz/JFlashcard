@@ -54,7 +54,7 @@ public class FlashcardMapper {
 
     public static GrammarDTO convertGrammarDTO(FlashcardGrammar flashcardGrammar,FlashcardSet flashcardSet){
         return GrammarDTO.builder()
-                .cardGrammarId(flashcardGrammar.getCardGrammarId())
+                .cardId(flashcardGrammar.getCardGrammarId())
                 .combination(flashcardGrammar.getCombination())
                 .note(flashcardGrammar.getNote())
                 .term(flashcardGrammar.getTerm())
@@ -68,7 +68,7 @@ public class FlashcardMapper {
 
     public static KanjiDTO convertKanjiDTO(FlashcardKanji flashcardKanji,FlashcardSet flashcardSet){
         return KanjiDTO.builder()
-                .cardKanjiId(flashcardKanji.getCardKanjiId())
+                .cardId(flashcardKanji.getCardKanjiId())
                 .onSound(flashcardKanji.getOnSound())
                 .kunSound(flashcardKanji.getKunSound())
                 .chineseSound(flashcardKanji.getChineseSound())
@@ -83,7 +83,7 @@ public class FlashcardMapper {
     }
     public static VocabDTO convertVocabDTO(FlashcardVocab flashcardVocab,FlashcardSet flashcardSet){
         return VocabDTO.builder()
-                .cardVocabId(flashcardVocab.getCardVocabId())
+                .cardId(flashcardVocab.getCardVocabId())
                 .term(flashcardVocab.getTerm())
                 .mean(flashcardVocab.getMean())
                 .example(flashcardVocab.getExample())
@@ -105,7 +105,7 @@ public class FlashcardMapper {
     }
     public static FlashcardKanji convertToFlashcardKanjiEntity(KanjiDTO dto,long setId) {
         return FlashcardKanji.builder()
-                .cardKanjiId(dto.getCardKanjiId())
+                .cardKanjiId(dto.getCardId())
                 .onSound(dto.getOnSound())
                 .kunSound(dto.getKunSound())
                 .chineseSound(dto.getChineseSound())
@@ -120,7 +120,7 @@ public class FlashcardMapper {
     }
     public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto,long setId) {
         return FlashcardVocab.builder()
-                .cardVocabId(dto.getCardVocabId())
+                .cardVocabId(dto.getCardId())
                 .term(dto.getTerm())
                 .mean(dto.getMean())
                 .example(dto.getExample())
@@ -131,7 +131,7 @@ public class FlashcardMapper {
     }
     public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto,long setId) {
         return FlashcardGrammar.builder()
-                .cardGrammarId(dto.getCardGrammarId())
+                .cardGrammarId(dto.getCardId())
                 .combination(dto.getCombination())
                 .note(dto.getNote())
                 .term(dto.getTerm())
