@@ -7,13 +7,13 @@ import { role } from "../utils/regexRole";
 import useSnapBarAlert from "../hooks/useSnapBarAlert";
 import SnapBarAlter from "../components/FeedBack/SnapBarAlter";
 import useJoinClass from "../hooks/useJoinClass";
+import BackdropLoading from "../components/FeedBack/BackdropLoading";
 
 const JoinClass = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty },
-    control,
   } = useForm();
   const navigate = useNavigate();
 
@@ -44,12 +44,12 @@ const JoinClass = () => {
             <form onSubmit={handleSubmit(joinClass)} noValidate>
               <Stack flexDirection={"column"} sx={{ mt: "40px" }}>
                 <TextField
-                  {...register("classCode", role["classCode"])}
+                  {...register("classRoomCode", role["classCode"])}
                   id="title-helper-text"
                   type="text"
                   label="Mã lớp học*"
-                  error={!!errors.classCode}
-                  helperText={errors.classCode?.message}
+                  error={!!errors.classRoomCode}
+                  helperText={errors.classRoomCode?.message}
                   variant="outlined"
                 />
                 <Stack
@@ -86,6 +86,7 @@ const JoinClass = () => {
         ) : (
           <></>
         )}
+        {loading ? <BackdropLoading /> : <></>}
       </LayoutNormal>
     </>
   );

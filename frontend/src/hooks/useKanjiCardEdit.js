@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 
-const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
+const useKanjiCardEdit = ({ handleToggleForm, importing }) => {
   const [kanjiList, setKanjiList] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -31,8 +31,8 @@ const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
         setLoading(false);
       }
     };
-    if(!importing) getKanjiList();
-  }, [setId,importing]);
+    if (!importing) getKanjiList();
+  }, [setId, importing]);
 
   const addCard = async (newKanjiCard) => {
     try {
@@ -49,7 +49,7 @@ const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
         JSON.stringify(newKanjiCard),
         config
       );
-      const newKanjiList = kanjiList.push(response.data)
+      const newKanjiList = kanjiList.push(response.data);
       setKanjiList(kanjiList);
       handleToggleForm();
       setMutationing(false);
@@ -59,8 +59,7 @@ const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
     }
   };
 
-
-  const updateCard = async (newKanjiCard,handleToggle) => {
+  const updateCard = async (newKanjiCard, handleToggle) => {
     try {
       setMutationing(true);
       const config = {
@@ -76,9 +75,7 @@ const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
         config
       );
       const newKanjiList = kanjiList.map((kanjiCard) =>
-        kanjiCard.cardKanjiId === newKanjiCard.cardKanjiId
-          ? newKanjiCard
-          : kanjiCard
+        kanjiCard.cardId === newKanjiCard.cardId ? newKanjiCard : kanjiCard
       );
       setKanjiList(newKanjiList);
       handleToggle();
@@ -99,17 +96,22 @@ const useKanjiCardEdit = ({ handleToggleForm,importing }) => {
         },
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
-      await axios.delete(`/createfls/${setId}/edit/kanji-card/${cardId}`, config);
-      const newKanjiList = kanjiList.filter((kanjiCard) =>kanjiCard.cardKanjiId !== cardId);
-      setKanjiList(newKanjiList)
-      handleToggle()
+      await axios.delete(
+        `/createfls/${setId}/edit/kanji-card/${cardId}`,
+        config
+      );
+      const newKanjiList = kanjiList.filter(
+        (kanjiCard) => kanjiCard.cardId !== cardId
+      );
+      setKanjiList(newKanjiList);
+      handleToggle();
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
-  return { kanjiList, loading, mutationing, deleteCard, updateCard,addCard };
+  return { kanjiList, loading, mutationing, deleteCard, updateCard, addCard };
 };
 
 export default useKanjiCardEdit;

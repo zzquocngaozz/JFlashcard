@@ -1,4 +1,5 @@
 package com.example.jflashcardsv0_9.controller;
+import com.example.jflashcardsv0_9.dto.AuthDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomSingleDTO;
 import com.example.jflashcardsv0_9.dto.IdDTO;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/classroom")
 public class ClassRoomController {
@@ -24,12 +25,6 @@ public class ClassRoomController {
     @PostMapping
     public IdDTO createClassRoom(@RequestBody ClassRoomDTO classRoomDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         return classRoomService.createClassroom(classRoomDTO, myUserDetail);
-    }
-
-    // Read (GET): Lấy danh sách tất cả ClassRooms
-    @GetMapping
-    public List<ClassRoomDTO> getAllClassRooms(@AuthenticationPrincipal MyUserDetail myUserDetail) {
-        return classRoomService.getAllClassrooms(myUserDetail);
     }
 
     // Read (GET): Lấy thông tin ClassRoom dựa trên ID
@@ -55,9 +50,8 @@ public class ClassRoomController {
     }
 
     @PostMapping("/joinclass")
-    public ResponseEntity<?> joinClassRoom(@AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody ClassRoomDTO classRoomDTO){
-        classRoomService.joinClassRoom(myUserDetail.getUser().getUserId(),classRoomDTO.getClassRoomCode());
-        return  ResponseEntity.ok("Vào thành công");
+    public IdDTO joinClassRoom(@AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody ClassRoomDTO classRoomDTO){
+        return  classRoomService.joinClassRoom(myUserDetail.getUser().getUserId(),classRoomDTO.getClassRoomCode());
     }
 
 
@@ -67,10 +61,10 @@ public class ClassRoomController {
         return  ResponseEntity.ok("xoa thanh cong");
     }
 
-    @GetMapping("/{classId}/listMemBer/{userId}")
-    public ResponseEntity<?> listMembers(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long classId) {
-        classRoomService.getAllClassMembersByClassRoom(classId);
-        return ResponseEntity.ok("Danh sách");
+    @GetMapping("/{classId}/listMemBer")
+    public List<AuthDTO> listMembers(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long classId) {
+
+        return classRoomService.getAllClassMembersByClassRoom(classId);
     }
 
 

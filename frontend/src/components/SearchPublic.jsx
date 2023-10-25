@@ -112,12 +112,13 @@ const SearchPublic = () => {
     const fetchPublic = setTimeout(() => {
       if (searching && searchParam.length >= 3)
         searchPublic(searchParam.trim());
-      if (searchParam.length < 3)
+      if (searching && searchParam.length < 3)
         setAlert({
           open: true,
           severity: "error",
           message: "Nhập tối thiểu 3 ký tự để search",
         });
+      setFilterSet([]);
     }, 300);
 
     return () => {
@@ -236,7 +237,7 @@ const SearchPublic = () => {
           </StackList>
           <Stack>
             <StackList justifyContent={"space-between"}>
-              <Typography variant="h6">Kết quả {listSet?.length}</Typography>
+              <Typography variant="h6">Kết quả {filterSet?.length}</Typography>
               <Pagination
                 count={Math.ceil(filterSet.length / 6.0)}
                 color="primary"

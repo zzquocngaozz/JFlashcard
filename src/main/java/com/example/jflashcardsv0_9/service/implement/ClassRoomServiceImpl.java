@@ -12,6 +12,7 @@ import com.example.jflashcardsv0_9.exception.AppException;
 import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.mapper.ClassroomMapper;
 import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
+import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.ClassMemberRepository;
 import com.example.jflashcardsv0_9.repository.ClassRoomRepository;
 import com.example.jflashcardsv0_9.repository.UserRepository;
@@ -85,9 +86,9 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         // TODO: tao exception cho khong tim thay class va chan quyen sua thong tin lop
         Optional<ClassRoom> classRoom = classRoomRepository.findById(updatedClassroom.getClassRoomId());
         if(classRoom.isEmpty())
-            throw new AppException(Error.USER_BLOCK);
+            throw new AppException(Error.CLASSROOM_NOT_FOUND);
         if(classRoom.get().getTeacher().getUserId()!=myUserDetail.getUser().getUserId())
-            throw new AppException(Error.USER_BLOCK);
+            throw new AppException(Error.AUTH_GI_DO);
         ClassRoom classUpdate = classRoom.get();
         classUpdate.setClassRoomName(updatedClassroom.getClassRoomName());
         classUpdate.setDescription(updatedClassroom.getDescription());
@@ -120,11 +121,15 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     }
 
     @Override
-    public void joinClassRoom(long userId, String classCode) {
+    public IdDTO joinClassRoom(long userId, String classCode) {
+        Optional<ClassRoom> classRoom = classRoomRepository.findByClassRoomCode(classCode);
+        if(classRoom.isEmpty())
+            throw new AppException(Error.CLASSROOM_NOT_FOUND);
         ClassMember classMember = new ClassMember();
-        classMember.setClassroom(classRoomRepository.getClassRoomByClassRoomCode(classCode));
-        classMember.setUser(userRepository.getUserByUserId(userId));
+        classMember.setClassroom(classRoom.get());
+        classMember.setUser(User.builder().userId(userId).build());
         classMemberRepository.save(classMember);
+        return IdDTO.builder().id(classRoom.get().getClassRoomId()).build();
     }
 
     @Override
@@ -134,9 +139,14 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     }
 
     @Override
-    public List<ClassMember> getAllClassMembersByClassRoom(long classRoomId) {
+    public List<AuthDTO> getAllClassMembersByClassRoom(long classRoomId) {
         ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(classRoomId);
         List<ClassMember> classMembers = classMemberRepository.getAllByClassroom(classRoom);
-        return classMembers;
+//        classrooms.stream()
+//                .map((ClassRoom classRoom) -> ClassroomMapper.convertClasRoomToClassRoomSingleDTO(classRoom))
+//                .collect(Collectors.toList());
+        return classMembers.stream()
+                .map((classMember -> UserMapper.toAuthDTO(classMember.getUser())))
+                .collect(Collectors.toList());
     }
 }

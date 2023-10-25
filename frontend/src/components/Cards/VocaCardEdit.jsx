@@ -12,7 +12,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
-import placeholder from '../../assets/images/placeholder.png'
+import placeholder from "../../assets/images/placeholder.png";
 
 const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -129,7 +129,7 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            onDelete(card?.cardVocabId, handleToggleDelete);
+            onDelete(card?.cardId, handleToggleDelete);
           }}
         />
       ) : (

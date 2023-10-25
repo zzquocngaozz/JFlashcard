@@ -14,7 +14,7 @@ import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import placeholder from "../../assets/images/placeholder.png";
 
-const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
+const KanjiCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -26,9 +26,9 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
     setOpenDelete(!openDelete);
   }, [openDelete]);
   // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
-  const handleUpdate = (data)=>{
-    onUpdate(data,handleToggleForm)
-  }
+  const handleUpdate = (data) => {
+    onUpdate(data, handleToggleForm);
+  };
   return (
     <Stack
       key={index}
@@ -101,14 +101,17 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
               <Typography>{card?.kunSound}</Typography>
             </Stack>
           </Stack>
-          {!!card?.trick?
-          (<Stack>
-            <Typography variant="span" sx={{ fontWeight: 500 }}>
-              Mẹo nhớ:
-            </Typography>
-            <Typography>{card?.trick}</Typography>
-          </Stack>):<></>}
-          {(!!card?.example||!!card?.exampleMean)?
+          {!!card?.trick ? (
+            <Stack>
+              <Typography variant="span" sx={{ fontWeight: 500 }}>
+                Mẹo nhớ:
+              </Typography>
+              <Typography>{card?.trick}</Typography>
+            </Stack>
+          ) : (
+            <></>
+          )}
+          {!!card?.example || !!card?.exampleMean ? (
             <Stack>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
                 Ví dụ:
@@ -116,9 +119,9 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
               <Typography>{card?.example}</Typography>
               <Typography>{card?.exampleMean}</Typography>
             </Stack>
-          :
+          ) : (
             <></>
-          }
+          )}
           <Box
             sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
           >
@@ -150,7 +153,7 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            onDelete(card?.cardKanjiId, handleToggleDelete);
+            onDelete(card?.cardId, handleToggleDelete);
           }}
         />
       ) : (

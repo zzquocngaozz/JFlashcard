@@ -1,5 +1,6 @@
 package com.example.jflashcardsv0_9.service;
 
+import com.example.jflashcardsv0_9.dto.AuthDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomSingleDTO;
 import com.example.jflashcardsv0_9.dto.IdDTO;
@@ -23,9 +24,9 @@ public interface ClassRoomService {
         void deleteClassroom(Long id, MyUserDetail myUserDetail);
         List<ClassRoomSingleDTO> getListClassRoomOfUser(long userId);
 
-        void joinClassRoom(long userId,String classCode);
+        IdDTO joinClassRoom(long userId,String classCode);
 
         void deleteClassRoom(long auth,long userId,long classRoomId);
 
-        List<ClassMember> getAllClassMembersByClassRoom (long classRoomId);
+        List<AuthDTO> getAllClassMembersByClassRoom (long classRoomId);
 }

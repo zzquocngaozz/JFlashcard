@@ -1,4 +1,4 @@
-import { Stack, styled } from "@mui/material";
+import { List, Stack, styled } from "@mui/material";
 
 export const StackContain = styled(Stack)({
   flexDirection: "row",
@@ -18,4 +18,15 @@ export const StackContainer = styled(Stack)({
   width: "100%",
   columnGap: "20px",
   rowGap: "30px",
+});
+
+export const NavStyled = styled(List)({
+  display: "flex",
+  margin: "10px 0 10px 0",
+  padding: "0px 15px",
+  backgroundColor: "#fff",
+  borderRadius: "8px",
+  "& a": {
+    padding: "10px",
+  },
 });
