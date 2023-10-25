@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface FlashcardSetRepository extends JpaRepository<FlashcardSet, Integer>{
     FlashcardSet save(FlashcardSet flashcardSet);
     FlashcardSet getFlashcardSetByFlashcardSetId(long setId);
+    List<FlashcardSet> findAllByTitleContainingAndIsPrivate (String title, boolean isPrivate);
     @Override
     void delete(FlashcardSet flashcardSet);
     boolean existsFlashcardSetByFlashcardSetId(long setid);

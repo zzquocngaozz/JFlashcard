@@ -24,7 +24,6 @@ public class DashboardUserController {
 
     @GetMapping
     public List<UserDTO> getAllUser(@AuthenticationPrincipal MyUserDetail myUserDetail){
-        System.out.println(myUserDetail.getUser().getUserName());
         return userService.findAllUser();
     }
     @GetMapping("/viewUser/{userId}")
@@ -44,7 +43,6 @@ public class DashboardUserController {
     }
     @PutMapping("/changeRole/{userId}")
     public ResponseEntity<String> changeUserRole(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
-        System.out.println(userId+" "+ userDTO.getRole());
         userService.changeUserRole(userId, userDTO.getRole());
         return ResponseEntity.ok("User roles changed successfully");
     }

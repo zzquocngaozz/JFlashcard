@@ -38,6 +38,6 @@ public interface FlashcardSetService {
     // tính count cua các card bang type
     long numberCard(long setId,int type);
 
-
+    List<SetSingleDTO> searchFlashcardSetPublic(String title);
 
 }

@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -247,5 +248,13 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
             return flashcardGrammars.size();
         }
         return 0;
+    }
+
+    @Override
+    public List<SetSingleDTO> searchFlashcardSetPublic(String title) {
+        List<FlashcardSet> flashcardSets = flashcardSetRepository.findAllByTitleContainingAndIsPrivate(title,false);
+        return flashcardSets.stream()
+                .map((FlashcardSet flashcardSet) -> FlashcardMapper.convertSetSingleDTO(flashcardSet))
+                .collect(Collectors.toList());
     }
 }
