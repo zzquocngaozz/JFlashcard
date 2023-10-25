@@ -40,12 +40,12 @@ const CreateClass = () => {
             <form onSubmit={handleSubmit(createClass)} noValidate>
               <Stack flexDirection={"column"} sx={{ gap: "20px", mt: "40px" }}>
                 <TextField
-                  {...register("className", role["title"])}
+                  {...register("classRoomName", role["className"])}
                   id="title-helper-text"
                   type="text"
                   label="Tiêu đề*"
-                  error={!!errors.className}
-                  helperText={errors.className?.message}
+                  error={!!errors.classRoomName}
+                  helperText={errors.classRoomName?.message}
                   variant="outlined"
                 />
                 <TextField

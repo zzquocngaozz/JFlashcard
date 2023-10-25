@@ -1,5 +1,12 @@
 import styled from "@emotion/styled";
-import { Avatar, Chip, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar,
+  Chip,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -10,13 +17,17 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { getColorFromEnum } from "../../utils/colorGetter";
 import { ROLE, SET_TYPE } from "../../utils/constant";
 import { parseBirth } from "../../utils/datetimeCalc";
-import { ActionHolderStack, StackList, StarHolderStack } from "../Styled/StyledStack";
+import {
+  ActionHolderStack,
+  StackList,
+  StarHolderStack,
+} from "../Styled/StyledStack";
 
 /**
  * Single Set trong folder
- * 
-*/
-const SetFolder = ({ flashcardSet,onDelete }) => {
+ *
+ */
+const SetFolder = ({ flashcardSet, onDelete }) => {
   const [isNavigationDisabled, setIsNavigationDisabled] = useState(false);
 
   const handleDelete = (flashcardSetId) => {
@@ -25,19 +36,21 @@ const SetFolder = ({ flashcardSet,onDelete }) => {
   };
 
   return (
-    <StackCardLink to={"/"}  onClick={(e) => isNavigationDisabled && e.preventDefault()}>
+    <StackCardLink
+      to={`/${flashcardSet?.flashcardSetId}/edit`}
+      onClick={(e) => isNavigationDisabled && e.preventDefault()}
+    >
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />
           <Typography variant="h5">{flashcardSet?.title}</Typography>
         </StackList>
-        <Chip
-        label={SET_TYPE[flashcardSet?.type]}
-        sx={{width:'100px'}}
-        />
+        <Chip label={SET_TYPE[flashcardSet?.type]} sx={{ width: "100px" }} />
         <StackList>
           <NoteOutlinedIcon />
-          <Typography>{flashcardSet?.numberCard + " "} thẻ flashcard</Typography>
+          <Typography>
+            {flashcardSet?.numberCard + " "} thẻ flashcard
+          </Typography>
         </StackList>
         <StackList>
           <AccessTimeIcon sx={{ color: "#079" }} />
@@ -54,12 +67,14 @@ const SetFolder = ({ flashcardSet,onDelete }) => {
       </Tooltip>
       <Tooltip title={`Xoá khỏi thư mục`}>
         <ActionHolderStack>
-        <IconButton onClick={(event)=>{
-          event.preventDefault()
-          onDelete(flashcardSet?.flashcardSetId)
-          }}>
-          <DeleteForeverIcon color="error" />
-        </IconButton>
+          <IconButton
+            onClick={(event) => {
+              event.preventDefault();
+              onDelete(flashcardSet?.flashcardSetId);
+            }}
+          >
+            <DeleteForeverIcon color="error" />
+          </IconButton>
         </ActionHolderStack>
       </Tooltip>
       <StackList>
@@ -72,13 +87,8 @@ const SetFolder = ({ flashcardSet,onDelete }) => {
         >
           {flashcardSet?.authDTO?.userName.toUpperCase()[0]}
         </Avatar>
-        <Typography>
-          {flashcardSet?.authDTO?.userName + " "}
-        </Typography>
-        <Chip
-        label={ROLE[flashcardSet?.authDTO.role]}
-        width={50}
-        />
+        <Typography>{flashcardSet?.authDTO?.userName + " "}</Typography>
+        <Chip label={ROLE[flashcardSet?.authDTO.role]} width={50} />
       </StackList>
     </StackCardLink>
   );
@@ -102,7 +112,5 @@ const StackCardLink = styled(Link)({
       "0px 2px 1px -1px rgba(0,0,0,0.6), 0px 1px 1px 0px rgba(0,0,0,0.30), 0px 1px 3px 0px rgba(0,0,0,0.20)",
   },
 });
-
-
 
 export default SetFolder;

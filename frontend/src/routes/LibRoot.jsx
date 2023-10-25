@@ -70,7 +70,7 @@ const LibRoot = () => {
         });
       }
     });
-    if(location.pathname === '/my-lib') navigate('/my-lib/sets')
+    if (location.pathname === "/my-lib") navigate("/my-lib/sets");
   }, [location.pathname]);
   return (
     <>
@@ -87,7 +87,7 @@ const LibRoot = () => {
               {currentUser?.userName.toUpperCase()[0]}
             </Avatar>
             <Stack>
-              <Typography variant="h5" component={'div'} pl={2}>
+              <Typography variant="h5" component={"div"} pl={2}>
                 {currentUser.firstName + " "} {currentUser.lastName}
                 <Chip
                   label={ROLE[currentUser.role]}
@@ -147,7 +147,7 @@ const LibRoot = () => {
                 backgroundColor: "#007fe3",
                 left: `${hoverOffset.left - 20}px`,
                 width: `${hoverOffset.width - 35}px`,
-                borderRadius:'8px',
+                borderRadius: "8px",
                 bottom: "10px",
                 position: "absolute",
                 transition: "all 120ms cubic-bezier(0.4, 0, 0.2, 1) 10ms",
@@ -176,32 +176,32 @@ const NavStyled = styled(List)({
   padding: "0px 15px",
   backgroundColor: "#fff",
   borderRadius: "8px",
-  "& a":{
-    padding:'10px'
-  }
-//   "& a": {
-//     position: "relative",
-//     "&:after": {
-//       // Sử dụng "&" để liên kết với lớp active của thẻ a
-//       content: '""',
-//       position: "absolute",
-//       left: "10px",
-//       right: "10px",
-//       // width: '50px',
-//       height: "0px",
-//       backgroundColor: "#007fe3",
-//       transition: "all 120ms cubic-bezier(0.4, 0, 0.2, 1) 10ms",
-//     },
-//     "&:hover:after": {
-//       // Sử dụng "&" để liên kết với lớp active của thẻ a
-//       height: "3px",
-//       borderRadius: "3px",
-//     },
-//     "&.active:after": {
-//       // Sử dụng "&" để liên kết với lớp active của thẻ a
-//       height: "3px",
-//       backgroundColor: "#007fe3",
-//     },
-//   },
+  "& a": {
+    padding: "10px",
+  },
+  //   "& a": {
+  //     position: "relative",
+  //     "&:after": {
+  //       // Sử dụng "&" để liên kết với lớp active của thẻ a
+  //       content: '""',
+  //       position: "absolute",
+  //       left: "10px",
+  //       right: "10px",
+  //       // width: '50px',
+  //       height: "0px",
+  //       backgroundColor: "#007fe3",
+  //       transition: "all 120ms cubic-bezier(0.4, 0, 0.2, 1) 10ms",
+  //     },
+  //     "&:hover:after": {
+  //       // Sử dụng "&" để liên kết với lớp active của thẻ a
+  //       height: "3px",
+  //       borderRadius: "3px",
+  //     },
+  //     "&.active:after": {
+  //       // Sử dụng "&" để liên kết với lớp active của thẻ a
+  //       height: "3px",
+  //       backgroundColor: "#007fe3",
+  //     },
+  //   },
 });
 export default LibRoot;
