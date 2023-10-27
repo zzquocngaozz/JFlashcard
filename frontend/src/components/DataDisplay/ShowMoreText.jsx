@@ -1,26 +1,47 @@
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
-const ShowMoreText = ({ props, children, maxWidth }) => {
+const ShowMoreText = ({ children, maxWidth, maxLength }) => {
   const [isReadMore, setIsReadMore] = React.useState(false);
-
+  console.log(children.length);
   const handleToggle = () => {
     setIsReadMore(!isReadMore);
   };
   return (
-    <>
+    <Box position={"relative"}>
       <Typography
-        className={isReadMore ? "" : "text--overflow"}
+        className={isReadMore ? "" : "text--overflow2line"}
         sx={{ maxWidth: { maxWidth } }}
       >
         {children}
       </Typography>
-      {!isReadMore ? (
-        <Box onClick={handleToggle}>Xem thêm</Box>
+      {children.length >= maxLength ? (
+        <>
+          {!isReadMore ? (
+            <Tooltip title="Xem thêm">
+              <IconButton
+                onClick={handleToggle}
+                position={"absolute"}
+                right={0}
+                bottom={0}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Thu nhỏ">
+              <IconButton onClick={handleToggle}>
+                <ExpandLessIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </>
       ) : (
-        <Box onClick={handleToggle}>Thu nhỏ</Box>
+        <></>
       )}
-    </>
+    </Box>
   );
 };
 

@@ -4,13 +4,15 @@ import useAuth from "../hooks/useAuth";
 import ClassHome from "../components/ClassHome";
 import RecentsHome from "../components/RecentsHome";
 import useFetchRecent from "../hooks/useFetchRecent";
+import { useAuthContext } from "../context/AuthContext";
 
 const Recents = () => {
   const { currentUser } = useAuth();
   const { recent, loading } = useFetchRecent();
-
+  const { authUser } = useAuthContext();
   useEffect(() => {
     document.title = "Trang chủ| JFlashcards";
+    console.log(authUser);
   }, []);
   return (
     <>

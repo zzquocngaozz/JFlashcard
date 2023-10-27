@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import SideNavAdmin from "../components/SideNavAdmin";
+import SideNavAdmin from "../components/Parts/SideNavAdmin";
 import { Controller, useForm } from "react-hook-form";
 import { isBirthDate } from "../utils/datetimeCalc";
 import { role } from "../utils/regexRole";

@@ -36,7 +36,9 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
       bgcolor={"#fff"}
       m={"10px 0"}
       borderRadius={"8px"}
-      height={300}
+      height={320}
+      width={"100%"}
+      overflow={"scroll"}
     >
       <Stack
         flexGrow={12}
@@ -77,7 +79,14 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
           <Typography variant="h6">{card?.term}</Typography>
         </Stack>
 
-        <Stack flex={7} height={"100%"} p={1} position={"relative"} spacing={1}>
+        <Stack
+          flex={7}
+          height={"100%"}
+          p={1}
+          position={"relative"}
+          sx={{ "& p": { maxWidth: "calc(100% - 160px)" } }}
+          spacing={1}
+        >
           <Stack>
             <Typography variant="span" sx={{ fontWeight: 500 }}>
               Ý nghĩa:
