@@ -33,6 +33,9 @@ import LayoutNormal from "./components/Parts/LayoutNormal";
 import UnAuthenRoute from "./routes/UnAuthenRoute";
 import FolderSet from "./pages/FolderSet";
 import Classroom from "./pages/Classroom";
+import ClassSet from "./pages/ClassSet";
+import ClassMember from "./pages/ClassMember";
+import ReadSet from "./pages/ReadSet";
 
 function App() {
   return (
@@ -115,6 +118,8 @@ function App() {
           path="/:setId/edit"
           element={<AuthenRoute element={<SetEdit />} />}
         />
+
+        <Route path="/:setId/read" element={<ReadSet />} />
         <Route path="/my-lib" element={<AuthenRoute element={<LibRoot />} />}>
           <Route
             path="/my-lib/recent"
@@ -146,12 +151,12 @@ function App() {
         <Route
           exact
           path="/class/:classRoomId/class-sets"
-          element={<AuthenRoute element={<Classroom />} />}
+          element={<AuthenRoute element={<ClassSet />} />}
         />
         <Route
           exact
           path="/class/:classRoomId/class-members"
-          element={<AuthenRoute element={<Classroom />} />}
+          element={<AuthenRoute element={<ClassMember />} />}
         />
         <Route
           path="/folders/:folderId"
