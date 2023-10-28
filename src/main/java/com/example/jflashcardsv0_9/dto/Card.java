@@ -10,4 +10,5 @@ public interface Card {
     String getImgUrl();
     Long getFlashcardSetId();
     // Các phương thức khác nếu cần
+
 }
