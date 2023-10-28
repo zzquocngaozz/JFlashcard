@@ -12,7 +12,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -252,9 +251,17 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public List<SetSingleDTO> searchFlashcardSetPublic(String title) {
+        if (title == null) {
+            title = ""; // Gán giá trị mặc định là chuỗi rỗng nếu title là null
+        }
         List<FlashcardSet> flashcardSets = flashcardSetRepository.findAllByTitleContainingAndIsPrivate(title,false);
         return flashcardSets.stream()
-                .map((FlashcardSet flashcardSet) -> FlashcardMapper.convertSetSingleDTO(flashcardSet))
+                .map(FlashcardMapper::convertSetSingleDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ReadSetDTO readFlashcardSet(User user, long setId) {
+        return null;
     }
 }

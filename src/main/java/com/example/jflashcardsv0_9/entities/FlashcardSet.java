@@ -56,6 +56,13 @@ public class FlashcardSet implements Serializable {
 
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<FlashcardVocab> flashcardVocabs;
+
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<BookMarkSet> bookMarkSets;
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<BookMarkCard> bookMarkCards;
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<TrackingProgress> trackingProgresses;
 //    public String getRoleString(){
 //        if(setType == 1){
 //            return "Kanji";

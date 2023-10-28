@@ -1,14 +1,13 @@
 package com.example.jflashcardsv0_9.controller;
+
 import com.example.jflashcardsv0_9.dto.AuthDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomSingleDTO;
 import com.example.jflashcardsv0_9.dto.IdDTO;
-import com.example.jflashcardsv0_9.entities.ClassRoom;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.ClassRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
