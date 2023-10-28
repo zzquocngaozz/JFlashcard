@@ -39,6 +39,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     BookmarkSetRepository bookmarkSetRepository;
     @Autowired
     BookmarkCardRepository bookmarkCardRepository;
+    @Autowired
+    TrackingProgressRepository trackingProgressRepository;
     private void CheckAuthandsetfound(long userid,long setid) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         User user = userRepository.getUserByUserId(userid);
@@ -260,6 +262,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public List<SetSingleDTO> searchFlashcardSetPublic(String title) {
+        if(title == null) title = "";
         List<FlashcardSet> flashcardSets = flashcardSetRepository.findAllByTitleContainingAndIsPrivate(title,false);
         return flashcardSets.stream()
                 .map(FlashcardMapper::convertSetSingleDTO)
@@ -295,6 +298,19 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                     .build();
             markedCards.add(markedCard);
         }
+        List<TrackingProgress> trackingProgresses = trackingProgressRepository.getAllByUserAndFlashcardSet(user,flashcardSet);
+        List<ReadSetDTO.LearnedCard> learnedCards = new ArrayList<>();
+        for(TrackingProgress trackingProgress :  trackingProgresses ){
+            ReadSetDTO.LearnedCard learnedCard = ReadSetDTO.LearnedCard.builder()
+                    .trackingProgressId(trackingProgress.getTrackingProgressId())
+                    .userId(trackingProgress.getUser().getUserId())
+                    .flashcardSetId(trackingProgress.getFlashcardSet().getFlashcardSetId())
+                    .cardId(trackingProgress.getCardId())
+                    .createdAt(trackingProgress.getCreatedAt())
+                    .lastLearn(trackingProgress.getLastLearn())
+                    .build();
+            learnedCards.add(learnedCard);
+        }
         return ReadSetDTO.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
@@ -308,7 +324,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
                 .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
                 .cards(cards)
-                .learnedCards(null)
+                .learnedCards(learnedCards)
                 .markedCards(markedCards)
                 .build();
     }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 @Getter
 @Setter
@@ -39,8 +40,8 @@ public class ReadSetDTO {
         long cardId;
         long userId;
         long flashcardSetId;
-        Date createdAt;
-        Date lastLearn;
+        Timestamp createdAt;
+        Timestamp lastLearn;
     }
 
     @Getter

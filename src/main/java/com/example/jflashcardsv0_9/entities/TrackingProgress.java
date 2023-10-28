@@ -37,7 +37,7 @@ public class TrackingProgress {
     private FlashcardSet flashcardSet;
 
     @Column(name = "cardId")
-    private int cardId;
+    private long cardId;
 
     @Column(name = "createdAt")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
