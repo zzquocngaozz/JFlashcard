@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class KanjiDTO {
+public class KanjiDTO implements Card {
     Long cardId;
     String onSound;
     String kunSound;
@@ -21,4 +21,8 @@ public class KanjiDTO {
     String imgUrl;
     String trick;
     Long flashcardSetId;
+    @Override
+    public Long getCardId() {
+        return this.cardId;
+    }
 }

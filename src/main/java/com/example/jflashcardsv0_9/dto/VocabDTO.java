@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class VocabDTO {
+public class VocabDTO implements Card {
     Long cardId;
     String term;
     String mean;
@@ -17,4 +17,8 @@ public class VocabDTO {
     String exampleMean;
     String imgUrl;
     Long flashcardSetId;
+    @Override
+    public Long getCardId() {
+        return this.cardId;
+    }
 }

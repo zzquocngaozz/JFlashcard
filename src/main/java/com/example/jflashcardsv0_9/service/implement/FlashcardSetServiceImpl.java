@@ -4,14 +4,17 @@ import com.example.jflashcardsv0_9.entities.*;
 import com.example.jflashcardsv0_9.exception.AppException;
 import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
+import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.*;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
+import com.example.jflashcardsv0_9.service.VotePointService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,6 +33,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     FlashcardGrammarRepository flashcardGrammarRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    VotePointService votePointService;
     private void CheckAuthandsetfound(long userid,long setid) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         User user = userRepository.getUserByUserId(userid);
@@ -251,9 +256,6 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public List<SetSingleDTO> searchFlashcardSetPublic(String title) {
-        if (title == null) {
-            title = ""; // Gán giá trị mặc định là chuỗi rỗng nếu title là null
-        }
         List<FlashcardSet> flashcardSets = flashcardSetRepository.findAllByTitleContainingAndIsPrivate(title,false);
         return flashcardSets.stream()
                 .map(FlashcardMapper::convertSetSingleDTO)
@@ -262,6 +264,37 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public ReadSetDTO readFlashcardSet(User user, long setId) {
-        return null;
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        List<Card> cards = new ArrayList<>();
+
+//                    "Kanji";
+        if(flashcardSet.getType() == 1){
+            cards.addAll(getKanjiDTOS(setId));
+        }
+        //            "Từ vựng";
+        else if(flashcardSet.getType() == 2){
+            cards.addAll(getVocabDTOS(setId));
+
+        }
+//             "Ngữ pháp";
+        else if(flashcardSet.getType() == 3){
+            cards.addAll(getGrammarDTOS(setId));
+        }
+        return ReadSetDTO.builder()
+                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .title(flashcardSet.getTitle())
+                .description(flashcardSet.getDescription())
+                .createdAt(flashcardSet.getCreatedAt())
+                .type(flashcardSet.getType())
+                .isPrivate(flashcardSet.isPrivate())
+                .isBookMarked(true)
+                .numberCard(numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
+                .votePoint(votePointService.countNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
+                .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
+                .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
+                .cards(cards)
+                .learnedCards(null)
+                .markedCards(null)
+                .build();
     }
 }

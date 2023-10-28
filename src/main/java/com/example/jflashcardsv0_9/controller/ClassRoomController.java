@@ -36,7 +36,6 @@ public class ClassRoomController {
     // Update (PUT): Cập nhật thông tin ClassRoom
     @PutMapping("/{id}")
     public ClassRoomDTO updateClassRoom(@PathVariable Long id, @RequestBody ClassRoomDTO classRoomDTO,@AuthenticationPrincipal MyUserDetail myUserDetail) {
-
         classRoomDTO.setClassRoomId(id);
         return classRoomService.updateClassroom( classRoomDTO, myUserDetail);
     }

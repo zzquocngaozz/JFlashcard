@@ -29,23 +29,6 @@ public class ReadSetDTO {
     List<LearnedCard> learnedCards;
     List<MarkedCard> markedCards;
 
-    @Getter
-    @Setter
-    @Builder
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class Card {
-        int cardId;
-        String onSound;
-        String kunSound;
-        String chineseSound;
-        String term;
-        String mean;
-        String example;
-        String exampleMean;
-        String imgUrl;
-        String trick;
-        int flashcardSetId;
-    }
 
     @Getter
     @Setter
