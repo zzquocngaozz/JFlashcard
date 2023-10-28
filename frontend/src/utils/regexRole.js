@@ -125,8 +125,8 @@ export const role = {
   },
   description: {
     maxLength: {
-      value: 500,
-      message: "Bạn không nên để tiêu đề quá dài! Tối đa 500 ký tự",
+      value: 255,
+      message: "Bạn không nên để tiêu đề quá dài! Tối đa 255 ký tự",
     },
   },
   term: {
@@ -136,7 +136,7 @@ export const role = {
       message: "Thuật ngữ không được quá 50 ký tự",
     },
     pattern: {
-      value: /^[^\s][^?.]*$/,
+      value: /^[^\s][^$]*$/,
       message: "Thuật ngữ không chứa dấu cách ở đầu",
     },
   },
@@ -147,7 +147,7 @@ export const role = {
       message: "Ý nghĩa không được quá 50 ký tự",
     },
     pattern: {
-      value: /^[^\s][^?.]*$/gim,
+      value: /^[^\s][^$]*$/gim,
       message: "Ý nghĩa không chứa dấu cách ở đầu",
     },
   },
@@ -158,20 +158,20 @@ export const role = {
       message: "không được vượt quá 50 ký tự",
     },
     pattern: {
-      value: /^[^\s][^?.]*$/gim,
+      value: /^[^\s][^&]*$/gim,
       message: "không chứa dấu cách ở đầu",
     },
   },
   checkLength: {
     maxLength: {
-      value: 750,
-      message: "không quá 750 ký tự",
+      value: 255,
+      message: "không quá 255 ký tự",
     },
   },
   imgUrl: {
     maxLength: {
-      value: 5000,
-      message: "Link ảnh không quá 5000 ký tự",
+      value: 255,
+      message: "Link ảnh không quá 255 ký tự",
     },
   },
   classCode: {

@@ -5,7 +5,9 @@ const ClassContext = createContext({});
 const ClassContextProvider = ({ children }) => {
   const [classroom, setClassroom] = useState({});
   return (
-    <ClassContext.Provider value={classroom}>{children}</ClassContext.Provider>
+    <ClassContext.Provider value={{ classroom, setClassroom }}>
+      {children}
+    </ClassContext.Provider>
   );
 };
 

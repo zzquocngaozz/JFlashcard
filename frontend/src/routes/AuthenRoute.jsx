@@ -1,19 +1,24 @@
-import React from 'react'
-import { Navigate,  useLocation } from 'react-router-dom'
-import useAuth from '../hooks/useAuth';
-
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { useAuthContext } from "../context/AuthContext";
 
 // route chan nguoi dung chua dang nhap
-const AuthenRoute = ({path,element}) => {
-    const {isLogin} = useAuth();
-
-    const location = useLocation()
+const AuthenRoute = ({ path, element }) => {
+  const { isLogin } = useAuth();
+  const { authUser } = useAuthContext();
+  const location = useLocation();
+  console.log(authUser);
 
   return (
-    <> 
-       {isLogin()? element : <Navigate to="/access-denied" state={{from:location}} replace />}
+    <>
+      {isLogin() ? (
+        element
+      ) : (
+        <Navigate to="/access-denied" state={{ from: location }} replace />
+      )}
     </>
-  )
-}
+  );
+};
 
-export default AuthenRoute
+export default AuthenRoute;

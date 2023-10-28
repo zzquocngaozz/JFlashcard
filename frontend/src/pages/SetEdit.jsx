@@ -27,6 +27,7 @@ import VocaCardEditContainer from "../components/VocaCardEditContainer";
 import useSetEdit from "../hooks/useSetEdit";
 import SnapBarAlter from "../components/FeedBack/SnapBarAlter";
 import useSnapBarAlert from "../hooks/useSnapBarAlert";
+import ShowMoreText from "../components/DataDisplay/ShowMoreText";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -98,7 +99,9 @@ const SetEdit = () => {
           >
             <Stack flex={3} sx={{ gap: 2 }}>
               <Typography variant="h5">{flashcardSet?.title}</Typography>
-              <Typography>{flashcardSet?.description}</Typography>
+              <ShowMoreText maxLength={100}>
+                {flashcardSet?.description}
+              </ShowMoreText>
               <Stack sx={{ flexDirection: "row", gap: 1, width: 200 }}>
                 <Chip
                   label={SET_TYPE[flashcardSet?.type]}
