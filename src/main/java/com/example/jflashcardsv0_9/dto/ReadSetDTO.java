@@ -35,12 +35,12 @@ public class ReadSetDTO {
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class LearnedCard {
-        int trackingProgressId;
-        int cardId;
-        int userId;
-        int flashcardSetId;
-        long createdAt;
-        long lastLearn;
+        long trackingProgressId;
+        long cardId;
+        long userId;
+        long flashcardSetId;
+        Date createdAt;
+        Date lastLearn;
     }
 
     @Getter
@@ -48,9 +48,9 @@ public class ReadSetDTO {
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class MarkedCard {
-        int bookMarkCardId;
-        int userId;
-        int flashcardSetId;
-        int cardId;
+        long bookMarkCardId;
+        long userId;
+        long flashcardSetId;
+        long cardId;
     }
 }

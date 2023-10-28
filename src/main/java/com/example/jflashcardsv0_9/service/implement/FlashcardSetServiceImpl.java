@@ -37,6 +37,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     VotePointService votePointService;
     @Autowired
     BookmarkSetRepository bookmarkSetRepository;
+    @Autowired
+    BookmarkCardRepository bookmarkCardRepository;
     private void CheckAuthandsetfound(long userid,long setid) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         User user = userRepository.getUserByUserId(userid);
@@ -282,6 +284,17 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         else if(flashcardSet.getType() == 3){
             cards.addAll(getGrammarDTOS(setId));
         }
+        List<BookMarkCard> bookMarkCards = bookmarkCardRepository.getAllByUserAndAndFlashcardSet(user,flashcardSet);
+        List<ReadSetDTO.MarkedCard> markedCards = new ArrayList<>();
+        for (BookMarkCard bookMarkCard : bookMarkCards) {
+            ReadSetDTO.MarkedCard markedCard = ReadSetDTO.MarkedCard.builder()
+                    .bookMarkCardId(bookMarkCard.getBookMarkCardId())
+                    .userId(bookMarkCard.getUser().getUserId())
+                    .flashcardSetId(bookMarkCard.getFlashcardSet().getFlashcardSetId())
+                    .cardId(bookMarkCard.getCardId())
+                    .build();
+            markedCards.add(markedCard);
+        }
         return ReadSetDTO.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
@@ -296,7 +309,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
                 .cards(cards)
                 .learnedCards(null)
-                .markedCards(null)
+                .markedCards(markedCards)
                 .build();
     }
 }
