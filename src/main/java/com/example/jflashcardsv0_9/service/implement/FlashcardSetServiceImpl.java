@@ -35,6 +35,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     UserRepository userRepository;
     @Autowired
     VotePointService votePointService;
+    @Autowired
+    BookmarkSetRepository bookmarkSetRepository;
     private void CheckAuthandsetfound(long userid,long setid) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         User user = userRepository.getUserByUserId(userid);
@@ -287,7 +289,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .createdAt(flashcardSet.getCreatedAt())
                 .type(flashcardSet.getType())
                 .isPrivate(flashcardSet.isPrivate())
-                .isBookMarked(true)
+                .isBookMarked(bookmarkSetRepository.existsBookMarkSetByUserAndAndFlashcardSet(user,flashcardSet))
                 .numberCard(numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
                 .votePoint(votePointService.countNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
                 .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
