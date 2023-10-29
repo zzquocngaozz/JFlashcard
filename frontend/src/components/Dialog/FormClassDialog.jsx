@@ -43,6 +43,7 @@ export default function FormClassDialog({
               id="name"
               label="Tên lớp học*"
               type="text"
+              defaultValue={classroom.classRoomName}
               error={!!errors.classRoomName}
               helperText={errors?.classRoomName?.message}
               fullWidth
@@ -54,9 +55,11 @@ export default function FormClassDialog({
               id="name"
               label="Mô tả ngắn gọn"
               type="text"
+              defaultValue={classroom.description}
               multiline
-              rows={3} // Đặt rows là 4 để đảm bảo chiều cao ban đầu
-              maxRows={4} // Đặt maxRows là 4 để giới hạn số dòng tối đa
+              rows={2}
+              maxRows={4}
+              height={"100px"}
               fullWidth
               error={!!errors.description}
               helperText={errors?.description?.message}

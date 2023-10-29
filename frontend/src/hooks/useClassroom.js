@@ -45,6 +45,7 @@ const useClassroom = ({ handleToggleUpdate }) => {
   }, [classRoomId]);
 
   const updateClassroom = async (data) => {
+    console.log(data);
     try {
       setMutationing(true);
       const config = {
