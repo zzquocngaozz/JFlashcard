@@ -1,17 +1,18 @@
 import { Menu, Rating, Tooltip, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import useAuth from "../../hooks/useAuth";
 import { StackList } from "../Styled/StyledStack";
 import { useFlashcardSetContext } from "../../context/FlashcardSetContext";
 
 const SetVote = () => {
-  const { vote: data } = useFlashcardSetContext();
-  const [vote, setVote] = React.useState({});
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [isVoted, setIsVoted] = React.useState(vote?.voted !== 0);
-  const [votedPoint, setVotedPoint] = React.useState(vote?.voted);
+  const { vote, updateVote: onChange, mutation } = useFlashcardSetContext();
+  const [inital, setInital] = useState(true);
+  // const [vote, setVote] = React.useState({});
+  const [cacheVote, setCacheVote] = React.useState({});
   const { currentUser } = useAuth();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,32 +22,37 @@ const SetVote = () => {
   };
 
   const handleVoteChange = (event, newValue) => {
-    console.log(newValue);
-    console.log(isVoted);
-    setVotedPoint(newValue);
-    console.log(votedPoint);
-    setIsVoted(true);
+    const isVoted = vote.voted !== 0;
+
     const changeBound = newValue - vote.voted;
     const newNumberVoted = isVoted ? vote.numberVote : vote.numberVote + 1;
     const newVotePoint =
       (vote.votePoint * vote.numberVote + changeBound) / newNumberVoted;
-    setVote({
+    onChange({
       voted: newValue,
       numberVote: newNumberVoted,
       votePoint: Number(newVotePoint.toFixed(2)),
     });
+    console.log(vote);
+
     handleClose();
   };
 
-  useEffect(() => {
-    setVote(data);
-    console.log(votedPoint);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(!cacheVote.voted);
+  //   if (!!cacheVote.voted) onChange(cacheVote);
+  // }, [cacheVote]);
 
   return (
     <>
       <Tooltip title={`${vote?.numberVote} người đã đánh giá`}>
-        <StackList sx={{ cursor: "pointer" }} onClick={handleClick}>
+        <StackList
+          sx={{
+            cursor: "pointer",
+            pointerEvents: `${mutation ? "none" : "auto"}`,
+          }}
+          onClick={handleClick}
+        >
           <StarIcon sx={{ color: "#ff9800" }} />
           <Typography>
             {vote?.votePoint + " "}({vote?.numberVote})
@@ -66,7 +72,7 @@ const SetVote = () => {
         <Typography>Đánh giá</Typography>
         <Rating
           name="simple-controlled"
-          value={votedPoint}
+          value={vote.voted}
           onChange={(event, newValue) => {
             handleVoteChange(event, newValue);
           }}

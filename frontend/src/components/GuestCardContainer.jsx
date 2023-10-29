@@ -28,7 +28,14 @@ const GuestCardContainer = () => {
         Có {flashcardSet.cards.length} thẻ trong bộ này
       </Typography>
       {flashcardSet.cards?.map((card, index) => (
-        <ReadCard key={card.cardId} index={index} card={card} />
+        <ReadCard
+          key={card.cardId}
+          index={index}
+          card={card}
+          onSeclectCard={(cardId) => {
+            console.log(cardId);
+          }}
+        />
       ))}
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}

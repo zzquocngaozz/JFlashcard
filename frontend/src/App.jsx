@@ -36,6 +36,7 @@ import Classroom from "./pages/Classroom";
 import ClassSet from "./pages/ClassSet";
 import ClassMember from "./pages/ClassMember";
 import ReadSet from "./pages/ReadSet";
+import LearnSet from "./pages/LearnSet";
 
 function App() {
   return (
@@ -113,12 +114,15 @@ function App() {
           path="/create-class"
           element={<AuthoRoute role={2} element={<CreateClass />} />}
         />
-
         <Route
           path="/:setId/edit"
           element={<AuthenRoute element={<SetEdit />} />}
         />
 
+        <Route
+          path="/:setId/flashcard"
+          element={<AuthenRoute element={<LearnSet />} />}
+        />
         <Route path="/:setId/read" element={<ReadSet />} />
         <Route path="/my-lib" element={<AuthenRoute element={<LibRoot />} />}>
           <Route
