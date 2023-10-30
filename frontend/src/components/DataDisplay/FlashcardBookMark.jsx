@@ -1,5 +1,5 @@
 import { IconButton, Tooltip } from "@mui/material";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo } from "react";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useFlashcardSetContext } from "../../context/FlashcardSetContext";
 const FlashcardBookMark = () => {

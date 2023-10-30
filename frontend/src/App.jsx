@@ -37,6 +37,7 @@ import ClassSet from "./pages/ClassSet";
 import ClassMember from "./pages/ClassMember";
 import ReadSet from "./pages/ReadSet";
 import LearnSet from "./pages/LearnSet";
+import ClassProgress from "./pages/ClassProgress";
 
 function App() {
   return (
@@ -90,7 +91,7 @@ function App() {
         </Route>
         <Route path="/search" element={<SearchPage />} />
         <Route
-          path="/history"
+          path="/my-lib/recent"
           element={<AuthenRoute element={<LearnHistory />} />}
         />
         <Route
@@ -156,6 +157,11 @@ function App() {
           exact
           path="/class/:classRoomId/class-sets"
           element={<AuthenRoute element={<ClassSet />} />}
+        />
+        <Route
+          exact
+          path="/class/:classRoomId/progress/:setId"
+          element={<AuthenRoute element={<ClassProgress />} />}
         />
         <Route
           exact

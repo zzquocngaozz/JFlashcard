@@ -1,10 +1,11 @@
 import { Avatar, Box, Skeleton, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import searhbanner from "../assets/images/searhbanner.png";
 import { StackList } from "./Styled/StyledStack";
 import useAuth from "../hooks/useAuth";
 import { getColorFromEnum } from "../utils/colorGetter";
 import ClassPost from "./Cards/ClassPost";
+import ClassPostForm from "./Dialog/ClassPostForm";
 
 const PostContainer = () => {
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,13 @@ const PostContainer = () => {
           classPostId: 1,
           author: { userId: 1, userName: "hieuht01", role: 1 },
         },
+        {
+          commentId: 1,
+          content: "First comment",
+          createAt: new Date("2023-10-29 16:35:00").getTime(),
+          classPostId: 1,
+          author: { userId: 2, userName: "luongnn", role: 1 },
+        },
       ],
     },
   ];
@@ -34,6 +42,18 @@ const PostContainer = () => {
       setLoading(false);
     }, 1000);
   }, []);
+
+  const [openForm, setOpenForm] = useState(false);
+
+  const handleToggleForm = useCallback(() => {
+    setOpenForm(!openForm);
+  }, [openForm]);
+
+  const handleAdd = (data) => {
+    // onUpdate(data, handleToggleForm);
+    console.log(data);
+    handleToggleForm();
+  };
 
   return (
     <Stack>
@@ -71,6 +91,7 @@ const PostContainer = () => {
                 borderColor: "#0C356A",
               },
             }}
+            onClick={handleToggleForm}
           >
             <Typography>Đăng bài vào lớp của bạn</Typography>
           </Box>
@@ -111,15 +132,15 @@ const PostContainer = () => {
           <ClassPost key={index} postItem={postItem} />
         ))
       )}
-      {/* {openForm ? (
-        <VocaDialogForm
+      {openForm ? (
+        <ClassPostForm
           handleToggle={handleToggleForm}
-          onSubmit={addCard}
-          mutationing={mutationing}
+          onSubmit={handleAdd}
+          // mutationing={mutationing}
         />
       ) : (
         <></>
-      )} */}
+      )}
     </Stack>
   );
 };

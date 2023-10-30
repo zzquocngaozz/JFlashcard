@@ -189,6 +189,13 @@ export const role = {
       message: "Chỉ bao gồm số và chữ thường",
     },
   },
+  postContent: {
+    required: true,
+    maxLength: {
+      value: 255,
+      message: "Nội dung bài đăng không chứa quá 255 ký tự",
+    },
+  },
   comment: {
     required: true,
     maxLength: {

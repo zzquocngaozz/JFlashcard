@@ -97,3 +97,6 @@ img {
 .back-side {
   transform: rotateX(180deg);
 }
+.MuiTypography-root {
+  word-break: break-word;
+}
