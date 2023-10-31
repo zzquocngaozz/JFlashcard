@@ -29,7 +29,7 @@ public class BookmarkServiceImpl implements BookmarkService {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         BookMarkSet bookMarkSet = bookmarkSetRepository.getBookMarkSetByUserAndFlashcardSet(user,flashcardSet);
         if(bookMarkSet == null){
-            bookMarkSet =null;
+            bookMarkSet = new BookMarkSet();
             bookMarkSet.setUser(user);
             bookMarkSet.setFlashcardSet(flashcardSet);
             bookmarkSetRepository.save(bookMarkSet);
@@ -43,7 +43,7 @@ public class BookmarkServiceImpl implements BookmarkService {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         BookMarkCard bookMarkCard = bookmarkCardRepository.getBookMarkCardByUserAndFlashcardSetAndCardId(user,flashcardSet,cardId);
         if(bookMarkCard == null){
-            bookMarkCard = null;
+            bookMarkCard = new BookMarkCard();
             bookMarkCard.setUser(user);
             bookMarkCard.setFlashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId));
             bookMarkCard.setCardId(cardId);
