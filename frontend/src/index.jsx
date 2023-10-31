@@ -5,6 +5,8 @@ import App from "./App";
 import axios from "axios";
 import { AuthProvider } from "./context/AuthContext";
 import { FlashcardSetProvider } from "./context/FlashcardSetContext";
+import ClassContextProvider from "./context/ClassContext";
+import { ClassPostProvider } from "./context/ClassPostContext";
 
 axios.defaults.baseURL = "http://localhost:8081/api/v1";
 axios.defaults.headers.common["Content-Type"] = "application/json";
@@ -14,7 +16,11 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <FlashcardSetProvider>
-        <App />
+        <ClassContextProvider>
+          <ClassPostProvider>
+            <App />
+          </ClassPostProvider>
+        </ClassContextProvider>
       </FlashcardSetProvider>
     </AuthProvider>
   </React.StrictMode>

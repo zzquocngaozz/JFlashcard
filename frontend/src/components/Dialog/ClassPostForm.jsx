@@ -7,63 +7,52 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useForm } from "react-hook-form";
 import { role } from "../../utils/regexRole";
-import { Stack } from "@mui/material";
 
 // truyền vào defaultValue(optional) togglefunc updatefunc
-// TODO:
-export default function FormClassDialog({
-  classroom,
+// TODO: lam edit form
+export default function ClassPostForm({
+  dataInit,
   handleToggle,
-  updateClass,
+  onSubmit,
   mutationing,
 }) {
-  const [open, setOpen] = React.useState(false);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isDirty },
-  } = useForm({
-    defaultValues: {
-      classRoomName: classroom.classRoomName,
-      description: classroom.description,
-    },
-  });
+  } = useForm(!!dataInit ? { defaultValues: { ...dataInit } } : {});
+
+  const submitForm = async (data) => {
+    const strimData = { ...data, content: data.content.trim() };
+    onSubmit(strimData);
+  };
 
   return (
     <>
-      <Dialog open={true} fullWidth maxWidth={"sm"}>
-        <form noValidate onSubmit={handleSubmit(updateClass)}>
-          <DialogTitle>Cập nhật thư mục</DialogTitle>
-          <DialogContent>
+      <Dialog
+        open={true}
+        sx={{ "& .MuiPaper-root": { maxWidth: "calc(100vw - 100px)" } }}
+      >
+        <form
+          noValidate
+          onSubmit={handleSubmit(submitForm)}
+          style={{ padding: "10px 20px" }}
+        >
+          <DialogTitle>{`${!dataInit ? "Tạo" : "Sửa"} bài đăng`}</DialogTitle>
+          <DialogContent sx={{ width: "500px", display: "flex", gap: "60px" }}>
             <TextField
-              {...register("classRoomName", role["className"])}
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Tên lớp học*"
+              {...register("content", role["postContent"])}
+              label="Nội dung bài đăng"
               type="text"
-              defaultValue={classroom.classRoomName}
-              error={!!errors.classRoomName}
-              helperText={errors?.classRoomName?.message}
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              {...register("description", role["description"])}
-              margin="dense"
-              id="name"
-              label="Mô tả ngắn gọn"
-              type="text"
-              defaultValue={classroom.description}
+              defaultValue={dataInit?.content}
+              error={!!errors.content}
               multiline
               rows={2}
-              maxRows={4}
-              height={"100px"}
-              fullWidth
-              error={!!errors.description}
-              helperText={errors?.description?.message}
+              helperText={errors?.content?.message}
+              InputLabelProps={{ shrink: true }}
               variant="standard"
+              sx={{ width: "100%" }}
             />
           </DialogContent>
           <DialogActions>
@@ -73,15 +62,21 @@ export default function FormClassDialog({
               onClick={() => reset()}
               color="secondary"
               disabled={!isDirty || mutationing}
+              sx={{
+                textTransform: "none",
+              }}
             >
               Cài lại
             </Button>
             <Button
               type="button"
               disabled={mutationing}
-              variant="contained"
-              color={"error"}
               onClick={handleToggle}
+              variant="contained"
+              color="error"
+              sx={{
+                textTransform: "none",
+              }}
             >
               Huỷ
             </Button>
@@ -89,8 +84,11 @@ export default function FormClassDialog({
               type="submit"
               disabled={!isDirty || mutationing}
               variant="contained"
+              sx={{
+                textTransform: "none",
+              }}
             >
-              Cập nhật
+              {!dataInit ? "Tạo" : "Cập nhật"}
             </Button>
           </DialogActions>
         </form>

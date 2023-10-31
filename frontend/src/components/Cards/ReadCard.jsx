@@ -10,9 +10,16 @@ import {
 import placeholder from "../../assets/images/placeholder.png";
 import StarIcon from "@mui/icons-material/Star";
 import useAuth from "../../hooks/useAuth";
+import { useEffect, useState } from "react";
+import { useFlashcardSetContext } from "../../context/FlashcardSetContext";
 
-const ReadCard = ({ card, index }) => {
+const ReadCard = ({ card, index, onSeclectCard }) => {
   const { isLogin } = useAuth();
+  const { markedCards } = useFlashcardSetContext();
+  const [selected, setSelected] = useState(false);
+  useEffect(() => {
+    setSelected(markedCards?.includes(card));
+  }, [markedCards]);
   return (
     <Stack
       className="set-card"
@@ -37,7 +44,9 @@ const ReadCard = ({ card, index }) => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Typography variant="h6">{card?.term}</Typography>
+          <Typography variant="h6" component={"p"}>
+            {card?.term}
+          </Typography>
         </Stack>
 
         <Stack
@@ -68,7 +77,7 @@ const ReadCard = ({ card, index }) => {
               <Typography>{card?.mean}</Typography>
             </>
           )}
-          {!!card.chineseSound ? (
+          {!!card?.chineseSound ? (
             <Stack sx={{ gap: 10, flexDirection: "row" }}>
               <Stack width={"40%"}>
                 <Typography variant="span" sx={{ fontWeight: 500 }}>
@@ -150,9 +159,14 @@ const ReadCard = ({ card, index }) => {
                 right: 20,
               }}
             >
-              <Tooltip title={`Chọn`}>
-                <IconButton>
-                  <StarIcon sx={{ color: "#ff9800" }} />
+              <Tooltip title={`${!selected ? "Chọn" : "Bỏ chọn"}`}>
+                <IconButton
+                  onClick={() => {
+                    setSelected(!selected);
+                    onSeclectCard(card?.cardId);
+                  }}
+                >
+                  <StarIcon sx={{ color: `${selected ? "#ff9800" : ""}` }} />
                 </IconButton>
               </Tooltip>
             </Box>

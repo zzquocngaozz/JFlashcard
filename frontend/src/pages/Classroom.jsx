@@ -24,21 +24,24 @@ import useClassroom from "../hooks/useClassroom";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import FormClassDialog from "../components/Dialog/FormClassDialog";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
+import PostContainer from "../components/PostContainer";
 
-// const clazz = {
-//   classRoomId: 6,
-//   classRoomName: "Lớp học kaiwa cô Kai",
-//   classRoomCode: "avxC2sss",
-//   description: "Lớp học kaiwa khoá 7 kỳ 3",
-//   numberStudent: 27,
-//   numberSet: 10,
-//   createdAt: "2023/10/10",
-//   teacher: {
-//     userId: 11,
-//     userName: "BanKai03",
-//     role: 2,
-//   },
-// };
+const clazz = {
+  classRoomId: 6,
+  classRoomName: "Lớp học kaiwa cô Kai",
+  classRoomCode: "avxC2sss",
+  description: "Lớp học kaiwa khoá 7 kỳ 3",
+  numberMember: 27,
+  numberSet: 10,
+  createdAt: "2023/10/10",
+  teacher: {
+    userId: 11,
+    userName: "BanKai03",
+    role: 2,
+  },
+};
+const loading = false,
+  mutationing = false;
 export default function Classroom() {
   const { classRoomId } = useParams();
   const [expandCode, setExpandCode] = useState(false);
@@ -66,13 +69,13 @@ export default function Classroom() {
     message:
       "Thao tác này không thể hoàn lại. Bạn muốn tiếp tục xoá lớp học này không",
   });
-  const {
-    classroom: clazz,
-    loading,
-    mutationing,
-    deleteClassroom,
-    updateClassroom,
-  } = useClassroom({ handleToggleUpdate });
+  // const {
+  //   classroom: clazz,
+  //   loading,
+  //   mutationing,
+  //   deleteClassroom,
+  //   updateClassroom,
+  // } = useClassroom({ handleToggleUpdate });
 
   useEffect(() => {
     document.title = "Lớp học";
@@ -107,11 +110,11 @@ export default function Classroom() {
               )}
             </StackList>
             <Stack flexDirection={"row"} pt={3} sx={{ columnGap: "30px" }}>
-              <Stack flex={6} className="container__theme">
-                CLASS POST
+              <Stack flex={6}>
+                <PostContainer />
               </Stack>
               <Stack flex={2} spacing={3}>
-                {clazz.teacher.userId === currentUser.userId || true ? (
+                {clazz.teacher.userId === currentUser.userId ? (
                   <Box className="container__theme" sx={{ height: "150px" }}>
                     <StackList sx={{ justifyContent: "space-between" }}>
                       <Typography>Mã tham gia</Typography>
@@ -149,13 +152,13 @@ export default function Classroom() {
                       {clazz.numberSet + " "} bộ flashcard
                     </Typography>
                   </StackList>
-                  {clazz.description ? (
+                  {clazz?.description ? (
                     <>
                       <StackList mb={1}>
                         <InfoIcon />
                         <Typography>Về lớp học</Typography>
                       </StackList>
-                      <ShowMoreText maxWidth={"250px"}>
+                      <ShowMoreText maxLength={70}>
                         {clazz?.description}
                       </ShowMoreText>
                     </>
@@ -176,7 +179,7 @@ export default function Classroom() {
       ) : (
         <></>
       )}
-      {alertDelete.open ? (
+      {/* {alertDelete.open ? (
         <DialogAlertDelete
           alertDelete={alertDelete}
           handleToggleAlertDelete={handleToggleAlertDelete}
@@ -195,7 +198,7 @@ export default function Classroom() {
         />
       ) : (
         <></>
-      )}
+      )} */}
     </LayoutNormal>
   );
 }

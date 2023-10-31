@@ -10,13 +10,10 @@ import useSnapBarAlert from "../hooks/useSnapBarAlert";
 import Logo from "../assets/images/Logo.svg";
 import loginbanner from "../assets/images/loginbanner.png";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
-import { useAuthContext } from "../context/AuthContext";
 const Signin = () => {
-  const { authUser, setAuthUser } = useAuthContext();
   useEffect(() => {
     document.title = "Đăng nhập";
   }, []);
-  console.log(authUser);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -50,7 +47,6 @@ const Signin = () => {
       const responseData = response.data;
       // save into local storage
       login(responseData);
-      setAuthUser(responseData);
       console.log(responseData);
       setLoading(false);
       if (responseData.user && responseData.user.role === 3) {

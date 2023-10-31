@@ -126,7 +126,11 @@ export const role = {
   description: {
     maxLength: {
       value: 255,
-      message: "Bạn không nên để tiêu đề quá dài! Tối đa 255 ký tự",
+      message: "Bạn không nên để mô tả quá dài! Tối đa 255 ký tự",
+    },
+    pattern: {
+      value: /^[^\n]*$/,
+      message: "Mô tả không chứa dấu xuống dòng",
     },
   },
   term: {
@@ -183,6 +187,24 @@ export const role = {
     pattern: {
       value: /^[a-z0-9]*$/i,
       message: "Chỉ bao gồm số và chữ thường",
+    },
+  },
+  postContent: {
+    required: true,
+    maxLength: {
+      value: 255,
+      message: "Nội dung bài đăng không chứa quá 255 ký tự",
+    },
+  },
+  comment: {
+    required: true,
+    maxLength: {
+      value: 255,
+      message: "Bình luận không chứa quá 255 ký tự",
+    },
+    pattern: {
+      value: /^[^\n]*$/,
+      message: "Bình luận không chứa dấu xuống dòng",
     },
   },
 };
