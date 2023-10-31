@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface FlashcardGrammarRepository extends JpaRepository<FlashcardGrammar, Integer> {
     List<FlashcardGrammar> findAllByFlashcardSet(FlashcardSet flashcardSet);
     FlashcardGrammar getFlashcardGrammarByCardGrammarId(long cardId);
+    boolean existsFlashcardGrammarByCardGrammarIdAndFlashcardSet(long cardId,FlashcardSet flashcardSet);
     FlashcardGrammar save(FlashcardGrammar flashcardGrammar);
     @Override
     void delete(FlashcardGrammar flashcardGrammar);

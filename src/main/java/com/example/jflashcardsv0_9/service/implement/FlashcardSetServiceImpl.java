@@ -334,6 +334,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                     .build();
             learnedCards.add(learnedCard);
         }
+        VotePoint votePoint = votePointRepository.getVotePointByFlashcardSetAndUser(flashcardSet, user);
+        int voted = (votePoint != null) ? votePoint.getPoint() : 0;
         return ReadSetDTO.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
@@ -342,7 +344,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .type(flashcardSet.getType())
                 .isPrivate(flashcardSet.isPrivate())
                 .isBookMarked(bookmarkSetRepository.existsBookMarkSetByUserAndAndFlashcardSet(user,flashcardSet))
-                .voted(votePointRepository.getVotePointByFlashcardSetAndUser(flashcardSet,user).getPoint())
+                .voted(voted)
                 .numberCard(numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
                 .votePoint(votePointService.countNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
                 .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))

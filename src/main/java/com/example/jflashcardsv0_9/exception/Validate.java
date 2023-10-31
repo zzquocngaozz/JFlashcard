@@ -4,10 +4,10 @@ import com.example.jflashcardsv0_9.dto.FlashcardSetDTORequest;
 import com.example.jflashcardsv0_9.dto.FolderSetDTO;
 import com.example.jflashcardsv0_9.dto.RegisterDTO;
 import com.example.jflashcardsv0_9.dto.UserDTO;
+import com.example.jflashcardsv0_9.entities.FlashcardKanji;
 import com.example.jflashcardsv0_9.entities.FlashcardSet;
 import com.example.jflashcardsv0_9.entities.User;
-import com.example.jflashcardsv0_9.repository.FlashcardSetRepository;
-import com.example.jflashcardsv0_9.repository.UserRepository;
+import com.example.jflashcardsv0_9.repository.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,16 @@ import java.util.regex.Pattern;
 public class Validate {
     UserRepository userRepository;
     FlashcardSetRepository flashcardSetRepository;
-
-
+    FlashcardKanjiRepository flashcardKanjiRepository;
+    FlashcardVocabRepository flashcardVocabRepository;
+    FlashcardGrammarRepository flashcardGrammarRepository;
     @Autowired
-    public Validate(FlashcardSetRepository flashcardSetRepository,UserRepository userRepository) {
+    public Validate(FlashcardSetRepository flashcardSetRepository, UserRepository userRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository) {
         this.flashcardSetRepository = flashcardSetRepository;
         this.userRepository = userRepository;
+        this.flashcardKanjiRepository = flashcardKanjiRepository;
+        this.flashcardVocabRepository = flashcardVocabRepository;
+        this.flashcardGrammarRepository = flashcardGrammarRepository;
     }
 
     // Định nghĩa các biểu thức chính quy
@@ -162,10 +166,10 @@ public class Validate {
         validateTitle(flashcardSetDTORequest.getTitle());
         validateDescription(flashcardSetDTORequest.getDescription());
     }
-    public void checkAuthSetFound(long userid,long setid) {
-        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
+    public void checkAuthSetFound(long userid,long setId) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         User user = userRepository.getUserByUserId(userid);
-        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setid)){
+        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
             throw new AppException(Error.SET_NOT_FOUND);
         }
         if(!Objects.equals(flashcardSet.getUser().getUserId(), user.getUserId())){
@@ -173,5 +177,35 @@ public class Validate {
         }
 
     }
+    public void checkExistsSet(long setId){
+        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
+            throw new AppException(Error.SET_NOT_FOUND);
+        }
+    }
 
+    public void checkExistsSetAndCard(long setId, long cardId) {
+        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
+            throw new AppException(Error.SET_NOT_FOUND);
+        }else {
+            FlashcardSet flashcardSet =flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+            if(flashcardSet.getType() == 1){
+                if(!flashcardKanjiRepository.existsFlashcardKanjiByCardKanjiIdAndFlashcardSet(cardId,flashcardSet)){
+                    throw new AppException(Error.CARD_NOT_FOUND);
+                }
+            }
+            //            "Từ vựng";
+            else if(flashcardSet.getType() == 2){
+                if(!flashcardVocabRepository.existsFlashcardVocabByCardVocabIdAndFlashcardSet(cardId,flashcardSet)){
+                    throw new AppException(Error.CARD_NOT_FOUND);
+                }
+            }
+//             "Ngữ pháp";
+            else if(flashcardSet.getType() == 3){
+                if(!flashcardGrammarRepository.existsFlashcardGrammarByCardGrammarIdAndFlashcardSet(cardId,flashcardSet)){
+                    throw new AppException(Error.CARD_NOT_FOUND);
+                }
+            }
+        }
+
+    }
 }

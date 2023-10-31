@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface FlashcardVocabRepository extends JpaRepository<FlashcardVocab, Integer> {
     List<FlashcardVocab> findAllByFlashcardSet(FlashcardSet flashcardSet);
     FlashcardVocab getFlashcardVocabByCardVocabId(long cardId);
+    boolean existsFlashcardVocabByCardVocabIdAndFlashcardSet(long cardId,FlashcardSet flashcardSet);
     FlashcardVocab save(FlashcardVocab flashcardVocab);
     @Override
     void delete(FlashcardVocab flashcardVocab);

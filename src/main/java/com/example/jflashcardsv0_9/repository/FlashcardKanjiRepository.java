@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface FlashcardKanjiRepository extends JpaRepository<FlashcardKanji, Integer> {
     List<FlashcardKanji> findAllByFlashcardSet(FlashcardSet flashcardSet);
     FlashcardKanji getFlashcardKanjiByCardKanjiId(long cardId);
+    boolean existsFlashcardKanjiByCardKanjiIdAndFlashcardSet(long cardId,FlashcardSet flashcardSet);
     FlashcardKanji save(FlashcardKanji flashcardKanji);
     @Override
     void delete(FlashcardKanji flashcardKanji);
