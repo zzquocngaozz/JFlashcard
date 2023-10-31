@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface BookmarkService {
-    void bookMarkset(User user, long setId);
+    void bookMarkSet(User user, long setId);
     void bookMarkCard(User user, long setId,long cardId);
 }

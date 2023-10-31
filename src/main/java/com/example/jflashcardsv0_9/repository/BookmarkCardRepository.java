@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface BookmarkCardRepository extends JpaRepository<BookMarkCard,Long> {
     BookMarkCard save(BookMarkCard bookMarkCard);
-
+    BookMarkCard getBookMarkCardByUserAndFlashcardSetAndCardId(User user, FlashcardSet flashcardSet,long cardId);
     List<BookMarkCard> getAllByUserAndAndFlashcardSet(User user, FlashcardSet flashcardSet);
 }
