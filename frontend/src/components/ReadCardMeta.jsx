@@ -32,7 +32,7 @@ const ReadCardMeta = () => {
     // Chuyển đến trang Page B và truyền state thông qua props.location.state
     navigate(url, { state: { learnMode } });
   };
-
+  console.log("re-render");
   return (
     <Stack
       // pr={4}
@@ -195,4 +195,4 @@ const ReadCardMeta = () => {
   );
 };
 
-export default ReadCardMeta;
+export default React.memo(ReadCardMeta);

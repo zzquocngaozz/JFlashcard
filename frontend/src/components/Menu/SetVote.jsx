@@ -82,4 +82,4 @@ const SetVote = () => {
   );
 };
 
-export default SetVote;
+export default React.memo(SetVote);

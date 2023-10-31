@@ -5,7 +5,6 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 const ShowMoreText = ({ children, maxWidth, maxLength }) => {
   const [isReadMore, setIsReadMore] = React.useState(false);
-  console.log(children.length);
   const handleToggle = () => {
     setIsReadMore(!isReadMore);
   };
@@ -19,7 +18,7 @@ const ShowMoreText = ({ children, maxWidth, maxLength }) => {
       </Typography>
       {children.length >= maxLength ? (
         <>
-          {!isReadMore ? (
+          {!isReadMore || children.includes("<br/>") ? (
             <Tooltip title="Xem thêm">
               <IconButton
                 onClick={handleToggle}
