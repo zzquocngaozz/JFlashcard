@@ -1,61 +1,177 @@
 package com.example.jflashcardsv0_9.exception;
 
+import com.example.jflashcardsv0_9.dto.FlashcardSetDTORequest;
+import com.example.jflashcardsv0_9.dto.FolderSetDTO;
 import com.example.jflashcardsv0_9.dto.RegisterDTO;
+import com.example.jflashcardsv0_9.dto.UserDTO;
+import com.example.jflashcardsv0_9.entities.FlashcardSet;
+import com.example.jflashcardsv0_9.entities.User;
+import com.example.jflashcardsv0_9.repository.FlashcardSetRepository;
 import com.example.jflashcardsv0_9.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+import java.util.regex.Pattern;
 @Component
 public class Validate {
     UserRepository userRepository;
+    FlashcardSetRepository flashcardSetRepository;
+
 
     @Autowired
-    public Validate(UserRepository userRepository) {
+    public Validate(FlashcardSetRepository flashcardSetRepository,UserRepository userRepository) {
+        this.flashcardSetRepository = flashcardSetRepository;
         this.userRepository = userRepository;
     }
 
-    boolean isValidEmail(String email) {
-        // Sử dụng biểu thức chính quy để kiểm tra định dạng email
-        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        return email.matches(emailRegex);
-    }
-    boolean isPassword(String password) {
-        // Sử dụng biểu thức chính quy để kiểm tra định dạng email
-        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
-        return password.matches(passRegex);
-    }
-    boolean isUsername(String userName) {
-        // Sử dụng biểu thức chính quy để kiểm tra định dạng email
-        String userRegex = "^[a-zA-Z0-9]+$";
-        return userName.matches(userRegex);
-    }
-    boolean isFirstname(String firstName) {
-        // Sử dụng biểu thức chính quy để kiểm tra định dạng email
-        String firstNameRegex = "^[^\\s!@#$%^&*()_+{}\\[\\]:;<>,.?~\\|\\/\\-][^!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\\\|\\/\\-]*[^\\s!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\\\|\\/\\-]$";
-        return firstNameRegex.matches(firstNameRegex);
-    }
-    boolean isLastname(String lastName) {
-        // Sử dụng biểu thức chính quy để kiểm tra định dạng email
-        String lastNameRegex = "^[^\\s!@#$%^&*()_+{}\\[\\]:;<>,.?~\\|\\/\\-][^!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\\\|\\/\\-]*[^\\s!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\\\|\\/\\-]$";
-        return lastName.matches(lastNameRegex);
-    }
-    public void CheckRegisterDTO(RegisterDTO registerDTO) {
-        if (registerDTO.getUserName() == "" || !isUsername(registerDTO.getUserName())) {
-            throw new AppException(Error.USERNAME_USER_NULL);
-        }
-        if(registerDTO.getEmail() == "" || !isValidEmail(registerDTO.getEmail())){
+    // Định nghĩa các biểu thức chính quy
+    private static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
+    private static final String USERNAME_REGEX = "^[a-zA-Z0-9]+$";
+    private static final String TITLE_REGEX = "^[^\\s][^&@]*$";
+    private static final String CLASSNAME_REGEX = "^[^\\s][^&@]*$";
+    private static final String DESCRIPTION_REGEX = "^[^\\n]*$";
+    private static final String TERM_REGEX = "^[^\\s][^$]*$";
+    private static final String CLASSCODE_REGEX = "^[a-z0-9]*$";
+    private static final String COMMENT_REGEX = "^[^\\n]*$";
+    private static final String NAME_REGEX = "^[^\\s!@#$%^&*()_+{}\\[\\]:;<>,.?~\\|\\/\\-][^!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\\\|\\/\\-]*[^\\s!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\\\|\\/\\-]$";
+    private static final int minLengthUsername = 4;
+    private static final int minLengthName = 2;
+    private static final int maxLengthUsername = 30;
+    private static final int maxLength = 255;
+    private static final int maxLengthTitle = 50;
+    // Thêm các phương thức kiểm tra
+    public void validateEmail(String email) {
+        if(email == "" || email == null){
             throw new AppException(Error.EMAIL_USER_NULL);
         }
-        if(registerDTO.getPassword() == "" || !isPassword(registerDTO.getPassword())){
-            throw new AppException(Error.EMAIL_USER_NULL);
+        if (!Pattern.matches(EMAIL_REGEX, email)) {
+            throw new AppException(Error.EMAIL_ERROR_MESSAGE);
         }
-        if(userRepository.existsByUserName(registerDTO.getUserName())){
-            throw new AppException(Error.USERNAME_USER_EXIST);
-        }
-        if(userRepository.existsByEmail(registerDTO.getEmail())){
+        if (userRepository.existsByEmail(email)) {
             throw new AppException(Error.EMAIL_USER_EXIST);
         }
     }
+    public void validatePassword(String password) {
+        if(password == "" || password == null){
+            throw new AppException(Error.PASS_USER_NULL);
+        }
+        if (!Pattern.matches(PASSWORD_REGEX, password)) {
+            throw new AppException(Error.PASSWORD_ERROR_MESSAGE);
+        }
+    }
+    public void validateUsername(String userName) {
+        if(userName == "" || userName == null){
+            throw new AppException(Error.USERNAME_USER_NULL);
+        }
+        if (!Pattern.matches(USERNAME_REGEX, userName)) {
+            throw new AppException(Error.USERNAME_ERROR_MESSAGE);
+        }
+        if (userRepository.existsByUserName(userName)) {
+            throw new AppException(Error.USERNAME_USER_EXIST);
+        }
+        if (userName.length() < minLengthUsername) {
+            throw new AppException(Error.USERNAME_MIN_LENGTH);
+        }
+        if (userName.length() > maxLengthUsername) {
+            throw new AppException(Error.USERNAME_MAX_LENGTH);
+        }
+    }
+    public void validateName(String name) {
+        if(name == "" || name == null){
+            throw new AppException(Error.NAME_USER_NULL);
+        }
+        if (!Pattern.matches(NAME_REGEX, name)) {
+            throw new AppException(Error.NAME_ERROR_MESSAGE);
+        }
+        if (name.length() < minLengthName) {
+            throw new AppException(Error.NAME_MIN_LENGTH);
+        }
+        if (name.length() > maxLengthUsername) {
+            throw new AppException(Error.USERNAME_MAX_LENGTH);
+        }
+    }
+
+    public void validateTitle(String title){
+        if(title == "" || title == null){
+            throw new AppException(Error.TITLE_USER_NULL);
+        }
+        if (!Pattern.matches(TITLE_REGEX, title)) {
+            throw new AppException(Error.TITLE_ERROR_MESSAGE);
+        }
+        if (title.length() < minLengthName) {
+            throw new AppException(Error.TITLE_MIN_LENGTH);
+        }
+        if (title.length() > maxLengthTitle) {
+            throw new AppException(Error.TITLE_MAX_LENGTH);
+        }
+    }
+    public void validateDescription(String description){
+        if (!Pattern.matches(DESCRIPTION_REGEX, description)) {
+            throw new AppException(Error.DESCRIPTION_ERROR_MESSAGE);
+        }
+        if (description.length() > maxLength) {
+            throw new AppException(Error.DESCRIPTION_MAX_LENGTH);
+        }
+    }
+    public void validateTerm(String term){
+        if(term == "" || term == null){
+            throw new AppException(Error.TERM_NULL);
+        }
+        if (!Pattern.matches(TERM_REGEX, term)) {
+            throw new AppException(Error.TERM_ERROR_MESSAGE);
+        }
+        if (term.length() > maxLengthTitle) {
+            throw new AppException(Error.TERM_MAX_LENGTH);
+        }
+    }
+    public void validateMean(String mean){
+        if(mean == "" || mean == null){
+            throw new AppException(Error.MEAN_USER_NULL);
+        }
+        if (!Pattern.matches(TERM_REGEX, mean)) {
+            throw new AppException(Error.MEAN_ERROR_MESSAGE);
+        }
+        if (mean.length() > maxLengthTitle) {
+            throw new AppException(Error.MEAN_MAX_LENGTH);
+        }
+    }
+
+    public void checkRegisterDTO(RegisterDTO registerDTO) {
+        validateUsername(registerDTO.getUserName());
+        validateEmail(registerDTO.getEmail());
+        validatePassword(registerDTO.getPassword());
+        validateName(registerDTO.getFirstName());
+        validateName(registerDTO.getLastName());
+    }
+    public void checkUserDTO(UserDTO userDTO) {
+        validateUsername(userDTO.getUserName());
+        validateEmail(userDTO.getEmail());
+        validatePassword(userDTO.getPassword());
+        validateName(userDTO.getFirstName());
+        validateName(userDTO.getLastName());
+        }
+    public  void checkFolder(FolderSetDTO folderSetDTO)  {
+        validateTitle(folderSetDTO.getTitle());
+        validateDescription(folderSetDTO.getDescription());
+    }
+    public  void checkFlashCardSet( FlashcardSetDTORequest flashcardSetDTORequest)  {
+        validateTitle(flashcardSetDTORequest.getTitle());
+        validateDescription(flashcardSetDTORequest.getDescription());
+    }
+    public void checkAuthSetFound(long userid,long setid) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
+        User user = userRepository.getUserByUserId(userid);
+        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setid)){
+            throw new AppException(Error.SET_NOT_FOUND);
+        }
+        if(!Objects.equals(flashcardSet.getUser().getUserId(), user.getUserId())){
+            throw new AppException(Error.AUTH_GI_DO);
+        }
+
+    }
+
 }

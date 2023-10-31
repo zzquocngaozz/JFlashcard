@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO registration( RegisterDTO registerDTO) {
-        validate.CheckRegisterDTO(registerDTO);
+        validate.checkRegisterDTO(registerDTO);
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         User user = UserMapper.toUser(registerDTO);
         Role roles = roleRepository.findByName("ROLE_LEARNER").get();
@@ -60,25 +60,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return UserMapper.toUserDTOResponse(user);
     }
-    private void CheckUserDTO(UserDTO userDTO) {
-        if (userDTO.getUserName() == null) {
-            throw new AppException(Error.USERNAME_USER_NULL);
-        }
-        if(userDTO.getEmail() == null){
-            throw new AppException(Error.EMAIL_USER_NULL);
-        }
-        if(userRepository.existsByUserName(userDTO.getUserName())){
-            throw new AppException(Error.USERNAME_USER_EXIST);
-        }
-        if(userRepository.existsByEmail(userDTO.getEmail())){
-            throw new AppException(Error.EMAIL_USER_EXIST);
-        }
-
-    }
 
     @Override
     public UserDTO registrationADMIN( RegisterDTO registerDTO) {
-        validate.CheckRegisterDTO(registerDTO);
+        validate.checkRegisterDTO(registerDTO);
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         User user = UserMapper.toUser(registerDTO);
         Role roles = roleRepository.findByName("ROLE_ADMIN").get();
@@ -168,7 +153,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void addUser(UserDTO userDTO) {
-        CheckUserDTO(userDTO);
+        validate.checkUserDTO(userDTO);
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = UserMapper.toUserDTO(userDTO);
         Role roles = roleRepository.findRoleByRoleId(userDTO.getRole());

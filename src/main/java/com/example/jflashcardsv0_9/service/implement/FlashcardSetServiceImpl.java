@@ -3,6 +3,7 @@ import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.entities.*;
 import com.example.jflashcardsv0_9.exception.AppException;
 import com.example.jflashcardsv0_9.exception.Error;
+import com.example.jflashcardsv0_9.exception.Validate;
 import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.*;
@@ -32,8 +33,10 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     BookmarkCardRepository bookmarkCardRepository;
     TrackingProgressRepository trackingProgressRepository;
     VotePointRepository votePointRepository;
+    Validate validate;
     @Autowired
-    public FlashcardSetServiceImpl(FlashcardSetRepository flashcardSetRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository, UserRepository userRepository, VotePointService votePointService, BookmarkSetRepository bookmarkSetRepository, BookmarkCardRepository bookmarkCardRepository, TrackingProgressRepository trackingProgressRepository, VotePointRepository votePointRepository) {
+    public FlashcardSetServiceImpl(Validate validate,FlashcardSetRepository flashcardSetRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository, UserRepository userRepository, VotePointService votePointService, BookmarkSetRepository bookmarkSetRepository, BookmarkCardRepository bookmarkCardRepository, TrackingProgressRepository trackingProgressRepository, VotePointRepository votePointRepository) {
+        this.validate = validate;
         this.flashcardSetRepository = flashcardSetRepository;
         this.flashcardKanjiRepository = flashcardKanjiRepository;
         this.flashcardVocabRepository = flashcardVocabRepository;
@@ -46,19 +49,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         this.votePointRepository = votePointRepository;
     }
 
-    private void CheckAuthandsetfound(long userid,long setid) {
-        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
-        User user = userRepository.getUserByUserId(userid);
-        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setid)){
-            throw new AppException(Error.SET_NOT_FOUND);
-        }
-        if(!Objects.equals(flashcardSet.getUser().getUserId(), user.getUserId())){
-            throw new AppException(Error.AUTH_GI_DO);
-        }
-
-    }
     @Override
     public IdDTO createFlashcardSet(FlashcardSetDTORequest flashcardSetDTORequest, long userID) {
+        validate.checkFlashCardSet(flashcardSetDTORequest);
         User user = userRepository.getUserByUserId(userID);
 //        flashcardSet.getFlashcardSetId();
         FlashcardSet flashcardSet = flashcardSetRepository.save(FlashcardMapper.convertFlS(flashcardSetDTORequest,user));
@@ -68,13 +61,14 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
     @Override
     public FlashcardSetDTOResponse viewFlashcardSetResponse(long setid, long userid) {
-        CheckAuthandsetfound(userid,setid);
+        validate.checkAuthSetFound(userid,setid);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         return FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet);
     }
     @Override
     public FlashcardSetDTOResponse updateFlashcardSetResponse(FlashcardSetDTORequest flashcardSetDTORequest, long setid, long userid) {
-        CheckAuthandsetfound(userid,setid);
+        validate.checkAuthSetFound(userid,setid);
+        validate.checkFlashCardSet(flashcardSetDTORequest);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         flashcardSet.setTitle(flashcardSetDTORequest.getTitle());
         flashcardSet.setDescription(flashcardSetDTORequest.getDescription());
@@ -86,17 +80,17 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public List<KanjiDTO> findAllKanjiDTOBySetId(long setid, long userid) {
-        CheckAuthandsetfound(userid,setid);
+        validate.checkAuthSetFound(userid,setid);
         return getKanjiDTOS(setid);
     }
     @Override
     public List<GrammarDTO> findAllGrammarDTOBySetId(long setid, long userid) {
-        CheckAuthandsetfound(userid,setid);
+        validate.checkAuthSetFound(userid,setid);
         return getGrammarDTOS(setid);
     }
     @Override
     public List<VocabDTO> findAllVocabDTOBySetId(long setid, long userid) {
-        CheckAuthandsetfound(userid,setid);
+        validate.checkAuthSetFound(userid,setid);
         return getVocabDTOS(setid);
     }
 
@@ -110,13 +104,15 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void deleteFlashcardSetById(long setid, long userid) {
-        CheckAuthandsetfound(userid,setid);
+        validate.checkAuthSetFound(userid,setid);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         flashcardSetRepository.delete(flashcardSet);
     }
 
     @Override
     public KanjiDTO createFlashcardKanji(KanjiDTO kanjiDTO, long userID,long setId) {
+        validate.validateTerm(kanjiDTO.getTerm());
+        validate.validateMean(kanjiDTO.getMean());
         FlashcardKanji flashcardKanji = FlashcardMapper.convertToFlashcardKanjiEntity(kanjiDTO,setId);
         FlashcardKanji flashcardKanji1 = flashcardKanjiRepository.save(flashcardKanji);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
@@ -125,6 +121,10 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public List<KanjiDTO> createFlashcardKanjiList(List<KanjiDTO> kanjiDTOs, long userID, long setId) {
+        for (KanjiDTO dto : kanjiDTOs) {
+            validate.validateTerm(dto.getTerm());
+            validate.validateMean(dto.getMean());
+        }
         List<FlashcardKanji> entities = kanjiDTOs.stream()
                 .map((KanjiDTO dto) -> FlashcardMapper.convertToFlashcardKanjiEntity(dto,setId))
                 .collect(Collectors.toList());
@@ -142,6 +142,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateKanjiCard(KanjiDTO kanjiDTO, long userID, long setId) {
+        validate.validateTerm(kanjiDTO.getTerm());
+        validate.validateMean(kanjiDTO.getMean());
         FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(kanjiDTO.getCardId());
         flashcardKanji.setOnSound(kanjiDTO.getOnSound());
         flashcardKanji.setKunSound(kanjiDTO.getKunSound());
@@ -164,6 +166,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 // xu lu ngu phap
     @Override
     public GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID, long setId) {
+        validate.validateTerm(grammarDTO.getTerm());
+        validate.validateMean(grammarDTO.getMean());
         FlashcardGrammar flashcardGrammar = FlashcardMapper.convertToFlashcardGrammarEntity(grammarDTO,setId);
         FlashcardGrammar flashcardGrammar1 = flashcardGrammarRepository.save(flashcardGrammar);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
@@ -172,6 +176,10 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public List<GrammarDTO> createFlashcardGrammarList(List<GrammarDTO> grammarDTOs, long userID, long setId) {
+        for (GrammarDTO dto : grammarDTOs) {
+            validate.validateTerm(dto.getTerm());
+            validate.validateMean(dto.getMean());
+        }
         List<FlashcardGrammar> entities = grammarDTOs.stream()
                 .map((GrammarDTO dto) -> FlashcardMapper.convertToFlashcardGrammarEntity(dto,setId))
                 .collect(Collectors.toList());
@@ -189,6 +197,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateGrammarCard(GrammarDTO grammarDTO, long userID, long setId) {
+        validate.validateTerm(grammarDTO.getTerm());
+        validate.validateMean(grammarDTO.getMean());
         FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardId());
         flashcardGrammar.setCombination(grammarDTO.getCombination());
         flashcardGrammar.setNote(grammarDTO.getNote());
@@ -210,6 +220,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID, long setId) {
+        validate.validateTerm(vocabDTO.getTerm());
+        validate.validateMean(vocabDTO.getMean());
         FlashcardVocab flashcardVocab = FlashcardMapper.convertToFlashcardVocabEntity(vocabDTO,setId);
         FlashcardVocab flashcardVocab1 = flashcardVocabRepository.save(flashcardVocab);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
@@ -218,6 +230,10 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public List<VocabDTO> createFlashcardVocabList(List<VocabDTO> vocabDTOs, long userID, long setId) {
+        for (VocabDTO dto : vocabDTOs) {
+            validate.validateTerm(dto.getTerm());
+            validate.validateMean(dto.getMean());
+        }
         List<FlashcardVocab> entities = vocabDTOs.stream()
                 .map((VocabDTO dto) -> FlashcardMapper.convertToFlashcardVocabEntity(dto,setId))
                 .collect(Collectors.toList());
@@ -227,6 +243,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void updateVocabCard(VocabDTO vocabDTO, long userID, long setId) {
+        validate.validateTerm(vocabDTO.getTerm());
+        validate.validateMean(vocabDTO.getMean());
         FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardId());
         flashcardVocab.setTerm(vocabDTO.getTerm());
         flashcardVocab.setMean(vocabDTO.getMean());
