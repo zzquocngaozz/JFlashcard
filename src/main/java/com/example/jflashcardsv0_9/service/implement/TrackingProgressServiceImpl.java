@@ -27,6 +27,7 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         TrackingProgress trackingProgress = trackingProgressRepository.getTrackingProgressByUserAndFlashcardSetAndCardId(user,flashcardSet,cardId) ;
         if(trackingProgress == null ) {
+            trackingProgress = new TrackingProgress();
             trackingProgress.setUser(user);
             trackingProgress.setFlashcardSet(flashcardSet);
             trackingProgress.setCardId(cardId);

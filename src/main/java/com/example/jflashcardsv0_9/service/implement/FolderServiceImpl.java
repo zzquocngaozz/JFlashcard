@@ -24,15 +24,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FolderServiceImpl implements FolderService {
-    @Autowired
     FolderRepository folderRepository;
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     FlashcardSetRepository flashcardSetRepository;
+    @Autowired
+    public FolderServiceImpl(FolderRepository folderRepository, UserRepository userRepository, FlashcardSetRepository flashcardSetRepository) {
+        this.folderRepository = folderRepository;
+        this.userRepository = userRepository;
+        this.flashcardSetRepository = flashcardSetRepository;
+    }
 
     @Override
     public IdDTO createFolder(FolderSetDTO folderSetDTO, long userId) {

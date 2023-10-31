@@ -32,7 +32,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     BookmarkCardRepository bookmarkCardRepository;
     TrackingProgressRepository trackingProgressRepository;
     VotePointRepository votePointRepository;
-
+    @Autowired
     public FlashcardSetServiceImpl(FlashcardSetRepository flashcardSetRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository, UserRepository userRepository, VotePointService votePointService, BookmarkSetRepository bookmarkSetRepository, BookmarkCardRepository bookmarkCardRepository, TrackingProgressRepository trackingProgressRepository, VotePointRepository votePointRepository) {
         this.flashcardSetRepository = flashcardSetRepository;
         this.flashcardKanjiRepository = flashcardKanjiRepository;
