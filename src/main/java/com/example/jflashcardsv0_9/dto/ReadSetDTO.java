@@ -22,6 +22,7 @@ public class ReadSetDTO {
     boolean isPrivate;
     boolean isBookMarked;
     long numberCard;
+    int voted;
     float votePoint;
     long numberVote;
     AuthDTO authDTO;

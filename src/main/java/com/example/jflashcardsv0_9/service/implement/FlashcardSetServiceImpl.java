@@ -20,27 +20,32 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FlashcardSetServiceImpl implements FlashcardSetService {
-    @Autowired
     FlashcardSetRepository flashcardSetRepository;
-    @Autowired
     FlashcardKanjiRepository flashcardKanjiRepository;
-    @Autowired
     FlashcardVocabRepository flashcardVocabRepository;
-    @Autowired
     FlashcardGrammarRepository flashcardGrammarRepository;
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     VotePointService votePointService;
-    @Autowired
     BookmarkSetRepository bookmarkSetRepository;
-    @Autowired
     BookmarkCardRepository bookmarkCardRepository;
-    @Autowired
     TrackingProgressRepository trackingProgressRepository;
+    VotePointRepository votePointRepository;
+
+    public FlashcardSetServiceImpl(FlashcardSetRepository flashcardSetRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository, UserRepository userRepository, VotePointService votePointService, BookmarkSetRepository bookmarkSetRepository, BookmarkCardRepository bookmarkCardRepository, TrackingProgressRepository trackingProgressRepository, VotePointRepository votePointRepository) {
+        this.flashcardSetRepository = flashcardSetRepository;
+        this.flashcardKanjiRepository = flashcardKanjiRepository;
+        this.flashcardVocabRepository = flashcardVocabRepository;
+        this.flashcardGrammarRepository = flashcardGrammarRepository;
+        this.userRepository = userRepository;
+        this.votePointService = votePointService;
+        this.bookmarkSetRepository = bookmarkSetRepository;
+        this.bookmarkCardRepository = bookmarkCardRepository;
+        this.trackingProgressRepository = trackingProgressRepository;
+        this.votePointRepository = votePointRepository;
+    }
+
     private void CheckAuthandsetfound(long userid,long setid) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
         User user = userRepository.getUserByUserId(userid);
@@ -319,6 +324,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .type(flashcardSet.getType())
                 .isPrivate(flashcardSet.isPrivate())
                 .isBookMarked(bookmarkSetRepository.existsBookMarkSetByUserAndAndFlashcardSet(user,flashcardSet))
+                .voted(votePointRepository.getVotePointByFlashcardSetAndUser(flashcardSet,user).getPoint())
                 .numberCard(numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
                 .votePoint(votePointService.countNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
                 .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
