@@ -1,11 +1,15 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
-const ClassContext = createContext({});
+export const ClassContext = createContext({});
 
-const ClassContextProvider = ({ children }) => {
+export const useClassContext = () => useContext(ClassContext);
+
+export const ClassContextProvider = ({ children }) => {
   const [classroom, setClassroom] = useState({});
   return (
-    <ClassContext.Provider value={classroom}>{children}</ClassContext.Provider>
+    <ClassContext.Provider value={{ classroom, setClassroom }}>
+      {children}
+    </ClassContext.Provider>
   );
 };
 

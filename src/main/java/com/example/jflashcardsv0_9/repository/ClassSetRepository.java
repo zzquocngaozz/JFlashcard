@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface ClassSetRepository extends JpaRepository<ClassSet,Long> {
     List<ClassSet> findAllByClassRoom(ClassRoom classRoom);
+    ClassSet getClassSetByClassSetId(long clasSetId);
+
 }

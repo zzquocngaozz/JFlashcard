@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LayoutNormal from "../components/Parts/LayoutNormal";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -27,6 +27,8 @@ import VocaCardEditContainer from "../components/VocaCardEditContainer";
 import useSetEdit from "../hooks/useSetEdit";
 import SnapBarAlter from "../components/FeedBack/SnapBarAlter";
 import useSnapBarAlert from "../hooks/useSnapBarAlert";
+import ShowMoreText from "../components/DataDisplay/ShowMoreText";
+import { useFlashcardSetContext } from "../context/FlashcardSetContext";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -40,16 +42,8 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 const SetEdit = () => {
-  // hook
-  // -------------- State area
-  // const [flashcardSet, setFlashcardSet] = useState({
-  //   flashcardSetId: 123,
-  //   title: "Kanji chủ đề xe cộ",
-  //   description: "Danh sách các từ kanji cấp độ N5",
-  //   type: 2,
-  //   private: false,
-  // });
-  // handle func
+  const { setId } = useParams();
+  const { setLoadedSet } = useFlashcardSetContext();
   // ------------------ Handle delete alert show and hide
   const handleToggleAlertDelete = () => {
     setAlertDelete({
@@ -80,6 +74,7 @@ const SetEdit = () => {
 
   useEffect(() => {
     document.title = "Chỉnh sửa bộ flashcards";
+    setLoadedSet("-1");
   }, []);
   return (
     <LayoutNormal>
@@ -98,7 +93,9 @@ const SetEdit = () => {
           >
             <Stack flex={3} sx={{ gap: 2 }}>
               <Typography variant="h5">{flashcardSet?.title}</Typography>
-              <Typography>{flashcardSet?.description}</Typography>
+              <ShowMoreText maxLength={100}>
+                {flashcardSet?.description}
+              </ShowMoreText>
               <Stack sx={{ flexDirection: "row", gap: 1, width: 200 }}>
                 <Chip
                   label={SET_TYPE[flashcardSet?.type]}
@@ -151,7 +148,7 @@ const SetEdit = () => {
                 flexDirection={"row"}
                 sx={{ gap: 2, justifyContent: "flex-end" }}
               >
-                <Button
+                {/* <Button
                   startIcon={<ArrowBackIosIcon />}
                   sx={{
                     textTransform: "none",
@@ -161,11 +158,13 @@ const SetEdit = () => {
                   variant="contained"
                 >
                   Trở lại
-                </Button>
+                </Button> */}
                 <Button
                   startIcon={<DoneIcon />}
                   sx={{ textTransform: "none" }}
                   variant="contained"
+                  LinkComponent={Link}
+                  to={`/${setId}/read`}
                 >
                   Hoàn thành
                 </Button>

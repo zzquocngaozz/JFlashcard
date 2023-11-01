@@ -19,7 +19,7 @@ public interface ClassMemberRepository extends JpaRepository<ClassMember,Long> {
 
     List<ClassMember> getAllByClassroom(ClassRoom room);
 
-    public boolean existsClassMemberByClassroomAndUser(ClassRoom room, User user);
+    boolean existsClassMemberByClassroomAndUser(ClassRoom room, User user);
 
     @Query("SELECT cm.classroom " +
             "FROM ClassMember cm " +

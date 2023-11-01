@@ -1,10 +1,8 @@
 package com.example.jflashcardsv0_9.controller;
 
 import com.example.jflashcardsv0_9.dto.*;
-import com.example.jflashcardsv0_9.entities.FlashcardSet;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
-import com.example.jflashcardsv0_9.service.implement.FlashcardSetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,8 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/createfls")
 public class FlashcardSetController {
+    private final FlashcardSetService flashcardSetService;
+
     @Autowired
-    private FlashcardSetService flashcardSetService;
+    public FlashcardSetController(FlashcardSetService flashcardSetService) {
+        this.flashcardSetService = flashcardSetService;
+    }
 
     @PostMapping
     public IdDTO createFlS(@AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody FlashcardSetDTORequest flashcardSetDTORequest) {
@@ -60,7 +62,7 @@ public class FlashcardSetController {
         return flashcardSetService.createFlashcardKanjiList(kanjiDTOs,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/kanji-card/{cardId}")
-    public ResponseEntity<?> deleteKanjiCard(@PathVariable long cardId){
+    public ResponseEntity<?> deleteKanjiCard(@PathVariable long cardId, @PathVariable String setId){
         flashcardSetService.deleteFlKanji(cardId);
         return ResponseEntity.ok("Xóa thành công");
     }
@@ -99,7 +101,7 @@ public class FlashcardSetController {
         return flashcardSetService.createFlashcardVocabList(vocabDTOs,myUserDetail.getUser().getUserId(),setId);
     }
     @DeleteMapping ("/{setId}/edit/vocab-card/{cardId}")
-    public ResponseEntity<?> deleteVocabCard(@PathVariable long cardId){
+    public ResponseEntity<?> deleteVocabCard(@PathVariable long cardId, @PathVariable String setId){
         flashcardSetService.deleteFlvocab(cardId);
         return ResponseEntity.ok("Xóa thành công");
     }
@@ -108,9 +110,7 @@ public class FlashcardSetController {
         flashcardSetService.updateVocabCard(vocabDTO,myUserDetail.getUser().getUserId(),setId);
         return ResponseEntity.ok("update thành công");
     }
-
-
-    //inter2
+    //int
 
 
 }

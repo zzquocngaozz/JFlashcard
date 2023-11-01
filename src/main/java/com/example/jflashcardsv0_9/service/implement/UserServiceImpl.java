@@ -5,6 +5,7 @@ import com.example.jflashcardsv0_9.entities.Role;
 import com.example.jflashcardsv0_9.entities.User;
 import com.example.jflashcardsv0_9.entities.UserRequest;
 import com.example.jflashcardsv0_9.exception.Error;
+import com.example.jflashcardsv0_9.exception.Validate;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.RoleRepository;
 import com.example.jflashcardsv0_9.repository.UserRepository;
@@ -17,38 +18,41 @@ import com.example.jflashcardsv0_9.exception.*;
 
 import com.example.jflashcardsv0_9.util.RandomTokenUtil;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.example.jflashcardsv0_9.exception.Validate.*;
+
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     BCryptPasswordEncoder passwordEncoder;
-    @Autowired
     JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
+    RoleRepository roleRepository;
     UserRequestRepository userRequestRepository;
-
-    @Autowired
     SendEmailService sendEmailService;
+    Validate validate;
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, RoleRepository roleRepository, UserRequestRepository userRequestRepository, SendEmailService sendEmailService,Validate validate) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.roleRepository = roleRepository;
+        this.userRequestRepository = userRequestRepository;
+        this.sendEmailService = sendEmailService;
+        this.validate = validate;
+    }
+
     @Override
     public UserDTO registration( RegisterDTO registerDTO) {
-        CheckRegisterDTO(registerDTO);
+        validate.checkRegisterDTO(registerDTO);
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         User user = UserMapper.toUser(registerDTO);
         Role roles = roleRepository.findByName("ROLE_LEARNER").get();
@@ -57,40 +61,9 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDTOResponse(user);
     }
 
-    private void CheckRegisterDTO(RegisterDTO registerDTO) {
-        if (registerDTO.getUserName() == null) {
-            throw new AppException(Error.USERNAME_USER_NULL);
-        }
-        if(registerDTO.getEmail() == null){
-            throw new AppException(Error.EMAIL_USER_NULL);
-        }
-        if(userRepository.existsByUserName(registerDTO.getUserName())){
-            throw new AppException(Error.USERNAME_USER_EXIST);
-        }
-        if(userRepository.existsByEmail(registerDTO.getEmail())){
-            throw new AppException(Error.EMAIL_USER_EXIST);
-        }
-
-    }
-    private void CheckUserDTO(UserDTO userDTO) {
-        if (userDTO.getUserName() == null) {
-            throw new AppException(Error.USERNAME_USER_NULL);
-        }
-        if(userDTO.getEmail() == null){
-            throw new AppException(Error.EMAIL_USER_NULL);
-        }
-        if(userRepository.existsByUserName(userDTO.getUserName())){
-            throw new AppException(Error.USERNAME_USER_EXIST);
-        }
-        if(userRepository.existsByEmail(userDTO.getEmail())){
-            throw new AppException(Error.EMAIL_USER_EXIST);
-        }
-
-    }
-
     @Override
     public UserDTO registrationADMIN( RegisterDTO registerDTO) {
-        CheckRegisterDTO(registerDTO);
+        validate.checkRegisterDTO(registerDTO);
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         User user = UserMapper.toUser(registerDTO);
         Role roles = roleRepository.findByName("ROLE_ADMIN").get();
@@ -180,7 +153,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void addUser(UserDTO userDTO) {
-        CheckUserDTO(userDTO);
+        validate.checkUserDTO(userDTO);
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = UserMapper.toUserDTO(userDTO);
         Role roles = roleRepository.findRoleByRoleId(userDTO.getRole());

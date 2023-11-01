@@ -2,14 +2,12 @@ import React, { useCallback, useState } from "react";
 
 import { Box, Button, Skeleton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
-import BackdropLoading from "./FeedBack/BackdropLoading";
 import searhbanner from "../assets/images/searhbanner.png";
 import GrammarCardEdit from "./Cards/GrammarCardEdit";
 import GrammarDialogForm from "./Dialog/GrammarDialogForm";
 import useGrammarCardEdit from "../hooks/useGrammarCardEdit";
-// TODO: create hook get grammar list
-const GrammarCardEditConainer = ({importing}) => {
+
+const GrammarCardEditConainer = ({ importing }) => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleToggleForm = useCallback(() => {
@@ -17,11 +15,11 @@ const GrammarCardEditConainer = ({importing}) => {
   }, [openForm]);
 
   const { grammarList, loading, mutationing, addCard, updateCard, deleteCard } =
-    useGrammarCardEdit({ handleToggleForm,importing });
+    useGrammarCardEdit({ handleToggleForm, importing });
 
   return (
     <Stack>
-      {loading ||importing?(
+      {loading || importing ? (
         <Box>
           <Skeleton
             variant="rectangular"
@@ -36,14 +34,10 @@ const GrammarCardEditConainer = ({importing}) => {
             sx={{ height: "100px", borderRadius: "20px", margin: "10px 0" }}
           />
         </Box>
-      )  : grammarList.length === 0 ? (
+      ) : grammarList.length === 0 ? (
         <Stack minHeight={150} justifyContent={"center"} alignItems={"center"}>
           <Box width={70} height={70}>
-            <img
-              src={searhbanner}
-              loading="lazy"
-              alt="notfound"
-            />
+            <img src={searhbanner} loading="lazy" alt="notfound" />
           </Box>
           <Typography textAlign={"center"}>
             Chưa có thẻ nào trong bộ của bạn
@@ -70,7 +64,11 @@ const GrammarCardEditConainer = ({importing}) => {
         Thêm thẻ ngữ pháp
       </Button>
       {openForm ? (
-        <GrammarDialogForm handleToggle={handleToggleForm} onSubmit={addCard} mutationing={mutationing} />
+        <GrammarDialogForm
+          handleToggle={handleToggleForm}
+          onSubmit={addCard}
+          mutationing={mutationing}
+        />
       ) : (
         <></>
       )}
@@ -79,4 +77,3 @@ const GrammarCardEditConainer = ({importing}) => {
 };
 
 export default GrammarCardEditConainer;
-

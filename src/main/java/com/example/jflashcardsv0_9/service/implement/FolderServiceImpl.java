@@ -7,6 +7,7 @@ import com.example.jflashcardsv0_9.entities.FolderSet;
 import com.example.jflashcardsv0_9.entities.User;
 import com.example.jflashcardsv0_9.exception.AppException;
 import com.example.jflashcardsv0_9.exception.Error;
+import com.example.jflashcardsv0_9.exception.Validate;
 import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
 import com.example.jflashcardsv0_9.mapper.FolderMapper;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
@@ -24,18 +25,23 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FolderServiceImpl implements FolderService {
-    @Autowired
     FolderRepository folderRepository;
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     FlashcardSetRepository flashcardSetRepository;
+    Validate validate;
+    @Autowired
+    public FolderServiceImpl(FolderRepository folderRepository, UserRepository userRepository, FlashcardSetRepository flashcardSetRepository,Validate validate) {
+        this.folderRepository = folderRepository;
+        this.userRepository = userRepository;
+        this.flashcardSetRepository = flashcardSetRepository;
+        this.validate = validate;
+    }
 
     @Override
     public IdDTO createFolder(FolderSetDTO folderSetDTO, long userId) {
+        validate.checkFolder(folderSetDTO);
         FolderSet folderSet = folderRepository.save(FolderMapper.convertFolderDTOToFolderSet(folderSetDTO,userId));
         return IdDTO.builder()
                 .id(folderSet.getFolderId())
@@ -54,6 +60,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void updateFolder(long folderId, FolderSetDTO folderSetDTO, long userId) {
+        validate.checkFolder(folderSetDTO);
         FolderSet folderSet = folderRepository.getFolderSetByFolderId(folderId);
         folderSet.setTitle(folderSetDTO.getTitle());
         folderSet.setDescription(folderSetDTO.getDescription());

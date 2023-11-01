@@ -96,7 +96,7 @@ export default function useFetchRecent() {
               createdAt: "2023/10/10",
               type: 1,
               private: false,
-              authoDTO: {
+              authDTO: {
                 userId: 1,
                 userName: "ducpa01",
                 role: 1,
@@ -113,7 +113,7 @@ export default function useFetchRecent() {
               createdAt: "2023/10/10",
               type: 1,
               private: false,
-              authoDTO: {
+              authDTO: {
                 userId: 1,
                 userName: "ducpa01",
                 role: 1,
@@ -130,7 +130,7 @@ export default function useFetchRecent() {
               createdAt: "2023/10/10",
               type: 3,
               private: false,
-              authoDTO: {
+              authDTO: {
                 userId: 1,
                 userName: "ducpa01",
                 role: 1,

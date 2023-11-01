@@ -1,6 +1,7 @@
 package com.example.jflashcardsv0_9.service;
 
 import com.example.jflashcardsv0_9.dto.*;
+import com.example.jflashcardsv0_9.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,5 +40,7 @@ public interface FlashcardSetService {
     long numberCard(long setId,int type);
 
     List<SetSingleDTO> searchFlashcardSetPublic(String title);
+    ReadSetDTO readFlashcardSet(User user, long setId);
 
+    List<SetSingleDTO> listSetOfUser(User user);
 }

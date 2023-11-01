@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import SetSingle from "../components/Cards/SetSingle";
 import SetRecent from "../components/Cards/SetRecent";
 import { fuzzySearch } from "../utils/search";
 
@@ -28,7 +27,7 @@ const LearnHistory = () => {
       openAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 2,
         userName: "BanKai01",
         role: 1,
@@ -46,7 +45,7 @@ const LearnHistory = () => {
       openAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 2,
         userName: "BanKai01",
         role: 1,
@@ -64,7 +63,7 @@ const LearnHistory = () => {
       openAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 2,
         userName: "BanKai01",
         role: 1,
@@ -82,7 +81,7 @@ const LearnHistory = () => {
       openAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 2,
@@ -100,7 +99,7 @@ const LearnHistory = () => {
       openAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 2,
@@ -118,7 +117,7 @@ const LearnHistory = () => {
       openAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 2,
@@ -136,7 +135,7 @@ const LearnHistory = () => {
       openAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 2,

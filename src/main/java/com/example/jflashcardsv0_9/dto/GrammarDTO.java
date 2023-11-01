@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class GrammarDTO {
+public class GrammarDTO implements Card {
     Long cardId;
     String combination;
     String note;
@@ -19,6 +19,10 @@ public class GrammarDTO {
     String exampleMean;
     String imgUrl;
     Long flashcardSetId;
+    @Override
+    public Long getCardId() {
+        return this.cardId;
+    }
     // Getter và Setter cho các thuộc tính
     // Các getter và setter cho các thuộc tính khác
 }
