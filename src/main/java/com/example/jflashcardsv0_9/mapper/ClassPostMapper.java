@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +21,8 @@ public class ClassPostMapper {
         return ClassPost.builder()
                 .content(classPostDTO.getContent())
                 .classroom(ClassRoom.builder().classRoomId(classPostDTO.getClassRoomId()).build())
-                .user(User.builder().userId(classPostDTO.getCreator().getUserId()).build())
-                .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+//                .user(User.builder().userId(classPostDTO.getCreator().getUserId()).build())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
 
@@ -29,6 +30,7 @@ public class ClassPostMapper {
 
 
     public static ClassPostDTO toClassPostDTO(ClassPost classPost){
+        System.out.println(classPost.toString());
         List<Integer> teacherRoleIds = classPost.getUser().getRoles().stream()
                 .map(Role::getRoleId) // Assuming Role has a 'roleId' field for the role ID
                 .collect(Collectors.toList());

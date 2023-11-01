@@ -21,6 +21,7 @@ import java.util.Set;
  */
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Getter
 @Setter
 @Table(name = "users")

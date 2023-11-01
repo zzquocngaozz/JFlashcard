@@ -19,7 +19,7 @@ public class ClassCommentMapper {
         return Comment.builder()
                 .content(commentDTO.getContent())
                 .classPost(ClassPost.builder().classPostId(commentDTO.getClassPostId()).build())
-                .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+                .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
 

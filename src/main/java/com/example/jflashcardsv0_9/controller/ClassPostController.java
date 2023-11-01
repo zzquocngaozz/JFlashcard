@@ -26,8 +26,8 @@ public class ClassPostController {
     }
 
     @PostMapping("/{classRoomId}/class-post")
-    public ClassPostDTO createClassPost(@RequestBody ClassPostDTO classPostDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
-
+    public ClassPostDTO createClassPost(@PathVariable Long classRoomId,@RequestBody ClassPostDTO classPostDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        classPostDTO.setClassRoomId(classRoomId);
         return classPostService.createClassPost(classPostDTO, myUserDetail);
     }
 
@@ -53,11 +53,11 @@ public class ClassPostController {
     @PostMapping("/{classRoomId}/class-post/{classPostId}")
     public CommentDTO createComment(@PathVariable Long classPostId,@RequestBody CommentDTO commentDTO,@AuthenticationPrincipal MyUserDetail myUserDetail){
         commentDTO.setClassPostId(classPostId);
-        return CommentDTO.builder().build();
+        return classPostService.createComment(commentDTO,myUserDetail);
     }
     @DeleteMapping("/{classRoomId}/class-post/{classPostId}/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId,@AuthenticationPrincipal MyUserDetail myUserDetail){
-
+        classPostService.deleteComment(commentId,myUserDetail);
         return ResponseEntity.ok("Delete comment");
     }
 

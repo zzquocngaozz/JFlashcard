@@ -18,8 +18,8 @@ public interface ClassPostRepository extends JpaRepository<ClassPost, Long> {
 
 
 
-
-
+    ClassPost save(ClassPost classPost);
+    Optional<ClassPost> getClassPostByClassPostId(Long classPostId);
 
     List<ClassPost> findAllByClassroomClassRoomIdOrderByCreatedAtDesc(Long classRoomId);
     Optional<ClassPost> findByClassPostId(long classPostId);
