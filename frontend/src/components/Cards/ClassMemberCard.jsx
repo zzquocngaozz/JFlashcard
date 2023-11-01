@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ActionHolderStack, StackList } from "../Styled/StyledStack";
 import { getColorFromEnum } from "../../utils/colorGetter";
 import {
@@ -10,8 +10,22 @@ import {
   Typography,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import DialogAlertDelete from "../Dialog/DialogAlertDelete";
 
-const ClassMemberCard = ({ member, isClassAdmin, handleToggleDelete }) => {
+const ClassMemberCard = ({ member, isClassAdmin, onDelete, mutationing }) => {
+  const [alertDelete, setAlertDelete] = useState({
+    open: false,
+    message:
+      "Thao tác này không thể hoàn lại. Bạn có muốn tiếp tục xoá thành viên trong lớp học",
+  });
+
+  const handleToggleAlertDelete = () => {
+    setAlertDelete({
+      ...alertDelete,
+      open: !alertDelete.open,
+    });
+  };
+
   return (
     <StackList className="container__theme" sx={{ position: "relative" }}>
       <Avatar
@@ -31,13 +45,25 @@ const ClassMemberCard = ({ member, isClassAdmin, handleToggleDelete }) => {
             <IconButton
               onClick={(event) => {
                 event.preventDefault();
-                handleToggleDelete(member?.userId);
+                handleToggleAlertDelete();
               }}
             >
               <DeleteForeverIcon color="error" />
             </IconButton>
           </ActionHolderStack>
         </Tooltip>
+      ) : (
+        <></>
+      )}
+      {alertDelete.open ? (
+        <DialogAlertDelete
+          alertDelete={alertDelete}
+          handleToggleAlertDelete={handleToggleAlertDelete}
+          onDelete={() => {
+            onDelete(member.userId, handleToggleAlertDelete);
+          }}
+          mutationing={mutationing}
+        />
       ) : (
         <></>
       )}

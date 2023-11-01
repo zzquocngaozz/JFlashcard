@@ -55,7 +55,7 @@ const GuestCardContainer = () => {
             <Typography>
               Đăng ký tài khoàn để xem hết và học bộ này —{" "}
             </Typography>
-            <Link>
+            <Link to={"/signup"}>
               <Typography variant="h6" component={"strong"}>
                 Đăng ký ngay !
               </Typography>

@@ -6,33 +6,40 @@ import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import { Stack, Typography } from "@mui/material";
 import ClassMemberCard from "../components/Cards/ClassMemberCard";
 import useAuth from "../hooks/useAuth";
+import useClassMember from "../hooks/useClassMember";
 
-const members = [
-  {
-    userId: 4,
-    userName: "ducpa04",
-    role: 1,
-  },
-  {
-    userId: 1,
-    userName: "ducpa01",
-    role: 1,
-  },
-  {
-    userId: 2,
-    userName: "ducpa02",
-    role: 1,
-  },
-  {
-    userId: 3,
-    userName: "ducpa03",
-    role: 1,
-  },
-];
+// const members = [
+//   {
+//     userId: 4,
+//     userName: "ducpa04",
+//     role: 1,
+//   },
+//   {
+//     userId: 1,
+//     userName: "ducpa01",
+//     role: 1,
+//   },
+//   {
+//     userId: 2,
+//     userName: "ducpa02",
+//     role: 1,
+//   },
+//   {
+//     userId: 3,
+//     userName: "ducpa03",
+//     role: 1,
+//   },
+// ];
 const ClassMember = () => {
   const { classRoomId } = useParams();
   const { currentUser } = useAuth();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const {
+    classMember: members,
+    loading,
+    mutationing,
+    deleteClassMember,
+  } = useClassMember();
   console.log(members);
 
   return (
@@ -51,6 +58,7 @@ const ClassMember = () => {
                     key={member.userId}
                     member={member}
                     isClassAdmin={member.userId === currentUser.userId}
+                    onDelete={deleteClassMember}
                   />
                 ))}
               </Stack>

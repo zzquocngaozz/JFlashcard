@@ -26,7 +26,7 @@ const LibBookMarked = () => {
       createdAt: "2023/10/10",
       type: 3,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 2,
         userName: "BanKai01",
         role: 1,
@@ -43,7 +43,7 @@ const LibBookMarked = () => {
       createdAt: "2023/10/10",
       type: 3,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 2,
         userName: "BanKai01",
         role: 1,
@@ -60,7 +60,7 @@ const LibBookMarked = () => {
       createdAt: "2023/10/10",
       type: 3,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 2,
         userName: "BanKai01",
         role: 1,
@@ -77,7 +77,7 @@ const LibBookMarked = () => {
       createdAt: "2023/10/10",
       type: 3,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 2,
@@ -94,7 +94,7 @@ const LibBookMarked = () => {
       createdAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 2,
@@ -111,7 +111,7 @@ const LibBookMarked = () => {
       createdAt: "2023/10/10",
       type: 1,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 2,
@@ -128,7 +128,7 @@ const LibBookMarked = () => {
       createdAt: "2023/10/10",
       type: 2,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 1,
@@ -145,7 +145,7 @@ const LibBookMarked = () => {
       createdAt: "2023/10/10",
       type: 1,
       private: false,
-      authoDTO: {
+      authDTO: {
         userId: 1,
         userName: "BanKai01",
         role: 2,

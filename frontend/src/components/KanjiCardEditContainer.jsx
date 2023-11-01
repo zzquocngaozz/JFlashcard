@@ -16,7 +16,7 @@ const KanjiCardEditContainer = ({ importing }) => {
 
   const { kanjiList, loading, mutationing, addCard, updateCard, deleteCard } =
     useKanjiCardEdit({ handleToggleForm, importing });
-  console.log(kanjiList);
+
   return (
     <Stack>
       {loading || importing ? (

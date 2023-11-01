@@ -17,7 +17,6 @@ const GrammarCardEditConainer = ({ importing }) => {
   const { grammarList, loading, mutationing, addCard, updateCard, deleteCard } =
     useGrammarCardEdit({ handleToggleForm, importing });
 
-  console.log(grammarList);
   return (
     <Stack>
       {loading || importing ? (

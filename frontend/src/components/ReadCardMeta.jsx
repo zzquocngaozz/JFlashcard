@@ -74,7 +74,7 @@ const ReadCardMeta = () => {
         </Stack>
         <Stack>
           {!isLogin() ? (
-            <Tooltip title={`${flashcardSet.numberVote} người đã đánh giá`}>
+            <Tooltip title={`${flashcardSet?.numberVote} người đã đánh giá`}>
               <StackList>
                 <StarIcon sx={{ color: "#ff9800" }} />
                 <Typography>
@@ -159,16 +159,16 @@ const ReadCardMeta = () => {
               width: 40,
               height: 40,
               bgcolor: `${getColorFromEnum(
-                flashcardSet?.authoDTO?.userName[0]
+                flashcardSet?.authDTO?.userName[0]
               )}`,
             }}
           >
-            {flashcardSet.authoDTO?.userName.toUpperCase()[0]}
+            {flashcardSet?.authDTO?.userName.toUpperCase()[0]}
           </Avatar>
-          <Typography>{flashcardSet.authoDTO.userName + " "}</Typography>
-          <Chip label={ROLE[flashcardSet.authoDTO.role]} width={50} />
+          <Typography>{flashcardSet?.authDTO?.userName + " "}</Typography>
+          <Chip label={ROLE[flashcardSet?.authDTO?.role]} width={50} />
         </StackList>
-        {isLogin() && currentUser.userId === flashcardSet.authoDTO.userId ? (
+        {isLogin() && currentUser?.userId === flashcardSet?.authDTO?.userId ? (
           <Tooltip title={"Chỉnh sửa"}>
             <IconButton
               LinkComponent={Link}

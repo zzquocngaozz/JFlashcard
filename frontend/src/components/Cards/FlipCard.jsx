@@ -10,7 +10,7 @@ import {
 import placeholder from "../../assets/images/placeholder.png";
 import StarIcon from "@mui/icons-material/Star";
 import useAuth from "../../hooks/useAuth";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFlashcardSetContext } from "../../context/FlashcardSetContext";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { StackList } from "../Styled/StyledStack";
@@ -269,4 +269,4 @@ const FlipCard = ({ card }) => {
   );
 };
 
-export default FlipCard;
+export default React.memo(FlipCard);

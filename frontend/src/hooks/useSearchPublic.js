@@ -359,13 +359,15 @@ export default function useSearchPublic() {
           Authorization: accessToken,
         },
       };
-      // const url = "#"
-      // const response = await axios.get(url, config);
+      const url = `/search?q=${q}`;
+      const response = await axios.get(url, config);
       // setListSet(response.data);
       console.log(q);
-      setListSet(
-        sets.filter((set) => set.title.toLowerCase().includes(q.toLowerCase()))
-      );
+      console.log(response.data);
+      // setListSet(
+      //   sets.filter((set) => set.title.toLowerCase().includes(q.toLowerCase()))
+      // );
+      setListSet(response.data);
       setTimeout(() => {
         setSearching(true);
         setLoading(false);

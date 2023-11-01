@@ -16,8 +16,9 @@ import {
 } from "../Styled/StyledStack";
 
 const SetSingle = ({ flashcardSet }) => {
+  console.log(flashcardSet);
   return (
-    <StackCardLink to={"#"}>
+    <StackCardLink to={`/${flashcardSet?.flashcardSetId}/read`}>
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />
@@ -28,24 +29,26 @@ const SetSingle = ({ flashcardSet }) => {
               width: "65%",
             }}
           >
-            {flashcardSet.title}
+            {flashcardSet?.title}
           </Typography>
         </StackList>
-        <Chip label={SET_TYPE[flashcardSet.type]} sx={{ width: "90px" }} />
+        <Chip label={SET_TYPE[flashcardSet?.type]} sx={{ width: "90px" }} />
         <StackList>
           <NoteOutlinedIcon />
-          <Typography>{flashcardSet.numberCard + " "} thẻ flashcard</Typography>
+          <Typography>
+            {flashcardSet?.numberCard + " "} thẻ flashcard
+          </Typography>
         </StackList>
         <StackList>
           <AccessTimeIcon sx={{ color: "#079" }} />
-          <Typography>{parseBirth(flashcardSet.createdAt)}</Typography>
+          <Typography>{parseBirth(flashcardSet?.createdAt)}</Typography>
         </StackList>
       </Stack>
-      <Tooltip title={`${flashcardSet.numberVote} người đã đánh giá`}>
+      <Tooltip title={`${flashcardSet?.numberVote} người đã đánh giá`}>
         <StarHolderStack>
           <StarIcon sx={{ color: "#ff9800" }} />
           <Typography>
-            {flashcardSet.votePoint + " "}({flashcardSet.numberVote})
+            {flashcardSet?.votePoint + " "}({flashcardSet?.numberVote})
           </Typography>
         </StarHolderStack>
       </Tooltip>
@@ -54,13 +57,13 @@ const SetSingle = ({ flashcardSet }) => {
           sx={{
             width: 40,
             height: 40,
-            bgcolor: `${getColorFromEnum(flashcardSet.authoDTO?.userName[0])}`,
+            bgcolor: `${getColorFromEnum(flashcardSet?.authDTO?.userName[0])}`,
           }}
         >
-          {flashcardSet.authoDTO?.userName.toUpperCase()[0]}
+          {flashcardSet?.authDTO?.userName.toUpperCase()[0]}
         </Avatar>
-        <Typography>{flashcardSet.authoDTO.userName + " "}</Typography>
-        <Chip label={ROLE[flashcardSet.authoDTO.role]} width={50} />
+        <Typography>{flashcardSet?.authDTO.userName + " "}</Typography>
+        <Chip label={ROLE[flashcardSet?.authDTO.role]} width={50} />
       </StackList>
     </StackCardLink>
   );

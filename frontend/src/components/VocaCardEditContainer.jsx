@@ -42,7 +42,7 @@ const VocaCardEditContainer = ({ importing }) => {
 
   const { vocaList, loading, mutationing, addCard, updateCard, deleteCard } =
     useVocaCardEdit({ handleToggleForm, importing });
-  console.log(vocaList);
+
   return (
     <Stack>
       {loading || importing ? (

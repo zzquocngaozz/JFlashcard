@@ -16,9 +16,9 @@ const ShowMoreText = ({ children, maxWidth, maxLength }) => {
       >
         {children}
       </Typography>
-      {children.length >= maxLength ? (
+      {children?.length >= maxLength ? (
         <>
-          {!isReadMore || children.includes("<br/>") ? (
+          {!isReadMore || children?.includes("<br/>") ? (
             <Tooltip title="Xem thêm">
               <IconButton
                 onClick={handleToggle}

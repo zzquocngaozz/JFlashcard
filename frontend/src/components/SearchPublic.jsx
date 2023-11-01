@@ -75,10 +75,10 @@ const SearchPublic = () => {
       ...listSet.filter((set) => {
         if (filter.creator === 0 && filter.type === 0) return true;
         if (filter.creator !== 0 && filter.type === 0)
-          return set.authoDTO.role === filter.creator;
+          return set.authDTO.role === filter.creator;
         if (filter.creator === 0 && filter.type !== 0)
           return set.type === filter.type;
-        return set.authoDTO.role === filter.creator && set.type === filter.type;
+        return set.authDTO.role === filter.creator && set.type === filter.type;
       }),
     ];
     switch (sort) {
@@ -269,7 +269,7 @@ const SearchPublic = () => {
                 {filterSet
                   .slice(6 * (currentPage - 1), 6 * (currentPage - 1) + 6)
                   .map((set) => (
-                    <SetSingle key={set.flashcardSetId} flashcardSet={set} />
+                    <SetSingle key={set?.flashcardSetId} flashcardSet={set} />
                   ))}
               </StackContainer>
             )}

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   IconButton,
   LinearProgress,
   Stack,
@@ -17,6 +18,7 @@ import ReadCard from "./Cards/ReadCard";
 import FlipCard from "./Cards/FlipCard";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import completeCup from "../assets/images/completeCup.png";
+import LearnSetController from "./Parts/LearnSetController";
 
 const LearnSetWidget = ({ indexCard, learnList }) => {
   const { flashcardSet, handleToggleSelectCard, mutation, logStudiedCard } =
@@ -90,7 +92,7 @@ const LearnSetWidget = ({ indexCard, learnList }) => {
           </Typography>
         </Stack>
         <Stack flex={1} alignItems={"flex-end"}>
-          <Tooltip title={"Quay lại"}>
+          {/* <Tooltip title={"Quay lại"}>
             <IconButton
               LinkComponent={Link}
               to={`/${setId}/read`}
@@ -103,7 +105,7 @@ const LearnSetWidget = ({ indexCard, learnList }) => {
             >
               <ArrowBackIosIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Stack>
       </StackList>
       <LinearProgress
@@ -138,18 +140,29 @@ const LearnSetWidget = ({ indexCard, learnList }) => {
               card={learnList[currentCard]}
               onSeclectCard={handleToggleSelectCard}
             />
-            <StackList justifyContent={"center"} sx={{ gap: 10 }}>
+            {/* <StackList justifyContent={"center"} sx={{ gap: 10 }}>
               <Box sx={{ width: 50, height: 50 }}>
                 <IconButton onClick={handlePrev}>
                   <ArrowBackIcon />
                 </IconButton>
               </Box>
               <Box sx={{ width: 50, height: 50 }}>
-                <IconButton onClick={handleNext} disabled={mutation}>
-                  <ArrowBackIcon sx={{ transform: "rotateY(180deg)" }} />
-                </IconButton>
+                {mutation ? (
+                  <IconButton disabled={mutation}>
+                    <CircularProgress disableShrink />
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={handleNext} disabled={mutation}>
+                    <ArrowBackIcon sx={{ transform: "rotateY(180deg)" }} />
+                  </IconButton>
+                )}
               </Box>
-            </StackList>
+            </StackList> */}
+            <LearnSetController
+              handleNext={handleNext}
+              mutation={mutation}
+              handlePrev={handlePrev}
+            />
           </>
         )}
       </Stack>

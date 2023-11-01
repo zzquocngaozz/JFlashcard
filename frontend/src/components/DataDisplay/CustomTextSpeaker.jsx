@@ -8,7 +8,13 @@ const CustomTextSpeaker = ({ text, toolTitle }) => {
     if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "ja-JP";
-      console.log(utterance.voice);
+      const voices = window.speechSynthesis.getVoices();
+      const maleVoice = voices.find(
+        (voice) => voice.name === "Microsoft Haruka - Japanese (Japan)"
+      );
+      if (maleVoice) {
+        utterance.voice = maleVoice;
+      }
       utterance.volume = 0.5;
       utterance.rate = 1;
       window.speechSynthesis.speak(utterance);
