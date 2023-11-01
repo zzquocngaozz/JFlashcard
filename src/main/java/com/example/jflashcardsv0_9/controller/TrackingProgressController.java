@@ -1,5 +1,6 @@
 package com.example.jflashcardsv0_9.controller;
 
+import com.example.jflashcardsv0_9.dto.TrackingClassSetSTO;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.TrackingProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,4 +19,11 @@ public class TrackingProgressController {
         trackingProgressService.trackingProgress(myUserDetail.getUser(),setId,cardId);
         return ResponseEntity.ok("tracking thành công");
     }
+    @GetMapping("/{classId}/class/set/{classSetId}")
+    public TrackingClassSetSTO trackingProgressClassSet(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long classId, @PathVariable long classSetId){
+        return trackingProgressService.trackingProgressClassSet(myUserDetail.getUser(),classId,classSetId);
+
+    }
+
+
 }

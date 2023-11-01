@@ -110,9 +110,7 @@ public class FlashcardSetController {
         flashcardSetService.updateVocabCard(vocabDTO,myUserDetail.getUser().getUserId(),setId);
         return ResponseEntity.ok("update thành công");
     }
-
-
-    //inter2
+    //int
 
 
 }

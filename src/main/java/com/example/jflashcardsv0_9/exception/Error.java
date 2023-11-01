@@ -36,6 +36,8 @@ public enum Error {
     MEAN_USER_NULL("Ý nghĩa  không thể để trống", HttpStatus.UNPROCESSABLE_ENTITY),
     MEAN_ERROR_MESSAGE ("Ý nghĩa không chứa dấu cách ở đầu",HttpStatus.UNPROCESSABLE_ENTITY),
     MEAN_MAX_LENGTH("Ý nghĩa không được quá 50 ký tự",HttpStatus.UNPROCESSABLE_ENTITY),
+    USER_CLASS_FOUND("Bạn không phải học sinh lớp này",HttpStatus.UNPROCESSABLE_ENTITY),
+
 
     AUTH_GI_DO("Bạn không có quyền",HttpStatus.UNAUTHORIZED),
     SET_NOT_FOUND("Không tìm bộ thẻ dùng", HttpStatus.NOT_FOUND),

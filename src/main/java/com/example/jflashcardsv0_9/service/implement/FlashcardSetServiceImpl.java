@@ -354,4 +354,12 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .markedCards(markedCards)
                 .build();
     }
+
+    @Override
+    public List<SetSingleDTO> listSetOfUser(User user) {
+        List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByUser(user);
+        return flashcardSets.stream()
+                .map(FlashcardMapper::convertSetSingleDTO)
+                .collect(Collectors.toList());
+    }
 }

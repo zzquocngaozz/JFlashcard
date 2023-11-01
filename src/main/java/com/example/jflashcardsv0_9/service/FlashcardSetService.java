@@ -42,4 +42,5 @@ public interface FlashcardSetService {
     List<SetSingleDTO> searchFlashcardSetPublic(String title);
     ReadSetDTO readFlashcardSet(User user, long setId);
 
+    List<SetSingleDTO> listSetOfUser(User user);
 }

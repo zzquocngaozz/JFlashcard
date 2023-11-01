@@ -4,9 +4,7 @@ import com.example.jflashcardsv0_9.dto.FlashcardSetDTORequest;
 import com.example.jflashcardsv0_9.dto.FolderSetDTO;
 import com.example.jflashcardsv0_9.dto.RegisterDTO;
 import com.example.jflashcardsv0_9.dto.UserDTO;
-import com.example.jflashcardsv0_9.entities.FlashcardKanji;
-import com.example.jflashcardsv0_9.entities.FlashcardSet;
-import com.example.jflashcardsv0_9.entities.User;
+import com.example.jflashcardsv0_9.entities.*;
 import com.example.jflashcardsv0_9.repository.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -22,13 +20,15 @@ public class Validate {
     FlashcardKanjiRepository flashcardKanjiRepository;
     FlashcardVocabRepository flashcardVocabRepository;
     FlashcardGrammarRepository flashcardGrammarRepository;
+    ClassMemberRepository classMemberRepository;
     @Autowired
-    public Validate(FlashcardSetRepository flashcardSetRepository, UserRepository userRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository) {
+    public Validate(FlashcardSetRepository flashcardSetRepository, UserRepository userRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository, ClassMemberRepository classMemberRepository) {
         this.flashcardSetRepository = flashcardSetRepository;
         this.userRepository = userRepository;
         this.flashcardKanjiRepository = flashcardKanjiRepository;
         this.flashcardVocabRepository = flashcardVocabRepository;
         this.flashcardGrammarRepository = flashcardGrammarRepository;
+        this.classMemberRepository = classMemberRepository;
     }
 
     // Định nghĩa các biểu thức chính quy
@@ -208,4 +208,12 @@ public class Validate {
         }
 
     }
+
+    public void checkClassMember(User user, ClassRoom classRoom) {
+        if(!classMemberRepository.existsClassMemberByClassroomAndUser(classRoom,user)){
+            throw new AppException(Error.USER_CLASS_FOUND);
+        }
+
+    }
+
 }

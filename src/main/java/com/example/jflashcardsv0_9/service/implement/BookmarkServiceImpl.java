@@ -16,17 +16,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookmarkServiceImpl implements BookmarkService {
-    @Autowired
     BookmarkSetRepository bookmarkSetRepository;
-    @Autowired
     FlashcardSetRepository flashcardSetRepository;
-    @Autowired
     BookmarkCardRepository bookmarkCardRepository;
-    @Autowired
     Validate validate;
+    @Autowired
+    public BookmarkServiceImpl(BookmarkSetRepository bookmarkSetRepository, FlashcardSetRepository flashcardSetRepository, BookmarkCardRepository bookmarkCardRepository, Validate validate) {
+        this.bookmarkSetRepository = bookmarkSetRepository;
+        this.flashcardSetRepository = flashcardSetRepository;
+        this.bookmarkCardRepository = bookmarkCardRepository;
+        this.validate = validate;
+    }
+
     @Override
     public void bookMarkSet(User user, long setId) {
         validate.checkExistsSet(setId);
