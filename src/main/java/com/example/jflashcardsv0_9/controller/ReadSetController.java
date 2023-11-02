@@ -16,7 +16,11 @@ public class ReadSetController {
     private FlashcardSetService flashcardSetService;
 
     @GetMapping("/{setId}")//
-    public ReadSetDTO searchFlashcardSetPublic (@PathVariable(required = false) long setId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+    public ReadSetDTO readFlashcardSetPublic (@PathVariable(required = false) long setId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         return flashcardSetService.readFlashcardSet(myUserDetail.getUser(),setId);
+    }
+    @GetMapping("/preview/{setId}")//
+    public ReadSetDTO readFlashcardSetPublicOfGuest (@PathVariable(required = false) long setId) {
+        return flashcardSetService.readFlashcardSetOfGuest(setId);
     }
 }

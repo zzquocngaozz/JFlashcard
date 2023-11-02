@@ -362,4 +362,37 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .map(FlashcardMapper::convertSetSingleDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public ReadSetDTO readFlashcardSetOfGuest(long setId) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        List<Card> cards = new ArrayList<>();
+
+//                    "Kanji";
+        if(flashcardSet.getType() == 1){
+            cards.addAll(getKanjiDTOS(setId));
+        }
+        //            "Từ vựng";
+        else if(flashcardSet.getType() == 2){
+            cards.addAll(getVocabDTOS(setId));
+
+        }
+//             "Ngữ pháp";
+        else if(flashcardSet.getType() == 3){
+            cards.addAll(getGrammarDTOS(setId));
+        }
+        return ReadSetDTO.builder()
+                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .title(flashcardSet.getTitle())
+                .description(flashcardSet.getDescription())
+                .createdAt(flashcardSet.getCreatedAt())
+                .type(flashcardSet.getType())
+                .isPrivate(flashcardSet.isPrivate())
+                .numberCard(numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
+                .votePoint(votePointService.countNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
+                .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
+                .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
+                .cards(cards)
+                .build();
+    }
 }
