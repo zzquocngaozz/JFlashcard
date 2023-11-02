@@ -95,7 +95,6 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public List<SetSingleDTO> viewListSetByFolderId(long userId, long folderId) {
-        User user = userRepository.getUserByUserId(userId);
         // Tìm FolderSet bằng ID
         FolderSet folderSet = folderRepository.findByFolderId(folderId).orElse(null);
         if(folderSet == null){
@@ -108,7 +107,7 @@ public class FolderServiceImpl implements FolderService {
         // Chuyển Set thành danh sách (List) nếu cần
         List<FlashcardSet> flashcardSets1 = new ArrayList<>(flashcardSets);
         return flashcardSets1.stream()
-                .map((FlashcardSet flashcardSet) -> FlashcardMapper.convertSetSingleDTO(flashcardSet))
+                .map(FlashcardMapper::convertSetSingleDTO)
                 .collect(Collectors.toList());
     }
 
@@ -130,7 +129,7 @@ public class FolderServiceImpl implements FolderService {
         allUserFlashcardSets.removeAll(flashcardSets1);
 
         return allUserFlashcardSets.stream()
-                .map((FlashcardSet flashcardSet) -> FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet))
+                .map(FlashcardMapper::convertFlashcardSetDTOResponse)
                 .collect(Collectors.toList());
     }
 

@@ -45,4 +45,6 @@ public interface FlashcardSetService {
     List<SetSingleDTO> listSetOfUser(User user);
 
     ReadSetDTO readFlashcardSetOfGuest(long setId);
+
+    List<SetSingleDTO> listHistorySetOfUser(User user);
 }
