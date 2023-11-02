@@ -381,13 +381,23 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .cards(cards)
                 .build();
     }
-
     @Override
     public List<SetSingleDTO> listHistorySetOfUser(User user) {
         List<OpenedFlashcardSet> openedFlashcardSets = openedFlashcardSetRepository.findAllByUserOrderByOpenedAtDesc(user);
         List<FlashcardSet> flashcardSets = new ArrayList<>();
         for (OpenedFlashcardSet openedFlashcardSet : openedFlashcardSets){
             flashcardSets.add(openedFlashcardSet.getFlashcardSet());
+        }
+        return flashcardSets.stream()
+                .map(FlashcardMapper::convertSetSingleDTO)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<SetSingleDTO> listBookMarkSetOfUser(User user) {
+        List<BookMarkSet> bookMarkSets = bookmarkSetRepository.findAllByUser(user);
+        List<FlashcardSet> flashcardSets = new ArrayList<>();
+        for (BookMarkSet bookMarkSet : bookMarkSets){
+            flashcardSets.add(bookMarkSet.getFlashcardSet());
         }
         return flashcardSets.stream()
                 .map(FlashcardMapper::convertSetSingleDTO)

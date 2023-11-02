@@ -30,5 +30,9 @@ public class HomeController {
     public List<SetSingleDTO> listHistorySetOfUser(@AuthenticationPrincipal MyUserDetail myUserDetail){
         return flashcardSetService.listHistorySetOfUser(myUserDetail.getUser());
     }
+    @GetMapping("/listbookmarkset")
+    public List<SetSingleDTO> listBookMarkSetOfUser(@AuthenticationPrincipal MyUserDetail myUserDetail){
+        return flashcardSetService.listBookMarkSetOfUser(myUserDetail.getUser());
+    }
 
 }
