@@ -1,13 +1,17 @@
 package com.example.jflashcardsv0_9.service.implement;
 
 import com.example.jflashcardsv0_9.dto.ClassSetDTO;
+import com.example.jflashcardsv0_9.dto.SetSingleDTO;
 import com.example.jflashcardsv0_9.entities.ClassRoom;
 import com.example.jflashcardsv0_9.entities.ClassSet;
+import com.example.jflashcardsv0_9.entities.FlashcardSet;
 import com.example.jflashcardsv0_9.entities.User;
 import com.example.jflashcardsv0_9.exception.Validate;
+import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.ClassRoomRepository;
 import com.example.jflashcardsv0_9.repository.ClassSetRepository;
+import com.example.jflashcardsv0_9.repository.FlashcardSetRepository;
 import com.example.jflashcardsv0_9.service.ClassSetService;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
 import lombok.AccessLevel;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -25,12 +30,15 @@ public class ClassSetServiceImpl implements ClassSetService {
     ClassSetRepository classSetRepository;
     Validate validate;
     FlashcardSetService flashcardSetService;
+    FlashcardSetRepository flashcardSetRepository;
+
     @Autowired
-    public ClassSetServiceImpl(ClassRoomRepository classRoomRepository, ClassSetRepository classSetRepository, Validate validate, FlashcardSetService flashcardSetService) {
+    public ClassSetServiceImpl(ClassRoomRepository classRoomRepository, ClassSetRepository classSetRepository, Validate validate, FlashcardSetService flashcardSetService, FlashcardSetRepository flashcardSetRepository) {
         this.classRoomRepository = classRoomRepository;
         this.classSetRepository = classSetRepository;
         this.validate = validate;
         this.flashcardSetService = flashcardSetService;
+        this.flashcardSetRepository = flashcardSetRepository;
     }
 
     @Override
@@ -57,4 +65,36 @@ public class ClassSetServiceImpl implements ClassSetService {
         return classSetDTOS;
 
     }
+
+    @Override
+    public List<SetSingleDTO> listSetOfUserInClass(User user,long classId) {
+        List<FlashcardSet> flashcardSets1 = flashcardSetRepository.getAllByUser(user);
+        List<FlashcardSet> flashcardSets2 = new ArrayList<>();
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(classId);
+//        checkvalidate lai
+//        validate.checkClassMember(user,classRoom);
+        List<ClassSet> classSets = classSetRepository.findAllByClassRoom(classRoom);
+        for (ClassSet classSet : classSets){
+            flashcardSets2.add(classSet.getFlashcardSet());
+        }
+        flashcardSets1.removeAll(flashcardSets2);
+        return flashcardSets1.stream()
+                .map(FlashcardMapper::convertSetSingleDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addSetOfUserInClass(User user, ClassSetDTO classSetDTO) {
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(classSetDTO.getClassRoomId());
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(classSetDTO.getFlashcardSetId());
+        ClassSet classSet = ClassSet.builder()
+                .classRoom(classRoom)
+                .flashcardSet(flashcardSet)
+                .createdAt(classSetDTO.getStartAt())
+                .dueAt(classSetDTO.getDueAt())
+                .build();
+        classSetRepository.save(classSet);
+    }
+
+
 }
