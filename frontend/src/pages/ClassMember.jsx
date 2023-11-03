@@ -57,7 +57,8 @@ const ClassMember = () => {
                   <ClassMemberCard
                     key={member.userId}
                     member={member}
-                    isClassAdmin={member.userId === currentUser.userId}
+                    classAdminId={members[0]?.userId}
+                    isClassAdmin={member?.userId === members[0]?.userId}
                     onDelete={deleteClassMember}
                   />
                 ))}

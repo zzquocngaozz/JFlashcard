@@ -24,7 +24,7 @@ const RecentsHome = ({ sets, loading }) => {
           <></>
         )}
       </StackList>
-      {!loading ? (
+      {loading ? (
         <StackContain>
           <SetSkeleton />
           <SetSkeleton />

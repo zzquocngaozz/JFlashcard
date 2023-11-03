@@ -28,18 +28,8 @@ import {
  *
  */
 const SetFolder = ({ flashcardSet, onDelete }) => {
-  const [isNavigationDisabled, setIsNavigationDisabled] = useState(false);
-
-  const handleDelete = (flashcardSetId) => {
-    setIsNavigationDisabled(true); // Ngăn chặn điều hướng
-    onDelete(flashcardSetId);
-  };
-
   return (
-    <StackCardLink
-      to={`/${flashcardSet?.flashcardSetId}/edit`}
-      onClick={(e) => isNavigationDisabled && e.preventDefault()}
-    >
+    <StackCardLink to={`/${flashcardSet?.flashcardSetId}/read`}>
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />

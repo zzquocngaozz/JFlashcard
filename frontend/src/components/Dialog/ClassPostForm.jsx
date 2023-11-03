@@ -43,12 +43,13 @@ export default function ClassPostForm({
           <DialogContent sx={{ width: "500px", display: "flex", gap: "60px" }}>
             <TextField
               {...register("content", role["postContent"])}
-              label="Nội dung bài đăng"
+              // label="Nội dung bài đăng"
+              placeholder="Nội dung bài đăng"
               type="text"
               defaultValue={dataInit?.content}
               error={!!errors.content}
               multiline
-              rows={2}
+              rows={6}
               helperText={errors?.content?.message}
               InputLabelProps={{ shrink: true }}
               variant="standard"

@@ -16,7 +16,6 @@ import {
 } from "../Styled/StyledStack";
 
 const SetSingle = ({ flashcardSet }) => {
-  console.log(flashcardSet);
   return (
     <StackCardLink to={`/${flashcardSet?.flashcardSetId}/read`}>
       <Stack spacing={1}>

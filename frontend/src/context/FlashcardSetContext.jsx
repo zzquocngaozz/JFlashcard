@@ -11,25 +11,23 @@ export const useInitFlashcardSetContext = () => {
   const context = useContext(FlashcardSetContext);
   const { setId } = useParams();
   const [loading, setLoading] = useState(true);
-  const { accessToken } = useAuth();
+  const { accessToken, isLogin } = useAuth();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (context.loadedSet !== setId) {
-      console.log("useFlashcardSetContext change ?");
       const fetchCard = async () => {
         setLoading(true);
         try {
-          const config = {
+          let config = {
             headers: {
               "Content-Type": "application/json",
               Authorization: accessToken,
             },
           };
-          const url = `/read/${setId}`;
+          const url = isLogin() ? `/read/${setId}` : `/read/preview/${setId}`;
           const response = await axios.get(url, config);
-          console.log(response.data);
           context.setFlashcardSet(response.data);
           context.setLoadedSet(setId);
           setLoading(false);
@@ -37,8 +35,8 @@ export const useInitFlashcardSetContext = () => {
         } catch (error) {
           // TODO: navigate to not found or accessdenied
           setLoading(false);
+          console.log(error);
           const errorCode = error?.response?.status;
-          console.log(errorCode);
           if (errorCode === 404) navigate("/not-found"); // not found
           if (errorCode === 401) navigate("/access-denied"); // not authorize
           navigate("/access-denied");
@@ -91,7 +89,6 @@ export const FlashcardSetProvider = ({ children }) => {
   };
 
   const logStudiedCard = async (studied) => {
-    console.log(studied);
     setMutation(true);
     const learnedSet = new Set(learnedCards?.map((card) => card?.cardId));
     if (!learnedSet.has(studied.cardId)) {
@@ -114,13 +111,11 @@ export const FlashcardSetProvider = ({ children }) => {
         "",
         config
       );
-      console.log(response);
+      setMutation(false);
     } catch (error) {
       console.log(error?.response?.data?.errors?.body[0]);
-    }
-    setTimeout(() => {
       setMutation(false);
-    }, [1000]);
+    }
   };
 
   useEffect(() => {}, [markedCards]);
