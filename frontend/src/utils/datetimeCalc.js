@@ -18,10 +18,11 @@ export const parseBirth = (birth) => {
   return `${day}-${month}-${year}`;
 };
 
-export function formatTime(timestamp) {
+export function formatTime(createAt) {
   const currentTime = new Date().getTime();
+  const timestamp = new Date(createAt).getTime();
   const timeDifference = currentTime - timestamp;
-
+  console.log(timestamp);
   const seconds = Math.floor(timeDifference / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -49,5 +50,5 @@ export function formatTime(timestamp) {
     return minutes + " phút trước";
   }
 
-  return "Vài giây trước";
+  return "vài giây trước";
 }

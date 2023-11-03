@@ -431,6 +431,7 @@ const ClassProgress = () => {
       },
     ],
   };
+
   console.log(
     (new Date().getTime() - new Date("2023-10-31").getTime()) /
       (new Date("2023-11-10").getTime() - new Date("2023-10-31").getTime())
@@ -443,8 +444,9 @@ const ClassProgress = () => {
     <LayoutNormal>
       Hello world {setId}
       <StackList height={"100%"}>
-        <Box width={"70%"} margin={"0 auto"}>
+        <Box width={"70%"} margin={"0 auto"} className={"container__theme"}>
           <Bar data={data} options={options} />
+          <HorizontalBarChart />
         </Box>
       </StackList>
     </LayoutNormal>

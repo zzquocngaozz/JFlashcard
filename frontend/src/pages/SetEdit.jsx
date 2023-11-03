@@ -43,7 +43,6 @@ const VisuallyHiddenInput = styled("input")({
 });
 const SetEdit = () => {
   const { setId } = useParams();
-  const { setLoadedSet } = useFlashcardSetContext();
   // ------------------ Handle delete alert show and hide
   const handleToggleAlertDelete = () => {
     setAlertDelete({
@@ -74,7 +73,6 @@ const SetEdit = () => {
 
   useEffect(() => {
     document.title = "Chỉnh sửa bộ flashcards";
-    setLoadedSet("-1");
   }, []);
   return (
     <LayoutNormal>

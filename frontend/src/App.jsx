@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import UserList from "./pages/UserList";
 import Home from "./pages/Home";
@@ -38,6 +38,9 @@ import ClassMember from "./pages/ClassMember";
 import ReadSet from "./pages/ReadSet";
 import LearnSet from "./pages/LearnSet";
 import ClassProgress from "./pages/ClassProgress";
+import { FlashcardSetProvider } from "./context/FlashcardSetContext";
+import FlashcardSetComsumer from "./routes/FlashcardSetComsumer";
+import ClassPostCommer from "./routes/ClassPostCommer";
 
 function App() {
   return (
@@ -119,12 +122,14 @@ function App() {
           path="/:setId/edit"
           element={<AuthenRoute element={<SetEdit />} />}
         />
+        <Route path="/:setId" element={<FlashcardSetComsumer />}>
+          <Route path="read" index element={<ReadSet />} />
+          <Route
+            path="flashcard"
+            element={<AuthenRoute element={<LearnSet />} />}
+          />
+        </Route>
 
-        <Route
-          path="/:setId/flashcard"
-          element={<AuthenRoute element={<LearnSet />} />}
-        />
-        <Route path="/:setId/read" element={<ReadSet />} />
         <Route path="/my-lib" element={<AuthenRoute element={<LibRoot />} />}>
           <Route
             path="/my-lib/recent"
@@ -151,7 +156,15 @@ function App() {
         <Route
           exact
           path="/class/:classRoomId"
-          element={<AuthenRoute element={<Classroom />} />}
+          element={
+            <AuthenRoute
+              element={
+                <ClassPostCommer>
+                  <Classroom />
+                </ClassPostCommer>
+              }
+            />
+          }
         />
         <Route
           exact
