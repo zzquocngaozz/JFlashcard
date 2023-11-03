@@ -12,5 +12,12 @@ public interface SendEmailService {
     public void sendOTPToken(String email, String token);
 
     public void sendChangeRole(String email);
+    public void sendOnTrackEmail(String email, String userName,String setName,String classname) ;
+    public void sendBehindScheduleEmail(String email, String userName,String setName,String classname) ;
+    public void sendLazyEmail(String email, String userName,String setName,String classname) ;
 
-}
+
+
+
+
+        }

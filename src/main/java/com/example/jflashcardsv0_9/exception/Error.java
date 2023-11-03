@@ -13,6 +13,7 @@ public enum Error {
     DESCRIPTION_USER_NULL("Mô tả không thể để trống ", HttpStatus.UNPROCESSABLE_ENTITY),
     TITLE_USER_NULL("Tiêu đề  không thể để trống ", HttpStatus.UNPROCESSABLE_ENTITY),
     EMAIL_USER_EXIST("Email đã tồn tại", HttpStatus.UNPROCESSABLE_ENTITY),
+    INFO_NOT_FOUND("Không có thông tin ", HttpStatus.UNPROCESSABLE_ENTITY),
     USERNAME_USER_EXIST("User name đã tồn tại", HttpStatus.UNPROCESSABLE_ENTITY),
     LOGIN_INFO_INVALID("Thông tin đăng nhập không hợp lệ", HttpStatus.UNPROCESSABLE_ENTITY),
     USER_BLOCK("Người dùng bị chặn", HttpStatus.UNPROCESSABLE_ENTITY),

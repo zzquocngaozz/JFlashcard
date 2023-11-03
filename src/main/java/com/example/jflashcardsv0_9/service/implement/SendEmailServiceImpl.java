@@ -109,6 +109,40 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     @Override
     public void sendChangeRole(String email) {
+        String htmlContent = """
+                    <!doctype html>
+                    <html>
+                      <head>
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                      </head>
+                      <body style="font-family: sans-serif;">
+                        <div style="font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;">
+                            <div style="margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);">
+                            <div style="border-bottom:1px solid #eee;display: flex;column-gap: 10px;">
+                            <a href="#" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">
+                            JFlashcard
+                            </a>
+                            </div>
+                            <p style="font-size:1.1em">Chào [Tên người dùng],</p>
+                            <p>Chúng tôi rất vui thông báo rằng yêu cầu của bạn để nâng cấp tài khoản từ học sinh lên tài khoản giáo viên đã được chấp thuận. Chúc mừng bạn đã trở thành một giáo viên trên JFlashcard</p>
+                            <p>Chúng tôi chân thành cảm ơn bạn đã sử dụng dịch vụ của chúng tôi và mong rằng bạn sẽ có trải nghiệm tuyệt vời với tài khoản giáo viên của mình.
+
+                Chúc mừng và chúc bạn có nhiều trải nghiêm trong vai trò giáo viên trên JFlashcards!</p>
+                            <p style="font-size:0.9em;">Regards,<br />JFlashcard</p>
+                            <hr style="border:none;border-top:1px solid #eee" />
+                            <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                            <p>JFlashcard</p>
+                        </div>
+                      </div>
+                    </div>
+                      </body>
+                    </html>""";
+
+        sendEmail(email, "Về yêu cầu nâng cấp tài khoản giáo viên", htmlContent);
+    }
+    // Gửi email với trạng thái "học đúng tiến độ"
+    public void sendOnTrackEmail(String email,String userName,String setName,String classname) {
+        String subject = "Thông báo về tiến độ học tập";
         String htmlContent = "    <!doctype html>\n" +
                 "    <html>\n" +
                 "      <head>\n" +
@@ -122,11 +156,11 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            JFlashcard\n" +
                 "            </a>\n" +
                 "            </div>\n" +
-                "            <p style=\"font-size:1.1em\">Chào [Tên người dùng],</p>\n" +
-                "            <p>Chúng tôi rất vui thông báo rằng yêu cầu của bạn để nâng cấp tài khoản từ học sinh lên tài khoản giáo viên đã được chấp thuận. Chúc mừng bạn đã trở thành một giáo viên trên JFlashcard</p>\n" +
-                "            <p>Chúng tôi chân thành cảm ơn bạn đã sử dụng dịch vụ của chúng tôi và mong rằng bạn sẽ có trải nghiệm tuyệt vời với tài khoản giáo viên của mình.\n" +
+                "            <p style=\"font-size:1.1em\">Chào [ "+ userName +"] ,</p>\n" +
+                "            <p>Chúc mừng bạn đang học đúng tiến độ của [ "+ setName +"] trong [ "+ classname +"]  . Hãy tiếp tục phấn đấu!</p>\n" +
+                "            <p>Chúng tôi rất vui thông báo rằng bạn đang học đúng tiến độ của  [ "+ setName +"] trong [ "+ classname +"]  .\n" +
                 "\n" +
-                "Chúc mừng và chúc bạn có nhiều trải nghiêm trong vai trò giáo viên trên JFlashcards!</p>\n" +
+                "Chúc mừng bạn  và hãy tiếp tục cố gắng trên JFlashcards!</p>\n" +
                 "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
                 "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
                 "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
@@ -136,7 +170,71 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "    </div>\n" +
                 "      </body>\n" +
                 "    </html>";
-
-        sendEmail(email, "Về yêu cầu nâng cấp tài khoản giáo viên", htmlContent);
+        sendEmail(email, subject, htmlContent);
     }
+
+    // Gửi email với trạng thái "học chậm tiến độ"
+    public void sendBehindScheduleEmail(String email,String userName,String setName,String classname)  {
+        String subject = "Thông báo về tiến độ học tập";
+        String htmlContent = "    <!doctype html>\n" +
+                "    <html>\n" +
+                "      <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "      </head>\n" +
+                "      <body style=\"font-family: sans-serif;\">\n" +
+                "        <div style=\"font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;\">\n" +
+                "            <div style=\"margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);\">\n" +
+                "            <div style=\"border-bottom:1px solid #eee;display: flex;column-gap: 10px;\">\n" +
+                "            <a href=\"#\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">\n" +
+                "            JFlashcard\n" +
+                "            </a>\n" +
+                "            </div>\n" +
+                "            <p style=\"font-size:1.1em\">Chào [ "+ userName +"] ,</p>\n" +
+                "            <p>Chúng tôi nhận thấy bạn đang học chậm tiến độ của  [ "+ setName +"] trong [ "+ classname +"]  . Hãy nỗ lực hơn để đảm bảo bạn không bị tụt lại.</p>\n" +
+                "            <p>Hãy tăng cường việc học tập để đảm bảo bạn đang theo kịp tiến độ của lớp học trên JFlashcards.</p>\n" +
+                "\n" +
+                "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
+                "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
+                "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
+                "            <p>JFlashcard</p>\n" +
+                "        </div>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "      </body>\n" +
+                "    </html>";
+        sendEmail(email, subject, htmlContent);
+    }
+
+    // Gửi email với trạng thái "đang rất lười"
+    public void sendLazyEmail(String email, String userName,String setName,String classname) {
+        String subject = "Thông báo về tiến độ học tập";
+        String htmlContent = "    <!doctype html>\n" +
+                "    <html>\n" +
+                "      <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "      </head>\n" +
+                "      <body style=\"font-family: sans-serif;\">\n" +
+                "        <div style=\"font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;\">\n" +
+                "            <div style=\"margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);\">\n" +
+                "            <div style=\"border-bottom:1px solid #eee;display: flex;column-gap: 10px;\">\n" +
+                "            <a href=\"#\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">\n" +
+                "            JFlashcard\n" +
+                "            </a>\n" +
+                "            </div>\n" +
+                "            <p style=\"font-size:1.1em\">Chào [ "+ userName +"] ,</p>\n" +
+                "            <p>Chúng tôi nhận thấy bạn đang rất lười học theo tiến độ của  [ "+ setName +"] trong [ "+ classname +"] . Hãy đặt kế hoạch và bắt đầu học ngay!</p>\n" +
+                "            <p>Chúng tôi khuyên bạn nên đặt kế hoạch học tập và bắt đầu ngay, để đảm bảo bạn đang theo kịp tiến độ của lớp học trên JFlashcards.</p>\n" +
+                "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
+                "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
+                "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
+                "            <p>JFlashcard</p>\n" +
+                "        </div>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "      </body>\n" +
+                "    </html>";
+        sendEmail(email, subject, htmlContent);
+    }
+
+
 }

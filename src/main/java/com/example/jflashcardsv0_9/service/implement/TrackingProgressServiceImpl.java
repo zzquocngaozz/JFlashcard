@@ -1,10 +1,14 @@
 package com.example.jflashcardsv0_9.service.implement;
 
 import com.example.jflashcardsv0_9.dto.TrackingClassSetSTO;
+import com.example.jflashcardsv0_9.dto.TrackingDTOResponse;
 import com.example.jflashcardsv0_9.entities.*;
+import com.example.jflashcardsv0_9.exception.AppException;
+import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.exception.Validate;
 import com.example.jflashcardsv0_9.repository.*;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
+import com.example.jflashcardsv0_9.service.SendEmailService;
 import com.example.jflashcardsv0_9.service.TrackingProgressService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -25,8 +29,9 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
     ClassSetRepository classSetRepository;
     FlashcardSetService flashcardSetService;
     ClassMemberRepository classMemberRepository;
+    SendEmailService sendEmailService;
     @Autowired
-    public TrackingProgressServiceImpl(TrackingProgressRepository trackingProgressRepository, FlashcardSetRepository flashcardSetRepository, Validate validate, ClassRoomRepository classRoomRepository, ClassSetRepository classSetRepository, FlashcardSetService flashcardSetService, ClassMemberRepository classMemberRepository) {
+    public TrackingProgressServiceImpl(TrackingProgressRepository trackingProgressRepository, FlashcardSetRepository flashcardSetRepository, Validate validate, ClassRoomRepository classRoomRepository, ClassSetRepository classSetRepository, FlashcardSetService flashcardSetService, ClassMemberRepository classMemberRepository, SendEmailService sendEmailService) {
         this.trackingProgressRepository = trackingProgressRepository;
         this.flashcardSetRepository = flashcardSetRepository;
         this.validate = validate;
@@ -34,6 +39,7 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
         this.classSetRepository = classSetRepository;
         this.flashcardSetService = flashcardSetService;
         this.classMemberRepository = classMemberRepository;
+        this.sendEmailService = sendEmailService;
     }
 
     @Override
@@ -80,5 +86,36 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
                 .numberCards(flashcardSetService.numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
                 .data(datas)
                 .build();
+    }
+
+    @Override
+    public void sendMailTracking(TrackingDTOResponse trackingDTOResponse) {
+        if(trackingDTOResponse == null){
+            throw new AppException(Error.INFO_NOT_FOUND);
+        }
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(trackingDTOResponse.getClassId());
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(trackingDTOResponse.getSetId());
+        List<TrackingDTOResponse.Data> onTrackingUsers = trackingDTOResponse.getOnTracking();
+        List<TrackingDTOResponse.Data> behinds = trackingDTOResponse.getBehind();
+        List<TrackingDTOResponse.Data> lazys = trackingDTOResponse.getLazy();
+        if(!(onTrackingUsers == null)){
+        for (TrackingDTOResponse.Data user : onTrackingUsers) {
+            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+            sendEmailService.sendOnTrackEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+            // Sử dụng thông tin người dùng để send mail
+        }}
+        if(!(behinds == null)){
+        for (TrackingDTOResponse.Data user : behinds) {
+            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+            sendEmailService.sendBehindScheduleEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+            // Sử dụng thông tin người dùng để send mail
+        }}
+        if(!(lazys == null)){
+        for (TrackingDTOResponse.Data user : lazys) {
+            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+            sendEmailService.sendLazyEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+            // Sử dụng thông tin người dùng để send mail
+        }}
+
     }
 }

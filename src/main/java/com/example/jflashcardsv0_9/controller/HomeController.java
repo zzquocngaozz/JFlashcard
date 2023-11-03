@@ -17,7 +17,6 @@ public class HomeController {
     private HomePageService homePageService;
     @Autowired
     private FlashcardSetService flashcardSetService;
-    // chưa xong han
     @GetMapping
     public HomePageDTO homePage(@AuthenticationPrincipal MyUserDetail myUserDetail){
         return homePageService.homePage(myUserDetail.getUser());
