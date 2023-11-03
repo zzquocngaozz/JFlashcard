@@ -8,8 +8,8 @@ export default function useFetchRecent() {
   const { accessToken } = useAuth();
 
   useEffect(() => {
-    setLoading(true);
-    const fetch = async (url1, url2) => {
+    const fetch = async () => {
+      setLoading(true);
       try {
         const config = {
           headers: {
@@ -24,125 +24,131 @@ export default function useFetchRecent() {
         // const resultSets = (await sets).data;
 
         // setRecent({resultClass, resultSets});
-
+        const response = await axios.get("/homepage", config);
+        console.log(response.data);
         setRecent({
-          classes: [
-            {
-              classRoomId: 1,
-              classRoomName: "Lớp học kaiwa cô Kai",
-              classRoomCode: "avxC2sss",
-              description: "Lớp học kaiwa khoá 7 kỳ 3",
-              numberStudent: 27,
-              numberSet: 10,
-              createdAt: "2023/10/10",
-              teacher: {
-                userId: 11,
-                userName: "BanKai01",
-                role: 2,
-              },
-            },
-            {
-              classRoomId: 2,
-              classRoomName: "Lớp học kaiwa cô Kai",
-              classRoomCode: "avxC2sss",
-              description: "Lớp học kaiwa khoá 7 kỳ 3",
-              numberStudent: 27,
-              numberSet: 10,
-              createdAt: "2023/10/8",
-              teacher: {
-                userId: 21,
-                userName: "BanKai02",
-                role: 2,
-              },
-            },
-            {
-              classRoomId: 3,
-              classRoomName: "Lớp học kaiwa cô Kai",
-              classRoomCode: "avxC2sss",
-              description: "Lớp học kaiwa khoá 7 kỳ 3",
-              numberStudent: 27,
-              numberSet: 10,
-              createdAt: "2023/10/7",
-              teacher: {
-                userId: 11,
-                userName: "BanKai01",
-                role: 2,
-              },
-            },
-            {
-              classRoomId: 4,
-              classRoomName: "Lớp học kaiwa cô Kai",
-              classRoomCode: "avxC2sss",
-              description: "Lớp học kaiwa khoá 7 kỳ 3",
-              numberStudent: 27,
-              numberSet: 10,
-              createdAt: "2023/10/10",
-              teacher: {
-                userId: 11,
-                userName: "BanKai03",
-                role: 2,
-              },
-            },
-          ],
-          sets: [
-            {
-              flashcardSetId: 1,
-              title: "Từ vựng thông dụng",
-              description:
-                "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-              numberVote: 27,
-              votePoint: 4.5,
-              numberCard: 60,
-              createdAt: "2023/10/10",
-              type: 1,
-              private: false,
-              authDTO: {
-                userId: 1,
-                userName: "ducpa01",
-                role: 1,
-              },
-            },
-            {
-              flashcardSetId: 2,
-              title: "Từ vựng thông dụng",
-              description:
-                "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-              numberVote: 27,
-              votePoint: 4.5,
-              numberCard: 60,
-              createdAt: "2023/10/10",
-              type: 1,
-              private: false,
-              authDTO: {
-                userId: 1,
-                userName: "ducpa01",
-                role: 1,
-              },
-            },
-            {
-              flashcardSetId: 3,
-              title: "Từ vựng thông dụng",
-              description:
-                "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-              numberVote: 27,
-              votePoint: 4.5,
-              numberCard: 60,
-              createdAt: "2023/10/10",
-              type: 3,
-              private: false,
-              authDTO: {
-                userId: 1,
-                userName: "ducpa01",
-                role: 1,
-              },
-            },
-          ],
+          classes: response?.data?.classRooms,
+          sets: response?.data?.flashcardSets,
         });
+        // setRecent({
+        //   classes: [
+        //     {
+        //       classRoomId: 1,
+        //       classRoomName: "Lớp học kaiwa cô Kai",
+        //       classRoomCode: "avxC2sss",
+        //       description: "Lớp học kaiwa khoá 7 kỳ 3",
+        //       numberStudent: 27,
+        //       numberSet: 10,
+        //       createdAt: "2023/10/10",
+        //       teacher: {
+        //         userId: 11,
+        //         userName: "BanKai01",
+        //         role: 2,
+        //       },
+        //     },
+        //     {
+        //       classRoomId: 2,
+        //       classRoomName: "Lớp học kaiwa cô Kai",
+        //       classRoomCode: "avxC2sss",
+        //       description: "Lớp học kaiwa khoá 7 kỳ 3",
+        //       numberStudent: 27,
+        //       numberSet: 10,
+        //       createdAt: "2023/10/8",
+        //       teacher: {
+        //         userId: 21,
+        //         userName: "BanKai02",
+        //         role: 2,
+        //       },
+        //     },
+        //     {
+        //       classRoomId: 3,
+        //       classRoomName: "Lớp học kaiwa cô Kai",
+        //       classRoomCode: "avxC2sss",
+        //       description: "Lớp học kaiwa khoá 7 kỳ 3",
+        //       numberStudent: 27,
+        //       numberSet: 10,
+        //       createdAt: "2023/10/7",
+        //       teacher: {
+        //         userId: 11,
+        //         userName: "BanKai01",
+        //         role: 2,
+        //       },
+        //     },
+        //     {
+        //       classRoomId: 4,
+        //       classRoomName: "Lớp học kaiwa cô Kai",
+        //       classRoomCode: "avxC2sss",
+        //       description: "Lớp học kaiwa khoá 7 kỳ 3",
+        //       numberStudent: 27,
+        //       numberSet: 10,
+        //       createdAt: "2023/10/10",
+        //       teacher: {
+        //         userId: 11,
+        //         userName: "BanKai03",
+        //         role: 2,
+        //       },
+        //     },
+        //   ],
+        //   sets: [
+        //     {
+        //       flashcardSetId: 1,
+        //       title: "Từ vựng thông dụng",
+        //       description:
+        //         "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //       numberVote: 27,
+        //       votePoint: 4.5,
+        //       numberCard: 60,
+        //       createdAt: "2023/10/10",
+        //       type: 1,
+        //       private: false,
+        //       authDTO: {
+        //         userId: 1,
+        //         userName: "ducpa01",
+        //         role: 1,
+        //       },
+        //     },
+        //     {
+        //       flashcardSetId: 2,
+        //       title: "Từ vựng thông dụng",
+        //       description:
+        //         "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //       numberVote: 27,
+        //       votePoint: 4.5,
+        //       numberCard: 60,
+        //       createdAt: "2023/10/10",
+        //       type: 1,
+        //       private: false,
+        //       authDTO: {
+        //         userId: 1,
+        //         userName: "ducpa01",
+        //         role: 1,
+        //       },
+        //     },
+        //     {
+        //       flashcardSetId: 3,
+        //       title: "Từ vựng thông dụng",
+        //       description:
+        //         "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
+        //       numberVote: 27,
+        //       votePoint: 4.5,
+        //       numberCard: 60,
+        //       createdAt: "2023/10/10",
+        //       type: 3,
+        //       private: false,
+        //       authDTO: {
+        //         userId: 1,
+        //         userName: "ducpa01",
+        //         role: 1,
+        //       },
+        //     },
+        //   ],
+        // });
 
         // setLoading(false);
+        setLoading(false);
       } catch (error) {
         // TODO: navigate to not found or accessdenied
-        // setLoading(false);
+        setLoading(false);
         const errorCode = error.response.status;
         console.log(errorCode);
         // if (errorCode === 404) navigate("/not-found"); // not found
@@ -150,7 +156,7 @@ export default function useFetchRecent() {
       }
     };
 
-    fetch("link1", "link2");
+    fetch();
   }, []);
 
   return { recent, loading };

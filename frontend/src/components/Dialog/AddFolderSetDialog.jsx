@@ -137,7 +137,7 @@ export default function AddFolderSetDialog({
                   <FilterNoneIcon sx={{ fontSize: "3rem" }} />
                 </Stack>
                 <Typography textAlign={"center"}>
-                  Chưa có thẻ nào trong bộ của bạn
+                  Không có bộ nào để thêm vào thư mục này
                 </Typography>
               </Stack>
             ) : (
@@ -148,8 +148,7 @@ export default function AddFolderSetDialog({
                     padding: "10px",
                     // border: "1px solid rgba(0,0,0,0.2)",
                     borderRadius: "8px",
-                    boxShadow:
-                      "0px 2px 5px -1px rgba(0,0,0,0.45)",
+                    boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.45)",
                   }}
                 >
                   <StackList flexGrow={1} flexBasis={"50px"}>

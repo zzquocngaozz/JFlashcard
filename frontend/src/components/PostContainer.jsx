@@ -6,42 +6,11 @@ import useAuth from "../hooks/useAuth";
 import { getColorFromEnum } from "../utils/colorGetter";
 import ClassPost from "./Cards/ClassPost";
 import ClassPostForm from "./Dialog/ClassPostForm";
+import { useInitClassPost } from "../context/ClassPostContext";
 
 const PostContainer = () => {
-  const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
-  const postList = [
-    {
-      classPostId: 1,
-      content: "This is the first blog post",
-      createdAt: new Date("2023-10-29 16:00:00").getTime(),
-      classRoomId: 1,
-      creator: { userId: 1, userName: "hieuht01", role: 1 },
-      comments: [
-        {
-          commentId: 1,
-          content: "First comment",
-          createAt: new Date("2023-10-29 16:03:00").getTime(),
-          classPostId: 1,
-          author: { userId: 1, userName: "hieuht01", role: 1 },
-        },
-        {
-          commentId: 1,
-          content: "First comment",
-          createAt: new Date("2023-10-29 16:35:00").getTime(),
-          classPostId: 1,
-          author: { userId: 2, userName: "luongnn", role: 1 },
-        },
-      ],
-    },
-  ];
-
-  console.log("checkcheck");
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+  const { classPost: postList, createClassPost, loading } = useInitClassPost();
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -50,9 +19,7 @@ const PostContainer = () => {
   }, [openForm]);
 
   const handleAdd = (data) => {
-    // onUpdate(data, handleToggleForm);
-    console.log(data);
-    handleToggleForm();
+    createClassPost(data, handleToggleForm);
   };
 
   return (

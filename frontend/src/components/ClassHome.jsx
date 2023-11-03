@@ -23,7 +23,7 @@ const ClassHome = ({ classes, loading }) => {
           <></>
         )}
       </StackList>
-      {!loading ? (
+      {loading ? (
         <StackContain>
           <ClassSkeleton />
           <ClassSkeleton />

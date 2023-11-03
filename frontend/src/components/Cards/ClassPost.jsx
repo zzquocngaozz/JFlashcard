@@ -1,4 +1,12 @@
-import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { StackList } from "../Styled/StyledStack";
 import { getColorFromEnum } from "../../utils/colorGetter";
@@ -7,7 +15,10 @@ import CommentContainer from "../CommentContainer";
 import ClassPostAction from "../Menu/ClassPostAction";
 import DialogAlertDeletePost from "../Dialog/DialogAlertDeletePost";
 import ClassPostForm from "../Dialog/ClassPostForm";
-
+import { useClassPostContext } from "../../context/ClassPostContext";
+import useAuth from "../../hooks/useAuth";
+import { useClassContext } from "../../context/ClassContext";
+import DeleteIcon from "@mui/icons-material/Delete";
 // const postItem = {
 //   classPostId: 1,
 //   content: "This is the first blog post",
@@ -19,15 +30,17 @@ import ClassPostForm from "../Dialog/ClassPostForm";
 //       content: "First comment",
 //       createAt: new Date().getTime(),
 //       classPostId: 1,
-//       author: { userId: 1, userName: "hieuht01", role: 1 },
+//       creator: { userId: 1, userName: "hieuht01", role: 1 },
 //     },
 //   ],
 // };
 
-const ClassPost = ({ postItem, onUpdate, onDelete, mutationing }) => {
+const ClassPost = ({ postItem }) => {
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-
+  const { currentUser } = useAuth();
+  const { isClassAdmin } = useClassContext();
+  const { updateClassPost, deleteClassPost, mutation } = useClassPostContext();
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
   }, [openForm]);
@@ -37,8 +50,7 @@ const ClassPost = ({ postItem, onUpdate, onDelete, mutationing }) => {
   }, [openDelete]);
   const handleUpdate = (data) => {
     // onUpdate(data, handleToggleForm);
-    console.log(data);
-    handleToggleForm();
+    updateClassPost(data, handleToggleForm);
   };
 
   return (
@@ -63,23 +75,43 @@ const ClassPost = ({ postItem, onUpdate, onDelete, mutationing }) => {
             </Typography>
           </Stack>
         </StackList>
-        <ClassPostAction
-          handleToggleUpdate={() => {
-            handleToggleForm();
-          }}
-          handleToggleDelete={handleToggleDelete}
-        />
+        {postItem?.creator?.userId === currentUser?.userId ? (
+          <ClassPostAction
+            handleToggleUpdate={handleToggleForm}
+            handleToggleDelete={handleToggleDelete}
+          />
+        ) : isClassAdmin() ? (
+          <Tooltip title={"Gỡ bài"}>
+            <IconButton onClick={handleToggleDelete} size="small" color="error">
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <></>
+        )}
       </StackList>
-      <Box p={3} pb={2} borderBottom={"1px solid rgba(0,0,0,0.5)"}>
-        {postItem?.content}
+      <Box
+        p={3}
+        pb={2}
+        sx={{ maxWidth: "930px", wordBreak: "break-all" }}
+        borderBottom={"1px solid rgba(0,0,0,0.5)"}
+      >
+        <div
+          dangerouslySetInnerHTML={{
+            __html: postItem?.content?.replace(/\n/g, "<br />"),
+          }}
+        />
       </Box>
-      <CommentContainer comments={postItem?.comments} />
+      <CommentContainer
+        comments={postItem?.comments}
+        classPostId={postItem?.classPostId}
+      />
       {openForm ? (
         <ClassPostForm
           handleToggle={handleToggleForm}
           dataInit={postItem}
           onSubmit={handleUpdate}
-          mutationing={mutationing}
+          mutationing={mutation}
         />
       ) : (
         <></>
@@ -88,7 +120,7 @@ const ClassPost = ({ postItem, onUpdate, onDelete, mutationing }) => {
         <DialogAlertDeletePost
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            onDelete(postItem?.classPostId, handleToggleDelete);
+            deleteClassPost(postItem?.classPostId, handleToggleDelete);
           }}
         />
       ) : (
