@@ -8,6 +8,12 @@ import java.util.List;
 @Service
 
 public interface FlashcardSetService {
+    List<KanjiDTO> getKanjiDTOS(long setId);
+
+    List<VocabDTO> getVocabDTOS(long setId);
+
+    List<GrammarDTO> getGrammarDTOS(long setId);
+
     IdDTO createFlashcardSet(FlashcardSetDTORequest flashcardSetDTORequest, long userID);
     FlashcardSetDTOResponse viewFlashcardSetResponse(long setid,long userid);
     FlashcardSetDTOResponse updateFlashcardSetResponse(FlashcardSetDTORequest flashcardSetDTORequest,long setid,long userid);
@@ -49,4 +55,6 @@ public interface FlashcardSetService {
     List<SetSingleDTO> listHistorySetOfUser(User user);
 
     List<SetSingleDTO> listBookMarkSetOfUser(User user);
+
+    List<SetSingleDTO> listTop3VoteFlashcardSetPublic();
 }

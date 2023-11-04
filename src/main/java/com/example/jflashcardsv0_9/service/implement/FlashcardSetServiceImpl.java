@@ -10,6 +10,8 @@ import com.example.jflashcardsv0_9.service.VotePointService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -47,6 +49,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         this.votePointRepository = votePointRepository;
         this.openedFlashcardSetRepository = openedFlashcardSetRepository;
     }
+    @Override
     public List<KanjiDTO> getKanjiDTOS(long setId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         List<FlashcardKanji> flashcardKanjis = flashcardKanjiRepository.findAllByFlashcardSet(flashcardSet);
@@ -54,6 +57,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .map((FlashcardKanji flashcardKanji) -> FlashcardMapper.convertKanjiDTO(flashcardKanji,flashcardSet)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
                 .collect(Collectors.toList());
     }
+    @Override
     public List<VocabDTO> getVocabDTOS(long setId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         List<FlashcardVocab> flashcardVocabs = flashcardVocabRepository.findAllByFlashcardSet(flashcardSet);
@@ -61,6 +65,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .map((FlashcardVocab flashcardVocab) -> FlashcardMapper.convertVocabDTO(flashcardVocab,flashcardSet)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
                 .collect(Collectors.toList());
     }
+    @Override
     public List<GrammarDTO> getGrammarDTOS(long setId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         List<FlashcardGrammar> flashcardGrammars = flashcardGrammarRepository.findAllByFlashcardSet(flashcardSet);
@@ -399,6 +404,14 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         for (BookMarkSet bookMarkSet : bookMarkSets){
             flashcardSets.add(bookMarkSet.getFlashcardSet());
         }
+        return flashcardSets.stream()
+                .map(FlashcardMapper::convertSetSingleDTO)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<SetSingleDTO> listTop3VoteFlashcardSetPublic() {
+        Pageable pageable = PageRequest.of(0, 3);
+        List<FlashcardSet> flashcardSets = votePointRepository.findTop3SetsWithHighestAveragePoints(pageable);
         return flashcardSets.stream()
                 .map(FlashcardMapper::convertSetSingleDTO)
                 .collect(Collectors.toList());

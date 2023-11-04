@@ -21,5 +21,9 @@ public class SearchController {
     public List<SetSingleDTO> searchFlashcardSetPublic(@RequestParam String q) {
         return flashcardSetService.searchFlashcardSetPublic(q);
     }
+    @GetMapping("/top3")
+    public List<SetSingleDTO> listTop3FlashcardSetPublic() {
+        return flashcardSetService.listTop3VoteFlashcardSetPublic();
+    }
 
 }
