@@ -6,6 +6,8 @@ import com.example.jflashcardsv0_9.entities.ClassRoom;
 import com.example.jflashcardsv0_9.entities.ClassSet;
 import com.example.jflashcardsv0_9.entities.FlashcardSet;
 import com.example.jflashcardsv0_9.entities.User;
+import com.example.jflashcardsv0_9.exception.AppException;
+import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.exception.Validate;
 import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
@@ -90,6 +92,21 @@ public class ClassSetServiceImpl implements ClassSetService {
         ClassSet classSet = ClassSet.builder()
                 .classRoom(classRoom)
                 .flashcardSet(flashcardSet)
+                .createdAt(classSetDTO.getStartAt())
+                .dueAt(classSetDTO.getDueAt())
+                .build();
+        classSetRepository.save(classSet);
+    }
+
+    @Override
+    public void updateSetOfUserInClass(User user, ClassSetDTO classSetDTO) {
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(classSetDTO.getClassRoomId());
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(classSetDTO.getFlashcardSetId());
+        ClassSet classSet = classSetRepository.getClassSetByClassRoomAndFlashcardSet(classRoom,flashcardSet);
+        if(classSet == null){
+            throw  new AppException(Error.INFO_NOT_FOUND);
+        }
+        classSet = ClassSet.builder()
                 .createdAt(classSetDTO.getStartAt())
                 .dueAt(classSetDTO.getDueAt())
                 .build();
