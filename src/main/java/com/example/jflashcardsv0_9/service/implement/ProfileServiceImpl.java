@@ -84,7 +84,7 @@ public class ProfileServiceImpl implements ProfileService {
     public UserDTO verifyUser(String token, String email) {
 
         Optional<UserRequest> optionalUserRequest = userRequestRepository.findByTokenAndUserEmail(token, email);
-        System.out.println(optionalUserRequest.isEmpty());
+
         if (optionalUserRequest.isEmpty())
             throw new AppException(Error.VERIFY_FALSE);
 
@@ -96,7 +96,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         verifyUser.setVerify(true);
         User updatedUser = userRepository.save(verifyUser);
-        System.out.print(verifyUser.toString());
+
         return UserMapper.toUserDTOResponse(updatedUser);
     }
 

@@ -30,7 +30,6 @@ public class ClassPostMapper {
 
 
     public static ClassPostDTO toClassPostDTO(ClassPost classPost){
-        System.out.println(classPost.toString());
         List<Integer> teacherRoleIds = classPost.getUser().getRoles().stream()
                 .map(Role::getRoleId) // Assuming Role has a 'roleId' field for the role ID
                 .collect(Collectors.toList());

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Bar, getElementAtEvent } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,13 +10,22 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import Chart from "chart.js/auto";
-import { Box, Button, Stack } from "@mui/material";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import {
+  Box,
+  Button,
+  Pagination,
+  Skeleton,
+  Stack,
+  styled,
+} from "@mui/material";
 import "chartjs-adapter-date-fns";
 import { format } from "date-fns";
 import annotationPlugin from "chartjs-plugin-annotation";
 import emailSVG from "../../assets/icons/emailSVG.svg";
 import BackdropLoading from "../FeedBack/BackdropLoading";
+import { StackList } from "../Styled/StyledStack";
+import { isEmpty } from "../../utils/manualTesting";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,7 +33,8 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  annotationPlugin
+  annotationPlugin,
+  ChartDataLabels
 );
 
 function customFormatDate(date) {
@@ -37,15 +47,11 @@ function customFormatDate(date) {
 function splitTimeRange(startDate, endDate) {
   const dateArray = [];
   const totalHours = (endDate - startDate) / (1000 * 60 * 60); // Tổng số giờ giữa startDate và endDate
-
-  console.log(totalHours);
   // Số khoảng thời gian bạn muốn tạo (5 trong ví dụ này)
-  const numberOfRanges = 5;
-
+  const numberOfRanges = 4;
   // Tính toán số giờ cho mỗi khoảng thời gian
   const interval = totalHours / numberOfRanges;
 
-  console.log(interval);
   for (let i = 0; i < numberOfRanges; i++) {
     const newDate = new Date(
       startDate.getTime() + i * interval * 60 * 60 * 1000
@@ -64,81 +70,32 @@ function splitTimeRange(startDate, endDate) {
   });
 }
 
-// Sử dụng hàm
-const startDate = new Date("2023-10-31");
-const endDate = new Date("2023-11-06");
-const timeProgressLabels = splitTimeRange(startDate, endDate);
-
 export function getImage() {
   const img = new Image();
   img.src = emailSVG;
   return img;
 }
 
-const progressLineAnnotate = {
-  type: "line",
-  scaleID: "x",
-  borderDash: [6, 6],
-  value: 21.5,
-  borderColor: "#4F6F52",
-  borderWidth: 2,
-  // TODO: chuyen thanh variable
-  label: {
-    content: ["Tiến độ dự kiến", "14/3", "21.5"],
-    display: true,
-    position: "start",
-    borderWidth: 1,
-  },
-  enter({ chart, element }, event) {
-    element.label.options.display = true;
-    chart.canvas.style.cursor = "pointer";
-    return true;
-  },
-  leave({ chart, element }, event) {
-    element.label.options.display = false;
-    chart.canvas.style.cursor = "default";
-    return true;
-  },
-};
-
-const warnLine = {
-  type: "line",
-  scaleID: "x",
-  borderDash: [6, 6],
-  value: 21.5 / 2,
-  borderColor: "#FF5B22",
-  borderWidth: 2,
-  // TODO: chuyen thanh variable
-  label: {
-    content: ["Red Flag", 21.5 / 2],
-    display: true,
-    position: "end",
-    borderWidth: 1,
-  },
-  enter({ chart, element }, event) {
-    element.label.options.display = true;
-    chart.canvas.style.cursor = "pointer";
-    return true;
-  },
-  leave({ chart, element }, event) {
-    element.label.options.display = false;
-    chart.canvas.style.cursor = "default";
-    return true;
-  },
-};
-
-const getAnnotationLine = (value, currentDate = "") => ({
+/**
+ *
+ *@param type 1 is red flag, another is expect
+ */
+const getAnnotationLine = (value, currentDate = "", type) => ({
   type: "line",
   scaleID: "x",
   borderDash: [6, 6],
   value: value,
-  borderColor: "#4F6F52",
+  borderColor: type === 1 ? "#FF5B22" : "#4F6F52",
   borderWidth: 2,
   // TODO: chuyen thanh variable
   label: {
-    content: ["Tiến độ dự kiến", currentDate, value],
-    display: true,
-    position: "start",
+    content: [
+      type === 1 ? "Red flag" : "Tiến độ dự kiến",
+      currentDate,
+      value + " %",
+    ],
+    display: false,
+    position: type === 1 ? "end" : "start",
     borderWidth: 1,
   },
   enter({ chart, element }, event) {
@@ -153,17 +110,7 @@ const getAnnotationLine = (value, currentDate = "") => ({
   },
 });
 
-// const annotation1 = {
-//   type: "label",
-//   drawTime: "afterDraw",
-//   content: getImage(),
-//   width: 20,
-//   height: 15,
-//   xValue: 100,
-//   yValue: 1,
-//   xAdjust: 20,
-// };
-class CustomAnnotation {
+class CustomEmailAnnotation {
   constructor(yValue, onClick) {
     this.type = "label";
     this.drawTime = "afterDraw";
@@ -177,88 +124,6 @@ class CustomAnnotation {
   }
 }
 
-/**
- * @argument indexs is position match with index of labels, data passed to Horizontal
- * @argument onClickEmail is callback trigger onClick email annotation has arg index === index passed data
- *
- */
-const getEmailAnnotattion = (indexs, onClickEmail) =>
-  indexs.map((index) => {
-    const onClick = () => {
-      onClickEmail(index);
-    };
-    return new CustomAnnotation(index, onClick);
-  });
-
-const emailAnnotation = getEmailAnnotattion(
-  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  (student) => {
-    console.log("onclick ", student);
-  }
-);
-
-// [(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)].map(
-//   (student) =>
-//     new CustomAnnotation(student, () => {
-//       console.log(`clickOn ${student}`);
-//     })
-// );
-
-const options = {
-  indexAxis: "y",
-  layout: {
-    padding: {
-      right: 40,
-    },
-  },
-  scales: {
-    x: {
-      beginAtZero: true, // Bắt đầu trục y từ 0
-      position: "bottom",
-      type: "linear",
-      max: 100, // Đặt giá trị tối đa cho trục x
-      ticks: {
-        reverse: false,
-        stepSize: 20,
-      },
-      title: {
-        display: true,
-        text: "Tiến độ",
-      },
-    },
-    x1: {
-      position: "top",
-      type: "category",
-      labels: timeProgressLabels,
-      title: {
-        display: true,
-        text: "Thời gian làm",
-      },
-    },
-  },
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "right",
-      display: false,
-    },
-    title: {
-      display: true,
-      text: "Tiến độ của bộ Kanji từ vựng",
-    },
-    annotation: {
-      enter: function enter({ chart, element }) {
-        chart.canvas.style.cursor = "pointer";
-      },
-
-      leave: function leave({ chart, element }) {
-        chart.canvas.style.cursor = "default";
-      },
-      clip: false,
-      annotations: [progressLineAnnotate, warnLine, ...emailAnnotation],
-    },
-  },
-};
 const getOptionChart = (title, timeProgressLabels, annotations) => ({
   indexAxis: "y",
   layout: {
@@ -268,13 +133,16 @@ const getOptionChart = (title, timeProgressLabels, annotations) => ({
   },
   scales: {
     x: {
-      beginAtZero: true, // Bắt đầu trục y từ 0
+      beginAtZero: true, // Bắt đầu trục x từ 0
       position: "bottom",
       type: "linear",
       max: 100, // Đặt giá trị tối đa cho trục x
       ticks: {
         reverse: false,
-        stepSize: 20,
+        stepSize: 25,
+        callback(value) {
+          return `${value} %`;
+        },
       },
       title: {
         display: true,
@@ -301,6 +169,21 @@ const getOptionChart = (title, timeProgressLabels, annotations) => ({
       display: true,
       text: title,
     },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          let label = context.dataset.label || "";
+          let data = context.dataset.data || "";
+          if (label) {
+            label += ": ";
+          }
+          if (data) {
+            label += data[context.dataIndex] + "%";
+          }
+          return label;
+        },
+      },
+    },
     annotation: {
       enter: function enter({ chart, element }) {
         chart.canvas.style.cursor = "pointer";
@@ -311,51 +194,27 @@ const getOptionChart = (title, timeProgressLabels, annotations) => ({
       },
       clip: false,
       annotations: annotations,
-      // [progressLineAnnotate, warnLine, ...emailAnnotation],
+    },
+    datalabels: {
+      formatter: function (value) {
+        console.log(value);
+        return value + " %";
+      },
+      anchor: "end",
+      color: "rgba(255,255,255 ,0.8)",
+      align: -2,
+      offset: -40,
     },
   },
 });
 
-const labels = [
-  `Hieuht31`,
-  "Ducpa02",
-  "Luong03",
-  "VuBQ04",
-  "Hieuht03",
-  "Hieuht04",
-  "Hieuht05",
-  "Hieuht07",
-  "Hieuht08",
-  "Hieuht09",
-];
-
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "Tiến độ",
-      data: [10, 20, 15, 30, 25, 14, 15, 45, 30, 30],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.5)",
-        "rgba(255, 0, 0, 0.5)",
-        "rgba(0, 99, 132, 0.5)",
-        "rgba(0, 99, 132, 0.5)",
-        "rgba(255, 99, 0, 0.5)",
-        "rgba(135, 99, 132, 0.5)",
-        "rgba(0, 99, 0, 0.5)",
-      ],
-      barPercentage: 0.3,
-      xAxisID: "x",
-    },
-  ],
-};
 const getData = (labels, dataSets) => {
   return {
     labels,
     datasets: [
       {
         label: "Tiến độ",
-        barPercentage: 0.3,
+        barPercentage: 0.6,
         xAxisID: "x",
         ...dataSets,
       },
@@ -364,19 +223,17 @@ const getData = (labels, dataSets) => {
 };
 
 const getBarColor = function (statusFlag = 0 | 1 | 2) {
-  const color = {
+  return {
     0: "#950101", // redflag
-    1: "#EA5455", // warn
-    2: "#748E63", // good job
-  };
-  return color[statusFlag];
+    1: "#F4CE14", // warn
+    2: "#1A5D1A", // good job
+  }[statusFlag];
 };
-
 const learnProgress = {
   flashcardSetId: 1,
   title: "Kanji bộ thuỷ",
-  startDate: new Date("2023-10-31").getTime(), // ngày bộ thẻ đuoc gan vao lop học
-  dueDate: new Date("2023-11-07").getTime(),
+  startDate: new Date("2023-10-31"), // ngày bộ thẻ đuoc gan vao lop học
+  dueDate: new Date("2023-11-07"),
   numberCards: 60,
   data: [
     {
@@ -390,6 +247,66 @@ const learnProgress = {
       userName: "huudd01",
       email: "huudd01@gmail.com",
       numberLearned: 30,
+    },
+    {
+      userId: 3,
+      userName: "hieuht02",
+      email: "hieuht02@gmail.com",
+      numberLearned: 10,
+    },
+    {
+      userId: 3,
+      userName: "huudd02",
+      email: "huudd02@gmail.com",
+      numberLearned: 18,
+    },
+    {
+      userId: 4,
+      userName: "hieuht04",
+      email: "hieuht04@gmail.com",
+      numberLearned: 24,
+    },
+    {
+      userId: 5,
+      userName: "huudd05",
+      email: "huudd05@gmail.com",
+      numberLearned: 25,
+    },
+    {
+      userId: 6,
+      userName: "hieuht06",
+      email: "hieuht06@gmail.com",
+      numberLearned: 22,
+    },
+    {
+      userId: 7,
+      userName: "huudd07",
+      email: "huudd07@gmail.com",
+      numberLearned: 24,
+    },
+    {
+      userId: 8,
+      userName: "hieuht08",
+      email: "hieuht08@gmail.com",
+      numberLearned: 18,
+    },
+    {
+      userId: 9,
+      userName: "huudd09",
+      email: "huudd09@gmail.com",
+      numberLearned: 45,
+    },
+    {
+      userId: 10,
+      userName: "hieuht10",
+      email: "hieuht12@gmail.com",
+      numberLearned: 20,
+    },
+    {
+      userId: 2,
+      userName: "huudd11",
+      email: "huudd11@gmail.com",
+      numberLearned: 60,
     },
   ],
 };
@@ -415,33 +332,166 @@ const chartData = {
   },
 };
 
+const getExpectLearn = (start, due, learnCard) => {
+  const current = new Date().getTime();
+  const startTime = new Date(start).getTime();
+  const dueTime = new Date(due).getTime();
+
+  return dueTime < current
+    ? 100
+    : Math.round(
+        ((current - startTime) / (dueTime - startTime)) * learnCard,
+        2
+      );
+};
+
 const HorizontalBarChart = ({ learnProgress: passedData }) => {
-  const [chartTitle, setChartTitle] = useState(learnProgress?.title);
+  const [chartTitle, setChartTitle] = useState("");
   const [timeProgressLabels, setTimeProgressLabels] = useState([]);
-  const [expectSpeed, setExpectSpeed] = useState(0); // so the du kien hoc duoc
   const [lineAnnotate, setLineAnnotate] = useState({
     progressLineAnnotate: {},
     warnLineAnnotate: {},
   });
-  const [pagingProgress, setPagingProgress] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [chartProps, setChartProps] = useState({
+    data: {},
+    options: {},
+  });
 
-  const [labels, setLabels] = useState([]);
-  const [dataSets, setDataSet] = useState({ data: [], backgroundColor: [] });
-  const [emailAnnotation, setEmailAnnotation] = useState([]);
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    setChartTitle(learnProgress?.title);
+    setTimeProgressLabels(
+      splitTimeRange(learnProgress?.startDate, learnProgress?.dueDate)
+    );
+    const expect = getExpectLearn(
+      learnProgress?.startDate,
+      learnProgress?.dueDate,
+      learnProgress?.numberCards
+    );
+    setLineAnnotate({
+      progressLineAnnotate: getAnnotationLine(
+        expect,
+        customFormatDate(new Date()),
+        0
+      ),
+      warnLineAnnotate: getAnnotationLine(expect / 2, "", 1),
+    });
+    // Box
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    if (chartTitle === "") return;
+    const NUMBER_RECORD = 10;
+    const startRecord = (currentPage - 1) * NUMBER_RECORD;
+    const endRecord = (currentPage - 1) * NUMBER_RECORD + 10;
+    const pagin = learnProgress?.data?.slice(startRecord, endRecord);
+
+    if (pagin?.length > 0) {
+      const parsedData = pagin.reduce(
+        (result, student, index) => {
+          const firstLetter = student?.userName[0];
+
+          result.labels.push(
+            student?.userName.replace(firstLetter, firstLetter.toUpperCase())
+          );
+          result.datas.push(
+            chartData.getProgess.call(student, learnProgress?.numberCards)
+          );
+          result.backgroundColors.push(
+            getBarColor(
+              chartData.getStatus.apply(student, [
+                getExpectLearn(
+                  learnProgress?.startDate,
+                  learnProgress?.dueDate,
+                  learnProgress?.numberCards
+                ),
+                (student?.numberLearned * 100) / learnProgress?.numberCards,
+              ])
+            )
+          );
+
+          const onClick = () => {
+            handleClickEmail(student);
+          };
+
+          const reponseIndex = NUMBER_RECORD - pagin.length + index;
+          result.emailAnnotation.push(
+            new CustomEmailAnnotation(reponseIndex, onClick)
+          );
+          return result;
+        },
+        { datas: [], backgroundColors: [], labels: [], emailAnnotation: [] }
+      );
+      for (let i = parsedData.datas.length; i < 10; i++) {
+        parsedData.datas.unshift(0);
+        parsedData.labels.unshift("");
+        parsedData.backgroundColors.unshift("#fff");
+      }
+
+      const dataSets = {
+        data: parsedData?.datas,
+        backgroundColor: parsedData?.backgroundColors,
+      };
+      const annotations = [
+        lineAnnotate.progressLineAnnotate,
+        lineAnnotate.warnLineAnnotate,
+        ...parsedData?.emailAnnotation,
+      ];
+      setChartProps({
+        data: { ...getData(parsedData?.labels, dataSets) },
+        options: {
+          ...getOptionChart(chartTitle, timeProgressLabels, annotations),
+        },
+      });
+    }
+    // setLoading(false);
+  }, [currentPage, learnProgress, lineAnnotate]);
+
+  const handleClickEmail = (student) => {
+    console.log(student);
+  };
+
+  const handlePaging = (e, newValue) => {
+    setCurrentPage(newValue);
+  };
 
   return (
     <>
       {loading ? (
-        <BackdropLoading />
+        <Box>
+          <CustomSkelecton sx={{ height: "30px" }} />
+          <CustomSkelecton sx={{ height: "420px" }} />
+          <CustomSkelecton
+            sx={{ height: "30px", width: "100px", float: "right" }}
+          />
+        </Box>
       ) : (
         <Stack>
-          {/* <Bar data={data} options={options} /> */}
-          Hello world
+          <Bar data={chartProps?.data} options={chartProps?.options} />
+          <StackList justifyContent={"space-between"}>
+            Hello world
+            <Pagination
+              count={Math.ceil(learnProgress?.data?.length / 10)}
+              color="primary"
+              onChange={handlePaging}
+            />
+          </StackList>
         </Stack>
       )}
     </>
   );
 };
+
+const CustomSkelecton = styled(Skeleton)({
+  "-webkit-transform": "scale(1, 0.90)",
+  "-moz-transform": "scale(1, 0.90)",
+  "-ms-transform": "scale(1, 0.90)",
+  transform: "scale(1, 0.90)",
+});
+
 export default React.memo(HorizontalBarChart);
