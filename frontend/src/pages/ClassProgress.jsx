@@ -5,18 +5,29 @@ import { Box } from "@mui/material";
 import HorizontalBarChart from "../components/DataDisplay/HorizontalBarChart";
 import { StackList } from "../components/Styled/StyledStack";
 import OverallLearnProgress from "../components/DataDisplay/OverallLearnProgress";
+import { isEmpty } from "../utils/manualTesting";
+import { getExpectLearn, getStatus } from "../utils/parseData";
 
 const ClassProgress = () => {
   const { setId } = useParams();
   const [learnProgress, setLearnProgress] = useState({});
+  const [pasreListProgress, setPasreListProgress] = useState([]);
+  const [filterBy, setFilterBy] = useState(-1);
 
+  const handleChangeFilter = (filter) => {
+    if (filter === filterBy) {
+      setFilterBy(-1);
+      return;
+    }
+    setFilterBy(filter);
+  };
   useEffect(() => {
     setTimeout(() => {
       setLearnProgress({
         flashcardSetId: 1,
         title: "Kanji bộ thuỷ",
-        startDate: new Date("2023-10-31").getTime(), // ngày bộ thẻ đuoc gan vao lop học
-        dueDate: new Date("2023-11-07").getTime(),
+        startDate: new Date("2023-10-31"), // ngày bộ thẻ đuoc gan vao lop học
+        dueDate: new Date("2023-11-07"),
         numberCards: 60,
         data: [
           {
@@ -32,133 +43,133 @@ const ClassProgress = () => {
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 3,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 4,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 5,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 6,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 7,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 8,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 9,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 10,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 11,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 12,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 13,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 14,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 15,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 16,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 17,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 18,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 19,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 20,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 21,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 22,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
           },
           {
-            userId: 1,
+            userId: 23,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
             numberLearned: 20,
           },
           {
-            userId: 2,
+            userId: 24,
             userName: "huudd01",
             email: "huudd01@gmail.com",
             numberLearned: 30,
@@ -167,6 +178,32 @@ const ClassProgress = () => {
       });
     }, 1000);
   }, []);
+
+  useEffect(() => {
+    if (isEmpty(learnProgress)) return;
+
+    const pasreListProgress = learnProgress?.data?.reduce(
+      (result, progressLearn) => {
+        const status = getStatus(
+          getExpectLearn(
+            learnProgress?.startDate,
+            learnProgress?.dueDate,
+            learnProgress?.numberCards
+          ),
+          progressLearn?.numberLearned
+        );
+        if (status === 0) result.redFlag.push(progressLearn);
+        if (status === 1) result.warn.push(progressLearn);
+        if (status === 2) result.goodJob.push(progressLearn);
+        return result;
+      },
+      {
+        redFlag: [],
+        warn: [],
+        goodJob: [],
+      }
+    );
+  }, [learnProgress]);
 
   return (
     <LayoutNormal>

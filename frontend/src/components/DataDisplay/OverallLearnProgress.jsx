@@ -170,6 +170,9 @@ const data = {
 };
 
 const OverallLearnProgress = ({ learnProgress: parsedData }) => {
+  const handleOnclickLabel = (index) => {
+    console.log("click", index);
+  };
   const chartOptions = {
     tooltips: {
       enabled: false,
@@ -180,7 +183,6 @@ const OverallLearnProgress = ({ learnProgress: parsedData }) => {
     plugins: {
       datalabels: {
         formatter: function (value, context) {
-          console.log("183 ", context.dataIndex);
           return value + " người";
         },
         color: "#FFF",
@@ -196,7 +198,7 @@ const OverallLearnProgress = ({ learnProgress: parsedData }) => {
             context.chart.canvas.style.cursor = "default";
           },
           click: function (context) {
-            console.log("click", context.dataIndex);
+            handleOnclickLabel(context.dataIndex);
           },
         },
       },

@@ -6,6 +6,23 @@ export const isBirthDate = (birthDate) => {
   return current > bornAt;
 };
 
+export const checkDueAt = (dueAt) => {
+  // Tạo một đối tượng Date cho thời điểm hiện tại
+  const currentDate = new Date();
+
+  // Tạo một đối tượng Date cho thời điểm `dueAt`
+  const dueDate = new Date(dueAt);
+
+  // Tính thời gian cach nhau tính bằng mili giây (1 ngày = 24 giờ x 60 phút x 60 giây x 1000 mili giây)
+  const timeDifference = dueDate.getTime() - currentDate.getTime();
+  console.log(timeDifference, "?");
+  // xac dinh khoang cach ngay giua current date va due date (24 * 60 * 60 * 1000)
+  const daysSpace = (timeDifference + 60 * 1000) / (24 * 60 * 60 * 1000);
+  console.log(daysSpace);
+  // Kiem tra due date >= 3 ngay current date
+  return daysSpace >= 3;
+};
+
 export const parseBirth = (birth) => {
   const date = new Date(birth);
 
