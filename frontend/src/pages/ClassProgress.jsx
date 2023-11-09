@@ -1,18 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import LayoutNormal from "../components/Parts/LayoutNormal";
-import { Box } from "@mui/material";
+import { Box, Button, Chip, Skeleton, Stack, Typography } from "@mui/material";
 import HorizontalBarChart from "../components/DataDisplay/HorizontalBarChart";
 import { StackList } from "../components/Styled/StyledStack";
 import OverallLearnProgress from "../components/DataDisplay/OverallLearnProgress";
 import { isEmpty } from "../utils/manualTesting";
 import { getExpectLearn, getStatus } from "../utils/parseData";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 
+const loading = false;
 const ClassProgress = () => {
   const { setId } = useParams();
   const [learnProgress, setLearnProgress] = useState({});
-  const [pasreListProgress, setPasreListProgress] = useState([]);
+  const [pasreListProgress, setPasreListProgress] = useState(null);
   const [filterBy, setFilterBy] = useState(-1);
+  const [filterProgress, setFilterProgress] = useState({});
 
   const handleChangeFilter = (filter) => {
     if (filter === filterBy) {
@@ -22,6 +27,7 @@ const ClassProgress = () => {
     setFilterBy(filter);
   };
   useEffect(() => {
+    console.log(learnProgress, isEmpty(learnProgress));
     setTimeout(() => {
       setLearnProgress({
         flashcardSetId: 1,
@@ -34,7 +40,7 @@ const ClassProgress = () => {
             userId: 1,
             userName: "hieuht01",
             email: "hieuht01@gmail.com",
-            numberLearned: 20,
+            numberLearned: 60,
           },
           {
             userId: 2,
@@ -181,8 +187,8 @@ const ClassProgress = () => {
 
   useEffect(() => {
     if (isEmpty(learnProgress)) return;
-
-    const pasreListProgress = learnProgress?.data?.reduce(
+    setFilterProgress({ ...learnProgress });
+    const pasredProgress = learnProgress?.data?.reduce(
       (result, progressLearn) => {
         const status = getStatus(
           getExpectLearn(
@@ -190,7 +196,7 @@ const ClassProgress = () => {
             learnProgress?.dueDate,
             learnProgress?.numberCards
           ),
-          progressLearn?.numberLearned
+          (progressLearn?.numberLearned * 100) / learnProgress?.numberCards
         );
         if (status === 0) result.redFlag.push(progressLearn);
         if (status === 1) result.warn.push(progressLearn);
@@ -203,22 +209,181 @@ const ClassProgress = () => {
         goodJob: [],
       }
     );
+    setPasreListProgress({ ...pasredProgress });
   }, [learnProgress]);
+
+  useEffect(() => {
+    if (filterBy === -1) setFilterProgress({ ...learnProgress });
+    if (filterBy === 0)
+      setFilterProgress({
+        ...learnProgress,
+        data: [...pasreListProgress?.redFlag],
+      });
+    if (filterBy === 1)
+      setFilterProgress({
+        ...learnProgress,
+        data: [...pasreListProgress?.warn],
+      });
+    if (filterBy === 2)
+      setFilterProgress({
+        ...learnProgress,
+        data: [...pasreListProgress?.goodJob],
+      });
+  }, [filterBy]);
 
   return (
     <LayoutNormal>
-      Hello world {setId}
-      <StackList sx={{ flexDirection: "row" }}>
+      <StackList
+        sx={{
+          flexDirection: "row",
+          marginTop: "30px",
+          alignItems: "flex-start",
+        }}
+      >
         <Box
           width={"28%"}
           height={"100%"}
           margin={"0 auto"}
           className={"container__theme"}
         >
-          <OverallLearnProgress />
+          {!Boolean(pasreListProgress) || loading ? (
+            <Stack
+              spacing={1}
+              justifyContent={"center"}
+              alignItems={"center"}
+              width={"100%"}
+            >
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width={200}
+                height={20}
+              />
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width={100}
+                height={20}
+              />
+              <Skeleton
+                animation="wave"
+                variant="circular"
+                width={285}
+                height={285}
+              />
+            </Stack>
+          ) : (
+            <OverallLearnProgress
+              labelData={[
+                pasreListProgress?.redFlag?.length,
+                pasreListProgress?.warn?.length,
+                pasreListProgress?.goodJob?.length,
+              ]}
+              handleChangeFilter={handleChangeFilter}
+            />
+          )}
+          <StackList mt={2} justifyContent={"center"}>
+            <Stack flexDirection={"row"}>
+              {loading ? (
+                <Skeleton
+                  animation="wave"
+                  variant="rounded"
+                  width={100}
+                  height={30}
+                />
+              ) : (
+                <>
+                  <FilterAltOutlinedIcon />
+                  <Typography>Lọc theo:</Typography>
+                </>
+              )}
+            </Stack>
+            {loading ? (
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width={200}
+                height={30}
+              />
+            ) : filterBy === -1 ? (
+              <Chip label="Tất cả" variant="outlined" />
+            ) : filterBy === 0 ? (
+              <Chip
+                label="Cần nhắc nhở"
+                variant="outlined"
+                color="error"
+                onDelete={() => {
+                  handleChangeFilter(-1);
+                }}
+              />
+            ) : filterBy === 1 ? (
+              <Chip
+                label="Cần lưu ý"
+                variant="outlined"
+                color="warning"
+                onDelete={() => {
+                  handleChangeFilter(-1);
+                }}
+              />
+            ) : filterBy === 2 ? (
+              <Chip
+                label="Làm tốt"
+                variant="outlined"
+                color="success"
+                onDelete={() => {
+                  handleChangeFilter(-1);
+                }}
+              />
+            ) : (
+              <></>
+            )}
+          </StackList>
+          <StackList justifyContent={"center"} sx={{ margin: "13px auto" }}>
+            {loading ? (
+              <>
+                <Skeleton
+                  animation="wave"
+                  variant="rounded"
+                  width={120}
+                  height={38}
+                />
+                <Skeleton
+                  animation="wave"
+                  variant="rounded"
+                  width={120}
+                  height={38}
+                />
+              </>
+            ) : (
+              <>
+                <Button
+                  sx={{
+                    borderRadius: "8px",
+                    textTransform: "none",
+                  }}
+                  color="secondary"
+                  variant="contained"
+                  startIcon={<ArrowBackOutlinedIcon />}
+                >
+                  Trở lại
+                </Button>
+                <Button
+                  className="text--cap"
+                  sx={{ textTransform: "none", borderRadius: "8px" }}
+                  variant="contained"
+                  startIcon={<MailOutlinedIcon />}
+                >
+                  Gửi mail
+                </Button>
+              </>
+            )}
+          </StackList>
         </Box>
-        <Box width={"70%"} margin={"0 auto"} className={"container__theme"}>
-          <HorizontalBarChart learnProgress={learnProgress} />
+        <Box width={"65%"} margin={"0 auto"} className={"container__theme"}>
+          <HorizontalBarChart
+            learnProgress={filterProgress}
+            key={filterProgress}
+          />
         </Box>
       </StackList>
     </LayoutNormal>

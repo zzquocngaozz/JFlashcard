@@ -188,7 +188,9 @@ export const getStatus = function (expect, numberCards) {
   if (numberCards >= expect) return 2; // goodjob
   return 1; // warn
 };
-
+/**
+ * @param learnCard === numberCard of set
+ */
 export const getExpectLearn = (start, due, learnCard) => {
   const current = new Date().getTime();
   const startTime = new Date(start).getTime();

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
 import {
@@ -11,19 +11,9 @@ import {
   Legend,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import {
-  Box,
-  Button,
-  Pagination,
-  Skeleton,
-  Stack,
-  styled,
-} from "@mui/material";
-import "chartjs-adapter-date-fns";
-import { format } from "date-fns";
+import { Box, Pagination, Skeleton, Stack, styled } from "@mui/material";
 import annotationPlugin from "chartjs-plugin-annotation";
 import emailSVG from "../../assets/icons/emailSVG.svg";
-import BackdropLoading from "../FeedBack/BackdropLoading";
 import { StackList } from "../Styled/StyledStack";
 import { isEmpty } from "../../utils/manualTesting";
 import {
@@ -76,7 +66,7 @@ const HorizontalBarChart = ({ learnProgress }) => {
     warnLineAnnotate: {},
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [chartProps, setChartProps] = useState({
     data: {},
     options: {},
@@ -84,7 +74,7 @@ const HorizontalBarChart = ({ learnProgress }) => {
 
   useEffect(() => {
     if (isEmpty(learnProgress)) return;
-    setLoading(true);
+    // setLoading(true);
     setChartTitle(learnProgress?.title);
     setTimeProgressLabels(
       splitTimeRange(learnProgress?.startDate, learnProgress?.dueDate)
@@ -103,9 +93,11 @@ const HorizontalBarChart = ({ learnProgress }) => {
       warnLineAnnotate: getAnnotationLine(expect / 2, "", 1),
     });
     // Box
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 1000);
+    console.log("reload");
+    if (currentPage !== 1) setCurrentPage(1);
   }, [learnProgress]);
 
   useEffect(() => {
@@ -114,7 +106,7 @@ const HorizontalBarChart = ({ learnProgress }) => {
     const startRecord = (currentPage - 1) * NUMBER_RECORD;
     const endRecord = (currentPage - 1) * NUMBER_RECORD + 10;
     const pagin = learnProgress?.data?.slice(startRecord, endRecord);
-
+    console.log(learnProgress, "line 107");
     if (pagin?.length > 0) {
       const parsedData = pagin.reduce(
         (result, student, index) => {
@@ -125,7 +117,7 @@ const HorizontalBarChart = ({ learnProgress }) => {
           );
           result.datas.push(
             // chartData.getProgess.call(student, learnProgress?.numberCards)
-            getProgess(student?.numberLearned, learnProgress.numberCards)
+            getProgess(student?.numberLearned, learnProgress?.numberCards)
           );
           result.backgroundColors.push(
             getBarColor(
@@ -175,7 +167,7 @@ const HorizontalBarChart = ({ learnProgress }) => {
       });
     }
     // setLoading(false);
-  }, [currentPage, learnProgress, lineAnnotate]);
+  }, [currentPage, lineAnnotate]);
 
   const handleClickEmail = (student) => {
     console.log(student);
@@ -187,7 +179,7 @@ const HorizontalBarChart = ({ learnProgress }) => {
 
   return (
     <>
-      {loading ? (
+      {isEmpty(chartProps?.data) ? (
         <Box>
           <CustomSkelecton sx={{ height: "30px" }} />
           <CustomSkelecton sx={{ height: "420px" }} />
@@ -198,10 +190,11 @@ const HorizontalBarChart = ({ learnProgress }) => {
       ) : (
         <Stack>
           <Bar data={chartProps?.data} options={chartProps?.options} />
-          <StackList justifyContent={"space-between"}>
-            Hello world
+          <StackList sx={{ justifyContent: "flex-end" }}>
             <Pagination
-              count={Math.ceil(learnProgress?.data?.length / 10)}
+              key={currentPage}
+              defaultPage={currentPage}
+              count={Math.ceil((learnProgress?.data?.length | 0) / 10)}
               color="primary"
               onChange={handlePaging}
             />
@@ -213,9 +206,9 @@ const HorizontalBarChart = ({ learnProgress }) => {
 };
 
 const CustomSkelecton = styled(Skeleton)({
-  "-webkit-transform": "scale(1, 0.90)",
-  "-moz-transform": "scale(1, 0.90)",
-  "-ms-transform": "scale(1, 0.90)",
+  // "-webkit-transform": "scale(1, 0.90)",
+  // "-moz-transform": "scale(1, 0.90)",
+  // "-ms-transform": "scale(1, 0.90)",
   transform: "scale(1, 0.90)",
 });
 
