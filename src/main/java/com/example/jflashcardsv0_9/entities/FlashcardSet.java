@@ -50,13 +50,10 @@ public class FlashcardSet implements Serializable {
     private User user;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<FlashcardGrammar> flashcardGrammars;
-
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<FlashcardKanji> flashcardKanjis;
-
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<FlashcardVocab> flashcardVocabs;
-
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<BookMarkSet> bookMarkSets;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
@@ -69,8 +66,6 @@ public class FlashcardSet implements Serializable {
     private List<ClassSet>  classSets;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<TrackingProgress> trackingProgresses;
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "flashcardSets", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<FolderSet> folderSets;
-
 }
