@@ -13,10 +13,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/homepage")
 public class HomeController {
+    private final HomePageService homePageService;
+
+    private final FlashcardSetService flashcardSetService;
     @Autowired
-    private HomePageService homePageService;
-    @Autowired
-    private FlashcardSetService flashcardSetService;
+    public HomeController(HomePageService homePageService, FlashcardSetService flashcardSetService) {
+        this.homePageService = homePageService;
+        this.flashcardSetService = flashcardSetService;
+    }
+
     @GetMapping
     public HomePageDTO homePage(@AuthenticationPrincipal MyUserDetail myUserDetail){
         return homePageService.homePage(myUserDetail.getUser());

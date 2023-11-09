@@ -7,9 +7,7 @@ import com.example.jflashcardsv0_9.entities.UserRequest;
 import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.exception.Validate;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
-import com.example.jflashcardsv0_9.repository.RoleRepository;
-import com.example.jflashcardsv0_9.repository.UserRepository;
-import com.example.jflashcardsv0_9.repository.UserRequestRepository;
+import com.example.jflashcardsv0_9.repository.*;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.SendEmailService;
 import com.example.jflashcardsv0_9.service.UserService;
@@ -26,8 +24,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.example.jflashcardsv0_9.exception.Validate.*;
-
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
@@ -38,15 +34,19 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
     UserRequestRepository userRequestRepository;
     SendEmailService sendEmailService;
+    FlashcardSetRepository flashcardSetRepository;
+    ClassRoomRepository classRoomRepository;
     Validate validate;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, RoleRepository roleRepository, UserRequestRepository userRequestRepository, SendEmailService sendEmailService,Validate validate) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, RoleRepository roleRepository, UserRequestRepository userRequestRepository, SendEmailService sendEmailService, FlashcardSetRepository flashcardSetRepository, ClassRoomRepository classRoomRepository, Validate validate) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenUtil = jwtTokenUtil;
         this.roleRepository = roleRepository;
         this.userRequestRepository = userRequestRepository;
         this.sendEmailService = sendEmailService;
+        this.flashcardSetRepository = flashcardSetRepository;
+        this.classRoomRepository = classRoomRepository;
         this.validate = validate;
     }
 
@@ -210,5 +210,14 @@ public class UserServiceImpl implements UserService {
         sendEmailService.sendOTPToken(email, token);//send token
         //
         return true;
+    }
+
+    @Override
+    public HomeDTO homePageOfGuest() {
+        return HomeDTO.builder()
+                .numberUser(userRepository.count())
+                .numberFLCard(flashcardSetRepository.count())
+                .numberClass(classRoomRepository.count())
+                .build();
     }
 }

@@ -21,11 +21,11 @@ public class ChatMessage implements Serializable {
     private Long chatMessageId;
     // người gửi
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "sender")
     private User sender;
     // người rep
     @ManyToOne
-    @JoinColumn(name = "teacherId")
+    @JoinColumn(name = "recipient")
     private User recipient;
 
     @ManyToOne
