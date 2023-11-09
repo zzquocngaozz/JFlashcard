@@ -120,6 +120,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void deleteFlashcardSetById(long setid, long userid) {
         validate.checkAuthSetFound(userid,setid);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
+
+
         flashcardSetRepository.delete(flashcardSet);
     }
     @Override

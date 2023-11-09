@@ -64,15 +64,13 @@ public class FlashcardSet implements Serializable {
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<BookMarkCard> bookMarkCards;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<VotePoint> votePoints;
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<ClassSet>  classSets;
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<TrackingProgress> trackingProgresses;
-//    public String getRoleString(){
-//        if(setType == 1){
-//            return "Kanji";
-//        }else if (setType ==2) {
-//            return "Từ vựng";
-//        }else if (setType ==3) {
-//            return "Ngữ pháp";
-//        }
-//        return "";
-//    }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<FolderSet> folderSets;
+
 }
