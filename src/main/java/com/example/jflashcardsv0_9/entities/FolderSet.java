@@ -40,7 +40,12 @@ public class FolderSet implements Serializable {
     @JoinColumn(name = "userId") // Đặt tên cột foreign key là "user_id"
     private User user;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "folderSet_flashcardSet",
+            joinColumns = @JoinColumn(name = "folderId"),
+            inverseJoinColumns = @JoinColumn(name = "flashcardSetId")
+    )
     private Set<FlashcardSet> flashcardSets;
 
 }

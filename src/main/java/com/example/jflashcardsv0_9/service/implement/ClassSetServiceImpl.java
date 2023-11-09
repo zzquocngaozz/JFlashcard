@@ -21,6 +21,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -92,7 +93,7 @@ public class ClassSetServiceImpl implements ClassSetService {
         ClassSet classSet = ClassSet.builder()
                 .classRoom(classRoom)
                 .flashcardSet(flashcardSet)
-                .createdAt(classSetDTO.getStartAt())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
                 .dueAt(classSetDTO.getDueAt())
                 .build();
         classSetRepository.save(classSet);
@@ -111,6 +112,16 @@ public class ClassSetServiceImpl implements ClassSetService {
                 .dueAt(classSetDTO.getDueAt())
                 .build();
         classSetRepository.save(classSet);
+    }
+
+    @Override
+    public void deleteSetOfUserInClass(User user, long classId, long classSetID) {
+        ClassSet classSet = classSetRepository.getClassSetByClassSetId(classSetID);
+        if(classSet == null){
+            throw  new AppException(Error.INFO_NOT_FOUND);
+        }else {
+            classSetRepository.delete(classSet);
+        }
     }
 
 

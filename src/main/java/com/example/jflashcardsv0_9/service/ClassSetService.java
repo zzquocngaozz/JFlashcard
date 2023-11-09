@@ -16,4 +16,6 @@ public interface ClassSetService {
     void addSetOfUserInClass(User user, ClassSetDTO classSetDTO);
 
     void updateSetOfUserInClass(User user, ClassSetDTO classSetDTO);
+
+    void deleteSetOfUserInClass(User user, long classId, long classSetID);
 }
