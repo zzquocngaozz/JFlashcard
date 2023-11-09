@@ -4,7 +4,8 @@ import useAuth from "./useAuth";
 import axios from "axios";
 import { useClassContext } from "../context/ClassContext";
 
-const useClassroom = ({ handleToggleUpdate }) => {
+// const useClassroom = ({ handleToggleUpdate }) => {
+const useClassroom = () => {
   const [classroom, setClassroom] = useState({});
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -47,7 +48,8 @@ const useClassroom = ({ handleToggleUpdate }) => {
     getClassroom();
   }, [classRoomId]);
 
-  const updateClassroom = async (data) => {
+  // const updateClassroom = async (data) => {
+  const updateClassroom = async (data, handleToggleUpdate) => {
     try {
       setMutationing(true);
       const config = {

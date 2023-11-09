@@ -1,27 +1,133 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import LayoutNormal from "../components/Parts/LayoutNormal";
-import { Stack, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Pagination,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import ClassNav from "../components/Parts/ClassNav";
+import useClassSet from "../hooks/useClassSet";
+import useClassroom from "../hooks/useClassroom";
+import { useClassContext } from "../context/ClassContext";
+import FolderSet from "./FolderSet";
+import SetFolder from "../components/Cards/SetFolder";
+import SetClass from "../components/Cards/SetClass";
+import { StackList } from "../components/Styled/StyledStack";
+import { StackContain } from "../components/Styled/Container";
+import SetSkeleton from "../components/FeedBack/SetSkeleton";
+import AddClassSetDialog from "../components/Dialog/AddClassSetDialog";
+import searhbanner from "../assets/images/searhbanner.png";
 
+const loadingClass = true;
+const adding = false;
 const ClassSet = () => {
   const { classRoomId } = useParams();
-  const [loading, setLoading] = useState(false);
+  // const { loading: loadingClass } = useClassroom();
+  // const { isClassAdmin } = useClassContext();
+
+  const { loading, mutationing, classSets, addClassSet } = useClassSet();
+  console.log(loading && loadingClass);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openAdd, setOpenAdd] = useState(false);
+  const handleToggleAdd = () => {
+    setOpenAdd((prev) => !prev);
+  };
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
   return (
     <LayoutNormal>
       <Stack p={3} pr={5} pl={5}>
-        {loading ? (
+        {loading && loadingClass ? (
           <BackdropLoading />
         ) : (
           <>
             <ClassNav />
-            <Stack flexDirection={"row"} pt={3} sx={{ columnGap: "30px" }}>
-              <Typography variant="h2">Các set trong lớp học</Typography>
+            <StackList pt={1} justifyContent={"space-between"}>
+              <StackList>
+                <Typography variant="h4">
+                  Các bộ flashcard trong lớp học
+                </Typography>
+                <Tooltip title={"Thêm bộ flashcard"}>
+                  <IconButton onClick={handleToggleAdd}>
+                    <AddIcon color="primary" />
+                  </IconButton>
+                </Tooltip>
+              </StackList>
+              <Pagination
+                count={Math.ceil(classSets?.length / 6)}
+                page={currentPage}
+                onChange={handleChangePage}
+              />
+            </StackList>
+            <Stack
+              sx={{
+                width: "100%",
+                height: "100%",
+                paddingTop: "20px",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "flex-start",
+                rowGap: "30px",
+                columnGap: "25px",
+                transition: "all 1s ease",
+              }}
+            >
+              {adding ? (
+                <StackContain>
+                  <SetSkeleton />
+                  <SetSkeleton />
+                  <SetSkeleton />
+                </StackContain>
+              ) : classSets?.length === 0 ? (
+                <Stack
+                  minHeight={300}
+                  width={"100%"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Box width={70} height={70}>
+                    <img src={searhbanner} loading="lazy" alt="notfound" />
+                  </Box>
+                  <Typography textAlign={"center"}>
+                    Không có bộ flashcard nào trong lớp học
+                  </Typography>
+                </Stack>
+              ) : (
+                classSets
+                  ?.slice(6 * (currentPage - 1), 6 * (currentPage - 1) + 6)
+                  ?.map((set) => (
+                    <SetClass
+                      key={set.classSetId}
+                      flashcardSet={set}
+                      onDelete={() => {
+                        console.log("click delete");
+                      }}
+                      onUpdate={() => {
+                        console.log("update data");
+                      }}
+                      mutationing={mutationing}
+                    />
+                  ))
+              )}
             </Stack>
           </>
         )}
       </Stack>
+      {openAdd ? (
+        <AddClassSetDialog
+          handleToggle={handleToggleAdd}
+          addClassSet={addClassSet}
+        />
+      ) : (
+        <></>
+      )}
     </LayoutNormal>
   );
 };

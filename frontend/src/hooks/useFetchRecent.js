@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "./useAuth";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function useFetchRecent() {
   const [recent, setRecent] = useState({ classes: [], sets: [] });
   const [loading, setLoading] = useState(true);
   const { accessToken } = useAuth();
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
@@ -149,10 +150,10 @@ export default function useFetchRecent() {
       } catch (error) {
         // TODO: navigate to not found or accessdenied
         setLoading(false);
-        const errorCode = error.response.status;
-        console.log(errorCode);
-        // if (errorCode === 404) navigate("/not-found"); // not found
-        // if (errorCode === 401) navigate("/access-denied"); // not authorize
+        const errorCode = error?.response?.status;
+        console.log(error?.message);
+        if (errorCode === 404) navigate("/not-found"); // not found
+        if (errorCode === 401) navigate("/access-denied"); // not authorize
       }
     };
 
