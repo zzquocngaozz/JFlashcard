@@ -23,7 +23,7 @@ const useClassSet = () => {
           },
         };
         const response = await axios.get(
-          `/classroom/${classRoomId}/classset`,
+          `/classroom/${classRoomId}/set/list`,
           config
         );
         console.log(response.data);

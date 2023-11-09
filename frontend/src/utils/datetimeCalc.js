@@ -39,7 +39,7 @@ export function formatTime(createAt) {
   const currentTime = new Date().getTime();
   const timestamp = new Date(createAt).getTime();
   const timeDifference = currentTime - timestamp;
-  console.log(timestamp);
+
   const seconds = Math.floor(timeDifference / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);

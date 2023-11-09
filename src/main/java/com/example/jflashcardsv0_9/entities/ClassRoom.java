@@ -48,4 +48,10 @@ public class ClassRoom implements Serializable {
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     private List<ClassMember> classMember;
 
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    private List<ClassPost> classPost;
+
+    @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL)
+    private List<ClassSet> classSets;
+
 }

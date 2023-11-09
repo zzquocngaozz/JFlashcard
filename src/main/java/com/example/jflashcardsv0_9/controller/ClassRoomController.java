@@ -55,7 +55,7 @@ public class ClassRoomController {
 
     @DeleteMapping("/{classId}/deleteMember/{userId}")
     public ResponseEntity<?> deleteMember(@AuthenticationPrincipal MyUserDetail myUserDetail,@PathVariable long classId,@PathVariable long userId){
-        classRoomService.deleteClassRoom(myUserDetail.getUser().getUserId(),userId,classId);
+        classRoomService.deleteClassMember(myUserDetail.getUser().getUserId(),userId,classId);
         return  ResponseEntity.ok("xoa thanh cong");
     }
 

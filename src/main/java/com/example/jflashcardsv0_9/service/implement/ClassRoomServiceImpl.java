@@ -133,7 +133,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     }
 
     @Override
-    public void deleteClassRoom(long auth,long userId, long  classCodeId) {
+    public void deleteClassMember(long auth, long userId, long  classCodeId) {
         ClassMember classMember = classMemberRepository.getClassMemberByClassroomAndUser(classRoomRepository.getClassRoomByClassRoomId(classCodeId),userRepository.getUserByUserId(userId));
         classMemberRepository.delete(classMember);
     }

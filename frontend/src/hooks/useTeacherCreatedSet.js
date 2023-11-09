@@ -21,7 +21,7 @@ export default function useTeacherCreatedSet() {
           },
         };
         const response = await axios.get(
-          `/classroom/${classRoomId}/listset`,
+          `/classroom/${classRoomId}/set/listset`,
           config
         );
         setListExist(response.data);
@@ -54,7 +54,7 @@ export default function useTeacherCreatedSet() {
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
       const response = await axios.post(
-        `/classroom/addset`,
+        `/classroom/${classRoomId}/set/add`,
         JSON.stringify(data),
         config
       );

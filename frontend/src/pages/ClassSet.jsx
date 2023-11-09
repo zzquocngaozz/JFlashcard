@@ -28,7 +28,7 @@ const loadingClass = true;
 const adding = false;
 const ClassSet = () => {
   const { classRoomId } = useParams();
-  // const { loading: loadingClass } = useClassroom();
+  const { loading: loadingClass } = useClassroom();
   // const { isClassAdmin } = useClassContext();
 
   const { loading, mutationing, classSets, addClassSet } = useClassSet();

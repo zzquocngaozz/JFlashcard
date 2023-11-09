@@ -53,7 +53,7 @@ const ClassMoreAction = ({
           </IconButton>
         </Tooltip>
       </Box>
-      <Menu
+      {/* <Menu
         anchorEl={anchorEl}
         id="add-menu"
         open={open}
@@ -61,31 +61,48 @@ const ClassMoreAction = ({
         onClick={handleClose}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        {isClassAdmin() ? (
-          <>
-            <MenuItem onClick={handleClickUpdate}>
-              <ListItemIcon>
-                <CreateIcon />
-              </ListItemIcon>
-              <ListItemText>Chỉnh sửa</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleClickDelete}>
-              <ListItemIcon>
-                <DeleteIcon />
-              </ListItemIcon>
-              <ListItemText>Xoá lớp học</ListItemText>
-            </MenuItem>
-          </>
-        ) : (
+      > */}
+      {isClassAdmin() ? (
+        <Menu
+          anchorEl={anchorEl}
+          id="add-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem onClick={handleClickUpdate}>
+            <ListItemIcon>
+              <CreateIcon />
+            </ListItemIcon>
+            <ListItemText>Chỉnh sửa</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={handleClickDelete}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText>Xoá lớp học</ListItemText>
+          </MenuItem>
+        </Menu>
+      ) : (
+        <Menu
+          anchorEl={anchorEl}
+          id="add-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
           <MenuItem onClick={handleLeaveClass}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
             <ListItemText>Rời lớp học</ListItemText>
           </MenuItem>
-        )}
-      </Menu>
+        </Menu>
+      )}
     </>
   );
 };

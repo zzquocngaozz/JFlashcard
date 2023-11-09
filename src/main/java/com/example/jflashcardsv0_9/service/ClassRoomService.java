@@ -4,8 +4,6 @@ import com.example.jflashcardsv0_9.dto.AuthDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomDTO;
 import com.example.jflashcardsv0_9.dto.ClassRoomSingleDTO;
 import com.example.jflashcardsv0_9.dto.IdDTO;
-import com.example.jflashcardsv0_9.entities.ClassMember;
-import com.example.jflashcardsv0_9.entities.ClassRoom;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +24,7 @@ public interface ClassRoomService {
 
         IdDTO joinClassRoom(long userId,String classCode);
 
-        void deleteClassRoom(long auth,long userId,long classRoomId);
+        void deleteClassMember(long auth, long userId, long classRoomId);
 
         List<AuthDTO> getAllClassMembersByClassRoom (long classRoomId);
 }
