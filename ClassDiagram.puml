@@ -1,22 +1,36 @@
 @startuml LoginClassDiagram
+!define ACTIVATE_ENTITY Repository <<Database>> #008000
 skinparam Style strictuml
 
 actor User
-activate FlashcardSetController
-activate FlashcardSetService
-activate FlashcardSetRepository
-activate dto
-database db_flashcard
+activate DashboardUserView
+activate DashboardUserController
+activate userService
+'activate Exception
+activate Dto
+database Repository as ACTIVATE_ENTITY
 
-User -> FlashcardSetController: get request updateFlashcardSetResponse
-FlashcardSetController --> FlashcardSetService : sends request updateFlashcardSetResponse()
-FlashcardSetService --> FlashcardSetRepository :call getFlashcardSetByFlashcardSetId()
-FlashcardSetRepository --> db_flashcard : sends Query
-db_flashcard --> FlashcardSetService : return Flashcard set
-FlashcardSetService --> FlashcardSetRepository :update Flashcard set and call save()
-FlashcardSetRepository --> db_flashcard : sends Query
-db_flashcard --> dto : convert to dto
-dto --> FlashcardSetService : return FlashcardSetDTOResponse
-FlashcardSetService --> FlashcardSetController : Confirmation
-FlashcardSetController --> User : return FlashcardSetDTOResponse
+User -> DashboardUserView : Click in " User"
+DashboardUserView -> DashboardUserController : send request viewUser()
+DashboardUserController -> userService : Do getUserByUserId()
+'userService -> Exception : Check Validate()
+'Exception --> FolderView : Validation Failed
+'FolderView --> User :  Display info folder false
+'Exception --> FolderService : Validation Success
+userService -> Repository : send request getUserByUserId()
+Repository --> Dto : Convert User Data to dto
+Dto --> userService : Send Data
+userService --> DashboardUserController: Send Data
+DashboardUserController --> DashboardUserView : Send Data
+DashboardUserView --> User  : Display Data
+'alt Account Already Exists
+'    UserRepository --> UserService : Account Already Exists
+'    UserService --> RegisterView : Display Account Already Exists
+'    RegisterView --> User : Display Account Already Exists
+'else Register Success
+'    UserRepository --> UserService : Register Success
+'    UserService --> AppController : Send Register Success
+'    AppController --> User : Display Register Success
+'end
+
 @enduml

@@ -1,11 +1,13 @@
 package com.example.jflashcardsv0_9.controller;
 
 import com.example.jflashcardsv0_9.dto.*;
+import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
@@ -15,6 +17,11 @@ public class AppController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping
+    public HomeDTO homePageOfGuest(){
+        return userService.homePageOfGuest();
+    }
 
     @PostMapping("/login")
     public LoginDTOResponse login(@RequestBody LoginDTORequest loginDTORequest) {

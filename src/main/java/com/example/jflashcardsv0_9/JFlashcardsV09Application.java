@@ -50,9 +50,9 @@ public class JFlashcardsV09Application implements CommandLineRunner{
             roleRepository.save(role);
         }
         RegisterDTO registerDTO = RegisterDTO.builder()
-                .userName("huuu")
+                .userName("Admin2")
                 .password("Qwer1234")
-                .email("12345abc@gmail.com")
+                .email("admin2@example.com")
                 .birth(Date.valueOf("2001-12-12"))
                 .firstName("hoang")
                 .lastName("hieu")
@@ -60,6 +60,16 @@ public class JFlashcardsV09Application implements CommandLineRunner{
         if(userRepository.existsByEmail(registerDTO.getEmail()) == false){
             userService.registrationADMIN(registerDTO);
         }
+//         Create a BCryptPasswordEncoder
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//
+//        // Password to encode
+//        String rawPassword = "Qwer1234";
+//
+//        // Encode the password
+//        String encodedPassword = passwordEncoder.encode(rawPassword);
+//
+//        System.out.println("Encoded Password: " + encodedPassword);
     }
 
 }

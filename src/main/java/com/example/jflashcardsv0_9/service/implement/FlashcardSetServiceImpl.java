@@ -416,4 +416,19 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .map(FlashcardMapper::convertSetSingleDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void voteFlashcardSet(User user, long setId, IdDTO idDTO) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        VotePoint votePoint = votePointRepository.getVotePointByFlashcardSetAndUser(flashcardSet,user);
+        if (votePoint == null ){
+            votePoint = new VotePoint();
+            votePoint.setFlashcardSet(flashcardSet);
+            votePoint.setUser(user);
+            votePoint.setPoint((int) idDTO.getId());
+        }else {
+            votePoint.setPoint((int) idDTO.getId());
+        }
+        votePointRepository.save(votePoint);
+    }
 }
