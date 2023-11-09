@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -46,6 +47,6 @@ public class FolderSet implements Serializable {
             joinColumns = @JoinColumn(name = "folderId"),
             inverseJoinColumns = @JoinColumn(name = "flashcardSetId")
     )
-    private Set<FlashcardSet> flashcardSets;
+    private Set<FlashcardSet> flashcardSets= new HashSet<>();
 
 }

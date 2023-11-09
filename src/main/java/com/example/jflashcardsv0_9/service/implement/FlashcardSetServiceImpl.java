@@ -119,6 +119,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public void deleteFlashcardSetById(long setid, long userid) {
         validate.checkAuthSetFound(userid,setid);
+
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setid);
 
 
