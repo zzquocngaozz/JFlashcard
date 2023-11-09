@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Builder
-@Table(name = "userrequest")
+@Table(name = "userRequest")
 
 public class UserRequest {
     @Id

@@ -29,7 +29,6 @@ public class ClassRoomController {
     // Read (GET): Lấy thông tin ClassRoom dựa trên ID
     @GetMapping("/{id}")
     public ClassRoomSingleDTO getClassRoomById(@PathVariable Long id, @AuthenticationPrincipal MyUserDetail myUserDetail) {
-        System.out.println("cut roi getclassbyid line 38");
         return classRoomService.getClassroomById(id, myUserDetail);
     }
 

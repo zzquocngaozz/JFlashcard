@@ -46,6 +46,6 @@ public class ClassPost implements Serializable{
     @JoinColumn(name = "creatorId") // Đặt tên cột foreign key là "class_id"
     private User user;
 
-    @OneToMany(mappedBy = "classPost", cascade = CascadeType.REMOVE)
-    List<Comment> commentList;
+    @OneToMany(mappedBy = "classPost", cascade = CascadeType.ALL)
+    private List<Comment> commentList;
 }

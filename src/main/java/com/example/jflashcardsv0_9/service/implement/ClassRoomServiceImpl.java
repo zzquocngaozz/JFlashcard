@@ -32,18 +32,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClassRoomServiceImpl implements ClassRoomService {
 
-    @Autowired
     ClassRoomRepository classRoomRepository;
 
-    @Autowired
     ClassMemberRepository classMemberRepository;
 
-    @Autowired
     UserRepository userRepository;
+    @Autowired
+    public ClassRoomServiceImpl(ClassRoomRepository classRoomRepository, ClassMemberRepository classMemberRepository, UserRepository userRepository) {
+        this.classRoomRepository = classRoomRepository;
+        this.classMemberRepository = classMemberRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public IdDTO createClassroom(ClassRoomDTO classRoomDTO, MyUserDetail myUserDetail) {
@@ -110,14 +112,14 @@ public class ClassRoomServiceImpl implements ClassRoomService {
                 .collect(Collectors.toList());
     }
     public void deleteClassroom(Long id, MyUserDetail myUserDetail) {
-        Optional<ClassRoom> classRoom = classRoomRepository.findById(id);
-        if(classRoom.isEmpty())
-            throw new AppException(Error.USER_BLOCK);
-        if(classRoom.get().getTeacher().getUserId()!=myUserDetail.getUser().getUserId())
-            throw new AppException(Error.USER_BLOCK);
-        ClassRoom classRoom1 = classRoom.get();
-        System.out.println("printed )" +classRoom1.toString());
-        classRoomRepository.delete(classRoom1);
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(id);
+        if(classRoom == null) {
+            throw new AppException(Error.INFO_NOT_FOUND);
+        }
+        if(classRoom.getTeacher().getUserId()!= myUserDetail.getUser().getUserId()) {
+            throw new AppException(Error.AUTH_GI_DO);
+        }
+        classRoomRepository.delete(classRoom);
     }
 
     @Override

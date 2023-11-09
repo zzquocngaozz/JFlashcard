@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "folderset")
+@Table(name = "folderSet")
 @Entity
 @Builder
 public class FolderSet implements Serializable {

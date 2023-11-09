@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "flashcardset")
+@Table(name = "flashcardSet")
 @Entity
 @Builder
 public class FlashcardSet implements Serializable {

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "chatmessage")
+@Table(name = "chatMessage")
 @Entity
 @Builder
 public class ChatMessage implements Serializable {
@@ -19,6 +19,14 @@ public class ChatMessage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chatMessageId")
     private Long chatMessageId;
+
+    private String content;
+
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Timestamp timestamp;
+
+    private boolean isRead;
+
     // người gửi
     @ManyToOne
     @JoinColumn(name = "sender")
@@ -30,12 +38,5 @@ public class ChatMessage implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "classId")
-    private ClassRoom classId;
-
-    private String content;
-
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Timestamp timestamp;
-
-    private boolean isRead;
+    private ClassRoom classRoom;
 }
