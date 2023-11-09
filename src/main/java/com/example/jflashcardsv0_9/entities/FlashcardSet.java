@@ -66,6 +66,11 @@ public class FlashcardSet implements Serializable {
     private List<ClassSet>  classSets;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<TrackingProgress> trackingProgresses;
-    @ManyToMany(mappedBy = "flashcardSets", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<FolderSet> folderSets;
+    @ManyToMany(mappedBy = "flashcardSets")
+    private Set<FolderSet> folderSets = new HashSet<>();
+    @PreRemove
+    private void preRemove() {
+        // Xóa liên kết với FolderSet mà không xóa FolderSet
+        folderSets.forEach(folderSet -> folderSet.getFlashcardSets().remove(this));
+    }
 }
