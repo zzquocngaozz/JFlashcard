@@ -1,12 +1,15 @@
 package com.example.jflashcardsv0_9.service.implement;
 import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.entities.*;
+import com.example.jflashcardsv0_9.exception.AppException;
+import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.exception.Validate;
 import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.*;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
 import com.example.jflashcardsv0_9.service.VotePointService;
+import com.sun.mail.handlers.text_html;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -280,6 +283,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public ReadSetDTO readFlashcardSet(User user, long setId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        if(flashcardSet == null ){
+            throw new AppException(Error.INFO_NOT_FOUND);
+        }
         OpenedFlashcardSet openedFlashcardSet = openedFlashcardSetRepository.getOpenedFlashcardSetByFlashcardSetAndUser(flashcardSet,user);
         if(openedFlashcardSet == null){
             openedFlashcardSet = new OpenedFlashcardSet();
@@ -292,7 +298,6 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
             openedFlashcardSetRepository.save(openedFlashcardSet);
         }
         List<Card> cards = new ArrayList<>();
-
 //                    "Kanji";
         if(flashcardSet.getType() == 1){
             cards.addAll(getKanjiDTOS(setId));

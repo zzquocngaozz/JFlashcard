@@ -1,9 +1,9 @@
 -- Insert data for the 'role' table
-INSERT INTO `db_jflashcards`.`role` (`role_id`, `role_name`)
-VALUES
-    (1, 'ROLE_LEARNER'),
-    (2, 'ROLE_TEACHER'),
-    (3,'ROLE_ADMIN');
+-- INSERT INTO `db_jflashcards`.`role` (`role_id`, `role_name`)
+-- VALUES
+--     (1, 'ROLE_LEARNER'),
+--     (2, 'ROLE_TEACHER'),
+--     (3,'ROLE_ADMIN');
 -- Add more role data entries here...
 -- Insert data for the 'users' table
 INSERT INTO `db_jflashcards`.`flashcard_set` (`created_at`, `description`, `isprivate`, `title`, `type`, `user`)
