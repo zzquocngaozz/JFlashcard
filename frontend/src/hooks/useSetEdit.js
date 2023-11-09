@@ -3,7 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 import { utils, read } from "xlsx";
-import {parseVocaExcel,parseGrammaExcel,parseKanjiExcel} from '../utils/parseData'
+import {
+  parseVocaExcel,
+  parseGrammaExcel,
+  parseKanjiExcel,
+} from "../utils/parseData";
 
 const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
   const [dataSet, setDataSet] = useState(null);
@@ -91,7 +95,7 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
         severity: "error",
         message: "File không tồn tại",
       });
-      return
+      return;
     }
 
     const file = e.target.files[0];
@@ -113,7 +117,7 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
         message:
           "Bạn không nên nhập quá nhiều thẻ trong một bộ! Tối đa 1000 thẻ. File size max 1MB",
       });
-      return
+      return;
     }
     const reader = new FileReader();
     setImporting(true);
@@ -123,16 +127,17 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const json = utils.sheet_to_json(worksheet);
-  
-      // Modify the JSON keys as needed
-      const jsonParsed = dataSet.type === 1
-      ? parseKanjiExcel(json)
-      : dataSet.type === 2
-      ? parseVocaExcel(json)
-      : parseGrammaExcel(json)
 
-      console.log(jsonParsed)
-      
+      // Modify the JSON keys as needed
+      const jsonParsed =
+        dataSet.type === 1
+          ? parseKanjiExcel(json)
+          : dataSet.type === 2
+          ? parseVocaExcel(json)
+          : parseGrammaExcel(json);
+
+      console.log(jsonParsed);
+
       // gui ve backend
       try {
         const config = {
@@ -153,15 +158,16 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
           JSON.stringify(jsonParsed),
           config
         );
-        
+
         setImporting(false);
       } catch (error) {
         setImporting(false);
-    
+
         setAlert({
           open: true,
           severity: "error",
           message:
+            error.response?.data?.errors?.body[0] ||
             "Nhập không thành công vui lòng đổi tên cột giống trong phần hướng dẫn",
         });
       }

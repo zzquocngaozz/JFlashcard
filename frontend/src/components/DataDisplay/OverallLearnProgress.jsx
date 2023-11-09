@@ -1,175 +1,62 @@
 import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const learnProgress = {
-  flashcardSetId: 1,
-  title: "Kanji bộ thuỷ",
-  startDate: new Date("2023-10-31").getTime(), // ngày bộ thẻ đuoc gan vao lop học
-  dueDate: new Date("2023-11-07").getTime(),
-  numberCards: 60,
-  data: [
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-    {
-      userId: 1,
-      userName: "hieuht01",
-      email: "hieuht01@gmail.com",
-      numberLearned: 20,
-    },
-    {
-      userId: 2,
-      userName: "huudd01",
-      email: "huudd01@gmail.com",
-      numberLearned: 30,
-    },
-  ],
+const getDataChart = (labels, data, backgroundColor) => {
+  return {
+    labels: labels,
+    datasets: [
+      {
+        label: "Số lượng",
+        data: data,
+        backgroundColor: backgroundColor,
+      },
+    ],
+  };
 };
 
-const data = {
-  labels: ["Cần nhắc nhở", "Cần lưu ý", "Đang làm tốt"],
-  datasets: [
-    {
-      label: "Số lượng",
-      data: [3, 5, 12],
-      backgroundColor: ["#950101", "#F4CE14", "#1A5D1A"],
-    },
-  ],
-};
+const OverallLearnProgress = ({ labelData, handleChangeFilter }) => {
+  const [data, setData] = useState({
+    labels: ["Cần nhắc nhở", "Cần lưu ý", "Đang làm tốt"],
+    datasets: [
+      {
+        label: "Số lượng",
+        data: [0, 0, 0],
+        backgroundColor: ["#950101", "#F4CE14", "#1A5D1A"],
+      },
+    ],
+  });
 
-const OverallLearnProgress = ({ learnProgress: parsedData }) => {
+  useEffect(() => {
+    const label = ["Cần nhắc nhở", "Cần lưu ý", "Làm tốt"];
+    const backgroundColor = ["#950101", "#F4CE14", "#1A5D1A"];
+
+    const parseDoughnut = labelData.reduce(
+      (result, data, index) => {
+        if (data === 0) return result;
+        result.labels.push(label[index]);
+        result.backgroundColor.push(backgroundColor[index]);
+        result.data.push(data);
+        return result;
+      },
+      { labels: [], backgroundColor: [], data: [] }
+    );
+
+    setData(
+      // getDataChart(
+      //   parseDoughnut.labels,
+      //   parseDoughnut.data,
+      //   parseDoughnut.backgroundColor
+      // )
+      getDataChart(label, labelData, backgroundColor)
+    );
+  }, [labelData]);
+  const handleOnclickLabel = (index) => {
+    console.log("click", index);
+    handleChangeFilter(index);
+  };
   const chartOptions = {
     tooltips: {
       enabled: false,
@@ -180,7 +67,6 @@ const OverallLearnProgress = ({ learnProgress: parsedData }) => {
     plugins: {
       datalabels: {
         formatter: function (value, context) {
-          console.log("183 ", context.dataIndex);
           return value + " người";
         },
         color: "#FFF",
@@ -190,13 +76,16 @@ const OverallLearnProgress = ({ learnProgress: parsedData }) => {
         anchor: "center",
         listeners: {
           enter: function (context) {
+            if (context.dataset.data[context.dataIndex] === 0) return;
             context.chart.canvas.style.cursor = "pointer";
           },
           leave: function (context) {
+            if (context.dataset.data[context.dataIndex] === 0) return;
             context.chart.canvas.style.cursor = "default";
           },
           click: function (context) {
-            console.log("click", context.dataIndex);
+            if (context.dataset.data[context.dataIndex] === 0) return;
+            handleOnclickLabel(context.dataIndex);
           },
         },
       },
@@ -221,4 +110,4 @@ const OverallLearnProgress = ({ learnProgress: parsedData }) => {
   return <Doughnut data={data} options={chartOptions} />;
 };
 
-export default OverallLearnProgress;
+export default React.memo(OverallLearnProgress);

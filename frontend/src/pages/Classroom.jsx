@@ -64,6 +64,14 @@ export default function Classroom() {
     message:
       "Thao tác này không thể hoàn lại. Bạn muốn rời lớp học này không ?",
   });
+  // const {
+  //   classroom: clazz,
+  //   loading,
+  //   mutationing,
+  //   deleteClassroom,
+  //   updateClassroom,
+  //   leaveClass,
+  // } = useClassroom({ handleToggleUpdate });
   const {
     classroom: clazz,
     loading,
@@ -71,8 +79,10 @@ export default function Classroom() {
     deleteClassroom,
     updateClassroom,
     leaveClass,
-  } = useClassroom({ handleToggleUpdate });
-
+  } = useClassroom();
+  const onUpdate = (data) => {
+    updateClassroom(data, handleToggleUpdate);
+  };
   useEffect(() => {
     document.title = "Lớp học";
   }, []);
@@ -200,7 +210,8 @@ export default function Classroom() {
         <FormClassDialog
           classroom={clazz}
           handleToggle={handleToggleUpdate}
-          updateClass={updateClassroom}
+          // updateClass={updateClassroom}
+          updateClass={onUpdate}
           mutationing={mutationing}
         />
       ) : (

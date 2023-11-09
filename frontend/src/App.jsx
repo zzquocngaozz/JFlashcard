@@ -41,6 +41,7 @@ import ClassProgress from "./pages/ClassProgress";
 import { FlashcardSetProvider } from "./context/FlashcardSetContext";
 import FlashcardSetComsumer from "./routes/FlashcardSetComsumer";
 import ClassPostCommer from "./routes/ClassPostCommer";
+import ClassContextProvider from "./context/ClassContext";
 
 function App() {
   return (
@@ -169,7 +170,15 @@ function App() {
         <Route
           exact
           path="/class/:classRoomId/class-sets"
-          element={<AuthenRoute element={<ClassSet />} />}
+          element={
+            <AuthenRoute
+              element={
+                <ClassContextProvider>
+                  <ClassSet />
+                </ClassContextProvider>
+              }
+            />
+          }
         />
         <Route
           exact
