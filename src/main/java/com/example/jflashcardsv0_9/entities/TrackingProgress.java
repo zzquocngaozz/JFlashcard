@@ -39,13 +39,8 @@ public class TrackingProgress {
     @Column(name = "cardId")
     private long cardId;
 
-    @Column(name = "createdAt")
+    @Column(name = "timeLearn")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Timestamp createdAt;
-
-    @Column(name = "lastLearn")
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Timestamp lastLearn;
+    private Timestamp timeLearn;
 }

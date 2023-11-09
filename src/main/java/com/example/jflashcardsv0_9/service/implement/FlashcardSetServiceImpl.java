@@ -324,17 +324,14 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         }
         List<TrackingProgress> trackingProgresses = trackingProgressRepository.getAllByUserAndFlashcardSet(user,flashcardSet);
         List<ReadSetDTO.LearnedCard> learnedCards = new ArrayList<>();
-        for(TrackingProgress trackingProgress :  trackingProgresses ){
-            ReadSetDTO.LearnedCard learnedCard = ReadSetDTO.LearnedCard.builder()
-                    .trackingProgressId(trackingProgress.getTrackingProgressId())
-                    .userId(trackingProgress.getUser().getUserId())
-                    .flashcardSetId(trackingProgress.getFlashcardSet().getFlashcardSetId())
-                    .cardId(trackingProgress.getCardId())
-                    .createdAt(trackingProgress.getCreatedAt())
-                    .lastLearn(trackingProgress.getLastLearn())
-                    .build();
-            learnedCards.add(learnedCard);
-        }
+//        for(TrackingProgress trackingProgress :  trackingProgresses ){
+//            ReadSetDTO.LearnedCard learnedCard = ReadSetDTO.LearnedCard.builder()
+//                    .userId(trackingProgress.getUser().getUserId())
+//                    .flashcardSetId(trackingProgress.getFlashcardSet().getFlashcardSetId())
+//                    .cardId(trackingProgress.getCardId())
+//                    .build();
+//            learnedCards.add(learnedCard);
+//        }
         VotePoint votePoint = votePointRepository.getVotePointByFlashcardSetAndUser(flashcardSet, user);
         int voted = (votePoint != null) ? votePoint.getPoint() : 0;
         return ReadSetDTO.builder()

@@ -45,17 +45,12 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
     @Override
     public void trackingProgress(User user, long setId, long cardId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-        TrackingProgress trackingProgress = trackingProgressRepository.getTrackingProgressByUserAndFlashcardSetAndCardId(user,flashcardSet,cardId) ;
-        if(trackingProgress == null ) {
+        TrackingProgress trackingProgress = new TrackingProgress();
             trackingProgress = new TrackingProgress();
             trackingProgress.setUser(user);
             trackingProgress.setFlashcardSet(flashcardSet);
             trackingProgress.setCardId(cardId);
-            trackingProgress.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-            trackingProgress.setLastLearn(new Timestamp(System.currentTimeMillis()));
-        }else {
-            trackingProgress.setLastLearn(new Timestamp(System.currentTimeMillis()));
-        }
+            trackingProgress.setTimeLearn(new Timestamp(System.currentTimeMillis()));
         trackingProgressRepository.save(trackingProgress);
 
     }
@@ -73,7 +68,7 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
                     .userId(classMember.getUser().getUserId())
                     .userName(classMember.getUser().getUserName())
                     .email(classMember.getUser().getEmail())
-                    .numberLearned(trackingProgressRepository.countByUserAndFlashcardSetAndCreatedAtBefore(classMember.getUser(),flashcardSet,classSet.getDueAt()))
+                    .numberLearned(trackingProgressRepository.countByUserAndFlashcardSetAndTimeLearnBetween(classMember.getUser(),flashcardSet,classSet.getCreatedAt(),classSet.getDueAt()))
                     .build();
             datas.add(data);
         }

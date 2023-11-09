@@ -16,13 +16,14 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
     List<TrackingProgress> getAllByUserAndFlashcardSet(User user, FlashcardSet flashcardSet);
     TrackingProgress getTrackingProgressByUserAndFlashcardSetAndCardId(User user, FlashcardSet flashcardSet, long cardId);
     boolean existsTrackingProgressByUserAndFlashcardSetAndCardId(User user, FlashcardSet flashcardSet, long cardId);
-    @Query("SELECT COUNT(tp) FROM TrackingProgress tp " +
+    @Query("SELECT COUNT(DISTINCT tp.cardId) FROM TrackingProgress tp " +
             "WHERE tp.user = :user " +
             "AND tp.flashcardSet = :flashcardSet " +
-            "AND tp.createdAt < :timestamp")
-    long countByUserAndFlashcardSetAndCreatedAtBefore(
+            "AND tp.timeLearn BETWEEN :startTimestamp AND :endTimestamp")
+    long countByUserAndFlashcardSetAndTimeLearnBetween(
             @Param("user") User user,
             @Param("flashcardSet") FlashcardSet flashcardSet,
-            @Param("timestamp") Timestamp timestamp
+            @Param("startTimestamp") Timestamp startTimestamp,
+            @Param("endTimestamp") Timestamp endTimestamp
     );
 }

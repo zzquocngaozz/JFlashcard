@@ -50,9 +50,9 @@ public class JFlashcardsV09Application implements CommandLineRunner{
             roleRepository.save(role);
         }
         RegisterDTO registerDTO = RegisterDTO.builder()
-                .userName("Admin2")
+                .userName("Admin")
                 .password("Qwer1234")
-                .email("admin2@example.com")
+                .email("admin@example.com")
                 .birth(Date.valueOf("2001-12-12"))
                 .firstName("hoang")
                 .lastName("hieu")

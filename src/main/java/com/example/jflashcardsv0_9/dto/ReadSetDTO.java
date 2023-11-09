@@ -37,12 +37,9 @@ public class ReadSetDTO {
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class LearnedCard {
-        long trackingProgressId;
         long cardId;
         long userId;
         long flashcardSetId;
-        Timestamp createdAt;
-        Timestamp lastLearn;
     }
 
     @Getter
