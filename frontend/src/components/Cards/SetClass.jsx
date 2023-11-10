@@ -97,7 +97,9 @@ const SetClass = ({ flashcardSet: data, onDelete, onUpdate, mutationing }) => {
         <DialogAlertDelete
           alertDelete={alertDelete}
           handleToggleAlertDelete={handleToggleDelete}
-          onDelete={onDelete}
+          onDelete={() => {
+            onDelete(flashcardSet.classSetId, handleToggleDelete);
+          }}
           mutationing={mutationing}
         />
       ) : (
@@ -117,4 +119,4 @@ const SetClass = ({ flashcardSet: data, onDelete, onUpdate, mutationing }) => {
   );
 };
 
-export default SetClass;
+export default React.memo(SetClass);

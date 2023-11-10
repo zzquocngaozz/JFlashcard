@@ -107,10 +107,8 @@ public class ClassSetServiceImpl implements ClassSetService {
         if(classSet == null){
             throw  new AppException(Error.INFO_NOT_FOUND);
         }
-        classSet = ClassSet.builder()
-                .createdAt(classSetDTO.getStartAt())
-                .dueAt(classSetDTO.getDueAt())
-                .build();
+        classSet.setDueAt(classSetDTO.getDueAt());
+
         classSetRepository.save(classSet);
     }
 

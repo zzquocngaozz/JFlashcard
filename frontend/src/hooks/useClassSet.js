@@ -28,108 +28,7 @@ const useClassSet = () => {
         );
         console.log(response.data);
         setClassSets(response.data);
-        // setClassSets([
-        //   {
-        //     classSetId: 1,
-        //     startAt: new Date("2023-11-01"),
-        //     dueAt: new Date("2023-11-09"),
-        //     classRoomId: 1,
-        //     flashcardSetId: 1,
-        //     title: "Danh sach kanji bai 1",
-        //     private: false,
-        //     type: 1,
-        //     numberCard: 60,
-        //     authDTO: {
-        //       userId: 1,
-        //       userName: "hieuht01",
-        //       role: 2,
-        //     },
-        //   },
-        //   {
-        //     classSetId: 2,
-        //     startAt: new Date("2023-11-01"),
-        //     dueAt: new Date("2023-11-09"),
-        //     classRoomId: 1,
-        //     flashcardSetId: 2,
-        //     title: "Danh sach tu vung bai 1",
-        //     private: false,
-        //     type: 2,
-        //     numberCard: 60,
-        //     authDTO: {
-        //       userId: 1,
-        //       userName: "hieuht01",
-        //       role: 2,
-        //     },
-        //   },
-        //   {
-        //     classSetId: 3,
-        //     startAt: new Date("2023-11-01"),
-        //     dueAt: new Date("2023-11-09"),
-        //     classRoomId: 1,
-        //     flashcardSetId: 3,
-        //     title: "Danh sach kanji n5",
-        //     private: false,
-        //     type: 1,
-        //     numberCard: 60,
-        //     authDTO: {
-        //       userId: 1,
-        //       userName: "hieuht01",
-        //       role: 2,
-        //     },
-        //   },
-        //   {
-        //     classSetId: 4,
-        //     startAt: new Date("2023-11-01"),
-        //     dueAt: new Date("2023-11-09"),
-        //     classRoomId: 1,
-        //     flashcardSetId: 4,
-        //     title: "Danh sach kanji bai 1",
-        //     private: false,
-        //     type: 1,
-        //     numberCard: 60,
-        //     authDTO: {
-        //       userId: 1,
-        //       userName: "hieuht01",
-        //       role: 2,
-        //     },
-        //   },
-        //   {
-        //     classSetId: 5,
-        //     startAt: new Date("2023-11-01"),
-        //     dueAt: new Date("2023-11-09"),
-        //     classRoomId: 1,
-        //     flashcardSetId: 5,
-        //     title: "Danh sach tu vung bai 1",
-        //     private: false,
-        //     type: 2,
-        //     numberCard: 60,
-        //     authDTO: {
-        //       userId: 1,
-        //       userName: "hieuht01",
-        //       role: 2,
-        //     },
-        //   },
-        //   {
-        //     classSetId: 6,
-        //     startAt: new Date("2023-11-01"),
-        //     dueAt: new Date("2023-11-09"),
-        //     classRoomId: 1,
-        //     flashcardSetId: 6,
-        //     title: "Danh sach kanji n5",
-        //     private: false,
-        //     type: 1,
-        //     numberCard: 60,
-        //     authDTO: {
-        //       userId: 1,
-        //       userName: "hieuht01",
-        //       role: 2,
-        //     },
-        //   },
-        // ]);
         setLoading(false);
-        // setTimeout(() => {
-        //   setLoading(false);
-        // }, 1000);
       } catch (error) {
         // log ra status
         // TODO: navigate to not found or accessdenied
@@ -139,10 +38,10 @@ const useClassSet = () => {
         // setLoading(false);
       }
     };
-    getSet();
+    if (!adding) getSet();
   }, [classRoomId, adding]);
 
-  const deleteClassSet = async (setId) => {
+  const deleteClassSet = async (classSetId, handleTogle) => {
     try {
       setMutationing(true);
       const config = {
@@ -152,14 +51,17 @@ const useClassSet = () => {
         },
       };
       // Gửi yêu cầu delete để xoá dữ liệu
-      await axios.delete(
-        `/createfolder/${classRoomId}/get-all-set/${setId}`,
+      await axios.put(
+        `/classroom/${classRoomId}/set/delete/${classSetId}`,
+        "",
         config
       );
       const deletedList = classSets.filter(
-        (set) => set.flashcardSetId !== setId
+        (set) => set.classSetId !== classSetId
       );
       setClassSets(deletedList);
+      handleTogle();
+      setMutationing(false);
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);
@@ -174,7 +76,7 @@ const useClassSet = () => {
     setAdding((prev) => !prev);
   };
 
-  const updateClassSet = async (classSet) => {
+  const updateClassSet = async (classSet, handleToggleUpdate) => {
     try {
       setMutationing(true);
       const config = {
@@ -185,14 +87,16 @@ const useClassSet = () => {
       };
       // Gửi yêu cầu delete để xoá dữ liệu
       await axios.put(
-        `/createfolder/${classRoomId}/get-all-set/`,
+        `/classroom/${classRoomId}/set/update`,
         JSON.stringify(classSet),
         config
       );
-      const updateList = classSets.filter((set) =>
-        set.flashcardSetId !== classSets.flashcardSetId ? set : classSet
+      const newList = classSets.map((oldClassSet) =>
+        oldClassSet.classSetId === classSet.classSetId ? classSet : oldClassSet
       );
-      setClassSets(updateList);
+      setClassSets(newList);
+      setMutationing(false);
+      handleToggleUpdate();
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);
@@ -202,7 +106,7 @@ const useClassSet = () => {
     classSets,
     loading,
     mutationing,
-
+    adding,
     deleteClassSet,
     updateClassSet,
     addClassSet,

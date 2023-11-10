@@ -38,7 +38,8 @@ public class ClassSetController {
     public ResponseEntity<?> updateSetOfUserInClass(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody ClassSetDTO classSetDTO){
         classSetService.updateSetOfUserInClass(myUserDetail.getUser(),classSetDTO);
         return ResponseEntity.ok("update set thanh cong");
-    }@PutMapping("{classId}/set/delete/{classSetID}")
+    }
+    @PutMapping("{classId}/set/delete/{classSetID}")
     public ResponseEntity<?> deleteSetOfUserInClass(@AuthenticationPrincipal MyUserDetail myUserDetail,@PathVariable long classId, @PathVariable long classSetID){
         classSetService.deleteSetOfUserInClass(myUserDetail.getUser(),classId,classSetID);
         return ResponseEntity.ok("delete set thanh cong");

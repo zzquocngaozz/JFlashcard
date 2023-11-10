@@ -40,6 +40,7 @@ export default function useTeacherCreatedSet() {
 
   const addSetToClass = async (setId, dueAt, addClassSet) => {
     try {
+      addClassSet();
       setMutationing(true);
       const config = {
         headers: {
@@ -64,6 +65,7 @@ export default function useTeacherCreatedSet() {
       addClassSet();
       setMutationing(false);
     } catch (error) {
+      addClassSet();
       setMutationing(false);
       console.log("Error:", error?.response?.data?.errors?.body[0]);
     }

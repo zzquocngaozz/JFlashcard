@@ -14,9 +14,6 @@ import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import ClassNav from "../components/Parts/ClassNav";
 import useClassSet from "../hooks/useClassSet";
 import useClassroom from "../hooks/useClassroom";
-import { useClassContext } from "../context/ClassContext";
-import FolderSet from "./FolderSet";
-import SetFolder from "../components/Cards/SetFolder";
 import SetClass from "../components/Cards/SetClass";
 import { StackList } from "../components/Styled/StyledStack";
 import { StackContain } from "../components/Styled/Container";
@@ -24,14 +21,20 @@ import SetSkeleton from "../components/FeedBack/SetSkeleton";
 import AddClassSetDialog from "../components/Dialog/AddClassSetDialog";
 import searhbanner from "../assets/images/searhbanner.png";
 
-const loadingClass = true;
-const adding = false;
 const ClassSet = () => {
   const { classRoomId } = useParams();
   const { loading: loadingClass } = useClassroom();
   // const { isClassAdmin } = useClassContext();
 
-  const { loading, mutationing, classSets, addClassSet } = useClassSet();
+  const {
+    loading,
+    mutationing,
+    adding,
+    classSets,
+    addClassSet,
+    deleteClassSet,
+    updateClassSet,
+  } = useClassSet();
   console.log(loading && loadingClass);
   const [currentPage, setCurrentPage] = useState(1);
   const [openAdd, setOpenAdd] = useState(false);
@@ -106,12 +109,8 @@ const ClassSet = () => {
                     <SetClass
                       key={set.classSetId}
                       flashcardSet={set}
-                      onDelete={() => {
-                        console.log("click delete");
-                      }}
-                      onUpdate={() => {
-                        console.log("update data");
-                      }}
+                      onDelete={deleteClassSet}
+                      onUpdate={updateClassSet}
                       mutationing={mutationing}
                     />
                   ))

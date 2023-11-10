@@ -14,7 +14,7 @@ import { Stack } from "@mui/material";
 export default function FormClassSetDialog({
   classSet,
   handleToggle,
-  updateClassSet,
+  updateClass,
   mutationing,
 }) {
   const {
@@ -34,14 +34,10 @@ export default function FormClassSetDialog({
   });
   const dueAt = watch("dueAt");
   React.useEffect(() => {
-    console.log(
+    if (
       (new Date(dueAt).getTime() -
         new Date(classSet?.startAt).getTime() +
         60 * 1000) /
-        (24 * 60 * 60 * 1000)
-    );
-    if (
-      (new Date(dueAt).getTime() - new Date(classSet?.startAt).getTime()) /
         (24 * 60 * 60 * 1000) <
       3
     ) {
@@ -70,7 +66,7 @@ export default function FormClassSetDialog({
       return;
     }
     console.log(data);
-    // updateClassSet(data);
+    updateClass(data, handleToggle);
   };
   return (
     <>
