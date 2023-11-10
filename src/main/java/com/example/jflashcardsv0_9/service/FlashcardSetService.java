@@ -59,4 +59,6 @@ public interface FlashcardSetService {
     List<SetSingleDTO> listTop3VoteFlashcardSetPublic();
 
     void voteFlashcardSet(User user, long setId, IdDTO idDTO);
+
+    IdDTO cloneFlashcardSet(User user, long setId);
 }

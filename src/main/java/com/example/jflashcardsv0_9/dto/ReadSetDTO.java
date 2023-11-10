@@ -38,8 +38,6 @@ public class ReadSetDTO {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class LearnedCard {
         long cardId;
-        long userId;
-        long flashcardSetId;
     }
 
     @Getter

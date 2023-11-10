@@ -26,4 +26,11 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
             @Param("startTimestamp") Timestamp startTimestamp,
             @Param("endTimestamp") Timestamp endTimestamp
     );
+    @Query("SELECT DISTINCT tp.cardId FROM TrackingProgress tp " +
+            "WHERE tp.user = :user " +
+            "AND tp.flashcardSet = :flashcardSet")
+    List<Long> findDistinctCardIdsByUserAndFlashcardSet(
+            @Param("user") User user,
+            @Param("flashcardSet") FlashcardSet flashcardSet
+    );
 }

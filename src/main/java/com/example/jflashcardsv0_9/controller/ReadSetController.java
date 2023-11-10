@@ -29,4 +29,8 @@ public class ReadSetController {
     public ReadSetDTO readFlashcardSetPublicOfGuest (@PathVariable(required = false) long setId) {
         return flashcardSetService.readFlashcardSetOfGuest(setId);
     }
+    @PostMapping("/{setId}/clone")//
+    public IdDTO cloneFlashcardSet (@PathVariable(required = false) long setId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+         return flashcardSetService.cloneFlashcardSet(myUserDetail.getUser(),setId);
+    }
 }

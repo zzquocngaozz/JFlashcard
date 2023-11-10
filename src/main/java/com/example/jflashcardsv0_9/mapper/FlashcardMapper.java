@@ -142,6 +142,50 @@ public class FlashcardMapper {
                 .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId))
                 .build();
     }
+    public static FlashcardVocab getFlashcardVocab(FlashcardVocab flashcardVocab, FlashcardSet set) {
+        FlashcardVocab cloneVocab = new FlashcardVocab();
+        // Sao chép các trường dữ liệu khác nếu cần
+        cloneVocab.setTerm(flashcardVocab.getTerm());
+        cloneVocab.setMean(flashcardVocab.getMean());
+        cloneVocab.setExample(flashcardVocab.getExample());
+        cloneVocab.setExampleMean(flashcardVocab.getExampleMean());
+        cloneVocab.setImgUrl(flashcardVocab.getImgUrl());
+        // Gán flashcardSet mới cho cloneVocab
+        cloneVocab.setFlashcardSet(set);
+        return cloneVocab;
+    }
+    public static FlashcardGrammar getFlashcardGrammar(FlashcardGrammar flashcardGrammar, FlashcardSet set) {
+        FlashcardGrammar cloneGrammar = new FlashcardGrammar();
+
+        // Sao chép các trường dữ liệu khác nếu cần
+        cloneGrammar.setCombination(flashcardGrammar.getCombination());
+        cloneGrammar.setNote(flashcardGrammar.getNote());
+        cloneGrammar.setTerm(flashcardGrammar.getTerm());
+        cloneGrammar.setMean(flashcardGrammar.getMean());
+        cloneGrammar.setExample(flashcardGrammar.getExample());
+        cloneGrammar.setExampleMean(flashcardGrammar.getExampleMean());
+        cloneGrammar.setImgUrl(flashcardGrammar.getImgUrl());
+        // Gán flashcardSet mới cho cloneVocab
+        cloneGrammar.setFlashcardSet(set);
+        return cloneGrammar;
+    }
+    public static FlashcardKanji getFlashcardKanji(FlashcardKanji flashcardKanji, FlashcardSet set) {
+        FlashcardKanji cloneKanji = new FlashcardKanji();
+
+        // Sao chép các trường dữ liệu khác nếu cần
+        cloneKanji.setOnSound(flashcardKanji.getOnSound());
+        cloneKanji.setKunSound(flashcardKanji.getKunSound());
+        cloneKanji.setChineseSound(flashcardKanji.getChineseSound());
+        cloneKanji.setTerm(flashcardKanji.getTerm());
+        cloneKanji.setMean(flashcardKanji.getMean());
+        cloneKanji.setExample(flashcardKanji.getExample());
+        cloneKanji.setExampleMean(flashcardKanji.getExampleMean());
+        cloneKanji.setImgUrl(flashcardKanji.getImgUrl());
+        cloneKanji.setTrick(flashcardKanji.getTrick());
+        // Gán flashcardSet mới cho cloneVocab
+        cloneKanji.setFlashcardSet(set);
+        return cloneKanji;
+    }
 
 
 }

@@ -60,15 +60,17 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
         ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(classId);
         ClassSet classSet = classSetRepository.getClassSetByClassSetId(classSetId);
         FlashcardSet flashcardSet = classSet.getFlashcardSet();
-        validate.checkClassMember(user,classRoom);
+        validate.checkClassMember(user, classRoom);
         List<ClassMember> classMembers = classMemberRepository.getAllByClassroom(classRoom);
+        classMembers.removeIf(classMember -> classMember.getUser().getUserId().equals(classRoom.getTeacher().getUserId()));
         List<TrackingClassSetSTO.Data> datas = new ArrayList<>();
-        for (ClassMember classMember : classMembers){
+        for (ClassMember classMember : classMembers) {
             TrackingClassSetSTO.Data data = TrackingClassSetSTO.Data.builder()
                     .userId(classMember.getUser().getUserId())
                     .userName(classMember.getUser().getUserName())
                     .email(classMember.getUser().getEmail())
-                    .numberLearned(trackingProgressRepository.countByUserAndFlashcardSetAndTimeLearnBetween(classMember.getUser(),flashcardSet,classSet.getCreatedAt(),classSet.getDueAt()))
+                    .numberLearned(trackingProgressRepository.countByUserAndFlashcardSetAndTimeLearnBetween(
+                            classMember.getUser(), flashcardSet, classSet.getCreatedAt(), classSet.getDueAt()))
                     .build();
             datas.add(data);
         }
@@ -78,7 +80,7 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
                 .title(flashcardSet.getTitle())
                 .startDate(classSet.getCreatedAt())
                 .dueDate(classSet.getDueAt())
-                .numberCards(flashcardSetService.numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
+                .numberCards(flashcardSetService.numberCard(flashcardSet.getFlashcardSetId(), flashcardSet.getType()))
                 .data(datas)
                 .build();
     }

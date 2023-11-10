@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -322,16 +323,14 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                     .build();
             markedCards.add(markedCard);
         }
-        List<TrackingProgress> trackingProgresses = trackingProgressRepository.getAllByUserAndFlashcardSet(user,flashcardSet);
+        List<Long> trackingProgresses = trackingProgressRepository.findDistinctCardIdsByUserAndFlashcardSet(user,flashcardSet);
         List<ReadSetDTO.LearnedCard> learnedCards = new ArrayList<>();
-//        for(TrackingProgress trackingProgress :  trackingProgresses ){
-//            ReadSetDTO.LearnedCard learnedCard = ReadSetDTO.LearnedCard.builder()
-//                    .userId(trackingProgress.getUser().getUserId())
-//                    .flashcardSetId(trackingProgress.getFlashcardSet().getFlashcardSetId())
-//                    .cardId(trackingProgress.getCardId())
-//                    .build();
-//            learnedCards.add(learnedCard);
-//        }
+        for(Long longs :  trackingProgresses ){
+            ReadSetDTO.LearnedCard learnedCard = ReadSetDTO.LearnedCard.builder()
+                    .cardId(longs)
+                    .build();
+            learnedCards.add(learnedCard);
+        }
         VotePoint votePoint = votePointRepository.getVotePointByFlashcardSetAndUser(flashcardSet, user);
         int voted = (votePoint != null) ? votePoint.getPoint() : 0;
         return ReadSetDTO.builder()
@@ -436,4 +435,56 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         }
         votePointRepository.save(votePoint);
     }
+
+    @Override
+    public IdDTO cloneFlashcardSet(User user, long setId) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        if (flashcardSet == null ){
+            throw new AppException(Error.INFO_NOT_FOUND);
+        }else {
+            FlashcardSet cloneSet = new FlashcardSet();
+            cloneSet.setPrivate(false);
+            cloneSet.setDescription(flashcardSet.getDescription());
+            cloneSet.setTitle(flashcardSet.getTitle());
+            cloneSet.setType(flashcardSet.getType());
+            cloneSet.setUser(user);
+            cloneSet.setCreatedAt(new Date(System.currentTimeMillis()));
+            FlashcardSet set = flashcardSetRepository.save(cloneSet);
+            List<FlashcardVocab> flashcardVocabs = flashcardVocabRepository.findAllByFlashcardSet(flashcardSet);
+            if (flashcardVocabs != null) {
+                List<FlashcardVocab> cloneVocabs = new ArrayList<>();
+                for (FlashcardVocab flashcardVocab : flashcardVocabs) {
+                    FlashcardVocab cloneVocab = FlashcardMapper.getFlashcardVocab(flashcardVocab, set);
+                    cloneVocabs.add(cloneVocab);
+                }
+                flashcardVocabRepository.saveAll(cloneVocabs);
+            }
+            List<FlashcardGrammar> flashcardGrammars = flashcardGrammarRepository.findAllByFlashcardSet(flashcardSet);
+            if(flashcardGrammars != null){
+                List<FlashcardGrammar> cloneGrammars = new ArrayList<>();
+                for (FlashcardGrammar flashcardGrammar : flashcardGrammars) {
+                    FlashcardGrammar cloneGrammar = FlashcardMapper.getFlashcardGrammar(flashcardGrammar, set);
+                    cloneGrammars.add(cloneGrammar);
+                }
+                System.out.println("====================================");
+                System.out.println(cloneGrammars.size());
+                flashcardGrammarRepository.saveAll(cloneGrammars);
+            }
+            List<FlashcardKanji> flashcardKanjis = flashcardKanjiRepository.findAllByFlashcardSet(flashcardSet);
+            if(flashcardKanjis != null){
+                List<FlashcardKanji> cloneKanjis = new ArrayList<>();
+                for (FlashcardKanji flashcardKanji : flashcardKanjis) {
+                    FlashcardKanji cloneKanji = FlashcardMapper.getFlashcardKanji(flashcardKanji, set);
+                    cloneKanjis.add(cloneKanji);
+                }
+                flashcardKanjiRepository.saveAll(cloneKanjis);
+            }
+            return IdDTO.builder()
+                    .id(set.getFlashcardSetId())
+                    .build(); // Trả về null nếu không tìm thấy roleName
+        }
+    }
+
+
+
 }
