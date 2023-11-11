@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface ClassMemberRepository extends JpaRepository<ClassMember,Long> {
     List<ClassMember> findAllByClassroom(ClassRoom classRoom);
+    long countClassMembersByClassroom(ClassRoom classRoom);
     List<ClassMember> findAllByUser(User user);
     ClassMember save(ClassMember classMember);
     ClassMember getClassMemberByClassroomAndUser(ClassRoom room, User user);
@@ -27,5 +28,10 @@ public interface ClassMemberRepository extends JpaRepository<ClassMember,Long> {
             "WHERE cm.user = :user " +
             "ORDER BY cr.createdAt DESC")
     List<ClassRoom> findTop3NewestClassroomsByUser(@Param("user") User user, Pageable pageable);
+    @Query("SELECT cm.classroom " +
+            "FROM ClassMember cm " +
+            "GROUP BY cm.classroom " +
+            "ORDER BY COUNT(cm.user) DESC")
+    List<ClassRoom> getClassRoomWithMaxUsers(Pageable pageable);
 
 }
