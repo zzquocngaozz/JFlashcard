@@ -466,8 +466,6 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                     FlashcardGrammar cloneGrammar = FlashcardMapper.getFlashcardGrammar(flashcardGrammar, set);
                     cloneGrammars.add(cloneGrammar);
                 }
-                System.out.println("====================================");
-                System.out.println(cloneGrammars.size());
                 flashcardGrammarRepository.saveAll(cloneGrammars);
             }
             List<FlashcardKanji> flashcardKanjis = flashcardKanjiRepository.findAllByFlashcardSet(flashcardSet);
