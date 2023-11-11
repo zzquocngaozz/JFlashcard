@@ -4,10 +4,10 @@ import useAuth from "./useAuth";
 import axios from "axios";
 
 const useLearnTracking = () => {
-  const [classMember, setClassMember] = useState([]);
+  const [learnProgress, setLearnProgress] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
-  const { classRoomId, setId } = useParams();
+  const { classRoomId, classSetId } = useParams();
   const { accessToken } = useAuth();
   const navigate = useNavigate();
 
@@ -21,11 +21,12 @@ const useLearnTracking = () => {
             Authorization: accessToken,
           },
         };
-        // const response = await axios.get(
-        //   `/classroom/${classRoomId}/listMemBer`,
-        //   config
-        // );
-        // setClassMember(response.data);
+        const response = await axios.get(
+          `/tracking/${classRoomId}/class/set/${classSetId}`,
+          config
+        );
+        // console.log(response.data);
+        setLearnProgress(response.data);
         setLoading(false);
       } catch (error) {
         // log ra status
@@ -67,7 +68,7 @@ const useLearnTracking = () => {
     }
   };
   return {
-    classMember,
+    learnProgress,
     loading,
     mutationing,
   };

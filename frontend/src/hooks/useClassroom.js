@@ -39,7 +39,7 @@ const useClassroom = () => {
       } catch (error) {
         // log ra status
         // TODO: navigate to not found or accessdenied
-        const errorCode = error.response.status;
+        const errorCode = error?.response?.status;
         if (errorCode === 404) navigate("/not-found"); // not found
         if (errorCode === 401) navigate("/access-denied"); // not authorize
         setLoading(false);

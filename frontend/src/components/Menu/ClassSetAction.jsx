@@ -17,7 +17,7 @@ import { Link, useParams } from "react-router-dom";
 const ClassSetAction = ({
   handleToggleUpdate,
   handleToggleDelete,
-  flashcardSetId,
+  classSetId,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -70,7 +70,7 @@ const ClassSetAction = ({
           </ListItemIcon>
           <ListItemText>Xoá khỏi lớp học</ListItemText>
         </MenuItem>
-        <Link to={`/class/${classRoomId}/progress/${flashcardSetId}`}>
+        <Link to={`/class/${classRoomId}/progress/${classSetId}`}>
           <MenuItem>
             <ListItemIcon
               sx={{
