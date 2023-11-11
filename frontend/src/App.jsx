@@ -182,7 +182,7 @@ function App() {
         />
         <Route
           exact
-          path="/class/:classRoomId/progress/:setId"
+          path="/class/:classRoomId/progress/:classSetId"
           element={<AuthenRoute element={<ClassProgress />} />}
         />
         <Route

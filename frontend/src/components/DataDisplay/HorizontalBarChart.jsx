@@ -77,12 +77,14 @@ const HorizontalBarChart = ({ learnProgress }) => {
     // setLoading(true);
     setChartTitle(learnProgress?.title);
     setTimeProgressLabels(
-      splitTimeRange(learnProgress?.startDate, learnProgress?.dueDate)
+      splitTimeRange(
+        new Date(learnProgress?.startDate),
+        new Date(learnProgress?.dueDate)
+      )
     );
     const expect = getExpectLearn(
       learnProgress?.startDate,
-      learnProgress?.dueDate,
-      learnProgress?.numberCards
+      learnProgress?.dueDate
     );
     setLineAnnotate({
       progressLineAnnotate: getAnnotationLine(
@@ -92,11 +94,6 @@ const HorizontalBarChart = ({ learnProgress }) => {
       ),
       warnLineAnnotate: getAnnotationLine(expect / 2, "", 1),
     });
-    // Box
-    // setTimeout(() => {
-    //   setLoading(false);
-    // }, 1000);
-    console.log("reload");
     if (currentPage !== 1) setCurrentPage(1);
   }, [learnProgress]);
 
@@ -106,12 +103,11 @@ const HorizontalBarChart = ({ learnProgress }) => {
     const startRecord = (currentPage - 1) * NUMBER_RECORD;
     const endRecord = (currentPage - 1) * NUMBER_RECORD + 10;
     const pagin = learnProgress?.data?.slice(startRecord, endRecord);
-    console.log(learnProgress, "line 107");
+
     if (pagin?.length > 0) {
       const parsedData = pagin.reduce(
         (result, student, index) => {
           const firstLetter = student?.userName[0];
-
           result.labels.push(
             student?.userName.replace(firstLetter, firstLetter.toUpperCase())
           );
@@ -124,8 +120,7 @@ const HorizontalBarChart = ({ learnProgress }) => {
               getStatus(
                 getExpectLearn(
                   learnProgress?.startDate,
-                  learnProgress?.dueDate,
-                  learnProgress?.numberCards
+                  learnProgress?.dueDate
                 ),
                 (student?.numberLearned * 100) / learnProgress?.numberCards
               )
@@ -206,9 +201,6 @@ const HorizontalBarChart = ({ learnProgress }) => {
 };
 
 const CustomSkelecton = styled(Skeleton)({
-  // "-webkit-transform": "scale(1, 0.90)",
-  // "-moz-transform": "scale(1, 0.90)",
-  // "-ms-transform": "scale(1, 0.90)",
   transform: "scale(1, 0.90)",
 });
 

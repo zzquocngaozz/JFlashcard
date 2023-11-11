@@ -99,7 +99,7 @@ const useClassSet = () => {
       handleToggleUpdate();
     } catch (error) {
       setMutationing(false);
-      console.log("Error:", error.response?.data?.errors?.body[0]);
+      console.log("Error:", error?.response?.data?.errors?.body[0]);
     }
   };
   return {

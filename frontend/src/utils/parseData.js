@@ -117,7 +117,7 @@ export const getOptionChart = (title, timeProgressLabels, annotations) => ({
     },
     datalabels: {
       formatter: function (value) {
-        return value + " %";
+        return value > 10 ? value + " %" : "";
       },
       anchor: "end",
       color: "rgba(255,255,255 ,0.8)",
@@ -189,19 +189,16 @@ export const getStatus = function (expect, numberCards) {
   return 1; // warn
 };
 /**
- * @param learnCard === numberCard of set
+ * @returns point expect achive base on start, due and current date
  */
-export const getExpectLearn = (start, due, learnCard) => {
+export const getExpectLearn = (start, due) => {
   const current = new Date().getTime();
   const startTime = new Date(start).getTime();
   const dueTime = new Date(due).getTime();
 
   return dueTime < current
     ? 100
-    : Math.round(
-        ((current - startTime) / (dueTime - startTime)) * learnCard,
-        2
-      );
+    : Math.round(((current - startTime) / (dueTime - startTime)) * 100, 2);
 };
 
 export const getBarColor = function (statusFlag = 0 | 1 | 2) {

@@ -10,15 +10,21 @@ import { getExpectLearn, getStatus } from "../utils/parseData";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import useLearnTracking from "../hooks/useLearnTracking";
+import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 
-const loading = false;
 const ClassProgress = () => {
-  const { setId } = useParams();
-  const [learnProgress, setLearnProgress] = useState({});
+  const { classSetId } = useParams();
+  const { loading, learnProgress } = useLearnTracking();
+  // const [learnProgress, setLearnProgress] = useState({});
   const [pasreListProgress, setPasreListProgress] = useState(null);
   const [filterBy, setFilterBy] = useState(-1);
   const [filterProgress, setFilterProgress] = useState({});
-
+  const [alertEmailSend, setAlertEmailSend] = useState({
+    open: false,
+    message: "",
+    loadingMessage: "",
+  });
   const handleChangeFilter = (filter) => {
     if (filter === filterBy) {
       setFilterBy(-1);
@@ -26,164 +32,170 @@ const ClassProgress = () => {
     }
     setFilterBy(filter);
   };
-  useEffect(() => {
-    console.log(learnProgress, isEmpty(learnProgress));
-    setTimeout(() => {
-      setLearnProgress({
-        flashcardSetId: 1,
-        title: "Kanji bộ thuỷ",
-        startDate: new Date("2023-10-31"), // ngày bộ thẻ đuoc gan vao lop học
-        dueDate: new Date("2023-11-07"),
-        numberCards: 60,
-        data: [
-          {
-            userId: 1,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 60,
-          },
-          {
-            userId: 2,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 3,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 4,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 5,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 6,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 7,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 8,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 9,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 10,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 11,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 12,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 13,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 14,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 15,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 16,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 17,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 18,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 19,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 20,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 21,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 22,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-          {
-            userId: 23,
-            userName: "hieuht01",
-            email: "hieuht01@gmail.com",
-            numberLearned: 20,
-          },
-          {
-            userId: 24,
-            userName: "huudd01",
-            email: "huudd01@gmail.com",
-            numberLearned: 30,
-          },
-        ],
-      });
-    }, 1000);
-  }, []);
+  // useEffect(() => {
+  // console.log(learnProgress, isEmpty(learnProgress));
+  // setTimeout(() => {
+  //   setLearnProgress({
+  //     flashcardSetId: 1,
+  //     title: "Kanji bộ thuỷ",
+  //     startDate: "2023-10-31", // ngày bộ thẻ đuoc gan vao lop học
+  //     dueDate: "2023-11-07",
+  //     numberCards: 60,
+  //     data: [
+  //       {
+  //         userId: 1,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 60,
+  //       },
+  //       {
+  //         userId: 2,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 3,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 4,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 5,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 6,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 7,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 8,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 9,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 10,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 11,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 12,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 13,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 14,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 15,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 16,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 17,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 18,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 19,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 20,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 21,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 22,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //       {
+  //         userId: 23,
+  //         userName: "hieuht01",
+  //         email: "hieuht01@gmail.com",
+  //         numberLearned: 20,
+  //       },
+  //       {
+  //         userId: 24,
+  //         userName: "huudd01",
+  //         email: "huudd01@gmail.com",
+  //         numberLearned: 30,
+  //       },
+  //     ],
+  //   });
+  // }, 1000);
+  // }, []);
+  const handleToggle = () => {
+    setAlertEmailSend({
+      ...alertEmailSend,
+      open: !alertEmailSend.open,
+    });
+  };
 
   useEffect(() => {
     if (isEmpty(learnProgress)) return;
@@ -191,13 +203,10 @@ const ClassProgress = () => {
     const pasredProgress = learnProgress?.data?.reduce(
       (result, progressLearn) => {
         const status = getStatus(
-          getExpectLearn(
-            learnProgress?.startDate,
-            learnProgress?.dueDate,
-            learnProgress?.numberCards
-          ),
+          getExpectLearn(learnProgress?.startDate, learnProgress?.dueDate),
           (progressLearn?.numberLearned * 100) / learnProgress?.numberCards
         );
+
         if (status === 0) result.redFlag.push(progressLearn);
         if (status === 1) result.warn.push(progressLearn);
         if (status === 2) result.goodJob.push(progressLearn);
@@ -209,6 +218,7 @@ const ClassProgress = () => {
         goodJob: [],
       }
     );
+
     setPasreListProgress({ ...pasredProgress });
   }, [learnProgress]);
 
@@ -386,6 +396,11 @@ const ClassProgress = () => {
           />
         </Box>
       </StackList>
+      {alertEmailSend.open ? (
+        <DialogAlertDelete mutationing={false} alertDelete={alertEmailSend} />
+      ) : (
+        <></>
+      )}
     </LayoutNormal>
   );
 };

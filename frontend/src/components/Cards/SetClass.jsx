@@ -87,7 +87,7 @@ const SetClass = ({ flashcardSet: data, onDelete, onUpdate, mutationing }) => {
           <ClassSetAction
             handleToggleUpdate={handleToggleUpdate}
             handleToggleDelete={handleToggleDelete}
-            flashcardSetId={flashcardSet?.flashcardSetId}
+            classSetId={flashcardSet?.classSetId}
           />
         </StarHolderStack>
       ) : (

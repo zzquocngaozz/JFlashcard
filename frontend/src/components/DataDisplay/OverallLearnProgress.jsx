@@ -44,17 +44,9 @@ const OverallLearnProgress = ({ labelData, handleChangeFilter }) => {
       { labels: [], backgroundColor: [], data: [] }
     );
 
-    setData(
-      // getDataChart(
-      //   parseDoughnut.labels,
-      //   parseDoughnut.data,
-      //   parseDoughnut.backgroundColor
-      // )
-      getDataChart(label, labelData, backgroundColor)
-    );
+    setData(getDataChart(label, labelData, backgroundColor));
   }, [labelData]);
   const handleOnclickLabel = (index) => {
-    console.log("click", index);
     handleChangeFilter(index);
   };
   const chartOptions = {
