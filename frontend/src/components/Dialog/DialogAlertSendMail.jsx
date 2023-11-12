@@ -6,31 +6,23 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import InfoIcon from "@mui/icons-material/Info";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Box, CircularProgress, Stack, Zoom } from "@mui/material";
 
-export default function DialogAlertDelete({
-  alertDelete,
-  handleToggleAlertDelete,
-  onDelete,
+export default function DialogAlertSendMail({
+  alertEmailSend,
+  handleToggle,
+  onSendMail,
   mutationing,
 }) {
   const handleClose = (e) => {
-    handleToggleAlertDelete(e);
+    handleToggle();
   };
 
   return (
     <>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button> */}
-
       <Dialog
-        open={alertDelete.open}
-        onClose={handleClose}
-        onClick={(e) => {
-          e.preventDefault();
-        }}
+        open={alertEmailSend.open}
+        onClose={handleToggle}
         sx={{ "& .MuiPaper-root": { width: "500px", height: "300px" } }}
       >
         <DialogTitle>Thông báo của hệ thống</DialogTitle>
@@ -47,9 +39,7 @@ export default function DialogAlertDelete({
                 <CircularProgress />
               </Zoom>
               <DialogContentText textAlign="center">
-                {alertDelete.loadingMessage
-                  ? alertDelete.loadingMessage
-                  : "Đang xoá ...."}
+                Đang gửi email ...
               </DialogContentText>
             </Stack>
           ) : (
@@ -62,11 +52,11 @@ export default function DialogAlertDelete({
               >
                 <Zoom in={true}>
                   <Box sx={{ color: "blue", mb: 3, textAlign: "center" }}>
-                    <WarningAmberIcon sx={{ color: "#d8a200", fontSize: 54 }} />
+                    <InfoIcon color="info" sx={{ fontSize: 54 }} />
                   </Box>
                 </Zoom>
                 <DialogContentText textAlign="center">
-                  {alertDelete.message}
+                  {alertEmailSend.message}
                 </DialogContentText>
               </Stack>
             </>
@@ -74,7 +64,7 @@ export default function DialogAlertDelete({
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleClose}
+            onClick={handleToggle}
             type="button"
             color="info"
             variant="contained"
@@ -83,7 +73,9 @@ export default function DialogAlertDelete({
             Huỷ
           </Button>
           <Button
-            onClick={onDelete}
+            onClick={() => {
+              onSendMail(alertEmailSend.sendTo, handleToggle);
+            }}
             type="button"
             color="error"
             variant="contained"

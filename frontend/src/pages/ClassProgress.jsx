@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LayoutNormal from "../components/Parts/LayoutNormal";
 import { Box, Button, Chip, Skeleton, Stack, Typography } from "@mui/material";
 import HorizontalBarChart from "../components/DataDisplay/HorizontalBarChart";
@@ -12,10 +12,11 @@ import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import useLearnTracking from "../hooks/useLearnTracking";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
+import DialogAlertSendMail from "../components/Dialog/DialogAlertSendMail";
 
 const ClassProgress = () => {
   const { classSetId } = useParams();
-  const { loading, learnProgress } = useLearnTracking();
+  const { loading, mutationing, learnProgress, sendEmail } = useLearnTracking();
   // const [learnProgress, setLearnProgress] = useState({});
   const [pasreListProgress, setPasreListProgress] = useState(null);
   const [filterBy, setFilterBy] = useState(-1);
@@ -23,8 +24,10 @@ const ClassProgress = () => {
   const [alertEmailSend, setAlertEmailSend] = useState({
     open: false,
     message: "",
-    loadingMessage: "",
   });
+  const [prepareEmail, setPrepareEmail] = useState({});
+  const navigate = useNavigate();
+
   const handleChangeFilter = (filter) => {
     if (filter === filterBy) {
       setFilterBy(-1);
@@ -32,169 +35,66 @@ const ClassProgress = () => {
     }
     setFilterBy(filter);
   };
-  // useEffect(() => {
-  // console.log(learnProgress, isEmpty(learnProgress));
-  // setTimeout(() => {
-  //   setLearnProgress({
-  //     flashcardSetId: 1,
-  //     title: "Kanji bộ thuỷ",
-  //     startDate: "2023-10-31", // ngày bộ thẻ đuoc gan vao lop học
-  //     dueDate: "2023-11-07",
-  //     numberCards: 60,
-  //     data: [
-  //       {
-  //         userId: 1,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 60,
-  //       },
-  //       {
-  //         userId: 2,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 3,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 4,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 5,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 6,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 7,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 8,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 9,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 10,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 11,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 12,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 13,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 14,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 15,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 16,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 17,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 18,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 19,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 20,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 21,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 22,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //       {
-  //         userId: 23,
-  //         userName: "hieuht01",
-  //         email: "hieuht01@gmail.com",
-  //         numberLearned: 20,
-  //       },
-  //       {
-  //         userId: 24,
-  //         userName: "huudd01",
-  //         email: "huudd01@gmail.com",
-  //         numberLearned: 30,
-  //       },
-  //     ],
-  //   });
-  // }, 1000);
-  // }, []);
   const handleToggle = () => {
     setAlertEmailSend({
       ...alertEmailSend,
       open: !alertEmailSend.open,
     });
+  };
+  const onSendMail = (sendTo, message) => {
+    sendEmail(sendTo, handleToggle);
+  };
+
+  const onClickSendEmail = () => {
+    if (filterBy === -1) {
+      setAlertEmailSend({
+        message: "Bạn có chắc muốn gửi mail đến toàn bộ học sinh",
+        open: true,
+        sendTo: {
+          onTracking: pasreListProgress?.goodJob,
+          behind: pasreListProgress?.warn,
+          lazy: pasreListProgress?.redFlag,
+        },
+      });
+      return;
+    }
+
+    if (filterBy === 0) {
+      setAlertEmailSend({
+        message: "Bạn có chắc muốn gửi mail đến những học sinh cần cảnh báo",
+        open: true,
+        sendTo: {
+          onTracking: [],
+          behind: [],
+          lazy: pasreListProgress?.redFlag,
+        },
+      });
+      return;
+    }
+    if (filterBy === 1) {
+      setAlertEmailSend({
+        message: "Bạn có chắc muốn gửi mail đến những học sinh cần lưu ý",
+        open: true,
+        sendTo: {
+          onTracking: [],
+          behind: pasreListProgress?.warn,
+          lazy: [],
+        },
+      });
+      return;
+    }
+    if (filterBy === 2) {
+      setAlertEmailSend({
+        message: "Bạn có chắc muốn gửi mail khích lệ những học sinh làm tốt",
+        open: true,
+        sendTo: {
+          onTracking: pasreListProgress?.goodJob,
+          behind: [],
+          lazy: [],
+        },
+      });
+      return;
+    }
   };
 
   useEffect(() => {
@@ -374,6 +274,9 @@ const ClassProgress = () => {
                   color="secondary"
                   variant="contained"
                   startIcon={<ArrowBackOutlinedIcon />}
+                  onClick={() => {
+                    navigate(-1);
+                  }}
                 >
                   Trở lại
                 </Button>
@@ -382,6 +285,7 @@ const ClassProgress = () => {
                   sx={{ textTransform: "none", borderRadius: "8px" }}
                   variant="contained"
                   startIcon={<MailOutlinedIcon />}
+                  onClick={onClickSendEmail}
                 >
                   Gửi mail
                 </Button>
@@ -393,11 +297,17 @@ const ClassProgress = () => {
           <HorizontalBarChart
             learnProgress={filterProgress}
             key={filterProgress}
+            setAlertEmailSend={setAlertEmailSend}
           />
         </Box>
       </StackList>
       {alertEmailSend.open ? (
-        <DialogAlertDelete mutationing={false} alertDelete={alertEmailSend} />
+        <DialogAlertSendMail
+          mutationing={mutationing}
+          alertEmailSend={alertEmailSend}
+          handleToggle={handleToggle}
+          onSendMail={onSendMail}
+        />
       ) : (
         <></>
       )}

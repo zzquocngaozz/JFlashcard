@@ -25,7 +25,7 @@ const useLearnTracking = () => {
           `/tracking/${classRoomId}/class/set/${classSetId}`,
           config
         );
-        // console.log(response.data);
+        console.log(response.data);
         setLearnProgress(response.data);
         setLoading(false);
       } catch (error) {
@@ -40,11 +40,7 @@ const useLearnTracking = () => {
     getClassMember();
   }, [classRoomId]);
 
-  const sendEmail = async (
-    listEmailWarn,
-    listEmailRemind,
-    handleToggleAlertDelete
-  ) => {
+  const sendEmail = async (listEmail, handleToggle) => {
     try {
       setMutationing(true);
       const config = {
@@ -53,17 +49,30 @@ const useLearnTracking = () => {
           "Content-Type": "application/json",
         },
       };
+      const data = {
+        setId: learnProgress.flashcardSetId,
+        classId: classRoomId,
+        onTracking: [],
+        behind: [],
+        lazy: [],
+        ...listEmail,
+      };
       // Gửi yêu cầu delete để xoá dữ liệu
-      const response = await axios.delete(
-        // `/classroom/${classRoomId}/deleteMember/${userId}`,
+      const response = await axios.post(
+        `/tracking/sendmail`,
+        JSON.stringify(data),
         config
       );
+      // console.log(JSON.stringify(data));
       // const newList = classMember.filter((member) => member.userId !== userId);
       // setClassMember(newList);
-      handleToggleAlertDelete();
+
       setMutationing(false);
+      handleToggle();
     } catch (error) {
       setMutationing(false);
+      handleToggle();
+
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
@@ -71,6 +80,7 @@ const useLearnTracking = () => {
     learnProgress,
     loading,
     mutationing,
+    sendEmail,
   };
 };
 

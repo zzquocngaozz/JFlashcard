@@ -19,7 +19,6 @@ const useLearnHistory = () => {
           },
         };
         const response = await axios.get(`/homepage/listhistoryset`, config);
-        console.log(response.data);
         setListSet(response.data);
         setLoading(false);
       } catch (error) {

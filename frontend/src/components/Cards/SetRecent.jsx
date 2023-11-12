@@ -20,7 +20,7 @@ import { parseBirth } from "../../utils/datetimeCalc";
 
 const SetRecent = ({ flashcardSet }) => {
   return (
-    <StackCardLink to={`/${flashcardSet}/read`}>
+    <StackCardLink to={`/${flashcardSet.flashcardSetId}/read`}>
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />

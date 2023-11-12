@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -141,6 +142,7 @@ public class SendEmailServiceImpl implements SendEmailService {
         sendEmail(email, "Về yêu cầu nâng cấp tài khoản giáo viên", htmlContent);
     }
     // Gửi email với trạng thái "học đúng tiến độ"
+    @Async
     public void sendOnTrackEmail(String email,String userName,String setName,String classname) {
         String subject = "Thông báo về tiến độ học tập";
         String htmlContent = "    <!doctype html>\n" +
@@ -156,9 +158,9 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            JFlashcard\n" +
                 "            </a>\n" +
                 "            </div>\n" +
-                "            <p style=\"font-size:1.1em\">Chào [ "+ userName +"] ,</p>\n" +
-                "            <p>Chúc mừng bạn đang học đúng tiến độ của [ "+ setName +"] trong [ "+ classname +"]  . Hãy tiếp tục phấn đấu!</p>\n" +
-                "            <p>Chúng tôi rất vui thông báo rằng bạn đang học đúng tiến độ của  [ "+ setName +"] trong [ "+ classname +"]  .\n" +
+                "            <p style=\"font-size:1.1em\">Chào "+ userName +" ,</p>\n" +
+                "            <p>Chúc mừng bạn đang học đúng tiến độ của "+ setName +" trong  "+ classname +". Hãy tiếp tục phấn đấu!</p>\n" +
+                "            <p>Chúng tôi rất vui thông báo rằng bạn đang học đúng tiến độ của  "+ setName +" trong "+ classname +".\n" +
                 "\n" +
                 "Chúc mừng bạn  và hãy tiếp tục cố gắng trên JFlashcards!</p>\n" +
                 "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
@@ -174,6 +176,7 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     // Gửi email với trạng thái "học chậm tiến độ"
+    @Async
     public void sendBehindScheduleEmail(String email,String userName,String setName,String classname)  {
         String subject = "Thông báo về tiến độ học tập";
         String htmlContent = "    <!doctype html>\n" +
@@ -206,6 +209,7 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     // Gửi email với trạng thái "đang rất lười"
+    @Async
     public void sendLazyEmail(String email, String userName,String setName,String classname) {
         String subject = "Thông báo về tiến độ học tập";
         String htmlContent = "    <!doctype html>\n" +
@@ -221,8 +225,8 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            JFlashcard\n" +
                 "            </a>\n" +
                 "            </div>\n" +
-                "            <p style=\"font-size:1.1em\">Chào [ "+ userName +"] ,</p>\n" +
-                "            <p>Chúng tôi nhận thấy bạn đang rất lười học theo tiến độ của  [ "+ setName +"] trong [ "+ classname +"] . Hãy đặt kế hoạch và bắt đầu học ngay!</p>\n" +
+                "            <p style=\"font-size:1.1em\">Chào "+ userName +" ,</p>\n" +
+                "            <p>Chúng tôi nhận thấy bạn đang bị tụt lại rất xa theo tiến độ của  [ "+ setName +"] trong [ "+ classname +"] . Hãy đặt kế hoạch và bắt đầu học ngay!</p>\n" +
                 "            <p>Chúng tôi khuyên bạn nên đặt kế hoạch học tập và bắt đầu ngay, để đảm bảo bạn đang theo kịp tiến độ của lớp học trên JFlashcards.</p>\n" +
                 "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
                 "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +

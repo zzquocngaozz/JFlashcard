@@ -58,7 +58,7 @@ class CustomEmailAnnotation {
   }
 }
 
-const HorizontalBarChart = ({ learnProgress }) => {
+const HorizontalBarChart = ({ learnProgress, setAlertEmailSend }) => {
   const [chartTitle, setChartTitle] = useState("");
   const [timeProgressLabels, setTimeProgressLabels] = useState([]);
   const [lineAnnotate, setLineAnnotate] = useState({
@@ -115,20 +115,42 @@ const HorizontalBarChart = ({ learnProgress }) => {
             // chartData.getProgess.call(student, learnProgress?.numberCards)
             getProgess(student?.numberLearned, learnProgress?.numberCards)
           );
-          result.backgroundColors.push(
-            getBarColor(
-              getStatus(
-                getExpectLearn(
-                  learnProgress?.startDate,
-                  learnProgress?.dueDate
-                ),
-                (student?.numberLearned * 100) / learnProgress?.numberCards
-              )
-            )
+          const status = getStatus(
+            getExpectLearn(learnProgress?.startDate, learnProgress?.dueDate),
+            (student?.numberLearned * 100) / learnProgress?.numberCards
           );
+          result.backgroundColors.push(getBarColor(status));
 
           const onClick = () => {
             handleClickEmail(student);
+            const listEmail = [];
+            switch (status) {
+              case 0:
+                setAlertEmailSend({
+                  sendTo: { lazy: [student] },
+                  open: true,
+                  message: `Bạn có muốn gửi mail cảnh báo đến học sinh ${student?.userName}?`,
+                });
+                break;
+              case 1:
+                listEmail.push(student);
+                setAlertEmailSend({
+                  sendTo: { behind: [student] },
+                  open: true,
+                  message: `Bạn có muốn gửi mail nhắc nhở đến học sinh ${student?.userName}?`,
+                });
+                break;
+              case 2:
+                setAlertEmailSend({
+                  sendTo: { onTracking: [student] },
+                  open: true,
+                  message: `Bạn có muốn gửi mail khích lệ đến học sinh ${student?.userName}?`,
+                });
+                break;
+
+              default:
+                break;
+            }
           };
 
           const reponseIndex = NUMBER_RECORD - pagin.length + index;
@@ -171,7 +193,7 @@ const HorizontalBarChart = ({ learnProgress }) => {
   const handlePaging = (e, newValue) => {
     setCurrentPage(newValue);
   };
-
+  console.log("reload");
   return (
     <>
       {isEmpty(chartProps?.data) ? (

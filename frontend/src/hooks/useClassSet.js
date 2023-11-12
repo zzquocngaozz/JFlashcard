@@ -26,7 +26,6 @@ const useClassSet = () => {
           `/classroom/${classRoomId}/set/list`,
           config
         );
-        console.log(response.data);
         setClassSets(response.data);
         setLoading(false);
       } catch (error) {

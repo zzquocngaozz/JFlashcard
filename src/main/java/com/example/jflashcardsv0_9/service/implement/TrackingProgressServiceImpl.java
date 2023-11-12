@@ -85,6 +85,36 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
                 .build();
     }
 
+//    @Override
+//    public void sendMailTracking(TrackingDTOResponse trackingDTOResponse) {
+//        if(trackingDTOResponse == null){
+//            throw new AppException(Error.INFO_NOT_FOUND);
+//        }
+//        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(trackingDTOResponse.getClassId());
+//        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(trackingDTOResponse.getSetId());
+//        List<TrackingDTOResponse.Data> onTrackingUsers = trackingDTOResponse.getOnTracking();
+//        List<TrackingDTOResponse.Data> behinds = trackingDTOResponse.getBehind();
+//        List<TrackingDTOResponse.Data> lazys = trackingDTOResponse.getLazy();
+//        if(!(onTrackingUsers == null)){
+//        for (TrackingDTOResponse.Data user : onTrackingUsers) {
+//            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+//            sendEmailService.sendOnTrackEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+//            // Sử dụng thông tin người dùng để send mail
+//        }}
+//        if(!(behinds == null)){
+//        for (TrackingDTOResponse.Data user : behinds) {
+//            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+//            sendEmailService.sendBehindScheduleEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+//            // Sử dụng thông tin người dùng để send mail
+//        }}
+//        if(!(lazys == null)){
+//        for (TrackingDTOResponse.Data user : lazys) {
+//            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+//            sendEmailService.sendLazyEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+//            // Sử dụng thông tin người dùng để send mail
+//        }}
+//
+
     @Override
     public void sendMailTracking(TrackingDTOResponse trackingDTOResponse) {
         if(trackingDTOResponse == null){
@@ -96,23 +126,23 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
         List<TrackingDTOResponse.Data> behinds = trackingDTOResponse.getBehind();
         List<TrackingDTOResponse.Data> lazys = trackingDTOResponse.getLazy();
         if(!(onTrackingUsers == null)){
-        for (TrackingDTOResponse.Data user : onTrackingUsers) {
-            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
-            sendEmailService.sendOnTrackEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
-            // Sử dụng thông tin người dùng để send mail
-        }}
+            for (TrackingDTOResponse.Data user : onTrackingUsers) {
+                // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+                sendEmailService.sendOnTrackEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+                // Sử dụng thông tin người dùng để send mail
+            }}
         if(!(behinds == null)){
-        for (TrackingDTOResponse.Data user : behinds) {
-            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
-            sendEmailService.sendBehindScheduleEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
-            // Sử dụng thông tin người dùng để send mail
-        }}
+            for (TrackingDTOResponse.Data user : behinds) {
+                // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+                sendEmailService.sendBehindScheduleEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+                // Sử dụng thông tin người dùng để send mail
+            }}
         if(!(lazys == null)){
-        for (TrackingDTOResponse.Data user : lazys) {
-            // Truy xuất thông tin người dùng trong trạng thái "onTracking"
-            sendEmailService.sendLazyEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
-            // Sử dụng thông tin người dùng để send mail
-        }}
+            for (TrackingDTOResponse.Data user : lazys) {
+                // Truy xuất thông tin người dùng trong trạng thái "onTracking"
+                sendEmailService.sendLazyEmail(user.getEmail(),user.getUserName(),flashcardSet.getTitle(),classRoom.getClassRoomName());
+                // Sử dụng thông tin người dùng để send mail
+            }}
 
     }
 }

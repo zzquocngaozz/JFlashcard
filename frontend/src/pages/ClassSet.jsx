@@ -22,9 +22,7 @@ import AddClassSetDialog from "../components/Dialog/AddClassSetDialog";
 import searhbanner from "../assets/images/searhbanner.png";
 
 const ClassSet = () => {
-  const { classRoomId } = useParams();
   const { loading: loadingClass } = useClassroom();
-  // const { isClassAdmin } = useClassContext();
 
   const {
     loading,
@@ -35,7 +33,6 @@ const ClassSet = () => {
     deleteClassSet,
     updateClassSet,
   } = useClassSet();
-  console.log(loading && loadingClass);
   const [currentPage, setCurrentPage] = useState(1);
   const [openAdd, setOpenAdd] = useState(false);
   const handleToggleAdd = () => {
