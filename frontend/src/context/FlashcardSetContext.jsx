@@ -63,14 +63,33 @@ export const FlashcardSetProvider = ({ children }) => {
   const [vote, setVote] = useState({});
   const [isBookMarked, setIsBookMarked] = useState();
   const [mutation, setMutation] = useState(false);
+  const [cloning, setCloning] = useState(false);
   const [loadedSet, setLoadedSet] = useState("-1");
 
-  const updateVote = (newVote) => {
-    setMutation(true);
-    setVote({ ...vote, ...newVote });
-    setTimeout(() => {
+  const navigate = useNavigate();
+
+  const updateVote = async (newVote) => {
+    try {
+      setMutation(true);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken,
+        },
+      };
+      const data = JSON.stringify({ id: newVote.voted });
+      console.log(data);
+      const response = await axios.post(
+        `/read/${flashcardSet.flashcardSetId}/vote`,
+        data,
+        config
+      );
       setMutation(false);
-    }, [1000]);
+      setVote({ ...vote, ...newVote });
+    } catch (error) {
+      console.log(error?.response?.data?.errors?.body[0]);
+      setMutation(false);
+    }
   };
   const { isLogin } = useAuth();
 
@@ -118,7 +137,28 @@ export const FlashcardSetProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {}, [markedCards]);
+  const cloneSet = async () => {
+    try {
+      setCloning(true);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken,
+        },
+      };
+      const response = await axios.post(
+        `/read/${flashcardSet.flashcardSetId}/clone`,
+        "",
+        config
+      );
+      console.log(response.data);
+      navigate(`/${response?.data?.id}/edit`);
+      setCloning(false);
+    } catch (error) {
+      console.log(error?.response?.data?.errors?.body[0]);
+      setCloning(false);
+    }
+  };
 
   const handleToggleBookMarked = async (data) => {
     try {
@@ -189,6 +229,8 @@ export const FlashcardSetProvider = ({ children }) => {
         learnedCards,
         markedCards,
         loadedSet,
+        cloning,
+        cloneSet,
         logStudiedCard,
         setLoadedSet,
         setFlashcardSet,

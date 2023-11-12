@@ -20,9 +20,10 @@ import { ROLE, SET_TYPE } from "../utils/constant";
 import { getColorFromEnum } from "../utils/colorGetter";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
+import BackdropLoading from "./FeedBack/BackdropLoading";
 
 const ReadCardMeta = () => {
-  const { flashcardSet, remain, learnedCards, markedCards } =
+  const { flashcardSet, remain, cloning, learnedCards, markedCards, cloneSet } =
     useFlashcardSetContext();
   const navigate = useNavigate();
   const { isLogin, currentUser } = useAuth();
@@ -179,17 +180,14 @@ const ReadCardMeta = () => {
           </Tooltip>
         ) : isLogin() ? (
           <Tooltip title={"Lưu và sửa"}>
-            <IconButton
-              onClick={() => {
-                console.log("clicked");
-              }}
-            >
+            <IconButton onClick={cloneSet}>
               <FilterNoneIcon />
             </IconButton>
           </Tooltip>
         ) : (
           <></>
         )}
+        {cloning ? <BackdropLoading /> : <></>}
       </Stack>
     </Stack>
   );

@@ -45,7 +45,9 @@ const GrammarCardEdit = ({
       borderRadius={"8px"}
       height={320}
       width={"100%"}
-      overflow={"scroll"}
+      sx={{
+        overflowY: "scroll",
+      }}
     >
       <Stack
         flexGrow={12}

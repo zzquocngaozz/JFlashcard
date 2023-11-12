@@ -18,7 +18,7 @@ const TopFlashcardSet = () => {
           Top 3 bộ flashcard có điểm cao nhất
         </Typography>
       </StackList>
-      {!loading ? (
+      {loading ? (
         <StackContain>
           <SetSkeleton />
           <SetSkeleton />
@@ -29,10 +29,7 @@ const TopFlashcardSet = () => {
           <Box width={70} height={70}>
             <img src={searhbanner} loading="lazy" alt="notfound" />
           </Box>
-          <Typography textAlign={"center"}>
-            Lịch sử học trống! Hãy tìm kiếm hoặc tạo 1 bộ thẻ của riêng bạn và
-            học ngay hôm nay
-          </Typography>
+          <Typography textAlign={"center"}>Chưa có dữ liệu tổng hợp</Typography>
         </Stack>
       ) : (
         <StackContain>
