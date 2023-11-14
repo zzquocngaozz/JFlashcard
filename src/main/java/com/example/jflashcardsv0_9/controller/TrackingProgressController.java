@@ -1,8 +1,6 @@
 package com.example.jflashcardsv0_9.controller;
 
-import com.example.jflashcardsv0_9.dto.TokenDTO;
-import com.example.jflashcardsv0_9.dto.TrackingClassSetSTO;
-import com.example.jflashcardsv0_9.dto.TrackingDTOResponse;
+import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.TrackingProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +30,13 @@ public class TrackingProgressController {
         trackingProgressService.sendMailTracking(trackingDTOResponse);
         return ResponseEntity.ok("đã send mail");
     }
-
-
-
+    @GetMapping("/homepage")
+    public WeekTrackingDTOResponse weekTrackingHome(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody WeekTrackingDTO weekTrackingDTO){
+        return trackingProgressService.weekTrackingHome(myUserDetail.getUser(),weekTrackingDTO);
+    }
+    @GetMapping("/{classId}/class/set/{classSetId}/view")
+    public WeekTrackingDTOResponse weekTrackingClassSet(@RequestBody WeekTrackingDTO weekTrackingDTO){
+        return trackingProgressService.weekTrackingClassSet(weekTrackingDTO);
+    }
 
 }

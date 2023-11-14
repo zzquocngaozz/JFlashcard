@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -42,4 +43,26 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
             "GROUP BY tp.user " +
             "ORDER BY flashcardSetCount DESC")
     List<Object[]> getTopUsersWithLearnedFlashcardSets(Pageable pageable);
+    @Query("SELECT COALESCE(COUNT(tp.trackingProgressId), 0) " +
+            "FROM TrackingProgress tp " +
+            "WHERE tp.timeLearn BETWEEN :startDate AND :endDate " +
+            "AND tp.user.userId = :userId " +
+            "AND tp.flashcardSet.flashcardSetId = :flashcardSetId " +
+            "GROUP BY DATE(tp.timeLearn)")
+    List<Long> getTotalCardsByDayClassSet(
+            @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate,
+            @Param("userId") Long userId,
+            @Param("flashcardSetId") Long flashcardSetId
+    );
+    @Query("SELECT COALESCE(COUNT(tp.trackingProgressId), 0) " +
+            "FROM TrackingProgress tp " +
+            "WHERE tp.timeLearn BETWEEN :startDate AND :endDate " +
+            "AND tp.user.userId = :userId " +
+            "GROUP BY DATE(tp.timeLearn)")
+    List<Long> getTotalCardsByDayHomePage(
+            @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate,
+            @Param("userId") Long userId
+    );
 }

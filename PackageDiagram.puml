@@ -1,50 +1,46 @@
 @startuml
-package "jflashcardsv0_9" {
-    package "controller" {
-    }
 
-    package "dto" {
-    }
-
-    package "entities" {
-    }
-
-    package "exception" {
-    }
-
-    package "mapper" {
-    }
-
-    package "repository" {
-    }
-
-    package "security" {
-    }
-
-    package "service" {
-    }
-
-    package "service.implement" {
-    }
-
-    package "util" {
-    }
+class DashboardUserController {
+    - userService: UserService
+    + addUser(userDTO: UserDTO): ResponseEntity<String>
 }
-controller -.-> service
-controller -.-> dto
-mapper -.-> dto
-mapper -.-> service
-mapper -.-> entities
-repository -.-> entities
-security -.-> util
-security -.-> entities
-security -.-> dto
-security -.-> repository
-security -.-> mapper
-service -.-> dto
-implement -.-> exception
-implement -.-> entities
-implement -.-> util
-implement -.-> mapper
-left to right direction
+
+class UserService {
+    - validate: ValidationService
+    - passwordEncoder: PasswordEncoder
+    - userRepository: UserRepository
+    - roleRepository: RoleRepository
+    + addUser(userDTO: UserDTO): void
+}
+
+class UserDTO {
+
+}
+
+class ValidationService {
+    + checkUserDTO(userDTO: UserDTO): void
+}
+
+class UserMapper {
+    + toUserDTO(userDTO: UserDTO): User
+}
+
+class RoleRepository {
+    + findRoleByRoleId(roleId: Long): Role
+}
+
+
+class UserRepository {
+    + save(user: User): User
+}
+
+
+
+DashboardUserController --> UserService : <<use>>
+UserService --> ValidationService : <<use>>
+UserService --> UserRepository : <<use>>
+UserService --> RoleRepository : <<use>>
+UserService --> UserMapper : <<use>>
+DashboardUserController --> UserDTO : <<use>>
+
 @enduml

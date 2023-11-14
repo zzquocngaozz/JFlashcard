@@ -2,6 +2,8 @@ package com.example.jflashcardsv0_9.service;
 
 import com.example.jflashcardsv0_9.dto.TrackingClassSetSTO;
 import com.example.jflashcardsv0_9.dto.TrackingDTOResponse;
+import com.example.jflashcardsv0_9.dto.WeekTrackingDTO;
+import com.example.jflashcardsv0_9.dto.WeekTrackingDTOResponse;
 import com.example.jflashcardsv0_9.entities.User;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +14,8 @@ public interface TrackingProgressService {
     TrackingClassSetSTO trackingProgressClassSet(User user, long classId, long classSetId);
 
     void sendMailTracking(TrackingDTOResponse trackingDTOResponse);
+
+    WeekTrackingDTOResponse weekTrackingHome(User user, WeekTrackingDTO weekTrackingDTO);
+
+    WeekTrackingDTOResponse weekTrackingClassSet(WeekTrackingDTO weekTrackingDTO);
 }

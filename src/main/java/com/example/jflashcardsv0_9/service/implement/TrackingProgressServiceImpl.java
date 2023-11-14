@@ -2,6 +2,8 @@ package com.example.jflashcardsv0_9.service.implement;
 
 import com.example.jflashcardsv0_9.dto.TrackingClassSetSTO;
 import com.example.jflashcardsv0_9.dto.TrackingDTOResponse;
+import com.example.jflashcardsv0_9.dto.WeekTrackingDTO;
+import com.example.jflashcardsv0_9.dto.WeekTrackingDTOResponse;
 import com.example.jflashcardsv0_9.entities.*;
 import com.example.jflashcardsv0_9.exception.AppException;
 import com.example.jflashcardsv0_9.exception.Error;
@@ -144,5 +146,25 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
                 // Sử dụng thông tin người dùng để send mail
             }}
 
+    }
+
+    @Override
+    public WeekTrackingDTOResponse weekTrackingHome(User user, WeekTrackingDTO dto) {
+        List<Long> dataWeek = trackingProgressRepository.getTotalCardsByDayHomePage(dto.getStartDate(),dto.getEndDate(), dto.getUserId());
+        return WeekTrackingDTOResponse.builder()
+                .startDate(dto.getStartDate())
+                .endDate(dto.getEndDate())
+                .data(dataWeek)
+                .build();
+    }
+
+    @Override
+    public WeekTrackingDTOResponse weekTrackingClassSet(WeekTrackingDTO dto) {
+        List<Long> dataWeek = trackingProgressRepository.getTotalCardsByDayClassSet(dto.getStartDate(),dto.getEndDate(), dto.getUserId(), dto.getFlashcardSetId());
+        return WeekTrackingDTOResponse.builder()
+                .startDate(dto.getStartDate())
+                .endDate(dto.getEndDate())
+                .data(dataWeek)
+                .build();
     }
 }

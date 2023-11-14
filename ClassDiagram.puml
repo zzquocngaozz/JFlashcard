@@ -3,26 +3,30 @@
 skinparam Style strictuml
 
 actor User
-activate DashboardUserView
-activate DashboardUserController
-activate userService
+activate FolderView
+activate FolderController
+activate FolderService
 'activate Exception
-activate Dto
+'activate Dto
 database Repository as ACTIVATE_ENTITY
 
-User -> DashboardUserView : Click in " User"
-DashboardUserView -> DashboardUserController : send request viewUser()
-DashboardUserController -> userService : Do getUserByUserId()
+User -> FolderView : Click button "+" And choice Set
+FolderView -> FolderController : send request addSetInFolder()
+FolderController -> FolderService : Do method addSetInFolder()
+FolderService -> Repository : Do method save() data
+'Repository --> Dto : Convert Data
+'Dto --> FolderService : Send Data
 'userService -> Exception : Check Validate()
-'Exception --> FolderView : Validation Failed
-'FolderView --> User :  Display info folder false
-'Exception --> FolderService : Validation Success
-userService -> Repository : send request getUserByUserId()
-Repository --> Dto : Convert User Data to dto
-Dto --> userService : Send Data
-userService --> DashboardUserController: Send Data
-DashboardUserController --> DashboardUserView : Send Data
-DashboardUserView --> User  : Display Data
+'Exception --> userService : Validate ís false
+'userService --> DashboardUserController : Send Mess " info user false"
+'DashboardUserController --> DashboardUserView: Send Mess
+'DashboardUserView --> User :  Display Mess
+'Exception --> userService : Validate ís true
+'userService -> Dto : Convert Data User
+'Dto --> userService : Send data
+'FolderService --> FolderController: Send
+FolderController --> FolderView : Send Mess"thêm thành công"
+FolderView --> User  : Display Mess
 'alt Account Already Exists
 '    UserRepository --> UserService : Account Already Exists
 '    UserService --> RegisterView : Display Account Already Exists

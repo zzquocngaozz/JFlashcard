@@ -3,16 +3,17 @@ package com.example.jflashcardsv0_9.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+import java.sql.Date;
+
 @Getter
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class HomePageDTO {
-
-    List<SetSingleDTO> flashcardSets;
-    List<ClassRoomSingleDTO> classRooms;
+public class WeekTrackingDTO {
+    long flashcardSetId;
+    long userId;
+    Date startDate;
+    Date endDate;
 }

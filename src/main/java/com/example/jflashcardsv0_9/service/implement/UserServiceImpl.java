@@ -151,7 +151,6 @@ public class UserServiceImpl implements UserService {
         }
         User user = userOptional.get();
         Role roles = roleRepository.findByRoleId(role).get();
-        System.out.println(roles.getName());
         Set<Role> rs = new HashSet<>();
         rs.add(roles);
         user.setRoles(rs);
