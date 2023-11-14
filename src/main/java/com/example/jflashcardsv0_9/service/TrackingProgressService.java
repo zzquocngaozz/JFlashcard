@@ -7,6 +7,10 @@ import com.example.jflashcardsv0_9.dto.WeekTrackingDTOResponse;
 import com.example.jflashcardsv0_9.entities.User;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 public interface TrackingProgressService {
     void trackingProgress(User user,long setId,long cardId);
@@ -18,4 +22,5 @@ public interface TrackingProgressService {
     WeekTrackingDTOResponse weekTrackingHome(User user, WeekTrackingDTO weekTrackingDTO);
 
     WeekTrackingDTOResponse weekTrackingClassSet(WeekTrackingDTO weekTrackingDTO);
+
 }

@@ -1,6 +1,7 @@
 package com.example.jflashcardsv0_9.controller;
 
-import com.example.jflashcardsv0_9.service.UserService;
+import com.example.jflashcardsv0_9.dto.DashBoardDTO;
+import com.example.jflashcardsv0_9.service.HomePageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/dashboard")
 public class DashboardController {
     @Autowired
-    private UserService userService;
+    private HomePageService homePageService;
+
+    @GetMapping
+    public DashBoardDTO dashboard(){
+        return homePageService.dashboard();
+    }
 
 }

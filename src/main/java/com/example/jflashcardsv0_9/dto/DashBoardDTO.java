@@ -3,6 +3,8 @@ package com.example.jflashcardsv0_9.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -11,17 +13,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @ToString
 public class DashBoardDTO {
-    long numberUser;
-    long numberFLCard;
+    List<Long> numberUser;
+    List<Long> numberFLCard;
     long numberClass;
-    @Getter
-    @Setter
-    @Builder
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class Set {
-        String classRoomName;
-        String description;
-        long numberMember;
-        AuthDTO teacher;
-    }
+    List<Long> data;
 }

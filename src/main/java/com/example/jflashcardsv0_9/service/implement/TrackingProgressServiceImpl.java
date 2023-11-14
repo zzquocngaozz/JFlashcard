@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,7 @@ import java.util.List;
 public class TrackingProgressServiceImpl implements TrackingProgressService {
     TrackingProgressRepository trackingProgressRepository;
     FlashcardSetRepository flashcardSetRepository;
+    UserRepository userRepository;
     Validate validate;
     ClassRoomRepository classRoomRepository;
     ClassSetRepository classSetRepository;
@@ -33,9 +36,10 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
     ClassMemberRepository classMemberRepository;
     SendEmailService sendEmailService;
     @Autowired
-    public TrackingProgressServiceImpl(TrackingProgressRepository trackingProgressRepository, FlashcardSetRepository flashcardSetRepository, Validate validate, ClassRoomRepository classRoomRepository, ClassSetRepository classSetRepository, FlashcardSetService flashcardSetService, ClassMemberRepository classMemberRepository, SendEmailService sendEmailService) {
+    public TrackingProgressServiceImpl(TrackingProgressRepository trackingProgressRepository, FlashcardSetRepository flashcardSetRepository, UserRepository userRepository, Validate validate, ClassRoomRepository classRoomRepository, ClassSetRepository classSetRepository, FlashcardSetService flashcardSetService, ClassMemberRepository classMemberRepository, SendEmailService sendEmailService) {
         this.trackingProgressRepository = trackingProgressRepository;
         this.flashcardSetRepository = flashcardSetRepository;
+        this.userRepository = userRepository;
         this.validate = validate;
         this.classRoomRepository = classRoomRepository;
         this.classSetRepository = classSetRepository;
@@ -150,7 +154,12 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
 
     @Override
     public WeekTrackingDTOResponse weekTrackingHome(User user, WeekTrackingDTO dto) {
-        List<Long> dataWeek = trackingProgressRepository.getTotalCardsByDayHomePage(dto.getStartDate(),dto.getEndDate(), dto.getUserId());
+        List<LocalDate> dateRange = getDateRange(dto.getStartDate().toLocalDate(), dto.getEndDate().toLocalDate());
+        List<Long> dataWeek = new ArrayList<>();
+        for (LocalDate date : dateRange) {
+            List<Long> dailyData = trackingProgressRepository.getTotalCardsByDayHomePage(Date.valueOf(date), user);
+            dataWeek.addAll(dailyData);
+        }
         return WeekTrackingDTOResponse.builder()
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
@@ -160,11 +169,29 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
 
     @Override
     public WeekTrackingDTOResponse weekTrackingClassSet(WeekTrackingDTO dto) {
-        List<Long> dataWeek = trackingProgressRepository.getTotalCardsByDayClassSet(dto.getStartDate(),dto.getEndDate(), dto.getUserId(), dto.getFlashcardSetId());
+        User user = userRepository.getUserByUserId(dto.getUserId());
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(dto.getFlashcardSetId());
+        List<LocalDate> dateRange = getDateRange(dto.getStartDate().toLocalDate(), dto.getEndDate().toLocalDate());
+        List<Long> dataWeek = new ArrayList<>();
+        for (LocalDate date : dateRange) {
+            List<Long> dailyData = trackingProgressRepository.getTotalCardsByDayClassSet(Date.valueOf(date), user,flashcardSet);
+            dataWeek.addAll(dailyData);
+        }
         return WeekTrackingDTOResponse.builder()
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
                 .data(dataWeek)
                 .build();
+    }
+    public List<LocalDate> getDateRange(LocalDate startDate, LocalDate endDate) {
+        List<LocalDate> dateRange = new ArrayList<>();
+        LocalDate currentDate = startDate;
+
+        while (!currentDate.isAfter(endDate)) {
+            dateRange.add(currentDate);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return dateRange;
     }
 }

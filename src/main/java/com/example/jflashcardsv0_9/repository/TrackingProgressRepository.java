@@ -45,24 +45,20 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
     List<Object[]> getTopUsersWithLearnedFlashcardSets(Pageable pageable);
     @Query("SELECT COALESCE(COUNT(tp.trackingProgressId), 0) " +
             "FROM TrackingProgress tp " +
-            "WHERE tp.timeLearn BETWEEN :startDate AND :endDate " +
-            "AND tp.user.userId = :userId " +
-            "AND tp.flashcardSet.flashcardSetId = :flashcardSetId " +
-            "GROUP BY DATE(tp.timeLearn)")
+            "WHERE DATE(tp.timeLearn) = :date " +
+            "AND tp.user = :userId " +
+            "AND tp.flashcardSet = :flashcardSetId ")
     List<Long> getTotalCardsByDayClassSet(
-            @Param("startDate") Date startDate,
-            @Param("endDate") Date endDate,
-            @Param("userId") Long userId,
-            @Param("flashcardSetId") Long flashcardSetId
+            @Param("date") Date date,
+            @Param("userId") User user,
+            @Param("flashcardSetId") FlashcardSet flashcardSetId
     );
     @Query("SELECT COALESCE(COUNT(tp.trackingProgressId), 0) " +
             "FROM TrackingProgress tp " +
-            "WHERE tp.timeLearn BETWEEN :startDate AND :endDate " +
-            "AND tp.user.userId = :userId " +
-            "GROUP BY DATE(tp.timeLearn)")
+            "WHERE DATE(tp.timeLearn) = :date " +
+            "AND tp.user = :userId ")
     List<Long> getTotalCardsByDayHomePage(
-            @Param("startDate") Date startDate,
-            @Param("endDate") Date endDate,
-            @Param("userId") Long userId
+            @Param("date") Date date,
+           @Param("userId") User user
     );
 }
