@@ -78,7 +78,6 @@ export const FlashcardSetProvider = ({ children }) => {
         },
       };
       const data = JSON.stringify({ id: newVote.voted });
-      console.log(data);
       const response = await axios.post(
         `/read/${flashcardSet.flashcardSetId}/vote`,
         data,
@@ -151,7 +150,6 @@ export const FlashcardSetProvider = ({ children }) => {
         "",
         config
       );
-      console.log(response.data);
       navigate(`/${response?.data?.id}/edit`);
       setCloning(false);
     } catch (error) {

@@ -25,7 +25,6 @@ export default function useTeacherCreatedSet() {
           config
         );
         setListExist(response.data);
-        // console.log(response.data);
 
         setLoading(false);
       } catch (error) {

@@ -11,7 +11,6 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import useLearnTracking from "../hooks/useLearnTracking";
-import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 import DialogAlertSendMail from "../components/Dialog/DialogAlertSendMail";
 
 const ClassProgress = () => {
@@ -25,7 +24,7 @@ const ClassProgress = () => {
     open: false,
     message: "",
   });
-  const [prepareEmail, setPrepareEmail] = useState({});
+  const [viewDetail, setViewDetail] = useState(null);
   const navigate = useNavigate();
 
   const handleChangeFilter = (filter) => {
@@ -311,6 +310,7 @@ const ClassProgress = () => {
       ) : (
         <></>
       )}
+      {}
     </LayoutNormal>
   );
 };

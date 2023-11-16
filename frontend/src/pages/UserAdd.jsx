@@ -40,7 +40,6 @@ const UserAdd = () => {
 
   const onSubmit = (data) => {
     isAdding.current = true;
-    console.log(data);
     addUser(data);
   };
 

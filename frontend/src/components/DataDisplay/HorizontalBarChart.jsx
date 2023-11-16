@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Bar } from "react-chartjs-2";
+import { Bar, getElementAtEvent } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,6 +27,7 @@ import {
   getStatus,
   splitTimeRange,
 } from "../../utils/parseData";
+import ClassSetDialog from "../Dialog/ClassSetDialog";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -59,6 +60,7 @@ class CustomEmailAnnotation {
 }
 
 const HorizontalBarChart = ({ learnProgress, setAlertEmailSend }) => {
+  const chartRef = useRef(null);
   const [chartTitle, setChartTitle] = useState("");
   const [timeProgressLabels, setTimeProgressLabels] = useState([]);
   const [lineAnnotate, setLineAnnotate] = useState({
@@ -71,7 +73,10 @@ const HorizontalBarChart = ({ learnProgress, setAlertEmailSend }) => {
     data: {},
     options: {},
   });
-
+  const [dialogLearn, setDialogLearn] = useState({
+    open: false,
+    element: null,
+  });
   useEffect(() => {
     if (isEmpty(learnProgress)) return;
     // setLoading(true);
@@ -122,7 +127,6 @@ const HorizontalBarChart = ({ learnProgress, setAlertEmailSend }) => {
           result.backgroundColors.push(getBarColor(status));
 
           const onClick = () => {
-            handleClickEmail(student);
             const listEmail = [];
             switch (status) {
               case 0:
@@ -186,14 +190,34 @@ const HorizontalBarChart = ({ learnProgress, setAlertEmailSend }) => {
     // setLoading(false);
   }, [currentPage, lineAnnotate]);
 
-  const handleClickEmail = (student) => {
-    console.log(student);
-  };
-
   const handlePaging = (e, newValue) => {
     setCurrentPage(newValue);
   };
-  console.log("reload");
+
+  const handleClickElement = (event) => {
+    const element = getElementAtEvent(chartRef.current, event);
+
+    if (isEmpty(element)) return;
+    const totalPage = Math.ceil(learnProgress?.data.length / 10);
+    const rest =
+      totalPage === currentPage && learnProgress?.data.length % 10 !== 0
+        ? 10 - (learnProgress?.data.length % 10)
+        : 0;
+
+    // index = click index [0 - 9] + start index          - empty element of last page (10 - number records last page)
+    const index = element[0].index + 10 * (currentPage - 1) - rest;
+
+    // console.log(rest, "rest");
+    // console.log(learnProgress?.data.length);
+    // console.log(index, "Click in");
+    // console.log(learnProgress?.data);
+    setDialogLearn({ open: true, element: learnProgress.data[index] });
+  };
+
+  const handleTogle = () => {
+    setDialogLearn({ ...dialogLearn, open: false });
+  };
+
   return (
     <>
       {isEmpty(chartProps?.data) ? (
@@ -206,7 +230,12 @@ const HorizontalBarChart = ({ learnProgress, setAlertEmailSend }) => {
         </Box>
       ) : (
         <Stack>
-          <Bar data={chartProps?.data} options={chartProps?.options} />
+          <Bar
+            data={chartProps?.data}
+            options={chartProps?.options}
+            ref={chartRef}
+            onClick={handleClickElement}
+          />
           <StackList sx={{ justifyContent: "flex-end" }}>
             <Pagination
               key={currentPage}
@@ -216,6 +245,15 @@ const HorizontalBarChart = ({ learnProgress, setAlertEmailSend }) => {
               onChange={handlePaging}
             />
           </StackList>
+          {dialogLearn.open ? (
+            <ClassSetDialog
+              learnProgress={learnProgress}
+              student={dialogLearn.element}
+              handleTogle={handleTogle}
+            />
+          ) : (
+            <></>
+          )}
         </Stack>
       )}
     </>

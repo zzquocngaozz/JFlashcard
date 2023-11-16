@@ -25,7 +25,6 @@ const useLearnTracking = () => {
           `/tracking/${classRoomId}/class/set/${classSetId}`,
           config
         );
-        console.log(response.data);
         setLearnProgress(response.data);
         setLoading(false);
       } catch (error) {
@@ -63,9 +62,6 @@ const useLearnTracking = () => {
         JSON.stringify(data),
         config
       );
-      // console.log(JSON.stringify(data));
-      // const newList = classMember.filter((member) => member.userId !== userId);
-      // setClassMember(newList);
 
       setMutationing(false);
       handleToggle();

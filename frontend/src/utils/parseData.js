@@ -1,3 +1,5 @@
+import { isEmpty } from "./manualTesting";
+
 export const parseVocaExcel = (jsonExecel) => {
   const jsonMapped = jsonExecel.map((row) => {
     return {
@@ -47,6 +49,10 @@ export const getOptionChart = (title, timeProgressLabels, annotations) => ({
     padding: {
       right: 40,
     },
+  },
+  onHover: (ctx, bar) => {
+    if (isEmpty(bar)) ctx.chart.canvas.style.cursor = "default";
+    if (!isEmpty(bar)) ctx.chart.canvas.style.cursor = "pointer";
   },
   scales: {
     x: {

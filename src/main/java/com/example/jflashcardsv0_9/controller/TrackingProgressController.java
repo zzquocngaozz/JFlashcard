@@ -30,11 +30,11 @@ public class TrackingProgressController {
         trackingProgressService.sendMailTracking(trackingDTOResponse);
         return ResponseEntity.ok("đã send mail");
     }
-    @GetMapping("/homepage")
+    @PostMapping("/homepage")
     public WeekTrackingDTOResponse weekTrackingHome(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody WeekTrackingDTO weekTrackingDTO){
         return trackingProgressService.weekTrackingHome(myUserDetail.getUser(),weekTrackingDTO);
     }
-    @GetMapping("/{classId}/class/set/{classSetId}/view")
+    @PostMapping("/{classId}/class/set/{classSetId}/view")
     public WeekTrackingDTOResponse weekTrackingClassSet(@RequestBody WeekTrackingDTO weekTrackingDTO){
         return trackingProgressService.weekTrackingClassSet(weekTrackingDTO);
     }

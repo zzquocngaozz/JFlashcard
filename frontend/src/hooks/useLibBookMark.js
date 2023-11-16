@@ -19,7 +19,6 @@ const useLibBookMark = () => {
           },
         };
         const response = await axios.get(`/homepage/listbookmarkset`, config);
-        console.log(response.data);
         setListSet(response.data);
         setLoading(false);
       } catch (error) {

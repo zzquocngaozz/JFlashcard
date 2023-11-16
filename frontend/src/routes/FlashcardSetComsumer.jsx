@@ -7,7 +7,6 @@ const FlashcardSetComsumer = () => {
   const { setId } = useParams();
   const match = useMatch("/:setId");
   useEffect(() => {
-    console.log(match);
     if (match) navigate(`/${setId}/read`);
   });
   return (

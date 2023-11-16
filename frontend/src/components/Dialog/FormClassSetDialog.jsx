@@ -51,7 +51,6 @@ export default function FormClassSetDialog({
   }, [dueAt]);
 
   const onSubmit = (data) => {
-    console.log(new Date(data?.dueAt));
     if (
       (new Date(data?.dueAt).getTime() -
         new Date(data?.startAt).getTime() +
@@ -65,7 +64,7 @@ export default function FormClassSetDialog({
       });
       return;
     }
-    console.log(data);
+
     updateClass(data, handleToggle);
   };
   return (

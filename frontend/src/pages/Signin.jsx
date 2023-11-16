@@ -47,7 +47,6 @@ const Signin = () => {
       const responseData = response.data;
       // save into local storage
       login(responseData);
-      console.log(responseData);
       setLoading(false);
       if (responseData.user && responseData.user.role === 3) {
         navigate("/dashboard");

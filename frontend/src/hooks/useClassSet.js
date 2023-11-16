@@ -50,9 +50,8 @@ const useClassSet = () => {
         },
       };
       // Gửi yêu cầu delete để xoá dữ liệu
-      await axios.put(
+      await axios.delete(
         `/classroom/${classRoomId}/set/delete/${classSetId}`,
-        "",
         config
       );
       const deletedList = classSets.filter(

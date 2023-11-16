@@ -33,15 +33,9 @@ const SetVote = () => {
       numberVote: newNumberVoted,
       votePoint: Number(newVotePoint.toFixed(2)),
     });
-    console.log(vote);
 
     handleClose();
   };
-
-  // useEffect(() => {
-  //   console.log(!cacheVote.voted);
-  //   if (!!cacheVote.voted) onChange(cacheVote);
-  // }, [cacheVote]);
 
   return (
     <>

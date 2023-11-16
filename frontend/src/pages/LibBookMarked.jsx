@@ -162,19 +162,14 @@ const LibBookMarked = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const handleSearch = (e) => {
-    console.log(e.target.value);
     setSearchParam(e.target.value.trim());
   };
 
   const handleChangeFilter = (e) => {
-    console.log(e.target.value);
     setParamFilter(e.target.value);
   };
 
   useEffect(() => {
-    console.log(data);
-    console.log(searchParam, " ", paramFilter);
-
     const filterData = setTimeout(() => {
       if (!!data) {
         const result = data.filter(
@@ -183,12 +178,9 @@ const LibBookMarked = () => {
             (paramFilter === 0 ? true : set.type === paramFilter)
         );
         setFlashcardList(result);
-        console.log(result);
         setCurrentPage(1);
       }
-      console.log("search, ", !data);
     }, [100]);
-    console.log("useEfffce");
     return () => clearTimeout(filterData);
   }, [searchParam, paramFilter, data]);
 
@@ -196,16 +188,13 @@ const LibBookMarked = () => {
     const startSet = 6 * (currentPage - 1);
     const endSet = startSet + 6;
     const pagingList = flashcardSetList?.slice(startSet, endSet);
-    console.log(endSet);
     setPaginList(pagingList);
-    console.log("paging");
   }, [currentPage, flashcardSetList]);
 
   // useEffect(()=>{
   //   setFlashcardList(paginList)
   // },[paginList])
   const handleChangePaging = (e, value) => {
-    console.log(e.target.value, value);
     setCurrentPage(value);
   };
 

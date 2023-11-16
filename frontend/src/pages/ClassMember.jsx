@@ -40,7 +40,6 @@ const ClassMember = () => {
     mutationing,
     deleteClassMember,
   } = useClassMember();
-  console.log(members);
 
   return (
     <LayoutNormal>

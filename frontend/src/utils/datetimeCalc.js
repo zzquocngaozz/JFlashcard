@@ -15,10 +15,10 @@ export const checkDueAt = (dueAt) => {
 
   // Tính thời gian cach nhau tính bằng mili giây (1 ngày = 24 giờ x 60 phút x 60 giây x 1000 mili giây)
   const timeDifference = dueDate.getTime() - currentDate.getTime();
-  console.log(timeDifference, "?");
+
   // xac dinh khoang cach ngay giua current date va due date (24 * 60 * 60 * 1000)
   const daysSpace = (timeDifference + 60 * 1000) / (24 * 60 * 60 * 1000);
-  console.log(daysSpace);
+
   // Kiem tra due date >= 3 ngay current date
   return daysSpace >= 3;
 };
@@ -69,3 +69,38 @@ export function formatTime(createAt) {
 
   return "vài giây trước";
 }
+
+export const getWeekDate = (weekIndex) => {
+  const currentDate = new Date();
+  const day = currentDate.getDay();
+  const monOfWeek =
+    currentDate.getTime() -
+    (day - 1) * 24 * 60 * 60 * 1000 -
+    weekIndex * 7 * 24 * 60 * 60 * 1000;
+  const sunOfWeek = monOfWeek + 6 * 24 * 60 * 60 * 1000;
+
+  return { startDate: new Date(monOfWeek), endDate: new Date(sunOfWeek) };
+};
+export function numOfWeek(startDate, endDate) {
+  const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7; // Số mili giây trong một tuần
+  const difference =
+    endDate.getTime() -
+    (endDate.getDay() - 1) * 24 * 60 * 60 * 1000 -
+    (startDate.getTime() - (startDate.getDay() - 1) * 24 * 60 * 60 * 1000);
+  const numberOfWeeks = Math.floor(difference / millisecondsPerWeek); // Số tuần
+
+  return numberOfWeeks;
+}
+
+export const getWeekDateOption = (weekIndex) => {
+  const dateOfWeek = getWeekDate(weekIndex);
+  return `${dateRangeFormat(dateOfWeek.startDate)} - ${dateRangeFormat(
+    dateOfWeek.endDate
+  )}`;
+};
+
+const dateRangeFormat = (date) => {
+  const d = new Date(date);
+
+  return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+};
