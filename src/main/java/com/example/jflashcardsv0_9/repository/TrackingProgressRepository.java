@@ -61,4 +61,8 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
             @Param("date") Date date,
            @Param("userId") User user
     );
+    @Query("SELECT COUNT(DISTINCT tp.flashcardSet) " +
+            "FROM TrackingProgress tp " +
+            "WHERE DATE(tp.timeLearn) = :date ")
+    List<Long> countDistinctFlashcardSetsByDate(@Param("date") Date date);
 }

@@ -128,6 +128,8 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
         }
         ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(trackingDTOResponse.getClassId());
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(trackingDTOResponse.getSetId());
+        List<TrackingDTOResponse.Data> allUsers = new ArrayList<>();
+
         List<TrackingDTOResponse.Data> onTrackingUsers = trackingDTOResponse.getOnTracking();
         List<TrackingDTOResponse.Data> behinds = trackingDTOResponse.getBehind();
         List<TrackingDTOResponse.Data> lazys = trackingDTOResponse.getLazy();

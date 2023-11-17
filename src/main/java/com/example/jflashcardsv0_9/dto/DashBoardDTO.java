@@ -3,6 +3,7 @@ package com.example.jflashcardsv0_9.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -16,5 +17,4 @@ public class DashBoardDTO {
     List<Long> numberUser;
     List<Long> numberFLCard;
     long numberClass;
-    List<Long> data;
 }

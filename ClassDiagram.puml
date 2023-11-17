@@ -1,40 +1,69 @@
-@startuml LoginClassDiagram
+@startuml
 !define ACTIVATE_ENTITY Repository <<Database>> #008000
 skinparam Style strictuml
 
 actor User
-activate FolderView
-activate FolderController
-activate FolderService
-'activate Exception
-'activate Dto
+participant ClassSetView
+participant TrackingProgressView
+participant TrackingProgressController
+participant TrackingProgressService
+participant Exception
+participant Dto
 database Repository as ACTIVATE_ENTITY
 
-User -> FolderView : Click button "+" And choice Set
-FolderView -> FolderController : send request addSetInFolder()
-FolderController -> FolderService : Do method addSetInFolder()
-FolderService -> Repository : Do method save() data
-'Repository --> Dto : Convert Data
-'Dto --> FolderService : Send Data
-'userService -> Exception : Check Validate()
-'Exception --> userService : Validate ís false
-'userService --> DashboardUserController : Send Mess " info user false"
-'DashboardUserController --> DashboardUserView: Send Mess
-'DashboardUserView --> User :  Display Mess
-'Exception --> userService : Validate ís true
-'userService -> Dto : Convert Data User
-'Dto --> userService : Send data
-'FolderService --> FolderController: Send
-FolderController --> FolderView : Send Mess"thêm thành công"
-FolderView --> User  : Display Mess
-'alt Account Already Exists
-'    UserRepository --> UserService : Account Already Exists
-'    UserService --> RegisterView : Display Account Already Exists
-'    RegisterView --> User : Display Account Already Exists
-'else Register Success
-'    UserRepository --> UserService : Register Success
-'    UserService --> AppController : Send Register Success
-'    AppController --> User : Display Register Success
-'end
+User -> ClassSetView: Click Button "Tracking"
+activate ClassSetView
+ClassSetView -> TrackingProgressView: Send Request
+activate TrackingProgressView
+TrackingProgressView -> TrackingProgressController: Send Request
+activate TrackingProgressController
+TrackingProgressController -> TrackingProgressService: Do method trackingProgressClassSet()
+activate TrackingProgressService
+TrackingProgressService -> Exception : Check Authorization
+activate Exception
+alt Un Authorized
+    Exception --> TrackingProgressService : Un Authorized
+    activate Exception
+    deactivate Exception
+    activate TrackingProgressService
+    TrackingProgressService --> TrackingProgressController: Return Mess error
+    activate TrackingProgressController
+    deactivate TrackingProgressService
+    TrackingProgressController --> TrackingProgressView : Send Mess
+    activate TrackingProgressView
+    deactivate TrackingProgressController
+    TrackingProgressView --> ClassSetView :Send Mess
+    activate ClassSetView
+    deactivate TrackingProgressView
+    ClassSetView --> User : Display Mess
+    deactivate ClassSetView
+else Authorized
+
+    Exception --> TrackingProgressService : Authorized
+    activate Exception
+        deactivate Exception
+
+    activate TrackingProgressService
+    TrackingProgressService -> Repository : get Data Tracking in ClassSet
+
+    activate Repository
+    Repository --> TrackingProgressService : Return Data
+    TrackingProgressService -> Dto : Convert Data
+    activate Dto
+    Dto --> TrackingProgressService : Return Data
+    deactivate  Dto
+    activate TrackingProgressController
+    TrackingProgressService --> TrackingProgressController : Send Data
+    deactivate TrackingProgressService
+    TrackingProgressController --> TrackingProgressView : Send Data
+    activate TrackingProgressView
+    deactivate TrackingProgressController
+    TrackingProgressView --> User : Display Data
+    deactivate TrackingProgressView
+    deactivate Exception
+
+end
+
+
 
 @enduml

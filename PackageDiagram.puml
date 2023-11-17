@@ -1,46 +1,62 @@
 @startuml
 
-class DashboardUserController {
-    - userService: UserService
-    + addUser(userDTO: UserDTO): ResponseEntity<String>
+class TrackingProgressController {
+    - trackingProgressService: TrackingProgressService
+    + weekTrackingClassSet(weekTrackingDTO: WeekTrackingDTO): WeekTrackingDTOResponse
 }
 
-class UserService {
-    - validate: ValidationService
-    - passwordEncoder: PasswordEncoder
-    - userRepository: UserRepository
-    - roleRepository: RoleRepository
-    + addUser(userDTO: UserDTO): void
+class TrackingProgressService {
+    + weekTrackingClassSet(dto: WeekTrackingDTO): WeekTrackingDTOResponse
 }
 
-class UserDTO {
-
+class WeekTrackingDTO {
+    - userId: String
+    - flashcardSetId: String
+    - startDate: Date
+    - endDate: Date
 }
 
-class ValidationService {
-    + checkUserDTO(userDTO: UserDTO): void
+class WeekTrackingDTOResponse {
+    - startDate: Date
+    - endDate: Date
+    - data: List<Long>
 }
 
-class UserMapper {
-    + toUserDTO(userDTO: UserDTO): User
+class User {
+    // Fields and methods for the User class
 }
 
-class RoleRepository {
-    + findRoleByRoleId(roleId: Long): Role
+class FlashcardSet {
+    // Fields and methods for the FlashcardSet class
 }
 
+
+
+class Date {
+    // Fields and methods for the Date class
+}
 
 class UserRepository {
-    + save(user: User): User
+    // Fields and methods for the UserRepository class
 }
 
+interface FlashcardSetRepository {
+    + getFlashcardSetByFlashcardSetId(Long) : FlashcardSet
+}
 
+interface TrackingProgressRepository {
+    + getTotalCardsByDayClassSet(Date,User,FlashcardSet) : List<Long>
+}
 
-DashboardUserController --> UserService : <<use>>
-UserService --> ValidationService : <<use>>
-UserService --> UserRepository : <<use>>
-UserService --> RoleRepository : <<use>>
-UserService --> UserMapper : <<use>>
-DashboardUserController --> UserDTO : <<use>>
+TrackingProgressController --> TrackingProgressService
+TrackingProgressService --> WeekTrackingDTO
+TrackingProgressService --> WeekTrackingDTOResponse
+TrackingProgressService --> TrackingProgressRepository
+TrackingProgressService --> FlashcardSetRepository
+User --> UserRepository
+FlashcardSetRepository -->FlashcardSet
+TrackingProgressRepository --> Date
+TrackingProgressRepository --> User
+TrackingProgressRepository --> FlashcardSet
 
 @enduml

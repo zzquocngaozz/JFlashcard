@@ -1,6 +1,8 @@
 package com.example.jflashcardsv0_9.controller;
 
 import com.example.jflashcardsv0_9.dto.DashBoardDTO;
+import com.example.jflashcardsv0_9.dto.WeekTrackingDTO;
+import com.example.jflashcardsv0_9.dto.WeekTrackingDTOResponse;
 import com.example.jflashcardsv0_9.service.HomePageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,10 @@ public class DashboardController {
     @GetMapping
     public DashBoardDTO dashboard(){
         return homePageService.dashboard();
+    }
+    @PostMapping
+    public WeekTrackingDTOResponse chartDashboard(@RequestBody WeekTrackingDTO weekTrackingDTO){
+        return homePageService.chartDashboard(weekTrackingDTO);
     }
 
 }

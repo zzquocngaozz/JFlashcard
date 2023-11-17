@@ -52,7 +52,6 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         classRoomDTO.setTeacher(AuthDTO.builder().userId(myUserDetail.getUser().getUserId()).build());
         classRoomDTO.setClassRoomCode(RandomTokenUtil.generateToken());
         classRoomDTO.setCreatedAt(new Date(System.currentTimeMillis()));
-        System.out.println(classRoomDTO.getClassRoomCode()+" vao day r line 36");
         // chuyen Dto thanh entity va luu vao db
         ClassRoom saveClassroom = classRoomRepository.save(ClassroomMapper.toEntity(classRoomDTO));
         // luu vao classroom member ship
@@ -62,7 +61,6 @@ public class ClassRoomServiceImpl implements ClassRoomService {
                         .user(User.builder().userId(myUserDetail.getUser().getUserId())
                         .build())
                         .build());
-        System.out.println(" vao day r line 46");
         return IdDTO.builder().id(saveClassroom.getClassRoomId()).build();
     }
 
@@ -136,7 +134,9 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 
     @Override
     public void deleteClassMember(long auth, long userId, long  classCodeId) {
-        ClassMember classMember = classMemberRepository.getClassMemberByClassroomAndUser(classRoomRepository.getClassRoomByClassRoomId(classCodeId),userRepository.getUserByUserId(userId));
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(classCodeId);
+        User user = userRepository.getUserByUserId(userId);
+        ClassMember classMember = classMemberRepository.getClassMemberByClassroomAndUser(classRoom,user);
         classMemberRepository.delete(classMember);
     }
 
