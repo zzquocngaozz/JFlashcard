@@ -1,62 +1,51 @@
 @startuml
 
-class TrackingProgressController {
-    - trackingProgressService: TrackingProgressService
-    + weekTrackingClassSet(weekTrackingDTO: WeekTrackingDTO): WeekTrackingDTOResponse
+class ClassRoomController {
+  + joinClassRoom(myUserDetail: MyUserDetail, classRoomDTO: ClassRoomDTO): IdDTO
 }
 
-class TrackingProgressService {
-    + weekTrackingClassSet(dto: WeekTrackingDTO): WeekTrackingDTOResponse
+class ClassRoomService {
+  + joinClassRoom(userId: long, classCode: String): IdDTO
 }
 
-class WeekTrackingDTO {
-    - userId: String
-    - flashcardSetId: String
-    - startDate: Date
-    - endDate: Date
+interface ClassRoomRepository {
+  + findByClassRoomCode(classCode: String): Optional<ClassRoom>
 }
 
-class WeekTrackingDTOResponse {
-    - startDate: Date
-    - endDate: Date
-    - data: List<Long>
+class AppException {
+  <<Exception>>
+  + Error: Error
+}
+
+class ClassRoom {
+  - classRoomId: long
+  - classRoomCode: String
+}
+
+class ClassMember {
+  - classroom: ClassRoom
+  - user: User
 }
 
 class User {
-    // Fields and methods for the User class
+  - userId: long
 }
 
-class FlashcardSet {
-    // Fields and methods for the FlashcardSet class
+class ClassRoomDTO {
+  - classRoomCode: String
 }
 
 
-
-class Date {
-    // Fields and methods for the Date class
+class MyUserDetail {
+  - user: User
 }
 
-class UserRepository {
-    // Fields and methods for the UserRepository class
-}
-
-interface FlashcardSetRepository {
-    + getFlashcardSetByFlashcardSetId(Long) : FlashcardSet
-}
-
-interface TrackingProgressRepository {
-    + getTotalCardsByDayClassSet(Date,User,FlashcardSet) : List<Long>
-}
-
-TrackingProgressController --> TrackingProgressService
-TrackingProgressService --> WeekTrackingDTO
-TrackingProgressService --> WeekTrackingDTOResponse
-TrackingProgressService --> TrackingProgressRepository
-TrackingProgressService --> FlashcardSetRepository
-User --> UserRepository
-FlashcardSetRepository -->FlashcardSet
-TrackingProgressRepository --> Date
-TrackingProgressRepository --> User
-TrackingProgressRepository --> FlashcardSet
-
+ClassRoomController --> ClassRoomService
+ClassRoomService --> ClassRoomRepository
+ClassRoomService --> AppException
+ClassRoomService --> ClassMember
+ClassRoomService --> ClassRoomDTO
+ClassRoomService --> ClassRoom
+ClassRoomController --> MyUserDetail
+MyUserDetail --> User
 @enduml

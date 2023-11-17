@@ -3,66 +3,36 @@
 skinparam Style strictuml
 
 actor User
-participant ClassSetView
-participant TrackingProgressView
-participant TrackingProgressController
-participant TrackingProgressService
-participant Exception
-participant Dto
+participant HomePageView
+participant JoinClassView
+participant ClassRoomController
+participant ClassRoomService
+'participant Exception
+'participant Dto
 database Repository as ACTIVATE_ENTITY
 
-User -> ClassSetView: Click Button "Tracking"
-activate ClassSetView
-ClassSetView -> TrackingProgressView: Send Request
-activate TrackingProgressView
-TrackingProgressView -> TrackingProgressController: Send Request
-activate TrackingProgressController
-TrackingProgressController -> TrackingProgressService: Do method trackingProgressClassSet()
-activate TrackingProgressService
-TrackingProgressService -> Exception : Check Authorization
-activate Exception
-alt Un Authorized
-    Exception --> TrackingProgressService : Un Authorized
-    activate Exception
-    deactivate Exception
-    activate TrackingProgressService
-    TrackingProgressService --> TrackingProgressController: Return Mess error
-    activate TrackingProgressController
-    deactivate TrackingProgressService
-    TrackingProgressController --> TrackingProgressView : Send Mess
-    activate TrackingProgressView
-    deactivate TrackingProgressController
-    TrackingProgressView --> ClassSetView :Send Mess
-    activate ClassSetView
-    deactivate TrackingProgressView
-    ClassSetView --> User : Display Mess
-    deactivate ClassSetView
-else Authorized
+User -> HomePageView : click button "Join class"
+activate HomePageView
+HomePageView -> JoinClassView : Send request
+activate JoinClassView
+JoinClassView -> ClassRoomController:Send data
+activate ClassRoomController
+ClassRoomController -> ClassRoomService: Do joinClassRoom()
+activate ClassRoomService
+ClassRoomService -> Repository : get findByClassRoomCode
+activate Repository
+Repository --> ClassRoomService : Return ClassRoom
+ClassRoomService -> ClassRoomService : Add User in ClassRoom
+ClassRoomService -> Repository : do save()
+deactivate
+ClassRoomService -->ClassRoomController : Return mess " Join success "
+deactivate
+ClassRoomController --> JoinClassView : Display mess
+deactivate
+JoinClassView --> HomePageView :Go back HomePageView
+deactivate
+HomePageView --> User :
 
-    Exception --> TrackingProgressService : Authorized
-    activate Exception
-        deactivate Exception
-
-    activate TrackingProgressService
-    TrackingProgressService -> Repository : get Data Tracking in ClassSet
-
-    activate Repository
-    Repository --> TrackingProgressService : Return Data
-    TrackingProgressService -> Dto : Convert Data
-    activate Dto
-    Dto --> TrackingProgressService : Return Data
-    deactivate  Dto
-    activate TrackingProgressController
-    TrackingProgressService --> TrackingProgressController : Send Data
-    deactivate TrackingProgressService
-    TrackingProgressController --> TrackingProgressView : Send Data
-    activate TrackingProgressView
-    deactivate TrackingProgressController
-    TrackingProgressView --> User : Display Data
-    deactivate TrackingProgressView
-    deactivate Exception
-
-end
 
 
 

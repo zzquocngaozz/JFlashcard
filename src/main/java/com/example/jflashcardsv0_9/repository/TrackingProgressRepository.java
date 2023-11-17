@@ -43,7 +43,7 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
             "GROUP BY tp.user " +
             "ORDER BY flashcardSetCount DESC")
     List<Object[]> getTopUsersWithLearnedFlashcardSets(Pageable pageable);
-    @Query("SELECT COALESCE(COUNT(tp.trackingProgressId), 0) " +
+    @Query("SELECT COALESCE(COUNT(DISTINCT tp.cardId), 0) " +
             "FROM TrackingProgress tp " +
             "WHERE DATE(tp.timeLearn) = :date " +
             "AND tp.user = :userId " +
@@ -53,7 +53,7 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
             @Param("userId") User user,
             @Param("flashcardSetId") FlashcardSet flashcardSetId
     );
-    @Query("SELECT COALESCE(COUNT(tp.trackingProgressId), 0) " +
+    @Query("SELECT COALESCE(COUNT(DISTINCT tp.cardId), 0) " +
             "FROM TrackingProgress tp " +
             "WHERE DATE(tp.timeLearn) = :date " +
             "AND tp.user = :userId ")
@@ -65,4 +65,16 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
             "FROM TrackingProgress tp " +
             "WHERE DATE(tp.timeLearn) = :date ")
     List<Long> countDistinctFlashcardSetsByDate(@Param("date") Date date);
+    @Query("SELECT MIN(DATE(tp.timeLearn)) " +
+            "FROM TrackingProgress tp " +
+            "WHERE tp.user = :user " +
+            "AND tp.flashcardSet = :flashcard " +
+            "GROUP BY DATE(tp.timeLearn)")
+    Date getTimeLearnOld(@Param("user") User user, @Param("flashcard") FlashcardSet flashcard);
+    @Query("SELECT MAX(DATE(tp.timeLearn)) " +
+            "FROM TrackingProgress tp " +
+            "WHERE tp.user = :user " +
+            "AND tp.flashcardSet = :flashcard " +
+            "GROUP BY DATE(tp.timeLearn)")
+    Date getTimeLearnNew(@Param("user") User user, @Param("flashcard") FlashcardSet flashcard);
 }

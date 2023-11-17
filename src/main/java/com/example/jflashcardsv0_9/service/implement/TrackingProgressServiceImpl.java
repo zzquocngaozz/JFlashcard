@@ -15,6 +15,8 @@ import com.example.jflashcardsv0_9.service.TrackingProgressService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -180,8 +182,8 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
             dataWeek.addAll(dailyData);
         }
         return WeekTrackingDTOResponse.builder()
-                .startDate(dto.getStartDate())
-                .endDate(dto.getEndDate())
+                .startDate(trackingProgressRepository.getTimeLearnOld(user,flashcardSet))
+                .endDate(trackingProgressRepository.getTimeLearnNew(user,flashcardSet))
                 .data(dataWeek)
                 .build();
     }
