@@ -47,7 +47,6 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public void bookMarkCard(User user, long setId, long cardId) {
-        validate.checkExistsSetAndCard(setId,cardId);
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         BookMarkCard bookMarkCard = bookmarkCardRepository.getBookMarkCardByUserAndFlashcardSetAndCardId(user,flashcardSet,cardId);
         if(bookMarkCard == null){

@@ -19,7 +19,7 @@ public class ReadSetDTO {
     String description;
     int type;
     Date createdAt;
-    boolean isPrivate;
+    int status;
     boolean isBookMarked;
     long numberCard;
     int voted;

@@ -13,7 +13,7 @@ import java.sql.Date;
 public class FlashcardSetDTORequest {
     String title;
     String description;
-    boolean isPrivate;
+    int status;
     int type;
 
 }

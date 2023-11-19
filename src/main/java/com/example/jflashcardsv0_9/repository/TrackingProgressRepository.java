@@ -35,9 +35,10 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
             @Param("flashcardSet") FlashcardSet flashcardSet);
     @Query("SELECT tp.flashcardSet " +
             "FROM TrackingProgress tp " +
+            "WHERE tp.flashcardSet.status = :status " +
             "GROUP BY tp.flashcardSet " +
             "ORDER BY COUNT(DISTINCT tp.user)")
-    List<FlashcardSet> getTopFlashcardSetsWithMostUsers(Pageable pageable);
+    List<FlashcardSet> getTopFlashcardSetsWithMostUsers(@Param("status") int status,Pageable pageable);
     @Query("SELECT tp.user, COUNT(DISTINCT tp.flashcardSet) as flashcardSetCount " +
             "FROM TrackingProgress tp " +
             "GROUP BY tp.user " +

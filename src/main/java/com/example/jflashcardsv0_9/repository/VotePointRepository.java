@@ -20,7 +20,8 @@ public interface VotePointRepository extends JpaRepository<VotePoint, Integer> {
     Float calculateAveragePointByFlashcardSetId(@Param("flashcardSetId") Long flashcardSetId);
     @Query("SELECT vp.flashcardSet " +
             "FROM VotePoint vp " +
+            "WHERE vp.flashcardSet.status = :status " +
             "GROUP BY vp.flashcardSet " +
             "ORDER BY AVG(vp.point) DESC")
-    List<FlashcardSet> findTop3SetsWithHighestAveragePoints(Pageable pageable);
+    List<FlashcardSet> findTop3SetsWithHighestAveragePoints(@Param("status") int status,Pageable pageable);
 }

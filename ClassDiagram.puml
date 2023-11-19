@@ -3,36 +3,58 @@
 skinparam Style strictuml
 
 actor User
-participant HomePageView
-participant JoinClassView
+participant ClassRoomView
 participant ClassRoomController
 participant ClassRoomService
-'participant Exception
-'participant Dto
+participant Exception
+participant Dto
 database Repository as ACTIVATE_ENTITY
 
-User -> HomePageView : click button "Join class"
-activate HomePageView
-HomePageView -> JoinClassView : Send request
-activate JoinClassView
-JoinClassView -> ClassRoomController:Send data
+User -> ClassRoomView: Press on ClassRoom
+activate ClassRoomView
+ClassRoomView -> ClassRoomController: Send Request
 activate ClassRoomController
-ClassRoomController -> ClassRoomService: Do joinClassRoom()
-activate ClassRoomService
-ClassRoomService -> Repository : get findByClassRoomCode
-activate Repository
-Repository --> ClassRoomService : Return ClassRoom
-ClassRoomService -> ClassRoomService : Add User in ClassRoom
-ClassRoomService -> Repository : do save()
-deactivate
-ClassRoomService -->ClassRoomController : Return mess " Join success "
-deactivate
-ClassRoomController --> JoinClassView : Display mess
-deactivate
-JoinClassView --> HomePageView :Go back HomePageView
-deactivate
-HomePageView --> User :
 
+ClassRoomController -> ClassRoomService: getClassroomById(id, myUserDetail)
+activate ClassRoomService
+alt User is not a Member
+    ClassRoomService -> Exception : Check Member
+    activate Exception
+    Exception --> ClassRoomService: User is not a Member in the class
+    activate ClassRoomService
+    deactivate Exception
+    ClassRoomService --> ClassRoomController: Error message to user
+    activate ClassRoomController
+    deactivate ClassRoomService
+    ClassRoomController --> ClassRoomView : send mess
+    activate ClassRoomView
+    deactivate ClassRoomController
+
+    ClassRoomView --> User : Dispaly mess
+    deactivate ClassRoomView
+else User is a Member
+    ClassRoomService -> Exception : Check Member
+    activate Exception
+    Exception --> ClassRoomService: User is  a Member in the class
+    activate ClassRoomService
+    deactivate Exception
+    ClassRoomService -> Repository: Process and retrieve ClassRoomSingleDTO
+    activate Repository
+    ClassRoomService <-- Repository: ClassRoomSingleDTO
+    deactivate Repository
+    ClassRoomService -> Dto : Convert data
+    activate Dto
+    Dto --> ClassRoomService : Return data
+    deactivate Dto
+    ClassRoomService --> ClassRoomController: send Data
+        activate ClassRoomController
+        deactivate ClassRoomService
+        ClassRoomController --> ClassRoomView : send Data
+        activate ClassRoomView
+        deactivate ClassRoomController
+        ClassRoomView --> User : Dispaly Data
+            deactivate ClassRoomView
+end
 
 
 

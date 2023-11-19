@@ -58,7 +58,7 @@ public class ClassSetServiceImpl implements ClassSetService {
                             .classRoomId(classId)
                             .flashcardSetId(classSet.getFlashcardSet().getFlashcardSetId())
                             .title(classSet.getFlashcardSet().getTitle())
-                            .isPrivate(classSet.getFlashcardSet().isPrivate())
+                            .status(classSet.getFlashcardSet().getStatus())
                             .type(classSet.getFlashcardSet().getType())
                             .numberCard(flashcardSetService.numberCard(classSet.getFlashcardSet().getFlashcardSetId(),classSet.getFlashcardSet().getType()))
                             .authDTO(UserMapper.toAuthDTO(classSet.getFlashcardSet().getUser()))

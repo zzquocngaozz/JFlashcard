@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 public class KanjiDTO implements Card {
     Long cardId;
+    int status;
     String onSound;
     String kunSound;
     String chineseSound;
@@ -20,9 +21,5 @@ public class KanjiDTO implements Card {
     String exampleMean;
     String imgUrl;
     String trick;
-    Long flashcardSetId;
-    @Override
-    public Long getCardId() {
-        return this.cardId;
-    }
+
 }

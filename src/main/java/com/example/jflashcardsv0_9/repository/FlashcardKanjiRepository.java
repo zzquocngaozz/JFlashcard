@@ -3,6 +3,7 @@ package com.example.jflashcardsv0_9.repository;
 import com.example.jflashcardsv0_9.entities.FlashcardGrammar;
 import com.example.jflashcardsv0_9.entities.FlashcardKanji;
 import com.example.jflashcardsv0_9.entities.FlashcardSet;
+import com.example.jflashcardsv0_9.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,10 +13,11 @@ import java.util.Optional;
 @Repository
 
 public interface FlashcardKanjiRepository extends JpaRepository<FlashcardKanji, Integer> {
-    List<FlashcardKanji> findAllByFlashcardSet(FlashcardSet flashcardSet);
     FlashcardKanji getFlashcardKanjiByCardKanjiId(long cardId);
-    boolean existsFlashcardKanjiByCardKanjiIdAndFlashcardSet(long cardId,FlashcardSet flashcardSet);
+    FlashcardKanji getFlashcardKanjiByCardKanjiIdAndStatus(long cardId,long status);
     FlashcardKanji save(FlashcardKanji flashcardKanji);
+    List<FlashcardKanji> getAllByUser(User user);
+
     @Override
     void delete(FlashcardKanji flashcardKanji);
     @Override

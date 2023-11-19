@@ -183,31 +183,7 @@ public class Validate {
         }
     }
 
-    public void checkExistsSetAndCard(long setId, long cardId) {
-        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
-            throw new AppException(Error.SET_NOT_FOUND);
-        }else {
-            FlashcardSet flashcardSet =flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-            if(flashcardSet.getType() == 1){
-                if(!flashcardKanjiRepository.existsFlashcardKanjiByCardKanjiIdAndFlashcardSet(cardId,flashcardSet)){
-                    throw new AppException(Error.CARD_NOT_FOUND);
-                }
-            }
-            //            "Từ vựng";
-            else if(flashcardSet.getType() == 2){
-                if(!flashcardVocabRepository.existsFlashcardVocabByCardVocabIdAndFlashcardSet(cardId,flashcardSet)){
-                    throw new AppException(Error.CARD_NOT_FOUND);
-                }
-            }
-//             "Ngữ pháp";
-            else if(flashcardSet.getType() == 3){
-                if(!flashcardGrammarRepository.existsFlashcardGrammarByCardGrammarIdAndFlashcardSet(cardId,flashcardSet)){
-                    throw new AppException(Error.CARD_NOT_FOUND);
-                }
-            }
-        }
 
-    }
 
     public void checkClassMember(User user, ClassRoom classRoom) {
         if(!classMemberRepository.existsClassMemberByClassroomAndUser(classRoom,user)){

@@ -19,7 +19,7 @@ public class ClassSetDTO {
     long classRoomId;
     long flashcardSetId;
     String title;
-    boolean isPrivate;
+    int status;
     int type;
     long numberCard;
     AuthDTO authDTO;

@@ -3,19 +3,16 @@ package com.example.jflashcardsv0_9.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class VocabDTO implements Card {
-    Long cardId;
-    int status;
-    String term;
-    String mean;
-    String example;
-    String exampleMean;
-    String imgUrl;
-
+public class CardBankDTO {
+    List<KanjiDTO> kanjiDTOS;
+    List<GrammarDTO> grammarDTOS;
+    List<VocabDTO> vocabDTOS;
 }

@@ -19,6 +19,6 @@ public class FlashcardSetDTOResponse {
     String title;
     String description;
     int type;
-    boolean isPrivate;
+    int  status;
     AuthDTO authDTO;
 }

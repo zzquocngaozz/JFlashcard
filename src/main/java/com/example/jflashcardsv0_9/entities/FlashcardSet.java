@@ -39,8 +39,8 @@ public class FlashcardSet implements Serializable {
     @JsonFormat(pattern="dd-MM-yyyy")
     private Date createdAt;
 
-    @Column(name = "isprivate",columnDefinition = "BOOLEAN DEFAULT false")
-    private boolean isPrivate = false ;
+    @Column(name = "status", columnDefinition = "INT DEFAULT 1")
+    private int  status ;
 
     @Column(name = "type")
     private int type;
@@ -48,12 +48,6 @@ public class FlashcardSet implements Serializable {
     @ManyToOne // Mối quan hệ nhiều flashcardset đến một User
     @JoinColumn(name = "user") // Đặt tên cột foreign key là "user_id"
     private User user;
-    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
-    private List<FlashcardGrammar> flashcardGrammars;
-    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
-    private List<FlashcardKanji> flashcardKanjis;
-    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
-    private List<FlashcardVocab> flashcardVocabs;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<BookMarkSet> bookMarkSets;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)

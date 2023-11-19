@@ -1,7 +1,6 @@
 package com.example.jflashcardsv0_9.controller;
 
-import com.example.jflashcardsv0_9.dto.IdDTO;
-import com.example.jflashcardsv0_9.dto.ReadSetDTO;
+import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,19 @@ public class ReadSetController {
     public ReadSetDTO readFlashcardSetPublicOfGuest (@PathVariable(required = false) long setId) {
         return flashcardSetService.readFlashcardSetOfGuest(setId);
     }
-    @PostMapping("/{setId}/clone")//
-    public IdDTO cloneFlashcardSet (@PathVariable(required = false) long setId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
-         return flashcardSetService.cloneFlashcardSet(myUserDetail.getUser(),setId);
+    @PostMapping("/clonegrammar")//
+    public ResponseEntity<?> cloneCardGrammar (@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<GrammarDTO> grammarDTOS) {
+        flashcardSetService.cloneCardGrammar(myUserDetail.getUser(),grammarDTOS);
+        return ResponseEntity.ok("Clone card thanh cong");
+    }
+    @PostMapping("/clonekanji")//
+    public ResponseEntity<?> cloneCardKanji (@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<KanjiDTO> kanjiDTOS) {
+        flashcardSetService.cloneCardKanji(myUserDetail.getUser(),kanjiDTOS);
+        return ResponseEntity.ok("Clone card thanh cong");
+    }
+    @PostMapping("/clonevocab")//
+    public ResponseEntity<?> cloneCardVocab (@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<VocabDTO> vocabDTOS) {
+        flashcardSetService.cloneCardVocab(myUserDetail.getUser(),vocabDTOS);
+        return ResponseEntity.ok("Clone card thanh cong");
     }
 }

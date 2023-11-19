@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 public class GrammarDTO implements Card {
     Long cardId;
+    int status;
     String combination;
     String note;
     String term;
@@ -18,11 +19,6 @@ public class GrammarDTO implements Card {
     String example;
     String exampleMean;
     String imgUrl;
-    Long flashcardSetId;
-    @Override
-    public Long getCardId() {
-        return this.cardId;
-    }
     // Getter và Setter cho các thuộc tính
     // Các getter và setter cho các thuộc tính khác
 }

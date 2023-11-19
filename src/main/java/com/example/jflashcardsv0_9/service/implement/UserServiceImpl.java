@@ -233,8 +233,8 @@ public class UserServiceImpl implements UserService {
                     .build();
             rooms.add(room);
         }
-        List<FlashcardSet> setLearns = trackingProgressRepository.getTopFlashcardSetsWithMostUsers(pageable);
-        List<FlashcardSet> setVotes = votePointRepository.findTop3SetsWithHighestAveragePoints(pageable);
+        List<FlashcardSet> setLearns = trackingProgressRepository.getTopFlashcardSetsWithMostUsers(3,pageable);
+        List<FlashcardSet> setVotes = votePointRepository.findTop3SetsWithHighestAveragePoints(3,pageable);
         List<Object[]> topUsers = trackingProgressRepository.getTopUsersWithLearnedFlashcardSets(pageable);
         List<HomeDTO.User> userTops = new ArrayList<>();
         for (Object[] result : topUsers){
@@ -250,7 +250,7 @@ public class UserServiceImpl implements UserService {
 
         return HomeDTO.builder()
                 .numberUser(userRepository.count())
-                .numberFLCard(flashcardSetRepository.count())
+                .numberFLCard(flashcardSetRepository.countAllByStatus(3))
                 .numberClass(classRoomRepository.count())
                 .classRoom(rooms)
                 .setLearn(setLearns.stream()

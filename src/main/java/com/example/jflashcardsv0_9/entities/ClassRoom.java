@@ -54,7 +54,4 @@ public class ClassRoom implements Serializable {
     @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL)
     private List<ClassSet> classSets;
 
-    @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL)
-    private List<ChatMessage> chatMessages;
-
 }

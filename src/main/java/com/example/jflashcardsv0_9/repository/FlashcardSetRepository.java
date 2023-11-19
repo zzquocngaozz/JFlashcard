@@ -14,12 +14,15 @@ import java.util.Optional;
 public interface FlashcardSetRepository extends JpaRepository<FlashcardSet, Integer>{
     FlashcardSet save(FlashcardSet flashcardSet);
     FlashcardSet getFlashcardSetByFlashcardSetId(long setId);
-    List<FlashcardSet> findAllByTitleContainingAndIsPrivate (String title, boolean isPrivate);
+    List<FlashcardSet> findAllByTitleContainingAndStatus (String title, int status);
     @Override
     void delete(FlashcardSet flashcardSet);
     boolean existsFlashcardSetByFlashcardSetId(long setid);
 
     List<FlashcardSet> getAllByUser(User user);
+    List<FlashcardSet> getAllByUserAndStatus(User user,int status);
+
+    Long countAllByStatus(int status);
 
     @Query("SELECT COALESCE(COUNT(fs.flashcardSetId), 0) " +
             "FROM FlashcardSet fs " +

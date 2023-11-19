@@ -24,21 +24,21 @@ public interface FlashcardSetService {
     void deleteFlashcardSetById(long setid,long userid);
 
     // card kanji
-    KanjiDTO createFlashcardKanji(KanjiDTO kanjiDTO, long userID, long setId);
-    List<KanjiDTO> createFlashcardKanjiList(List<KanjiDTO> kanjiDTOs, long userID, long setId);
-    void updateKanjiCard(KanjiDTO kanjiDTO, long userID, long setId);
+    void createFlashcardKanji(KanjiDTO kanjiDTO, User user);
+    void createFlashcardKanjiList(List<KanjiDTO> kanjiDTOs, User user);
+    void updateKanjiCard(KanjiDTO kanjiDTO, User user);
     void deleteFlKanji(long cardId);
     // card grammar
-    GrammarDTO createFlashcardGrammar(GrammarDTO grammarDTO, long userID, long setId);
-    List<GrammarDTO> createFlashcardGrammarList(List<GrammarDTO> grammarDTOs, long userID, long setId);
-    void updateGrammarCard(GrammarDTO grammarDTO, long userID, long setId);
+    void createFlashcardGrammar(GrammarDTO grammarDTO, User user);
+    void createFlashcardGrammarList(List<GrammarDTO> grammarDTOs, User user);
+    void updateGrammarCard(GrammarDTO grammarDTO, User user);
 
     void deleteFlGrammar(long cardId);
 
     // card vocab
-    VocabDTO createFlashcardVocab(VocabDTO vocabDTO, long userID, long setId);
-    List<VocabDTO> createFlashcardVocabList(List<VocabDTO> vocabDTOs, long userID, long setId);
-    void updateVocabCard(VocabDTO vocabDTO, long userID, long setId);
+    void createFlashcardVocab(VocabDTO vocabDTO, User user);
+    void createFlashcardVocabList(List<VocabDTO> vocabDTOs, User user);
+    void updateVocabCard(VocabDTO vocabDTO, User user);
 
     void deleteFlvocab(long cardId);
 
@@ -60,5 +60,21 @@ public interface FlashcardSetService {
 
     void voteFlashcardSet(User user, long setId, IdDTO idDTO);
 
-    IdDTO cloneFlashcardSet(User user, long setId);
+    List<GrammarDTO> listBankGrammarCard(User user);
+
+    List<KanjiDTO> listBankKanjiCard(User user);
+
+    List<VocabDTO> listBankVocabCard(User user);
+
+    void cloneCardGrammar(User user, List<GrammarDTO> grammarDTOS);
+
+    void cloneCardKanji(User user, List<KanjiDTO> kanjiDTOS);
+
+    void cloneCardVocab(User user, List<VocabDTO> vocabDTOS);
+
+    List<SetSingleDTO> listManagerSetOfUser(User user);
+
+    List<SetSingleDTO> listSetOfUserPublic(User user);
+
+    CardBankDTO listManagerBankCard(User user);
 }

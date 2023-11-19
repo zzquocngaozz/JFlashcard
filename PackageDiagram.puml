@@ -1,51 +1,49 @@
 @startuml
 
 class ClassRoomController {
-  + joinClassRoom(myUserDetail: MyUserDetail, classRoomDTO: ClassRoomDTO): IdDTO
+    + listMembers(myUserDetail: MyUserDetail, classId: long): List<AuthDTO>
 }
 
 class ClassRoomService {
-  + joinClassRoom(userId: long, classCode: String): IdDTO
+    + getAllClassMembersByClassRoom(classRoomId: long): List<AuthDTO>
 }
 
 interface ClassRoomRepository {
-  + findByClassRoomCode(classCode: String): Optional<ClassRoom>
+    + getClassRoomByClassRoomId(classRoomId: long): ClassRoom
 }
 
-class AppException {
-  <<Exception>>
-  + Error: Error
+interface ClassMemberRepository {
+    + getAllByClassroom(classRoom: ClassRoom): List<ClassMember>
 }
 
 class ClassRoom {
-  - classRoomId: long
-  - classRoomCode: String
+    // ClassRoom attributes and methods here
 }
 
 class ClassMember {
-  - classroom: ClassRoom
-  - user: User
+    // ClassMember attributes and methods here
 }
-
-class User {
-  - userId: long
-}
-
-class ClassRoomDTO {
-  - classRoomCode: String
-}
-
 
 class MyUserDetail {
-  - user: User
+    // MyUserDetail attributes and methods here
+}
+
+class AuthDTO {
+    // AuthDTO attributes and methods here
+}
+
+class UserMapper {
+    + toAuthDTO(user: User): AuthDTO
 }
 
 ClassRoomController --> ClassRoomService
-ClassRoomService --> ClassRoomRepository
-ClassRoomService --> AppException
-ClassRoomService --> ClassMember
-ClassRoomService --> ClassRoomDTO
-ClassRoomService --> ClassRoom
 ClassRoomController --> MyUserDetail
-MyUserDetail --> User
+ClassRoomService --> ClassRoomRepository
+ClassRoomService --> ClassMemberRepository
+ClassRoomService --> ClassMember
+ClassRoomRepository --> ClassRoom
+ClassMemberRepository --> ClassRoom
+ClassMember --> UserMapper
+UserMapper--> AuthDTO
+
 @enduml
