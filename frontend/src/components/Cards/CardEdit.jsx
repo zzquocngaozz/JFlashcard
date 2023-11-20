@@ -7,33 +7,68 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import React, { useCallback, useState } from "react";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import KanjiDialogForm from "../Dialog/KanjiDialogForm";
+import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import placeholder from "../../assets/images/placeholder.png";
-import StarIcon from "@mui/icons-material/Star";
-import useAuth from "../../hooks/useAuth";
-import { useEffect, useState } from "react";
-import { useFlashcardSetContext } from "../../context/FlashcardSetContext";
+import { isGrammarCard, isKanjiCard, isVocaCard } from "../../utils/cardUtil";
+import VocaDialogForm from "../Dialog/VocaDialogForm";
+import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 
-const ReadCard = ({ card, index, onSeclectCard }) => {
-  const { isLogin } = useAuth();
-  const { markedCards, mutation } = useFlashcardSetContext();
-  const [selected, setSelected] = useState(false);
-  useEffect(() => {
-    setSelected(markedCards?.includes(card));
-  }, [markedCards]);
+const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
+  const [openForm, setOpenForm] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const handleToggleForm = useCallback(() => {
+    setOpenForm(!openForm);
+  }, [openForm]);
+
+  const handleToggleDelete = useCallback(() => {
+    setOpenDelete(!openDelete);
+  }, [openDelete]);
+  // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
+  const handleUpdate = (data) => {
+    onUpdate(data, handleToggleForm);
+  };
   return (
     <Stack
-      className="set-card"
+      key={index}
+      component={Paper}
       bgcolor={"#fff"}
       m={"10px 0"}
       borderRadius={"8px"}
       height={320}
       width={"100%"}
       sx={{
-        boxShadow: "1px 2px 5px -1px rgba(0, 0, 0, 0.25)",
         overflowY: "scroll",
       }}
-      // overflow={"none"}
     >
+      <Stack
+        flexGrow={12}
+        flexDirection={"row"}
+        maxHeight={50}
+        sx={{ borderBottom: "1px solid rgba(0,0,0,0.1)", padding: "10px 20px" }}
+      >
+        <Typography flex={5}>{index + 1}</Typography>
+        <Tooltip title={"Chỉnh sửa"}>
+          <IconButton
+            sx={{ width: 30, height: 30, marginRight: "10px" }}
+            onClick={handleToggleForm}
+          >
+            <ModeEditIcon color="primary" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={"Xoá thẻ"}>
+          <IconButton
+            sx={{ width: 30, height: 30 }}
+            onClick={handleToggleDelete}
+          >
+            <DeleteForeverIcon color="error" />
+          </IconButton>
+        </Tooltip>
+      </Stack>
       <Stack
         flexDirection={"row"}
         height={"100%"}
@@ -46,25 +81,18 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Typography variant="h6" component={"p"}>
-            {card?.term}
-          </Typography>
+          <Typography variant="h6">{card?.term}</Typography>
         </Stack>
 
         <Stack
           flex={7}
-          className="backside-card"
-          minHeight={"100%"}
-          p={2}
+          height={"100%"}
+          p={1}
           position={"relative"}
-          justifyContent={"flex-start"}
-          sx={{
-            rowGap: "10px",
-            "& p": { maxWidth: "calc(100% - 160px)" },
-          }}
-          // spacing={1}
+          sx={{ "& p": { maxWidth: "calc(100% - 160px)" } }}
+          spacing={1}
         >
-          {!!card.chineseSound ? (
+          {!!card?.chineseSound ? (
             <Stack>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
                 Ý nghĩa:
@@ -75,14 +103,14 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
               </Typography>
             </Stack>
           ) : (
-            <>
+            <Stack>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
                 Ý nghĩa:
               </Typography>
               <Typography>{card?.mean}</Typography>
-            </>
+            </Stack>
           )}
-          {!!card?.chineseSound ? (
+          {!!card?.onSound ? (
             <Stack sx={{ gap: 10, flexDirection: "row" }}>
               <Stack width={"40%"}>
                 <Typography variant="span" sx={{ fontWeight: 500 }}>
@@ -100,6 +128,7 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
           ) : (
             <></>
           )}
+
           {!!card?.trick ? (
             <Stack>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
@@ -142,14 +171,7 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
             <></>
           )}
           <Box
-            sx={{
-              position: "absolute",
-              right: 10,
-              top: "50%",
-              transform: "translateY(-50%)",
-              width: 150,
-              height: 150,
-            }}
+            sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
           >
             {!!card?.imgUrl ? (
               <img
@@ -163,33 +185,44 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
               <></>
             )}
           </Box>
-          {isLogin() ? (
-            <Box
-              sx={{
-                position: "absolute",
-                top: 5,
-                right: 20,
-              }}
-              display={!mutation}
-            >
-              <Tooltip title={`${!selected ? "Chọn" : "Bỏ chọn"}`}>
-                <IconButton
-                  onClick={() => {
-                    setSelected(!selected);
-                    onSeclectCard(card?.cardId);
-                  }}
-                >
-                  <StarIcon sx={{ color: `${selected ? "#ff9800" : ""}` }} />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          ) : (
-            <></>
-          )}
         </Stack>
       </Stack>
+      {openForm && isKanjiCard(card) ? (
+        <KanjiDialogForm
+          handleToggle={handleToggleForm}
+          dataInit={card}
+          onSubmit={handleUpdate}
+          mutationing={mutationing}
+        />
+      ) : openForm && isVocaCard(card) ? (
+        <VocaDialogForm
+          handleToggle={handleToggleForm}
+          dataInit={card}
+          onSubmit={handleUpdate}
+          mutationing={mutationing}
+        />
+      ) : openForm && isGrammarCard(card) ? (
+        <GrammarDialogForm
+          handleToggle={handleToggleForm}
+          dataInit={card}
+          onSubmit={handleUpdate}
+          mutationing={mutationing}
+        />
+      ) : (
+        <></>
+      )}
+      {openDelete ? (
+        <DialogAlertDeleteCard
+          handleToggle={handleToggleDelete}
+          onDelete={() => {
+            onDelete(card?.cardId, handleToggleDelete);
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </Stack>
   );
 };
 
-export default ReadCard;
+export default CardEdit;

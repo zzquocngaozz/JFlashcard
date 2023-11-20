@@ -21,6 +21,7 @@ import { getColorFromEnum } from "../utils/colorGetter";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import BackdropLoading from "./FeedBack/BackdropLoading";
+import SaveIcon from "@mui/icons-material/Save";
 
 const ReadCardMeta = () => {
   const { flashcardSet, remain, cloning, learnedCards, markedCards, cloneSet } =
@@ -181,7 +182,7 @@ const ReadCardMeta = () => {
         ) : isLogin() ? (
           <Tooltip title={"Lưu và sửa"}>
             <IconButton onClick={cloneSet}>
-              <FilterNoneIcon />
+              <SaveIcon />
             </IconButton>
           </Tooltip>
         ) : (
