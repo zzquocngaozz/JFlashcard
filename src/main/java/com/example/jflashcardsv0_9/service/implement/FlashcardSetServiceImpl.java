@@ -322,26 +322,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
             openedFlashcardSetRepository.save(openedFlashcardSet);
         }
         List<Card> cards = (List<Card>) getCardDTOSPublic(flashcardSet);
-
-        List<BookMarkCard> bookMarkCards = bookmarkCardRepository.getAllByUserAndAndFlashcardSet(user,flashcardSet);
-        List<ReadSetDTO.MarkedCard> markedCards = new ArrayList<>();
-        for (BookMarkCard bookMarkCard : bookMarkCards) {
-            ReadSetDTO.MarkedCard markedCard = ReadSetDTO.MarkedCard.builder()
-                    .bookMarkCardId(bookMarkCard.getBookMarkCardId())
-                    .userId(bookMarkCard.getUser().getUserId())
-                    .flashcardSetId(bookMarkCard.getFlashcardSet().getFlashcardSetId())
-                    .cardId(bookMarkCard.getCardId())
-                    .build();
-            markedCards.add(markedCard);
-        }
-        List<Long> trackingProgresses = trackingProgressRepository.findDistinctCardIdsByUserAndFlashcardSet(user,flashcardSet);
-        List<ReadSetDTO.LearnedCard> learnedCards = new ArrayList<>();
-        for(Long longs :  trackingProgresses ){
-            ReadSetDTO.LearnedCard learnedCard = ReadSetDTO.LearnedCard.builder()
-                    .cardId(longs)
-                    .build();
-            learnedCards.add(learnedCard);
-        }
+        List<ReadSetDTO.MarkedCard> markedCards = getCardBookmarkPublic(user,flashcardSet);
+        List<ReadSetDTO.LearnedCard> learnedCards = getCardLearnPublic(user,flashcardSet);
         VotePoint votePoint = votePointRepository.getVotePointByFlashcardSetAndUser(flashcardSet, user);
         int voted = (votePoint != null) ? votePoint.getPoint() : 0;
         return ReadSetDTO.builder()
@@ -363,12 +345,77 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .build();
     }
 
-    @Override
-    public List<SetSingleDTO> listSetOfUser(User user) {
-        return null;
+    private List<ReadSetDTO.LearnedCard> getCardLearnPublic(User user, FlashcardSet flashcardSet) {
+        List<Long> trackingProgresses = trackingProgressRepository.findDistinctCardIdsByUserAndFlashcardSet(user, flashcardSet);
+        List<ReadSetDTO.LearnedCard> learnedCards = new ArrayList<>();
+
+        for (Long cardId : trackingProgresses) {
+            ReadSetDTO.LearnedCard learnedCard = createLearnedCard(cardId, flashcardSet.getType());
+            learnedCards.add(learnedCard);
+        }
+
+        return learnedCards;
     }
 
-    private Collection<? extends Card> getCardDTOSPublic(FlashcardSet flashcardSet) {
+    private ReadSetDTO.LearnedCard createLearnedCard(Long cardId, int flashcardType) {
+        switch (flashcardType) {
+            case 1:
+                return ReadSetDTO.LearnedCard.builder()
+                        .cardId(flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(cardId, 3).getCardKanjiId())
+                        .build();
+            case 2:
+                return ReadSetDTO.LearnedCard.builder()
+                        .cardId(flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(cardId, 3).getCardVocabId())
+                        .build();
+            case 3:
+                return ReadSetDTO.LearnedCard.builder()
+                        .cardId(flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(cardId, 3).getCardGrammarId())
+                        .build();
+            default:
+                throw new IllegalArgumentException("Unsupported flashcard type: " + flashcardType);
+        }
+    }
+
+
+    public List<ReadSetDTO.MarkedCard> getCardBookmarkPublic(User user, FlashcardSet flashcardSet) {
+        List<BookMarkCard> bookMarkCards = bookmarkCardRepository.getAllByUserAndAndFlashcardSet(user, flashcardSet);
+        List<ReadSetDTO.MarkedCard> markedCards = new ArrayList<>();
+
+        bookMarkCards.forEach(bookMarkCard -> {
+            ReadSetDTO.MarkedCard markedCard = createMarkedCard(bookMarkCard, flashcardSet.getType());
+            markedCards.add(markedCard);
+        });
+
+        return markedCards;
+    }
+
+
+    private ReadSetDTO.MarkedCard createMarkedCard(BookMarkCard bookMarkCard, int flashcardType) {
+        ReadSetDTO.MarkedCard markedCard = ReadSetDTO.MarkedCard.builder()
+                .bookMarkCardId(bookMarkCard.getBookMarkCardId())
+                .userId(bookMarkCard.getUser().getUserId())
+                .flashcardSetId(bookMarkCard.getFlashcardSet().getFlashcardSetId())
+                .cardId(getCardIdBook(bookMarkCard, flashcardType))
+                .build();
+
+        return markedCard;
+    }
+
+    private long getCardIdBook(BookMarkCard bookMarkCard, int flashcardType) {
+        switch (flashcardType) {
+            case 1:
+                return flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(bookMarkCard.getCardId(), 3).getCardKanjiId();
+            case 2:
+                return flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(bookMarkCard.getCardId(), 3).getCardVocabId();
+            case 3:
+                return flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(bookMarkCard.getCardId(), 3).getCardGrammarId();
+            default:
+                throw new IllegalArgumentException("Unsupported flashcard type: " + flashcardType);
+        }
+    }
+
+
+    public Collection<? extends Card> getCardDTOSPublic(FlashcardSet flashcardSet) {
         List<Card> cards = new ArrayList<>();
         List<FlashcardSetAssociation> flashcardSetAssociations = flashcardSetAssociationRepository.findAllByFlashcardSet(flashcardSet);
 
@@ -447,7 +494,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
     @Override
     public List<SetSingleDTO> listHistorySetOfUser(User user) {
-        List<OpenedFlashcardSet> openedFlashcardSets = openedFlashcardSetRepository.findAllByUserOrderByOpenedAtDesc(user);
+        List<OpenedFlashcardSet> openedFlashcardSets = openedFlashcardSetRepository.findAllByUserAndFlashcardSet_StatusOrderByOpenedAtDesc(user,3);
         List<FlashcardSet> flashcardSets = new ArrayList<>();
         for (OpenedFlashcardSet openedFlashcardSet : openedFlashcardSets){
             flashcardSets.add(openedFlashcardSet.getFlashcardSet());
@@ -458,7 +505,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
     @Override
     public List<SetSingleDTO> listBookMarkSetOfUser(User user) {
-        List<BookMarkSet> bookMarkSets = bookmarkSetRepository.findAllByUser(user);
+        List<BookMarkSet> bookMarkSets = bookmarkSetRepository.findAllByUserAndFlashcardSet_Status(user,3);
         List<FlashcardSet> flashcardSets = new ArrayList<>();
         for (BookMarkSet bookMarkSet : bookMarkSets){
             flashcardSets.add(bookMarkSet.getFlashcardSet());

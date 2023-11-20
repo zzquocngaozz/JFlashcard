@@ -22,6 +22,7 @@ public interface FlashcardKanjiRepository extends JpaRepository<FlashcardKanji, 
     void delete(FlashcardKanji flashcardKanji);
     @Override
     <S extends FlashcardKanji> List<S> saveAll(Iterable<S> entities);
-
+    Long countByUser(User user);
+    Long countByUserAndStatus(User user,int status);
 
 }

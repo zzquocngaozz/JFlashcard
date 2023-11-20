@@ -48,8 +48,6 @@ public interface FlashcardSetService {
     List<SetSingleDTO> searchFlashcardSetPublic(String title);
     ReadSetDTO readFlashcardSet(User user, long setId);
 
-    List<SetSingleDTO> listSetOfUser(User user);
-
     ReadSetDTO readFlashcardSetOfGuest(long setId);
 
     List<SetSingleDTO> listHistorySetOfUser(User user);

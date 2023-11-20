@@ -28,4 +28,6 @@ public interface FlashcardSetRepository extends JpaRepository<FlashcardSet, Inte
             "FROM FlashcardSet fs " +
             "WHERE fs.type = :type ")
     Long getTotalSetByTypeOrdered(@Param("type") Long type);
+    Long countAllByUserAndType(User user,int type);
+    Long countAllByUserAndStatus(User user,int status);
 }

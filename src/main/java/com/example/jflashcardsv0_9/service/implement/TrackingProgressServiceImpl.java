@@ -156,20 +156,6 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
 
     }
 
-    @Override
-    public WeekTrackingDTOResponse weekTrackingHome(User user, WeekTrackingDTO dto) {
-        List<LocalDate> dateRange = getDateRange(dto.getStartDate().toLocalDate(), dto.getEndDate().toLocalDate());
-        List<Long> dataWeek = new ArrayList<>();
-        for (LocalDate date : dateRange) {
-            List<Long> dailyData = trackingProgressRepository.getTotalCardsByDayHomePage(Date.valueOf(date), user);
-            dataWeek.addAll(dailyData);
-        }
-        return WeekTrackingDTOResponse.builder()
-                .startDate(dto.getStartDate())
-                .endDate(dto.getEndDate())
-                .data(dataWeek)
-                .build();
-    }
 
     @Override
     public WeekTrackingDTOResponse weekTrackingClassSet(WeekTrackingDTO dto) {

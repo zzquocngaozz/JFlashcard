@@ -20,5 +20,6 @@ public interface FlashcardVocabRepository extends JpaRepository<FlashcardVocab, 
 
     @Override
     <S extends FlashcardVocab> List<S> saveAll(Iterable<S> entities);
-
+    Long countByUser(User user);
+    Long countByUserAndStatus(User user,int status);
 }

@@ -18,5 +18,7 @@ public interface OpenedFlashcardSetRepository extends JpaRepository<OpenedFlashc
     List<OpenedFlashcardSet> findAllByUserOrderByOpenedAtDesc(@Param("user") User user);
     @Query("SELECT ofs FROM OpenedFlashcardSet ofs WHERE ofs.user = :user ORDER BY ofs.openedAt DESC")
     List<OpenedFlashcardSet> findTop3ByUserOrderByOpenedAtDesc(@Param("user") User user, Pageable pageable);
-    List<OpenedFlashcardSet> findAllByUser(User user);
+    List<OpenedFlashcardSet> findAllByUserAndFlashcardSet_StatusOrderByOpenedAtDesc(User user,int status);
+    List<OpenedFlashcardSet> getAllByUserAndFlashcardSet_StatusOrderByOpenedAtDesc(User user,int status,Pageable pageable);
+
 }

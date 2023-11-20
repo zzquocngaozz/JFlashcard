@@ -22,4 +22,7 @@ public interface FlashcardGrammarRepository extends JpaRepository<FlashcardGramm
     void delete(FlashcardGrammar flashcardGrammar);
     @Override
     <S extends FlashcardGrammar> List<S> saveAll(Iterable<S> entities);
+    Long countByUser(User user);
+    Long countByUserAndStatus(User user,int status);
+
 }

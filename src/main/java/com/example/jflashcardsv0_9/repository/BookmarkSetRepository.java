@@ -13,4 +13,6 @@ public interface BookmarkSetRepository extends JpaRepository<BookMarkSet,Long> {
     boolean existsBookMarkSetByUserAndAndFlashcardSet(User user, FlashcardSet flashcardSet);
 
     List<BookMarkSet> findAllByUser(User user);
+    List<BookMarkSet> findAllByUserAndFlashcardSet_Status(User user,int status);
+
 }

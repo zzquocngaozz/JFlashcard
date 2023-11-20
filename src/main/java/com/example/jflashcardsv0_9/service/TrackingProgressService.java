@@ -19,8 +19,6 @@ public interface TrackingProgressService {
 
     void sendMailTracking(TrackingDTOResponse trackingDTOResponse);
 
-    WeekTrackingDTOResponse weekTrackingHome(User user, WeekTrackingDTO weekTrackingDTO);
-
     WeekTrackingDTOResponse weekTrackingClassSet(WeekTrackingDTO weekTrackingDTO);
 
 }

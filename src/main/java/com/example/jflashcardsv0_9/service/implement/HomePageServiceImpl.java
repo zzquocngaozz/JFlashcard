@@ -28,15 +28,21 @@ public class HomePageServiceImpl implements HomePageService {
     ClassMemberRepository classMemberRepository;
     OpenedFlashcardSetRepository openedFlashcardSetRepository;
     FlashcardSetRepository flashcardSetRepository;
+    FlashcardGrammarRepository flashcardGrammarRepository;
+    FlashcardKanjiRepository flashcardKanjiRepository;
+    FlashcardVocabRepository flashcardVocabRepository;
     ClassRoomRepository classRoomRepository;
     UserRepository userRepository;
     TrackingProgressRepository trackingProgressRepository;
     @Autowired
 
-    public HomePageServiceImpl(ClassMemberRepository classMemberRepository, OpenedFlashcardSetRepository openedFlashcardSetRepository, FlashcardSetRepository flashcardSetRepository, ClassRoomRepository classRoomRepository, UserRepository userRepository, TrackingProgressRepository trackingProgressRepository) {
+    public HomePageServiceImpl(ClassMemberRepository classMemberRepository, OpenedFlashcardSetRepository openedFlashcardSetRepository, FlashcardSetRepository flashcardSetRepository, FlashcardGrammarRepository flashcardGrammarRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, ClassRoomRepository classRoomRepository, UserRepository userRepository, TrackingProgressRepository trackingProgressRepository) {
         this.classMemberRepository = classMemberRepository;
         this.openedFlashcardSetRepository = openedFlashcardSetRepository;
         this.flashcardSetRepository = flashcardSetRepository;
+        this.flashcardGrammarRepository = flashcardGrammarRepository;
+        this.flashcardKanjiRepository = flashcardKanjiRepository;
+        this.flashcardVocabRepository = flashcardVocabRepository;
         this.classRoomRepository = classRoomRepository;
         this.userRepository = userRepository;
         this.trackingProgressRepository = trackingProgressRepository;
@@ -49,7 +55,7 @@ public class HomePageServiceImpl implements HomePageService {
         List<ClassRoomSingleDTO> classRoomSingleDTOS = classrooms.stream()
                 .map((ClassRoom classRoom) -> ClassroomMapper.convertClasRoomToClassRoomSingleDTO(classRoom))
                 .collect(Collectors.toList());
-        List<OpenedFlashcardSet> openedFlashcardSets = openedFlashcardSetRepository.findTop3ByUserOrderByOpenedAtDesc(user,pageable);
+        List<OpenedFlashcardSet> openedFlashcardSets = openedFlashcardSetRepository.getAllByUserAndFlashcardSet_StatusOrderByOpenedAtDesc(user,3,pageable);
         List<FlashcardSet> flashcardSets = new ArrayList<>();
         for (OpenedFlashcardSet openedFlashcardSet : openedFlashcardSets){
             flashcardSets.add(openedFlashcardSet.getFlashcardSet());
@@ -99,6 +105,94 @@ public class HomePageServiceImpl implements HomePageService {
                 .startDate( Date.valueOf(firstDayOfWeek))
                 .endDate(Date.valueOf(lastDayOfWeek))
                 .data(dataWeek)
+                .build();
+    }
+    @Override
+    public LearnDashboardDTO weekTrackingHomeLearn(User user, WeekTrackingDTO dto) {
+        List<LocalDate> dateRange = getDateRange(dto.getStartDate().toLocalDate(), dto.getEndDate().toLocalDate());
+        List<Long> dataWeek = new ArrayList<>();
+        for (LocalDate date : dateRange) {
+            List<Long> dailyData = trackingProgressRepository.getTotalCardsByDayHomePage(Date.valueOf(date), user);
+            dataWeek.addAll(dailyData);
+        }
+
+        return LearnDashboardDTO.builder()
+                .weekTrackingDTOResponse(WeekTrackingDTOResponse.builder()
+                        .startDate(dto.getStartDate())
+                        .endDate(dto.getEndDate())
+                        .data(dataWeek)
+                        .build())
+                .countClass(classMemberRepository.countDistinctByUser(user))
+                .setType(LearnDashboardDTO.DataType.builder()
+                        .numberKanji(flashcardSetRepository.countAllByUserAndType(user,1))
+                        .numberVocab(flashcardSetRepository.countAllByUserAndType(user,2))
+                        .numberGrammar(flashcardSetRepository.countAllByUserAndType(user,3))
+                        .build())
+                .dataSet(LearnDashboardDTO.Data.builder()
+                        .numberDraft(flashcardSetRepository.countAllByUserAndStatus(user,1))
+                        .numberDone(flashcardSetRepository.countAllByUserAndStatus(user,2))
+                        .numberPublic(flashcardSetRepository.countAllByUserAndStatus(user,3))
+                        .numberClose(flashcardSetRepository.countAllByUserAndStatus(user,4))
+                        .build())
+                .cardType(LearnDashboardDTO.DataType.builder()
+                        .numberKanji(flashcardKanjiRepository.countByUser(user))
+                        .numberVocab(flashcardVocabRepository.countByUser(user))
+                        .numberGrammar(flashcardGrammarRepository.countByUser(user))
+                        .build())
+                .dataCard(LearnDashboardDTO.Data.builder()
+                        .numberDraft(flashcardKanjiRepository.countByUserAndStatus(user,1)
+                                + flashcardGrammarRepository.countByUserAndStatus(user,1)
+                         + flashcardVocabRepository.countByUserAndStatus(user,1))
+                        .numberDone(flashcardKanjiRepository.countByUserAndStatus(user,2)
+                                + flashcardGrammarRepository.countByUserAndStatus(user,2)
+                                + flashcardVocabRepository.countByUserAndStatus(user,2))
+                        .numberPublic(flashcardKanjiRepository.countByUserAndStatus(user,3)
+                                + flashcardGrammarRepository.countByUserAndStatus(user,3)
+                                + flashcardVocabRepository.countByUserAndStatus(user,3))
+                        .numberClose(flashcardKanjiRepository.countByUserAndStatus(user,4)
+                                + flashcardGrammarRepository.countByUserAndStatus(user,4)
+                                + flashcardVocabRepository.countByUserAndStatus(user,4))
+                        .build())
+                .build();
+
+    }
+
+    @Override
+    public TeacherDashboardDTO weekTrackingHomeTeacher(User user, WeekTrackingDTO weekTrackingDTO) {
+        List<ClassRoom> classRooms = classRoomRepository.findAllByTeacher(user);
+        return TeacherDashboardDTO.builder()
+                .countClass(classMemberRepository.countDistinctByUser(user))
+                .countMember(classMemberRepository.countStudentsByTeacherInClasses(user,classRooms))
+                .setType(LearnDashboardDTO.DataType.builder()
+                        .numberKanji(flashcardSetRepository.countAllByUserAndType(user,1))
+                        .numberVocab(flashcardSetRepository.countAllByUserAndType(user,2))
+                        .numberGrammar(flashcardSetRepository.countAllByUserAndType(user,3))
+                        .build())
+                .dataSet(LearnDashboardDTO.Data.builder()
+                        .numberDraft(flashcardSetRepository.countAllByUserAndStatus(user,1))
+                        .numberDone(flashcardSetRepository.countAllByUserAndStatus(user,2))
+                        .numberPublic(flashcardSetRepository.countAllByUserAndStatus(user,3))
+                        .numberClose(flashcardSetRepository.countAllByUserAndStatus(user,4))
+                        .build())
+                .cardType(LearnDashboardDTO.DataType.builder()
+                        .numberKanji(flashcardKanjiRepository.countByUser(user))
+                        .numberVocab(flashcardVocabRepository.countByUser(user))
+                        .numberGrammar(flashcardGrammarRepository.countByUser(user))
+                        .build())
+                .dataCard(LearnDashboardDTO.Data.builder()
+                        .numberDraft(flashcardKanjiRepository.countByUserAndStatus(user,1)
+                                + flashcardGrammarRepository.countByUserAndStatus(user,1)
+                                + flashcardVocabRepository.countByUserAndStatus(user,1))
+                        .numberDone(flashcardKanjiRepository.countByUserAndStatus(user,2)
+                                + flashcardGrammarRepository.countByUserAndStatus(user,2)
+                                + flashcardVocabRepository.countByUserAndStatus(user,2))
+                        .numberPublic(flashcardKanjiRepository.countByUserAndStatus(user,3)
+                                + flashcardGrammarRepository.countByUserAndStatus(user,3)
+                                + flashcardVocabRepository.countByUserAndStatus(user,3))
+                        .numberClose(flashcardKanjiRepository.countByUserAndStatus(user,4)
+                                + flashcardGrammarRepository.countByUserAndStatus(user,4)
+                                + flashcardVocabRepository.countByUserAndStatus(user,4))
+                        .build())
                 .build();
     }
 
