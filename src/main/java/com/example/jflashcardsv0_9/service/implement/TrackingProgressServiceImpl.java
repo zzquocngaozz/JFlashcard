@@ -15,8 +15,6 @@ import com.example.jflashcardsv0_9.service.TrackingProgressService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -30,6 +28,9 @@ import java.util.List;
 public class TrackingProgressServiceImpl implements TrackingProgressService {
     TrackingProgressRepository trackingProgressRepository;
     FlashcardSetRepository flashcardSetRepository;
+    FlashcardKanjiRepository flashcardKanjiRepository;
+    FlashcardVocabRepository flashcardVocabRepository;
+    FlashcardGrammarRepository flashcardGrammarRepository;
     UserRepository userRepository;
     Validate validate;
     ClassRoomRepository classRoomRepository;
@@ -38,9 +39,12 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
     ClassMemberRepository classMemberRepository;
     SendEmailService sendEmailService;
     @Autowired
-    public TrackingProgressServiceImpl(TrackingProgressRepository trackingProgressRepository, FlashcardSetRepository flashcardSetRepository, UserRepository userRepository, Validate validate, ClassRoomRepository classRoomRepository, ClassSetRepository classSetRepository, FlashcardSetService flashcardSetService, ClassMemberRepository classMemberRepository, SendEmailService sendEmailService) {
+    public TrackingProgressServiceImpl(TrackingProgressRepository trackingProgressRepository, FlashcardSetRepository flashcardSetRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository, UserRepository userRepository, Validate validate, ClassRoomRepository classRoomRepository, ClassSetRepository classSetRepository, FlashcardSetService flashcardSetService, ClassMemberRepository classMemberRepository, SendEmailService sendEmailService) {
         this.trackingProgressRepository = trackingProgressRepository;
         this.flashcardSetRepository = flashcardSetRepository;
+        this.flashcardKanjiRepository = flashcardKanjiRepository;
+        this.flashcardVocabRepository = flashcardVocabRepository;
+        this.flashcardGrammarRepository = flashcardGrammarRepository;
         this.userRepository = userRepository;
         this.validate = validate;
         this.classRoomRepository = classRoomRepository;
@@ -71,14 +75,17 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
         validate.checkClassMember(user, classRoom);
         List<ClassMember> classMembers = classMemberRepository.getAllByClassroom(classRoom);
         classMembers.removeIf(classMember -> classMember.getUser().getUserId().equals(classRoom.getTeacher().getUserId()));
+
         List<TrackingClassSetSTO.Data> datas = new ArrayList<>();
         for (ClassMember classMember : classMembers) {
+            List<TrackingProgress> trackingProgresses = trackingProgressRepository.getDistinctByUserAndFlashcardSetAndTimeLearnBetween(classMember.getUser(), flashcardSet, classSet.getCreatedAt(), classSet.getDueAt());
+            long count = getCountByFlashcardSetType(flashcardSet.getType(), trackingProgresses);
+
             TrackingClassSetSTO.Data data = TrackingClassSetSTO.Data.builder()
                     .userId(classMember.getUser().getUserId())
                     .userName(classMember.getUser().getUserName())
                     .email(classMember.getUser().getEmail())
-                    .numberLearned(trackingProgressRepository.countByUserAndFlashcardSetAndTimeLearnBetween(
-                            classMember.getUser(), flashcardSet, classSet.getCreatedAt(), classSet.getDueAt()))
+                    .numberLearned(count)
                     .build();
             datas.add(data);
         }
@@ -91,6 +98,25 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
                 .numberCards(flashcardSetService.numberCard(flashcardSet.getFlashcardSetId(), flashcardSet.getType()))
                 .data(datas)
                 .build();
+    }
+
+    private long getCountByFlashcardSetType(int flashcardSetType, List<TrackingProgress> trackingProgresses) {
+        switch (flashcardSetType) {
+            case 1:
+                return trackingProgresses.stream()
+                        .map(progress -> flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(progress.getCardId(), 3))
+                        .count();
+            case 2:
+                return trackingProgresses.stream()
+                        .map(progress -> flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(progress.getCardId(), 3))
+                        .count();
+            case 3:
+                return trackingProgresses.stream()
+                        .map(progress -> flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(progress.getCardId(), 3))
+                        .count();
+            default:
+                return 0;
+        }
     }
 
 //    @Override
