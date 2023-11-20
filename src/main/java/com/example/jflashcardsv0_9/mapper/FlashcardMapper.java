@@ -43,6 +43,7 @@ public class FlashcardMapper {
 
     public static FlashcardSet convertFlS(FlashcardSetDTORequest flashcardSetDTORequest, User user){
         return FlashcardSet.builder()
+                .status(1)
                 .title(flashcardSetDTORequest.getTitle())
                 .description(flashcardSetDTORequest.getDescription())
                 .createdAt(new Date(System.currentTimeMillis()))
@@ -105,6 +106,8 @@ public class FlashcardMapper {
     public static FlashcardKanji convertToFlashcardKanjiEntity(KanjiDTO dto,User user) {
         return FlashcardKanji.builder()
                 .cardKanjiId(dto.getCardId())
+                .status(1)
+
                 .onSound(dto.getOnSound())
                 .kunSound(dto.getKunSound())
                 .chineseSound(dto.getChineseSound())
@@ -122,19 +125,21 @@ public class FlashcardMapper {
     public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto,User user) {
         return FlashcardVocab.builder()
                 .cardVocabId(dto.getCardId())
+                .status(1)
+
                 .term(dto.getTerm())
                 .mean(dto.getMean())
                 .example(dto.getExample())
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
                 .createdAt(new Timestamp(System.currentTimeMillis()))
-
                 .user(user)
                 .build();
     }
     public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto,User user) {
         return FlashcardGrammar.builder()
                 .cardGrammarId(dto.getCardId())
+                .status(1)
                 .combination(dto.getCombination())
                 .note(dto.getNote())
                 .term(dto.getTerm())
