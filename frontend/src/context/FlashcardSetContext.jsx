@@ -92,7 +92,9 @@ export const FlashcardSetProvider = ({ children }) => {
   };
   const { isLogin } = useAuth();
 
-  const handleToggleSelectCard = (cardId) => {
+  const handleToggleSelectCard = async (cardId) => {
+    if (mutation) return;
+    setMutation(true);
     const selected = cards?.find((card) => card?.cardId === cardId);
 
     if (!markedCards?.includes(selected)) {
@@ -103,6 +105,23 @@ export const FlashcardSetProvider = ({ children }) => {
     } else {
       const cache = markedCards?.filter((card) => card?.cardId !== cardId);
       setMarkedCards(cache);
+    }
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken,
+        },
+      };
+      await axios.post(
+        `/bookmark/${flashcardSet.flashcardSetId}/bookcard/${cardId}`,
+        "",
+        config
+      );
+      setMutation(false);
+    } catch (error) {
+      setMutation(false);
+      console.log(error);
     }
   };
 
