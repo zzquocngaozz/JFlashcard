@@ -162,6 +162,7 @@ public class FlashcardMapper {
         cloneVocab.setExample(dto.getExample());
         cloneVocab.setExampleMean(dto.getExampleMean());
         cloneVocab.setImgUrl(dto.getImgUrl());
+        cloneVocab.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         // Gán flashcardSet mới cho cloneVocab
         cloneVocab.setUser(user);
         return cloneVocab;
@@ -177,6 +178,7 @@ public class FlashcardMapper {
         cloneGrammar.setExample(dto.getExample());
         cloneGrammar.setExampleMean(dto.getExampleMean());
         cloneGrammar.setImgUrl(dto.getImgUrl());
+        cloneGrammar.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         // Gán flashcardSet mới cho cloneVocab
         cloneGrammar.setUser(user);
         return cloneGrammar;
@@ -194,6 +196,7 @@ public class FlashcardMapper {
         cloneKanji.setExampleMean(dto.getExampleMean());
         cloneKanji.setImgUrl(dto.getImgUrl());
         cloneKanji.setTrick(dto.getTrick());
+        cloneKanji.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         // Gán flashcardSet mới cho cloneVocab
         cloneKanji.setUser(user);
         return cloneKanji;
