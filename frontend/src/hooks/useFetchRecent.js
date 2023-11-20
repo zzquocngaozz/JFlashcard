@@ -8,7 +8,7 @@ export default function useFetchRecent() {
   const [recent, setRecent] = useState({ classes: [], sets: [] });
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { accessToken } = useAuth();
+  const { accessToken, currentUser } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
     const fetch = async () => {
@@ -22,8 +22,13 @@ export default function useFetchRecent() {
         };
         const recent = axios.get("/homepage", config);
         const weekTrackingDTO = getWeekDate(0);
+        const url =
+          currentUser.role === 2
+            ? "/homepage/dashboardteacher"
+            : "/homepage/dashboardlearn";
+
         const staticLearn = axios.post(
-          "/tracking/homepage",
+          url,
           JSON.stringify(weekTrackingDTO),
           config
         );
@@ -57,8 +62,13 @@ export default function useFetchRecent() {
         },
       };
       const weekTrackingDTO = getWeekDate(weekIndex);
-      const staticLearn = await axios.post(
-        "/tracking/homepage",
+      const url =
+        currentUser.role === 2
+          ? "/homepage/dashboardteacher"
+          : "/homepage/dashboardlearn";
+
+      const staticLearn = axios.post(
+        url,
         JSON.stringify(weekTrackingDTO),
         config
       );

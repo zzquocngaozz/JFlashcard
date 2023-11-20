@@ -8,32 +8,38 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import StarIcon from "@mui/icons-material/Star";
 import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import placeholder from "../../assets/images/placeholder.png";
 import { isGrammarCard, isKanjiCard, isVocaCard } from "../../utils/cardUtil";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import { FLAG_STATUS } from "../../utils/constant";
+import { useSetEditContext } from "../../context/SetEditContext";
 
-const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
+const CardSetEdit = ({ card, index }) => {
+  const { deleteCardSet } = useSetEditContext();
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-
-  const handleToggleForm = useCallback(() => {
-    setOpenForm(!openForm);
-  }, [openForm]);
 
   const handleToggleDelete = useCallback(() => {
     setOpenDelete(!openDelete);
   }, [openDelete]);
-  // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
-  const handleUpdate = (data) => {
-    onUpdate(data, handleToggleForm);
-  };
+  const handleToggleForm = useCallback(() => {
+    setOpenForm(!openForm);
+  }, [openForm]);
+
+  // const handleToggleDelete = useCallback(() => {
+  //   setOpenDelete(!openDelete);
+  // }, [openDelete]);
+  // // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
+  // const handleUpdate = (data) => {
+  //   onUpdate(data, handleToggleForm);
+  // };
   return (
     <Stack
       key={index}
@@ -59,11 +65,11 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
       >
         <Typography flex={5}>{index + 1}</Typography>
         <Chip label={FLAG_STATUS[card.status]} />
-        <Tooltip title={"Chỉnh sửa"}>
+        {/* <Tooltip title={"Chỉnh sửa"}>
           <IconButton sx={{ width: 30, height: 30 }} onClick={handleToggleForm}>
             <ModeEditIcon color="primary" />
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title={"Xoá thẻ"}>
           <IconButton
             sx={{ width: 30, height: 30 }}
@@ -196,7 +202,7 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
           </Box>
         </Stack>
       </Stack>
-      {openForm && isKanjiCard(card) ? (
+      {/* {openForm && isKanjiCard(card) ? (
         <KanjiDialogForm
           handleToggle={handleToggleForm}
           dataInit={card}
@@ -219,12 +225,12 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
         />
       ) : (
         <></>
-      )}
+      )} */}
       {openDelete ? (
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            onDelete(card, handleToggleDelete);
+            deleteCardSet(card?.cardId, handleToggleDelete);
           }}
         />
       ) : (
@@ -234,4 +240,4 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   );
 };
 
-export default React.memo(CardEdit);
+export default React.memo(CardSetEdit);

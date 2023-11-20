@@ -7,7 +7,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useForm } from "react-hook-form";
 import { role } from "../../utils/regexRole";
-import { Box, Stack } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+} from "@mui/material";
 import placeholder from "../../assets/images/placeholder.png";
 import { checkImg } from "../../utils/manualTesting";
 
@@ -17,7 +24,7 @@ export default function GrammarDialogForm({
   dataInit,
   handleToggle,
   onSubmit,
-  mutationing
+  mutationing,
 }) {
   const {
     register,
@@ -37,14 +44,12 @@ export default function GrammarDialogForm({
         checkImg(
           imgUrl,
           function () {
-            
             setImgPreview(imgUrl);
             clearErrors("imgUrl");
             resolve(); // Khi kiểm tra hình ảnh hoàn thành thành công
           },
           function () {
             if (isDirty) {
-              
               setImgPreview(null);
               setError("imgUrl", {
                 type: "manual",
@@ -199,6 +204,36 @@ export default function GrammarDialogForm({
               />
             </Stack>
             <Stack flex={2} gap={2}>
+              <FormControl
+                sx={{
+                  m: 1,
+                  minWidth: 100,
+                  marginLeft: 0,
+
+                  "& .MuiInputBase-root": {
+                    marginTop: "8px",
+                    marginBottom: "-3px",
+                  },
+                }}
+              >
+                <InputLabel id="filter-label" sx={{ left: "-18px" }}>
+                  Trạng thái
+                </InputLabel>
+                <Select
+                  labelId="type-label"
+                  id="type-label"
+                  {...register("status")}
+                  defaultValue={!!dataInit?.status ? dataInit?.status : 1}
+                  autoWidth
+                  label="Trạng thái"
+                  variant="standard"
+                >
+                  <MenuItem value={1}>Nháp</MenuItem>
+                  <MenuItem value={2}>Hoàn thành</MenuItem>
+                  <MenuItem value={3}>Công khai</MenuItem>
+                  <MenuItem value={4}>Đóng</MenuItem>
+                </Select>
+              </FormControl>
               <TextField
                 {...register("imgUrl", role["imgUrl"])}
                 label="Link ảnh"
@@ -209,7 +244,7 @@ export default function GrammarDialogForm({
                 InputLabelProps={{ shrink: true }}
                 variant="standard"
               />
-              <Box>
+              <Box sx={{ width: "150px", height: "150px" }}>
                 <img
                   alt="placeholder"
                   src={!imgPreview ? placeholder : imgPreview}
@@ -223,7 +258,7 @@ export default function GrammarDialogForm({
               variant="contained"
               onClick={() => reset()}
               color="secondary"
-              disabled={!isDirty||mutationing}
+              disabled={!isDirty || mutationing}
             >
               Cài lại
             </Button>
@@ -236,7 +271,11 @@ export default function GrammarDialogForm({
             >
               Huỷ
             </Button>
-            <Button type="submit" disabled={!isDirty||mutationing} variant="contained">
+            <Button
+              type="submit"
+              disabled={!isDirty || mutationing}
+              variant="contained"
+            >
               {!dataInit ? "Tạo" : "Cập nhật"}
             </Button>
           </DialogActions>

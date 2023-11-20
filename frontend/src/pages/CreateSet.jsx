@@ -88,7 +88,7 @@ const CreateSet = () => {
                     )}
                   />
                 </FormControl>
-                <FormControl flex={1}>
+                {/* <FormControl flex={1}>
                   <InputLabel htmlFor="typeSet">Chế độ</InputLabel>
                   <Controller
                     control={control}
@@ -106,7 +106,7 @@ const CreateSet = () => {
                       </Select>
                     )}
                   />
-                </FormControl>
+                </FormControl> */}
               </Stack>
               <Stack
                 sx={{

@@ -192,7 +192,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         validate.validateMean(grammarDTO.getMean());
         FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardId());
         flashcardGrammar.setCombination(grammarDTO.getCombination());
-        flashcardGrammar.setStatus(flashcardGrammar.getStatus());
+        flashcardGrammar.setStatus(grammarDTO.getStatus());
         flashcardGrammar.setNote(grammarDTO.getNote());
         flashcardGrammar.setTerm(grammarDTO.getTerm());
         flashcardGrammar.setMean(grammarDTO.getMean());

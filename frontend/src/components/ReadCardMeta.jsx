@@ -59,19 +59,6 @@ const ReadCardMeta = () => {
               variant="contained"
               sx={{ mr: 1 }}
             />
-            {flashcardSet?.private ? (
-              <Chip
-                label={"Riêng tư"}
-                // color="default"
-                variant="contained"
-              />
-            ) : (
-              <Chip
-                label={"Công khai"}
-                // color="secondary"
-                variant="contained"
-              />
-            )}
           </Stack>
         </Stack>
         <Stack>

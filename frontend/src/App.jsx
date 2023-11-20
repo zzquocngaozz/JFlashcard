@@ -42,6 +42,9 @@ import { FlashcardSetProvider } from "./context/FlashcardSetContext";
 import FlashcardSetComsumer from "./routes/FlashcardSetComsumer";
 import ClassPostCommer from "./routes/ClassPostCommer";
 import ClassContextProvider from "./context/ClassContext";
+import LibSetManager from "./pages/LibSetManager";
+import SetEditContextProvider from "./context/SetEditContext";
+import LibCardBank from "./pages/LibCardBank";
 
 function App() {
   return (
@@ -121,7 +124,15 @@ function App() {
         />
         <Route
           path="/:setId/edit"
-          element={<AuthenRoute element={<SetEdit />} />}
+          element={
+            <AuthenRoute
+              element={
+                <SetEditContextProvider>
+                  <SetEdit />
+                </SetEditContextProvider>
+              }
+            />
+          }
         />
         <Route path="/:setId" element={<FlashcardSetComsumer />}>
           <Route path="read" index element={<ReadSet />} />
@@ -133,6 +144,14 @@ function App() {
 
         <Route path="/my-lib" element={<AuthenRoute element={<LibRoot />} />}>
           <Route
+            path="/my-lib/set-manager"
+            element={<AuthenRoute element={<LibSetManager />} />}
+          />
+          <Route
+            path="/my-lib/card-bank"
+            element={<AuthenRoute element={<LibCardBank />} />}
+          />
+          <Route
             path="/my-lib/recent"
             index
             element={<AuthenRoute element={<LearnHistory />} />}
@@ -141,6 +160,7 @@ function App() {
             path="/my-lib/sets"
             element={<AuthenRoute element={<LibSets />} />}
           />
+
           <Route
             path="/my-lib/folders"
             element={<AuthenRoute element={<LibFolders />} />}

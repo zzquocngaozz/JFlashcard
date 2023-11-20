@@ -8,9 +8,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import StarIcon from "@mui/icons-material/Star";
 import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import placeholder from "../../assets/images/placeholder.png";
@@ -18,22 +18,31 @@ import { isGrammarCard, isKanjiCard, isVocaCard } from "../../utils/cardUtil";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import { FLAG_STATUS } from "../../utils/constant";
+import { useSetEditContext } from "../../context/SetEditContext";
 
-const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
+const CardBank = ({ card, index }) => {
+  const { selectCard, handleSelectCard } = useSetEditContext();
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-
+  const [selected, setSelected] = useState(selectCard.includes(card));
+  const onSelect = () => {
+    handleSelectCard(card);
+  };
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
   }, [openForm]);
 
-  const handleToggleDelete = useCallback(() => {
-    setOpenDelete(!openDelete);
-  }, [openDelete]);
-  // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
-  const handleUpdate = (data) => {
-    onUpdate(data, handleToggleForm);
-  };
+  useEffect(() => {
+    setSelected(selectCard.includes(card));
+    console.log("check re-load");
+  }, [selectCard, card]);
+  // const handleToggleDelete = useCallback(() => {
+  //   setOpenDelete(!openDelete);
+  // }, [openDelete]);
+  // // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
+  // const handleUpdate = (data) => {
+  //   onUpdate(data, handleToggleForm);
+  // };
   return (
     <Stack
       key={index}
@@ -45,6 +54,7 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
       width={"100%"}
       sx={{
         overflowY: "scroll",
+        border: "1px solid rgba(0,0,0,0.1)",
       }}
     >
       <Stack
@@ -64,12 +74,14 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
             <ModeEditIcon color="primary" />
           </IconButton>
         </Tooltip>
-        <Tooltip title={"Xoá thẻ"}>
+
+        <Tooltip title={`${!selected ? "Chọn" : "Bỏ chọn"}`}>
           <IconButton
-            sx={{ width: 30, height: 30 }}
-            onClick={handleToggleDelete}
+            onClick={() => {
+              handleSelectCard(card);
+            }}
           >
-            <DeleteForeverIcon color="error" />
+            <StarIcon sx={{ color: `${selected ? "#ff9800" : ""}` }} />
           </IconButton>
         </Tooltip>
       </Stack>
@@ -196,7 +208,7 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
           </Box>
         </Stack>
       </Stack>
-      {openForm && isKanjiCard(card) ? (
+      {/* {openForm && isKanjiCard(card) ? (
         <KanjiDialogForm
           handleToggle={handleToggleForm}
           dataInit={card}
@@ -219,19 +231,9 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
         />
       ) : (
         <></>
-      )}
-      {openDelete ? (
-        <DialogAlertDeleteCard
-          handleToggle={handleToggleDelete}
-          onDelete={() => {
-            onDelete(card, handleToggleDelete);
-          }}
-        />
-      ) : (
-        <></>
-      )}
+      )} */}
     </Stack>
   );
 };
 
-export default React.memo(CardEdit);
+export default React.memo(CardBank);

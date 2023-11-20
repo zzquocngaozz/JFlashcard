@@ -2,18 +2,12 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { read, utils } from "xlsx";
-import {
-  parseGrammaExcel,
-  parseKanjiExcel,
-  parseVocaExcel,
-} from "../utils/parseData";
 import useSnapBarAlert from "../hooks/useSnapBarAlert";
 
 const SetEditContext = createContext({});
 
-export const useInitSetEditContext = () => useContext(SetEditContext);
-export const useSetEditContext = () => {
+export const useSetEditContext = () => useContext(SetEditContext);
+export const useInitSetEditContext = () => {
   const context = useContext(SetEditContext);
   const [loading, setLoading] = useState(true);
   const { setId } = useParams();
@@ -47,8 +41,87 @@ export const useSetEditContext = () => {
   return { ...context, loading };
 };
 
+export const useInitSetCardContext = () => {
+  const context = useContext(SetEditContext);
+  const [loading, setLoading] = useState(true);
+  const { setId } = useParams();
+  const navigate = useNavigate();
+  const { accessToken } = useAuth();
+  useEffect(() => {
+    const getSet = async () => {
+      setLoading(true);
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: accessToken,
+          },
+        };
+        const response = await axios.get(`/createfls/${setId}/card`, config);
+        context.setCardList(response.data);
+        setLoading(false);
+      } catch (error) {
+        // log ra status
+        // TODO: navigate to not found or accessdenied
+        const errorCode = error.response.status;
+        if (errorCode === 404) navigate("/not-found"); // not found
+        if (errorCode === 401) navigate("/access-denied"); // not authorize
+        setLoading(false);
+      }
+    };
+    if (!context.importing) getSet();
+  }, [setId, context.importing]);
+
+  return { ...context, loading };
+};
+
+export const useInitCardBankContext = () => {
+  const context = useContext(SetEditContext);
+  const [loading, setLoading] = useState(true);
+  const { setId } = useParams();
+  const navigate = useNavigate();
+  const { accessToken } = useAuth();
+  useEffect(() => {
+    const getSet = async () => {
+      setLoading(true);
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: accessToken,
+          },
+        };
+        const response = await axios.get(
+          `/createfls/${setId}/bankcard`,
+          config
+        );
+        context.setCardBank(response.data);
+        context.setSelectCard([]);
+        setLoading(false);
+      } catch (error) {
+        // log ra status
+        // TODO: navigate to not found or accessdenied
+        const errorCode = error.response.status;
+        if (errorCode === 404) navigate("/not-found"); // not found
+        if (errorCode === 401) navigate("/access-denied"); // not authorize
+        setLoading(false);
+      }
+    };
+    getSet();
+  }, [setId]);
+
+  return { ...context, loading };
+};
+
 const SetEditContextProvider = ({ children }) => {
   const [dataSet, setDataSet] = useState(null);
+
+  // card set list khong phai card list
+  const [cardList, setCardList] = useState(null);
+  // card set list khong phai card list
+  const [cardBank, setCardBank] = useState([]);
+  const [selectCard, setSelectCard] = useState([]);
+
   const [mutationing, setMutationing] = useState(false);
   const [importing, setImporting] = useState(false);
   const { alert, setAlert, handleCloseSnackBar } = useSnapBarAlert();
@@ -100,93 +173,73 @@ const SetEditContextProvider = ({ children }) => {
     }
   };
 
-  const importFile = async (files, handleToggle) => {
-    if (!files) {
-      setAlert({
-        open: true,
-        severity: "error",
-        message: "File không tồn tại",
-      });
-      return;
+  const handleSelectCard = (card) => {
+    if (selectCard.includes(card)) {
+      const newSelectCard = selectCard.filter(
+        (selected) => selected.cardId !== card.cardId
+      );
+      setSelectCard(newSelectCard);
+    } else {
+      const cache = [...selectCard];
+      cache.push(card);
+      setSelectCard(cache);
     }
+  };
 
-    const file = files[0];
-    if (
-      file.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
-      setAlert({
-        open: true,
-        severity: "error",
-        message: "Chỉ nhận định dạng file excel",
-      });
-      return console.log("Chỉ nhận định dạng file excel");
+  const handleAddCardSet = async (handleToggle) => {
+    setImporting(true);
+    const data = selectCard.reduce(
+      (result, card) => [...result, card?.cardId],
+      []
+    );
+    console.log(data);
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken,
+        },
+      };
+      const res = await axios.post(
+        `/createfls/${setId}/bankcard`,
+        JSON.stringify({ data: data }),
+        config
+      );
+      setImporting(false);
+      handleToggle();
+    } catch (error) {
+      setImporting(false);
     }
-    if (file.size >= 1 * 1024 * 1024) {
+  };
+
+  const deleteCardSet = async (cardId, handleToggle) => {
+    setMutationing(true);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: accessToken,
+      },
+    };
+    try {
+      const res = await axios.delete(
+        `/createfls/${setId}/card/${cardId}`,
+        config
+      );
+      const newCardList = cardList.filter((card) => card.cardId !== cardId);
+      console.log(newCardList);
+      setCardList(newCardList);
+      setMutationing(false);
+      handleToggle();
+    } catch (error) {
       setAlert({
         open: true,
         severity: "error",
         message:
-          "Bạn không nên nhập quá nhiều thẻ trong một bộ! Tối đa 1000 thẻ. File size max 1MB",
+          error.response?.data?.errors?.body[0] || "Xoá không thành công",
       });
-      return;
+      handleToggle();
+      setMutationing(false);
     }
-    const reader = new FileReader();
-    setImporting(true);
-    reader.onload = async (e) => {
-      const data = e.target.result;
-      const workbook = read(data, { type: "array" });
-      const sheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[sheetName];
-      const json = utils.sheet_to_json(worksheet);
-      try {
-        console.log(json);
-        // Modify the JSON keys as needed
-        const jsonParsed =
-          dataSet.type === 1
-            ? parseKanjiExcel(json)
-            : dataSet.type === 2
-            ? parseVocaExcel(json)
-            : parseGrammaExcel(json);
-
-        // console.log(jsonParsed);
-
-        // gui ve backend
-
-        const config = {
-          headers: {
-            Authorization: `${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        };
-        const url =
-          dataSet.type === 1
-            ? `/createfls/${setId}/import/kanji-card`
-            : dataSet.type === 2
-            ? `/createfls/${setId}/import/vocab-card`
-            : `/createfls/${setId}/import/grammar-card`;
-        // Gửi yêu cầu post để thêm mới dữ liệu
-        const response = await axios.post(
-          url,
-          JSON.stringify(jsonParsed),
-          config
-        );
-
-        setImporting(false);
-      } catch (error) {
-        setImporting(false);
-
-        setAlert({
-          open: true,
-          severity: "error",
-          message:
-            error.response?.data?.errors?.body[0] ||
-            "Nhập không thành công vui lòng đổi tên cột giống trong file mẫu",
-        });
-      }
-    };
-    reader.readAsArrayBuffer(files[0]);
-    handleToggle();
   };
 
   return (
@@ -196,12 +249,20 @@ const SetEditContextProvider = ({ children }) => {
         mutationing,
         importing,
         alert,
+        cardList,
+        cardBank,
+        selectCard,
+        handleSelectCard,
+        deleteCardSet,
+        handleAddCardSet,
+        setSelectCard,
+        setCardBank,
+        setCardList,
         setAlert,
         handleCloseSnackBar,
         setDataSet,
         deleteSet,
         updateSet,
-        importFile,
       }}
     >
       {children}

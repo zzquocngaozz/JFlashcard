@@ -14,10 +14,9 @@ import {
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DoneIcon from "@mui/icons-material/Done";
-import { SET_TYPE } from "../utils/constant";
+import { FLAG_STATUS, SET_TYPE } from "../utils/constant";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 import FormEditSetDiaolog from "../components/Dialog/FormEditSetDiaolog";
@@ -30,6 +29,8 @@ import useSnapBarAlert from "../hooks/useSnapBarAlert";
 import ShowMoreText from "../components/DataDisplay/ShowMoreText";
 import { useFlashcardSetContext } from "../context/FlashcardSetContext";
 import ImportFileDialog from "../components/Dialog/ImportFileDialog";
+import { useInitSetEditContext } from "../context/SetEditContext";
+import CardEditContainer from "../components/CardEditContainer";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -62,19 +63,34 @@ const SetEdit = () => {
       "Thao tác này không thể hoàn lại. Bạn muốn tiếp tục xoá bộ thẻ này không",
   });
   const [openImport, setOpenImport] = useState(false);
-  const { alert, setAlert, handleCloseSnackBar } = useSnapBarAlert();
+  // const { alert, setAlert, handleCloseSnackBar } = useSnapBarAlert();
+  // const {
+  //   dataSet: flashcardSet,
+  //   mutationing,
+  //   importing,
+  //   importFile,
+  //   loading,
+  //   updateSet,
+  //   deleteSet,
+  // } = useSetEdit({ handleToggleUpdateSet, setAlert });
+
   const {
     dataSet: flashcardSet,
+    loading,
     mutationing,
     importing,
-    importFile,
-    loading,
-    updateSet,
+    alert,
+    handleCloseSnackBar,
     deleteSet,
-  } = useSetEdit({ handleToggleUpdateSet, setAlert });
+    updateSet,
+    importFile,
+  } = useInitSetEditContext();
 
   const handleToggleImport = () => {
     setOpenImport(!openImport);
+  };
+  const handleUpdateSet = (data) => {
+    updateSet(data, handleToggleUpdateSet);
   };
   useEffect(() => {
     document.title = "Chỉnh sửa bộ flashcards";
@@ -106,7 +122,7 @@ const SetEdit = () => {
                   variant="contained"
                   sx={{ mr: 1 }}
                 />
-                {flashcardSet?.private ? (
+                {/* {flashcardSet?.private ? (
                   <Chip
                     label={"Riêng tư"}
                     color="default"
@@ -118,7 +134,11 @@ const SetEdit = () => {
                     color="secondary"
                     variant="contained"
                   />
-                )}
+                )} */}
+                <Chip
+                  label={`${FLAG_STATUS[flashcardSet?.status]}`}
+                  variant="contained"
+                />
               </Stack>
             </Stack>
             <Stack flex={1.5} sx={{ justifyContent: "space-between" }}>
@@ -167,20 +187,22 @@ const SetEdit = () => {
                   sx={{ textTransform: "none" }}
                   variant="contained"
                   LinkComponent={Link}
-                  to={`/${setId}/read`}
+                  to={`/my-lib/set-manager`}
                 >
-                  Hoàn thành
+                  Xong
                 </Button>
               </Stack>
             </Stack>
           </Stack>
           <Stack sx={{ margin: "20px 150px" }}>
             {flashcardSet.type === 1 ? (
-              <KanjiCardEditContainer importing={importing} />
+              <CardEditContainer importing={importing} />
             ) : flashcardSet.type === 2 ? (
-              <VocaCardEditContainer importing={importing} />
+              <CardEditContainer importing={importing} />
+            ) : flashcardSet.type === 3 ? (
+              <CardEditContainer importing={importing} />
             ) : (
-              <GrammarCardEditConainer importing={importing} />
+              <></>
             )}
           </Stack>
         </>
@@ -198,7 +220,7 @@ const SetEdit = () => {
         <FormEditSetDiaolog
           flashcardSet={flashcardSet}
           handleToggleUpdateSet={handleToggleUpdateSet}
-          updateSet={updateSet}
+          updateSet={handleUpdateSet}
         />
       ) : (
         <></>

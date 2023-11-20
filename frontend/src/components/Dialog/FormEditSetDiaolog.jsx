@@ -65,20 +65,22 @@ export default function FormEditSetDiaolog({
                 variant="standard"
               />
               <FormControl flex={1}>
-                <InputLabel htmlFor="typeSet">Chế độ</InputLabel>
+                <InputLabel htmlFor="typeSet">Trạng thái</InputLabel>
                 <Controller
                   control={control}
-                  name="private"
-                  defaultValue={flashcardSet?.private}
+                  name="status"
+                  defaultValue={flashcardSet?.status}
                   render={({ field }) => (
                     <Select
                       {...field}
                       variant="standard"
-                      id="private"
+                      id="status"
                       sx={{ width: "150px", mt: 10, fontSize: "18px" }}
                     >
-                      <MenuItem value={false}>Công khai</MenuItem>
-                      <MenuItem value={true}>Riêng tư</MenuItem>
+                      <MenuItem value={1}>Nháp</MenuItem>
+                      <MenuItem value={2}>Hoàn thành</MenuItem>
+                      <MenuItem value={3}>Công khai</MenuItem>
+                      <MenuItem value={4}>Đóng</MenuItem>
                     </Select>
                   )}
                 />
