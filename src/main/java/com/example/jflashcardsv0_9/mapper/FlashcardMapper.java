@@ -63,6 +63,7 @@ public class FlashcardMapper {
                 .example(flashcardGrammar.getExample())
                 .exampleMean(flashcardGrammar.getExampleMean())
                 .imgUrl(flashcardGrammar.getImgUrl())
+                .creatAt(flashcardGrammar.getCreatedAt())
                 .build();
     }
 
@@ -79,6 +80,7 @@ public class FlashcardMapper {
                 .exampleMean(flashcardKanji.getExampleMean())
                 .imgUrl(flashcardKanji.getImgUrl())
                 .trick(flashcardKanji.getTrick())
+                .creatAt(flashcardKanji.getCreatedAt())
                 .build();
     }
     public static VocabDTO convertVocabDTO(FlashcardVocab flashcardVocab){
@@ -90,6 +92,7 @@ public class FlashcardMapper {
                 .example(flashcardVocab.getExample())
                 .exampleMean(flashcardVocab.getExampleMean())
                 .imgUrl(flashcardVocab.getImgUrl())
+                .creatAt(flashcardVocab.getCreatedAt())
                 .build();
     }
 
