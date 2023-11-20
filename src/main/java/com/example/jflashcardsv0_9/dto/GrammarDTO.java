@@ -3,6 +3,8 @@ package com.example.jflashcardsv0_9.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Builder
@@ -19,6 +21,8 @@ public class GrammarDTO implements Card {
     String example;
     String exampleMean;
     String imgUrl;
+    Timestamp creatAt;
+
     // Getter và Setter cho các thuộc tính
     // Các getter và setter cho các thuộc tính khác
 }

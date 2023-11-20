@@ -36,8 +36,8 @@ public class HomeController {
         return homePageService.weekTrackingHomeTeacher(myUserDetail.getUser(),weekTrackingDTO);
     }
     @GetMapping("/listset")
-    public List<SetSingleDTO> listManagerSetOfUser(@AuthenticationPrincipal MyUserDetail myUserDetail){
-        return flashcardSetService.listManagerSetOfUser(myUserDetail.getUser());
+    public List<SetSingleDTO> listSetOfUserPublic(@AuthenticationPrincipal MyUserDetail myUserDetail){
+        return flashcardSetService.listSetOfUserPublic(myUserDetail.getUser());
     }
     @GetMapping("/listhistoryset")
     public List<SetSingleDTO> listHistorySetOfUser(@AuthenticationPrincipal MyUserDetail myUserDetail){
@@ -51,9 +51,9 @@ public class HomeController {
     public CardBankDTO listManagerBankCard(@AuthenticationPrincipal MyUserDetail myUserDetail){
         return flashcardSetService.listManagerBankCard(myUserDetail.getUser());
     }
-    @GetMapping("/listsetpublic")
-    public List<SetSingleDTO> listSetOfUserPublic(@AuthenticationPrincipal MyUserDetail myUserDetail){
-        return flashcardSetService.listSetOfUserPublic(myUserDetail.getUser());
+    @GetMapping("/listsetmanager")
+    public List<SetSingleDTO> listManagerSetOfUser(@AuthenticationPrincipal MyUserDetail myUserDetail){
+        return flashcardSetService.listManagerSetOfUser(myUserDetail.getUser());
     }
 
 }

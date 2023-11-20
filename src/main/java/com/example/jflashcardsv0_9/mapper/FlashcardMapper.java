@@ -114,6 +114,8 @@ public class FlashcardMapper {
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
                 .trick(dto.getTrick())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+
                 .user(user)
                 .build();
     }
@@ -125,6 +127,8 @@ public class FlashcardMapper {
                 .example(dto.getExample())
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+
                 .user(user)
                 .build();
     }
@@ -138,6 +142,7 @@ public class FlashcardMapper {
                 .example(dto.getExample())
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
                 .user(user)
                 .build();
     }

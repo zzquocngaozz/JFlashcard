@@ -3,6 +3,8 @@ package com.example.jflashcardsv0_9.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Builder
@@ -17,5 +19,7 @@ public class VocabDTO implements Card {
     String example;
     String exampleMean;
     String imgUrl;
+    Timestamp creatAt;
+
 
 }

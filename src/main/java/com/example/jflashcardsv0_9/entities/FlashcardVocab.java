@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +37,10 @@ public class FlashcardVocab implements Serializable {
     private String imgUrl;
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     private int  status ;
+    @Column(name = "createdAt")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Timestamp createdAt;
     @ManyToOne
     @JoinColumn(name = "userId") // Tên cột khoá ngoại trong bảng FlashcardKanji
     private User user;

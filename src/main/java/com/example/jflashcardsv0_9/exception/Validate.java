@@ -166,9 +166,8 @@ public class Validate {
         validateTitle(flashcardSetDTORequest.getTitle());
         validateDescription(flashcardSetDTORequest.getDescription());
     }
-    public void checkAuthSetFound(long userid,long setId) {
+    public void checkAuthSetFound(User user,long setId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-        User user = userRepository.getUserByUserId(userid);
         if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
             throw new AppException(Error.SET_NOT_FOUND);
         }

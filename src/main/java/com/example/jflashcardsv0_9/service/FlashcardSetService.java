@@ -1,27 +1,26 @@
 package com.example.jflashcardsv0_9.service;
 
 import com.example.jflashcardsv0_9.dto.*;
+import com.example.jflashcardsv0_9.entities.FlashcardSet;
 import com.example.jflashcardsv0_9.entities.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 @Service
 
 public interface FlashcardSetService {
-    List<KanjiDTO> getKanjiDTOS(long setId);
+    List<KanjiDTO> getKanjiDTOS(FlashcardSet flashcardSet);
 
-    List<VocabDTO> getVocabDTOS(long setId);
+    List<VocabDTO> getVocabDTOS(FlashcardSet flashcardSet);
 
-    List<GrammarDTO> getGrammarDTOS(long setId);
+    List<GrammarDTO> getGrammarDTOS(FlashcardSet flashcardSet);
 
-    IdDTO createFlashcardSet(FlashcardSetDTORequest flashcardSetDTORequest, long userID);
-    FlashcardSetDTOResponse viewFlashcardSetResponse(long setid,long userid);
-    FlashcardSetDTOResponse updateFlashcardSetResponse(FlashcardSetDTORequest flashcardSetDTORequest,long setid,long userid);
+    IdDTO createFlashcardSet(FlashcardSetDTORequest flashcardSetDTORequest, User user);
+    FlashcardSetDTOResponse viewFlashcardSetResponse(long setId, User user);
+    FlashcardSetDTOResponse updateFlashcardSetResponse(FlashcardSetDTORequest flashcardSetDTORequest,long setId, User user);
 //    updateFlashcardSet
-    List<KanjiDTO> findAllKanjiDTOBySetId(long setid,long userid) ;
-    List<GrammarDTO> findAllGrammarDTOBySetId(long setid,long userid) ;
-    List<VocabDTO> findAllVocabDTOBySetId(long setid,long userid) ;
-    void deleteFlashcardSetById(long setid,long userid);
+    void deleteFlashcardSetById(long setId,User user);
 
     // card kanji
     void createFlashcardKanji(KanjiDTO kanjiDTO, User user);
@@ -75,4 +74,12 @@ public interface FlashcardSetService {
     List<SetSingleDTO> listSetOfUserPublic(User user);
 
     CardBankDTO listManagerBankCard(User user);
+
+    Collection<? extends Card> listCardBankBySet(long setId, User user);
+
+    Collection<? extends Card> listCardInSet(long setId, User user);
+
+    void addCardInSet(User user, long setId, DataCardIdDto dto);
+
+    void deleteCardInSet(long setId, User user, long cardId);
 }
