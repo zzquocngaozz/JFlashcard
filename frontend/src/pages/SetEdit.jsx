@@ -29,6 +29,7 @@ import SnapBarAlter from "../components/FeedBack/SnapBarAlter";
 import useSnapBarAlert from "../hooks/useSnapBarAlert";
 import ShowMoreText from "../components/DataDisplay/ShowMoreText";
 import { useFlashcardSetContext } from "../context/FlashcardSetContext";
+import ImportFileDialog from "../components/Dialog/ImportFileDialog";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -60,6 +61,7 @@ const SetEdit = () => {
     message:
       "Thao tác này không thể hoàn lại. Bạn muốn tiếp tục xoá bộ thẻ này không",
   });
+  const [openImport, setOpenImport] = useState(false);
   const { alert, setAlert, handleCloseSnackBar } = useSnapBarAlert();
   const {
     dataSet: flashcardSet,
@@ -71,6 +73,9 @@ const SetEdit = () => {
     deleteSet,
   } = useSetEdit({ handleToggleUpdateSet, setAlert });
 
+  const handleToggleImport = () => {
+    setOpenImport(!openImport);
+  };
   useEffect(() => {
     document.title = "Chỉnh sửa bộ flashcards";
   }, []);
@@ -136,9 +141,9 @@ const SetEdit = () => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title={"Nhập bằng file"}>
-                  <IconButton component={"label"}>
+                  <IconButton component={"label"} onClick={handleToggleImport}>
                     <CloudUploadIcon />
-                    <VisuallyHiddenInput type="file" onChange={importFile} />
+                    {/* <VisuallyHiddenInput type="file" onChange={importFile} /> */}
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -203,6 +208,15 @@ const SetEdit = () => {
         <SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar} />
       ) : (
         ""
+      )}
+      {openImport ? (
+        <ImportFileDialog
+          handleToggle={handleToggleImport}
+          importing={importing}
+          importFile={importFile}
+        />
+      ) : (
+        <></>
       )}
     </LayoutNormal>
   );

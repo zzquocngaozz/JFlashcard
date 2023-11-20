@@ -18,8 +18,11 @@ import CustomTextSpeaker from "../DataDisplay/CustomTextSpeaker";
 
 const FlipCard = ({ card }) => {
   const { isLogin } = useAuth();
-  const { markedCards, handleToggleSelectCard: onSeclectCard } =
-    useFlashcardSetContext();
+  const {
+    markedCards,
+    handleToggleSelectCard: onSeclectCard,
+    mutation,
+  } = useFlashcardSetContext();
   const [selected, setSelected] = useState(false);
   const [flip, setFlip] = useState(false);
   useEffect(() => {
@@ -33,6 +36,7 @@ const FlipCard = ({ card }) => {
   const handleSelect = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (mutation) return;
     setSelected(!selected);
     onSeclectCard(card?.cardId);
   };

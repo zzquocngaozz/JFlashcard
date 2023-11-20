@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
-import useAuth from "./useAuth";
 import axios from "axios";
-import { utils, read } from "xlsx";
+import { read, utils } from "xlsx";
 import {
-  parseVocaExcel,
   parseGrammaExcel,
   parseKanjiExcel,
+  parseVocaExcel,
 } from "../utils/parseData";
+import useSnapBarAlert from "../hooks/useSnapBarAlert";
 
-const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
-  const [dataSet, setDataSet] = useState(null);
+const SetEditContext = createContext({});
+
+export const useInitSetEditContext = () => useContext(SetEditContext);
+export const useSetEditContext = () => {
+  const context = useContext(SetEditContext);
   const [loading, setLoading] = useState(true);
-  const [mutationing, setMutationing] = useState(false);
-  const [importing, setImporting] = useState(false);
   const { setId } = useParams();
-  const { accessToken } = useAuth();
   const navigate = useNavigate();
-
+  const { accessToken } = useAuth();
   useEffect(() => {
     const getSet = async () => {
       setLoading(true);
@@ -29,7 +30,7 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
           },
         };
         const response = await axios.get(`/createfls/${setId}`, config);
-        setDataSet(response.data);
+        context.setDataSet(response.data);
         setLoading(false);
       } catch (error) {
         // log ra status
@@ -43,7 +44,19 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
     getSet();
   }, [setId]);
 
-  const updateSet = async (newSet) => {
+  return { ...context, loading };
+};
+
+const SetEditContextProvider = ({ children }) => {
+  const [dataSet, setDataSet] = useState(null);
+  const [mutationing, setMutationing] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const { alert, setAlert, handleCloseSnackBar } = useSnapBarAlert();
+  const { setId } = useParams();
+  const { accessToken } = useAuth();
+  const navigate = useNavigate();
+
+  const updateSet = async (newSet, handleToggleUpdateSet) => {
     try {
       setMutationing(true);
       const config = {
@@ -176,15 +189,24 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
     handleToggle();
   };
 
-  return {
-    dataSet,
-    loading,
-    mutationing,
-    importing,
-    deleteSet,
-    updateSet,
-    importFile,
-  };
+  return (
+    <SetEditContext.Provider
+      value={{
+        dataSet,
+        mutationing,
+        importing,
+        alert,
+        setAlert,
+        handleCloseSnackBar,
+        setDataSet,
+        deleteSet,
+        updateSet,
+        importFile,
+      }}
+    >
+      {children}
+    </SetEditContext.Provider>
+  );
 };
 
-export default useSetEdit;
+export default SetEditContextProvider;
