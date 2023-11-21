@@ -4,6 +4,8 @@ import { isEmpty } from "../utils/manualTesting";
 import { useNavigate, useParams } from "react-router-dom";
 import { set } from "react-hook-form";
 import axios from "axios";
+import useSnapBarAlert from "../hooks/useSnapBarAlert";
+import { isGrammarCard, isKanjiCard } from "../utils/cardUtil";
 
 const FlashcardSetContext = createContext({});
 
@@ -55,7 +57,7 @@ export const useFlashcardSetContext = () => useContext(FlashcardSetContext);
 export const FlashcardSetProvider = ({ children }) => {
   const { accessToken } = useAuth();
   const [flashcardSet, setFlashcardSet] = useState({});
-
+  const { alert, setAlert, handleCloseSnackBar } = useSnapBarAlert();
   const [cards, setCards] = useState([]);
   const [remain, setRemain] = useState([]);
   const [learnedCards, setLearnedCards] = useState([]);
@@ -155,7 +157,7 @@ export const FlashcardSetProvider = ({ children }) => {
     }
   };
 
-  const cloneSet = async () => {
+  const cloneSet = async (mode, handleToggle) => {
     try {
       setCloning(true);
       const config = {
@@ -164,15 +166,31 @@ export const FlashcardSetProvider = ({ children }) => {
           Authorization: accessToken,
         },
       };
-      const response = await axios.post(
-        `/read/${flashcardSet.flashcardSetId}/clone`,
-        "",
-        config
-      );
-      navigate(`/${response?.data?.id}/edit`);
+      let data = [];
+      if (mode === 0) data = [...cards];
+      else data = [...markedCards];
+      const url = isKanjiCard(data[0])
+        ? "/read/clonekanji"
+        : isGrammarCard(data[0])
+        ? "/read/clonegrammar"
+        : "/read/clonevocab";
+      const response = await axios.post(url, JSON.stringify(data), config);
+      setAlert({
+        open: true,
+        severity: "success",
+        message: "Đã sao chép thành công! Hãy về kho thẻ để chỉnh sửa lại",
+      });
+      handleToggle();
       setCloning(false);
     } catch (error) {
       console.log(error?.response?.data?.errors?.body[0]);
+      setAlert({
+        open: true,
+        severity: "error",
+        message:
+          "Opps! Có lỗi trong quá trình sao chép, kiểm tra kết nối mạng của bạn",
+      });
+      handleToggle();
       setCloning(false);
     }
   };
@@ -247,6 +265,9 @@ export const FlashcardSetProvider = ({ children }) => {
         markedCards,
         loadedSet,
         cloning,
+        alert,
+        setAlert,
+        handleCloseSnackBar,
         cloneSet,
         logStudiedCard,
         setLoadedSet,

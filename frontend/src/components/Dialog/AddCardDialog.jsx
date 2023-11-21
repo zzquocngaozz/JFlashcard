@@ -109,12 +109,14 @@ export default function AddCardDialog({ handleToggle }) {
           sx={{
             flexDirection: "row",
             columnGap: "10px",
-            margin: "0 35px 10px 25px",
+            backgroundColor: "rgba(0,0,0,0.1)",
+            padding: "10px 35px 10px 25px",
           }}
         >
           <TextField
             onChange={handleSearch}
-            label="Có tên"
+            label="Tìm kiếm"
+            InputLabelProps={{ shrink: true }}
             variant="standard"
           />
           <FormControl sx={{ m: 1, minWidth: 100 }}>
@@ -136,7 +138,7 @@ export default function AddCardDialog({ handleToggle }) {
             </Select>
           </FormControl>
         </Stack>
-        <DialogContent>
+        <DialogContent sx={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
           <Stack
             sx={{
               width: "100%",

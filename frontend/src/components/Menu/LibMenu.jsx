@@ -39,67 +39,14 @@ const LibMenu = () => {
         <Tooltip title="Thư viên của bạn">
           <IconButton
             LinkComponent={Link}
-            to={"/my-lib/sets"}
+            to={"/my-lib"}
             size="small"
             sx={{ ml: 0, color: "#fb9805" }}
           >
-            <LocalLibraryIcon sx={{ width: 45, height: 45 }} />
+            <LocalLibraryIcon sx={{ width: 35, height: 35 }} />
           </IconButton>
         </Tooltip>
-        {/* <Tooltip title="Thư viên của bạn">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            sx={{ ml: 0, color:"#fb9805" }}
-          >
-            <LocalLibraryIcon sx={{width:45,height:45}}/> 
-          </IconButton>
-        </Tooltip> */}
       </Box>
-      <Menu
-        anchorEl={anchorEl}
-        id="add-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        sx={{
-          overflow: "visible",
-          mt: 1.5,
-          "& .MuiAvatar-root": {
-            width: 32,
-            height: 32,
-            ml: -0.5,
-            mr: 1,
-          },
-        }}
-        transformOrigin={{ horizontal: "left", vertical: "top" }}
-        anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-      >
-        <Link to={"/my-lib/sets"}>
-          <MenuItem onClick={handleClose} LinkComponent={Link} to="/">
-            <ListItemIcon>
-              <NoteAddIcon />
-            </ListItemIcon>
-            <ListItemText>Bộ flashcard</ListItemText>
-          </MenuItem>
-        </Link>
-        <Link to={"/my-lib/folders"}>
-          <MenuItem onClick={handleClose} LinkComponent={Link} to="/">
-            <ListItemIcon>
-              <CreateNewFolderIcon />
-            </ListItemIcon>
-            <ListItemText>Thư mục</ListItemText>
-          </MenuItem>
-        </Link>
-        <Link to={"/my-lib/classes"}>
-          <MenuItem onClick={handleClose} LinkComponent={Link} to="/">
-            <ListItemIcon>
-              <SchoolIcon />
-            </ListItemIcon>
-            <ListItemText>Lớp học</ListItemText>
-          </MenuItem>
-        </Link>
-      </Menu>
     </>
   );
 };

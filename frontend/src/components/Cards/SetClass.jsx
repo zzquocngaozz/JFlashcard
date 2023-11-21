@@ -4,7 +4,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import { getColorFromEnum } from "../../utils/colorGetter";
-import { ROLE, SET_TYPE } from "../../utils/constant";
+import { FLAG_STATUS, ROLE, SET_TYPE } from "../../utils/constant";
 import { parseBirth } from "../../utils/datetimeCalc";
 import {
   StackCardLink,
@@ -56,7 +56,13 @@ const SetClass = ({ flashcardSet: data, onDelete, onUpdate, mutationing }) => {
             {flashcardSet?.title}
           </Typography>
         </StackList>
-        <Chip label={SET_TYPE[flashcardSet?.type]} sx={{ width: "90px" }} />
+        <StackList>
+          <Chip label={SET_TYPE[flashcardSet?.type]} sx={{ width: "90px" }} />
+          <Chip
+            label={FLAG_STATUS[flashcardSet?.status]}
+            sx={{ width: "90px" }}
+          />
+        </StackList>
         <StackList>
           <NoteOutlinedIcon />
           <Typography>

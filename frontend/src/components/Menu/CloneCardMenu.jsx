@@ -12,8 +12,10 @@ import React from "react";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import useAuth from "../../hooks/useAuth";
 import SaveIcon from "@mui/icons-material/Save";
-const CloneCardMenu = ({ openForm }) => {
+import { useFlashcardSetContext } from "../../context/FlashcardSetContext";
+const CloneCardMenu = ({ handleTogleClone }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { markedCards } = useFlashcardSetContext();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,15 +23,15 @@ const CloneCardMenu = ({ openForm }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleOpenForm = (index) => {
+  const selectModeClone = (index) => {
     setAnchorEl(null);
-    openForm(index);
+    handleTogleClone(index);
   };
 
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Thêm thẻ">
+        <Tooltip title="Sao chép thẻ">
           <IconButton
             onClick={handleClick}
             color="primary"
@@ -49,11 +51,14 @@ const CloneCardMenu = ({ openForm }) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={() => handleOpenForm(1)}>
-          <ListItemText>Lưu tất cả</ListItemText>
+        <MenuItem onClick={() => selectModeClone(0)}>
+          <ListItemText>Tất cả</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => handleOpenForm(2)}>
-          <ListItemText>Lưu những thẻ đã chọn</ListItemText>
+        <MenuItem
+          disabled={markedCards.length === 0}
+          onClick={() => selectModeClone(1)}
+        >
+          <ListItemText>Mhững thẻ đã chọn</ListItemText>
         </MenuItem>
       </Menu>
     </>

@@ -19,7 +19,8 @@ import VocaDialogForm from "../Dialog/VocaDialogForm";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import { FLAG_STATUS } from "../../utils/constant";
 import { useSetEditContext } from "../../context/SetEditContext";
-
+import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 const CardBank = ({ card, index }) => {
   const { selectCard, handleSelectCard } = useSetEditContext();
   const [openForm, setOpenForm] = useState(false);
@@ -69,21 +70,32 @@ const CardBank = ({ card, index }) => {
       >
         <Typography flex={5}>{index + 1}</Typography>
         <Chip label={FLAG_STATUS[card.status]} />
-        <Tooltip title={"Chỉnh sửa"}>
+        {/* <Tooltip title={"Chỉnh sửa"}>
           <IconButton sx={{ width: 30, height: 30 }} onClick={handleToggleForm}>
             <ModeEditIcon color="primary" />
           </IconButton>
-        </Tooltip>
-
-        <Tooltip title={`${!selected ? "Chọn" : "Bỏ chọn"}`}>
-          <IconButton
-            onClick={() => {
-              handleSelectCard(card);
-            }}
-          >
-            <StarIcon sx={{ color: `${selected ? "#ff9800" : ""}` }} />
-          </IconButton>
-        </Tooltip>
+        </Tooltip> */}
+        {!selected ? (
+          <Tooltip title={` "Chọn" `}>
+            <IconButton
+              onClick={() => {
+                handleSelectCard(card);
+              }}
+            >
+              <CheckBoxOutlineBlankOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title={` "Bỏ chọn" `}>
+            <IconButton
+              onClick={() => {
+                handleSelectCard(card);
+              }}
+            >
+              <CheckBoxOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </Stack>
       <Stack
         flexDirection={"row"}

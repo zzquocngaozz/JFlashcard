@@ -10,6 +10,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import {
   Box,
+  Chip,
   IconButton,
   Pagination,
   Skeleton,
@@ -21,6 +22,8 @@ import { useEffect } from "react";
 import { fuzzySearch } from "../../utils/search";
 import { checkDueAt } from "../../utils/datetimeCalc";
 import useTeacherCreatedSet from "../../hooks/useTeacherCreatedSet";
+import { FLAG_STATUS } from "../../utils/constant";
+import { Link } from "react-router-dom";
 
 // truyền vào defaultValue(optional) togglefunc updatefunc
 // TODO: lam edit form
@@ -186,14 +189,21 @@ export default function AddClassSetDialog({ handleToggle, addClassSet }) {
                   }}
                 >
                   <StackList flexGrow={1} flexBasis={"50px"}>
-                    <Typography>{set?.title}</Typography>
+                    <Typography
+                      className="text--overflow"
+                      sx={{ maxWidth: "350px" }}
+                    >
+                      {set?.title}
+                    </Typography>
+                    <Chip label={FLAG_STATUS[set?.status]} />
                   </StackList>
                   <IconButton
                     variant="contained"
                     disabled={
                       mutationing ||
                       !Boolean(dueAt.payload) ||
-                      Boolean(dueAt.error)
+                      Boolean(dueAt.error) ||
+                      set.status !== 3
                     }
                     color="secondary"
                     onClick={() => handleAdd(set?.flashcardSetId)}
@@ -219,14 +229,25 @@ export default function AddClassSetDialog({ handleToggle, addClassSet }) {
               onChange={handleChangePaging}
             />
           )}
-          <Button
-            startIcon={<DoneIcon />}
-            onClick={handleToggle}
-            color="primary"
-            variant="contained"
-          >
-            Xong
-          </Button>
+          <StackList>
+            <Button
+              startIcon={<FilterNoneIcon />}
+              LinkComponent={Link}
+              to={"/my-lib"}
+              color="secondary"
+              variant="contained"
+            >
+              Thư viện của bạn
+            </Button>
+            <Button
+              startIcon={<DoneIcon />}
+              onClick={handleToggle}
+              color="primary"
+              variant="contained"
+            >
+              Xong
+            </Button>
+          </StackList>
         </DialogActions>
       </Dialog>
     </>
