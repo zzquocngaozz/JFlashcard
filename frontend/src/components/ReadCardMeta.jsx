@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FlashcardBookMark from "./DataDisplay/FlashcardBookMark";
 import SetVote from "./Menu/SetVote";
 import { StackList } from "./Styled/StyledStack";
@@ -22,13 +22,45 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import BackdropLoading from "./FeedBack/BackdropLoading";
 import SaveIcon from "@mui/icons-material/Save";
+import SnapBarAlter from "./FeedBack/SnapBarAlter";
+import AlertCloneSet from "./Dialog/AlertCloneSet";
+import CloneCardMenu from "./Menu/CloneCardMenu";
 
 const ReadCardMeta = () => {
-  const { flashcardSet, remain, cloning, learnedCards, markedCards, cloneSet } =
-    useFlashcardSetContext();
+  const {
+    flashcardSet,
+    remain,
+    cloning,
+    learnedCards,
+    markedCards,
+    cloneSet,
+    alert,
+    handleCloseSnackBar,
+  } = useFlashcardSetContext();
   const navigate = useNavigate();
   const { isLogin, currentUser } = useAuth();
   const { setId } = useParams();
+
+  const [alertClone, setAlertClone] = useState({
+    open: false,
+    mode: 0,
+    message: "Bạn có muốn sao chép toàn bộ thẻ trong bộ này",
+  });
+
+  const handleTogleClone = (mode) => {
+    console.log(mode);
+    if (mode === 0) setAlertClone({ ...alertClone, open: !alertClone.open });
+    else
+      setAlertClone({
+        open: !alertClone.open,
+        mode: 1,
+        message: "Bạn có muốn sao chép những thẻ đã được chọn",
+      });
+  };
+
+  const handleClone = (mode) => {
+    cloneSet(mode, handleTogleClone);
+  };
 
   const setLearnMode = (url, learnMode) => {
     // Chuyển đến trang Page B và truyền state thông qua props.location.state
@@ -167,15 +199,34 @@ const ReadCardMeta = () => {
             </IconButton>
           </Tooltip>
         ) : isLogin() ? (
-          <Tooltip title={"Lưu và sửa"}>
-            <IconButton onClick={cloneSet}>
-              <SaveIcon />
-            </IconButton>
-          </Tooltip>
+          // <Tooltip title={"Sao chép thẻ"}>
+          //   <IconButton onClick={cloneSet}>
+          //     <SaveIcon />
+          //   </IconButton>
+          // </Tooltip>
+          <CloneCardMenu handleTogleClone={handleTogleClone} />
         ) : (
           <></>
         )}
         {cloning ? <BackdropLoading /> : <></>}
+        {alert.open ? (
+          <SnapBarAlter
+            alert={alert}
+            handleCloseSnackBar={handleCloseSnackBar}
+          />
+        ) : (
+          <></>
+        )}
+        {alertClone.open ? (
+          <AlertCloneSet
+            alertClone={alertClone}
+            onClone={handleClone}
+            handleToggle={handleTogleClone}
+            cloning={cloning}
+          />
+        ) : (
+          <></>
+        )}
       </Stack>
     </Stack>
   );

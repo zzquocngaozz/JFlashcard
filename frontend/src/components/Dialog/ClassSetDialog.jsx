@@ -108,8 +108,13 @@ const ClassSetDialog = ({ learnProgress, student, handleTogle }) => {
     setWeekIndex(e.target.value);
   };
   useEffect(() => {
-    setSelectSize(numOfWeek(new Date("2023-09-01"), new Date()));
-  }, []);
+    setSelectSize(
+      numOfWeek(
+        new Date(studentProgress?.startDate),
+        new Date(studentProgress?.endDate)
+      )
+    );
+  }, [studentProgress]);
   useEffect(() => {
     const fetchProgress = async () => {
       try {
