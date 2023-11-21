@@ -37,7 +37,7 @@ public class CardVocabController {
 
     }
     @DeleteMapping ("/vocab-card/{cardId}")
-    public ResponseEntity<?> deleteVocabCard(@PathVariable long cardId, @PathVariable String setId){
+    public ResponseEntity<?> deleteVocabCard(@PathVariable long cardId){
         flashcardSetService.deleteFlvocab(cardId);
         return ResponseEntity.ok("Xóa thành công");
     }

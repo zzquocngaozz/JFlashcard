@@ -39,7 +39,7 @@ public class CardKanjiController {
 
     }
     @DeleteMapping ("/kanji-card/{cardId}")
-    public ResponseEntity<?> deleteKanjiCard(@PathVariable long cardId, @PathVariable String setId){
+    public ResponseEntity<?> deleteKanjiCard(@PathVariable long cardId){
         flashcardSetService.deleteFlKanji(cardId);
         return ResponseEntity.ok("Xóa thành công");
     }
