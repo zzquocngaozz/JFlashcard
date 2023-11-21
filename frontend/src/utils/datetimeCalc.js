@@ -89,7 +89,7 @@ export function numOfWeek(startDate, endDate) {
     (startDate.getTime() - (startDate.getDay() - 1) * 24 * 60 * 60 * 1000);
   const numberOfWeeks = Math.floor(difference / millisecondsPerWeek); // Số tuần
 
-  return numberOfWeeks;
+  return numberOfWeeks !== 0 ? numberOfWeeks : 1;
 }
 
 export const getWeekDateOption = (weekIndex) => {

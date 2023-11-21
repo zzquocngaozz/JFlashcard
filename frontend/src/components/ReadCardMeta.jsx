@@ -49,17 +49,26 @@ const ReadCardMeta = () => {
 
   const handleTogleClone = (mode) => {
     console.log(mode);
-    if (mode === 0) setAlertClone({ ...alertClone, open: !alertClone.open });
+    if (mode === 0)
+      setAlertClone({
+        mode: 0,
+        message: "Bạn có muốn sao chép những thẻ trong bộ này",
+        open: true,
+      });
     else
       setAlertClone({
-        open: !alertClone.open,
+        open: true,
         mode: 1,
         message: "Bạn có muốn sao chép những thẻ đã được chọn",
       });
   };
 
+  const handleToggleAlert = () => {
+    setAlertClone({ ...alertClone, open: !alertClone.open });
+  };
+
   const handleClone = (mode) => {
-    cloneSet(mode, handleTogleClone);
+    cloneSet(mode, handleToggleAlert);
   };
 
   const setLearnMode = (url, learnMode) => {
@@ -220,8 +229,8 @@ const ReadCardMeta = () => {
         {alertClone.open ? (
           <AlertCloneSet
             alertClone={alertClone}
+            handleToggle={handleToggleAlert}
             onClone={handleClone}
-            handleToggle={handleTogleClone}
             cloning={cloning}
           />
         ) : (

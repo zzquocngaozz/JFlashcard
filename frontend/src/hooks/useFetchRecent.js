@@ -34,7 +34,7 @@ export default function useFetchRecent() {
         );
         const response = await recent;
         const result = await staticLearn;
-        setData(result.data.data);
+        setData(result.data);
         setRecent({
           classes: response?.data?.classRooms,
           sets: response?.data?.flashcardSets,

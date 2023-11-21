@@ -108,6 +108,10 @@ const ClassSetDialog = ({ learnProgress, student, handleTogle }) => {
     setWeekIndex(e.target.value);
   };
   useEffect(() => {
+    if (studentProgress?.startDate === studentProgress?.endDate) {
+      setSelectSize(1);
+      return;
+    }
     setSelectSize(
       numOfWeek(
         new Date(studentProgress?.startDate),
@@ -139,7 +143,7 @@ const ClassSetDialog = ({ learnProgress, student, handleTogle }) => {
             datasets: [
               {
                 label: "Số thẻ học",
-                data: response.data.data,
+                data: response?.data?.data,
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.5)",
                   "rgba(132, 99, 255, 0.5)",

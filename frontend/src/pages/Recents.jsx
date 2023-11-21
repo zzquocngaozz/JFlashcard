@@ -10,7 +10,6 @@ const Recents = () => {
   const { recent, data, loading, getWeekTracking } = useFetchRecent();
   const { currentUser } = useAuth();
   useEffect(() => {
-    console.log(currentUser);
     document.title = "Trang chủ| JFlashcards";
   }, []);
   return (

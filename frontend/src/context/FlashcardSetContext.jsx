@@ -234,7 +234,8 @@ export const FlashcardSetProvider = ({ children }) => {
       const markedSet = new Set(
         flashcardSet?.markedCards?.map((card) => card?.cardId)
       );
-      const sortedList = flashcardSet?.cards?.reduce(
+      const cacheCard = [...flashcardSet?.cards];
+      const sortedList = cacheCard.reduce(
         (result, card) => {
           if (learnedSet?.has(card.cardId)) result.learned.push(card);
           else result.remain.push(card);

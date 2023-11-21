@@ -20,10 +20,11 @@ import { StackContain } from "../components/Styled/Container";
 import SetSkeleton from "../components/FeedBack/SetSkeleton";
 import AddClassSetDialog from "../components/Dialog/AddClassSetDialog";
 import searhbanner from "../assets/images/searhbanner.png";
+import { useClassContext } from "../context/ClassContext";
 
 const ClassSet = () => {
   const { loading: loadingClass } = useClassroom();
-
+  const { isClassAdmin } = useClassContext();
   const {
     loading,
     mutationing,
@@ -54,11 +55,15 @@ const ClassSet = () => {
                 <Typography variant="h4">
                   Các bộ flashcard trong lớp học
                 </Typography>
-                <Tooltip title={"Thêm bộ flashcard"}>
-                  <IconButton onClick={handleToggleAdd}>
-                    <AddIcon color="primary" />
-                  </IconButton>
-                </Tooltip>
+                {isClassAdmin() ? (
+                  <Tooltip title={"Thêm bộ flashcard"}>
+                    <IconButton onClick={handleToggleAdd}>
+                      <AddIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
               </StackList>
               <Pagination
                 count={Math.ceil(classSets?.length / 6)}

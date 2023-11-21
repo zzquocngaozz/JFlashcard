@@ -160,12 +160,12 @@ const SetEdit = () => {
                     <DeleteForeverIcon color="error" />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title={"Nhập bằng file"}>
+                {/* <Tooltip title={"Nhập bằng file"}>
                   <IconButton component={"label"} onClick={handleToggleImport}>
-                    <CloudUploadIcon />
-                    {/* <VisuallyHiddenInput type="file" onChange={importFile} /> */}
-                  </IconButton>
-                </Tooltip>
+                    <CloudUploadIcon /> */}
+                {/* <VisuallyHiddenInput type="file" onChange={importFile} /> */}
+                {/* </IconButton>
+                </Tooltip> */}
               </Box>
               <Stack
                 flexDirection={"row"}
@@ -229,7 +229,7 @@ const SetEdit = () => {
       {alert.open ? (
         <SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar} />
       ) : (
-        ""
+        <></>
       )}
       {openImport ? (
         <ImportFileDialog

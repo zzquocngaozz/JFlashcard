@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { StackList } from "../Styled/StyledStack";
 import {
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -20,6 +21,7 @@ import {
   Legend,
 } from "chart.js";
 import { getWeekDateOption, numOfWeek } from "../../utils/datetimeCalc";
+import DateRangeIcon from "@mui/icons-material/DateRange";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -28,7 +30,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
 const labels = [
   "Thứ 2",
   "Thứ 3",
@@ -63,15 +64,27 @@ const options = {
   },
 };
 
-const UserHomeChart = ({ data, getWeekTracking }) => {
+const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
   const { currentUser } = useAuth();
+  const [userData, setUserData] = useState({
+    cardType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
+    dataCard: {
+      numberDraft: 0,
+      numberDone: 0,
+      numberPublic: 0,
+      numberClose: 0,
+    },
+    countClass: 0,
+    dataSet: { numberDraft: 0, numberDone: 0, numberPublic: 0, numberClose: 0 },
+    setType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
+  });
   const [chartProps, setChartProps] = useState({
     data: {
       labels: labels,
       datasets: [
         {
           label: "Số thẻ học",
-          data: data,
+          data: [0, 0, 0, 0, 0, 0, 0],
           backgroundColor: [
             "rgba(255, 99, 132, 0.5)",
             "rgba(132, 99, 255, 0.5)",
@@ -99,7 +112,7 @@ const UserHomeChart = ({ data, getWeekTracking }) => {
         datasets: [
           {
             label: "Số thẻ học",
-            data: data,
+            data: dashboard?.weekTrackingDTOResponse?.data,
             backgroundColor: [
               "rgba(255, 99, 132, 0.5)",
               "rgba(132, 99, 255, 0.5)",
@@ -109,20 +122,71 @@ const UserHomeChart = ({ data, getWeekTracking }) => {
       },
       options: options,
     });
-  }, [data]);
+
+    if (!dashboard) return;
+    const {
+      cardType,
+      dataCard,
+      countClass,
+      dataSet,
+      setType,
+      weekTrackingDTOResponse,
+    } = dashboard;
+    // console.log(
+    //   cardType,
+    //   countClass,
+    //   dataCard,
+    //   dataSet,
+    //   setType,
+    //   weekTrackingDTOResponse
+    // );
+    console.log(Object.values(cardType), "Thẻ");
+    console.log(Object.values(dataCard), "Thẻ status");
+    console.log(Object.values(dataSet), "Set status");
+    console.log(Object.values(setType), "Set type");
+  }, [dashboard]);
+
+  const selectRef = useRef(null);
+  const handleClick = () => {
+    selectRef.current.classList.toggle("active");
+  };
   return (
     <StackList
       className="container__theme"
       sx={{
         height: "260px",
         justifyContent: "flex-start",
-
+        position: "relative",
         mb: "30px",
       }}
     >
       <Bar data={chartProps?.data} options={chartProps?.options} />
+      <IconButton
+        sx={{
+          position: "absolute",
+          top: "10px",
+          left: "450px",
+        }}
+        onClick={handleClick}
+      >
+        <DateRangeIcon />
+      </IconButton>
       <Stack
-        sx={{ justifyContent: "flex-end", height: "100%", rowGap: "25px" }}
+        ref={selectRef}
+        sx={{
+          position: "absolute",
+          top: "55px",
+          left: "20%",
+          opacity: 0,
+          background: "#fff",
+          justifyContent: "flex-end",
+          rowGap: "25px",
+          transition: "all .2s ease 0.05s",
+          "&.active": {
+            opacity: 1,
+            left: "25%",
+          },
+        }}
       >
         <FormControl fullWidth>
           <InputLabel id="date-select-label">Tuần</InputLabel>
@@ -141,6 +205,9 @@ const UserHomeChart = ({ data, getWeekTracking }) => {
           </Select>
         </FormControl>
       </Stack>
+      <StackList>
+        <Typography variant="h6">Đã tham gia{}</Typography>
+      </StackList>
     </StackList>
   );
 };

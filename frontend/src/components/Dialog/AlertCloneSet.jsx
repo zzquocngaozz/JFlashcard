@@ -74,7 +74,7 @@ export default function AlertCloneSet({
           </Button>
           <Button
             onClick={() => {
-              onClone(handleToggle);
+              onClone(alertClone.mode);
             }}
             type="button"
             color="error"
