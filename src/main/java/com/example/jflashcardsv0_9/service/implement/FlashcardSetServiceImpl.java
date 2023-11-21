@@ -353,8 +353,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
             openedFlashcardSetRepository.save(openedFlashcardSet);
         }
         List<Card> cards = (List<Card>) getCardDTOSPublic(flashcardSet);
-        List<ReadSetDTO.MarkedCard> markedCards = getCardBookmarkPublic(user,flashcardSet);
-        List<ReadSetDTO.LearnedCard> learnedCards = getCardLearnPublic(user,flashcardSet);
+        List<ReadSetDTO.Data> markedCards = getCardBookmarkPublic(user,flashcardSet);
+        List<ReadSetDTO.Data> learnedCards = getCardLearnPublic(user,flashcardSet);
         VotePoint votePoint = votePointRepository.getVotePointByFlashcardSetAndUser(flashcardSet, user);
         int voted = (votePoint != null) ? votePoint.getPoint() : 0;
         return ReadSetDTO.builder()
@@ -376,31 +376,30 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .build();
     }
 
-    private List<ReadSetDTO.LearnedCard> getCardLearnPublic(User user, FlashcardSet flashcardSet) {
+    private List<ReadSetDTO.Data> getCardLearnPublic(User user, FlashcardSet flashcardSet) {
         List<Long> trackingProgresses = trackingProgressRepository.findDistinctCardIdsByUserAndFlashcardSet(user, flashcardSet);
-        List<ReadSetDTO.LearnedCard> learnedCards = new ArrayList<>();
+        List<ReadSetDTO.Data> learnedCards = new ArrayList<>();
 
         for (Long cardId : trackingProgresses) {
-            ReadSetDTO.LearnedCard learnedCard = createLearnedCard(cardId, flashcardSet.getType());
+            ReadSetDTO.Data learnedCard = createLearnedCard(cardId, flashcardSet.getType());
             learnedCards.add(learnedCard);
         }
 
         return learnedCards;
     }
-
-    private ReadSetDTO.LearnedCard createLearnedCard(Long cardId, int flashcardType) {
+    private ReadSetDTO.Data createLearnedCard(Long cardId, int flashcardType) {
         switch (flashcardType) {
             case 1:
-                return ReadSetDTO.LearnedCard.builder()
-                        .cardId(flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(cardId, 3).getCardKanjiId())
+                return ReadSetDTO.Data.builder()
+                        .cardId(flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(cardId).getCardKanjiId())
                         .build();
             case 2:
-                return ReadSetDTO.LearnedCard.builder()
-                        .cardId(flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(cardId, 3).getCardVocabId())
+                return ReadSetDTO.Data.builder()
+                        .cardId(flashcardVocabRepository.getFlashcardVocabByCardVocabId(cardId).getCardVocabId())
                         .build();
             case 3:
-                return ReadSetDTO.LearnedCard.builder()
-                        .cardId(flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(cardId, 3).getCardGrammarId())
+                return ReadSetDTO.Data.builder()
+                        .cardId(flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(cardId).getCardGrammarId())
                         .build();
             default:
                 throw new IllegalArgumentException("Unsupported flashcard type: " + flashcardType);
@@ -408,12 +407,12 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
 
 
-    public List<ReadSetDTO.MarkedCard> getCardBookmarkPublic(User user, FlashcardSet flashcardSet) {
+    public List<ReadSetDTO.Data> getCardBookmarkPublic(User user, FlashcardSet flashcardSet) {
         List<BookMarkCard> bookMarkCards = bookmarkCardRepository.getAllByUserAndAndFlashcardSet(user, flashcardSet);
-        List<ReadSetDTO.MarkedCard> markedCards = new ArrayList<>();
+        List<ReadSetDTO.Data> markedCards = new ArrayList<>();
 
         bookMarkCards.forEach(bookMarkCard -> {
-            ReadSetDTO.MarkedCard markedCard = createMarkedCard(bookMarkCard, flashcardSet.getType());
+            ReadSetDTO.Data markedCard = createMarkedCard(bookMarkCard, flashcardSet.getType());
             markedCards.add(markedCard);
         });
 
@@ -421,11 +420,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
 
 
-    private ReadSetDTO.MarkedCard createMarkedCard(BookMarkCard bookMarkCard, int flashcardType) {
-        ReadSetDTO.MarkedCard markedCard = ReadSetDTO.MarkedCard.builder()
-                .bookMarkCardId(bookMarkCard.getBookMarkCardId())
-                .userId(bookMarkCard.getUser().getUserId())
-                .flashcardSetId(bookMarkCard.getFlashcardSet().getFlashcardSetId())
+    private ReadSetDTO.Data createMarkedCard(BookMarkCard bookMarkCard, int flashcardType) {
+        ReadSetDTO.Data markedCard = ReadSetDTO.Data.builder()
                 .cardId(getCardIdBook(bookMarkCard, flashcardType))
                 .build();
 
@@ -435,11 +431,11 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     private long getCardIdBook(BookMarkCard bookMarkCard, int flashcardType) {
         switch (flashcardType) {
             case 1:
-                return flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(bookMarkCard.getCardId(), 3).getCardKanjiId();
+                return flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(bookMarkCard.getCardId()).getCardKanjiId();
             case 2:
-                return flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(bookMarkCard.getCardId(), 3).getCardVocabId();
+                return flashcardVocabRepository.getFlashcardVocabByCardVocabId(bookMarkCard.getCardId()).getCardVocabId();
             case 3:
-                return flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(bookMarkCard.getCardId(), 3).getCardGrammarId();
+                return flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(bookMarkCard.getCardId()).getCardGrammarId();
             default:
                 throw new IllegalArgumentException("Unsupported flashcard type: " + flashcardType);
         }
@@ -455,7 +451,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
             List<FlashcardKanji> flashcardKanjis = new ArrayList<>();
             for (FlashcardSetAssociation flashcardSetAssociation : flashcardSetAssociations){
                 FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(flashcardSetAssociation.getCardId(),3);
-                flashcardKanjis.add(flashcardKanji);
+                if(flashcardKanji!=null) {
+                    flashcardKanjis.add(flashcardKanji);
+                }
             }
             List<KanjiDTO> kanjiDTOS = flashcardKanjis.stream()
                     .map((FlashcardKanji flashcardKanji) -> FlashcardMapper.convertKanjiDTO(flashcardKanji)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
@@ -467,7 +465,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
             List<FlashcardVocab> flashcardVocabs = new ArrayList<>();
             for (FlashcardSetAssociation flashcardSetAssociation : flashcardSetAssociations){
                 FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(flashcardSetAssociation.getCardId(),3);
-                flashcardVocabs.add(flashcardVocab);
+                if(flashcardVocab!=null) {
+                    flashcardVocabs.add(flashcardVocab);
+                }
             }
             List<VocabDTO> vocabDTOS =  flashcardVocabs.stream()
                     .map((FlashcardVocab flashcardVocab) -> FlashcardMapper.convertVocabDTO(flashcardVocab)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
@@ -480,7 +480,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
             List<FlashcardGrammar> flashcardGrammars = new ArrayList<>();
             for (FlashcardSetAssociation flashcardSetAssociation : flashcardSetAssociations){
                 FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(flashcardSetAssociation.getCardId(),3);
-                flashcardGrammars.add(flashcardGrammar);
+                if (flashcardGrammar != null) {
+                    flashcardGrammars.add(flashcardGrammar);
+                }
             }
             List<GrammarDTO> grammarDTOS= flashcardGrammars.stream()
                     .map((FlashcardGrammar flashcardGrammar) -> FlashcardMapper.convertGrammarDTO(flashcardGrammar)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
@@ -653,6 +655,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public Collection<? extends Card> listCardBankBySet(long setId, User user) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         List<Long> longs = flashcardSetAssociationRepository.findCardIdsByFlashcardSet(flashcardSet);
+
         List<Card> cards  = new ArrayList<>();
         if(flashcardSet.getType() == 1){
             List<FlashcardKanji> flashcardKanjis = flashcardKanjiRepository.getAllByUser(user);
@@ -661,7 +664,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(cardId);
                 inSet.add(flashcardKanji);
             }
-            flashcardKanjis.remove(inSet);
+            flashcardKanjis.removeAll(inSet);
             List<KanjiDTO> kanjiDTOS = flashcardKanjis.stream()
                     .map((FlashcardKanji flashcardKanji) -> FlashcardMapper.convertKanjiDTO(flashcardKanji)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
                     .collect(Collectors.toList());
@@ -675,7 +678,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(cardId);
                 inSet.add(flashcardVocab);
             }
-            flashcardVocabs.remove(inSet);
+            flashcardVocabs.removeAll(inSet);
             List<VocabDTO> vocabDTOS =  flashcardVocabs.stream()
                     .map((FlashcardVocab flashcardVocab) -> FlashcardMapper.convertVocabDTO(flashcardVocab)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
                     .collect(Collectors.toList());
@@ -690,7 +693,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(cardId);
                 inSet.add(flashcardGrammar);
             }
-            flashcardGrammars.remove(inSet);
+
+            flashcardGrammars.removeAll(inSet);
             List<GrammarDTO> grammarDTOS= flashcardGrammars.stream()
                     .map((FlashcardGrammar flashcardGrammar) -> FlashcardMapper.convertGrammarDTO(flashcardGrammar)) // Sử dụng method reference để chuyển đổi từ User sang UserDTO
                     .collect(Collectors.toList());

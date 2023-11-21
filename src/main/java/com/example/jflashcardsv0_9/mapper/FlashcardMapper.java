@@ -171,6 +171,7 @@ public class FlashcardMapper {
         FlashcardVocab cloneVocab = new FlashcardVocab();
         // Sao chép các trường dữ liệu khác nếu cần
         cloneVocab.setTerm(dto.getTerm());
+        cloneVocab.setStatus(1);
         cloneVocab.setMean(dto.getMean());
         cloneVocab.setExample(dto.getExample());
         cloneVocab.setExampleMean(dto.getExampleMean());
@@ -185,6 +186,7 @@ public class FlashcardMapper {
 
         // Sao chép các trường dữ liệu khác nếu cần
         cloneGrammar.setCombination(dto.getCombination());
+        cloneGrammar.setStatus(1);
         cloneGrammar.setNote(dto.getNote());
         cloneGrammar.setTerm(dto.getTerm());
         cloneGrammar.setMean(dto.getMean());
@@ -201,6 +203,7 @@ public class FlashcardMapper {
 
         // Sao chép các trường dữ liệu khác nếu cần
         cloneKanji.setOnSound(dto.getOnSound());
+        cloneKanji.setStatus(1);
         cloneKanji.setKunSound(dto.getKunSound());
         cloneKanji.setChineseSound(dto.getChineseSound());
         cloneKanji.setTerm(dto.getTerm());
