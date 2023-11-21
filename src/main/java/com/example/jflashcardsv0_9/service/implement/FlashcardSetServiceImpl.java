@@ -16,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -250,31 +249,76 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardVocab.setStatus(4);
         flashcardVocabRepository.save(flashcardVocab);
     }
+
     @Override
     public long numberCard(long setId, int type) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-        List<Long> longs =flashcardSetAssociationRepository.findCardIdsByFlashcardSet(flashcardSet);
+        List<Long> longs = flashcardSetAssociationRepository.findCardIdsByFlashcardSet(flashcardSet);
         //kanji
-        if(type == 1){
+        if (type == 1) {
             List<FlashcardKanji> flashcardKanjis = new ArrayList<>();
-            for (Long card : longs){
-                flashcardKanjis.add(flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(card,3));
+            for (Long card : longs) {
+                FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(card, 3);
+                if (flashcardKanji != null) {
+                    flashcardKanjis.add(flashcardKanji);
+                }
             }
             return flashcardKanjis.size();
         }
         // tu vựng
-        else if (type == 2){
+        else if (type == 2) {
             List<FlashcardVocab> flashcardVocabs = new ArrayList<>();
-            for (Long card : longs){
-                flashcardVocabs.add(flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(card,3));
+            for (Long card : longs) {
+                FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(card, 3);
+                if (flashcardVocab != null) {
+                    flashcardVocabs.add(flashcardVocab);
+                }
             }
             return flashcardVocabs.size();
-        }
-        // ngữ pháp
-        else if (type == 3){
+        } else if (type == 3) {
             List<FlashcardGrammar> flashcardGrammars = new ArrayList<>();
-            for (Long card : longs){
-                flashcardGrammars.add(flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(card,3));
+            for (Long card : longs) {
+                FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(card, 3);
+                if (flashcardGrammar != null) {
+                    flashcardGrammars.add(flashcardGrammar);
+                }
+            }
+            return flashcardGrammars.size();
+        }
+        return 0;
+    }
+    @Override
+    public long numberCardManager(long setId, int type) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        List<Long> longs = flashcardSetAssociationRepository.findCardIdsByFlashcardSet(flashcardSet);
+        //kanji
+        if (type == 1) {
+            List<FlashcardKanji> flashcardKanjis = new ArrayList<>();
+            for (Long card : longs) {
+                FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(card);
+                if (flashcardKanji != null) {
+                    flashcardKanjis.add(flashcardKanji);
+                }
+            }
+            return flashcardKanjis.size();
+        }
+        // tu vựng
+        else if (type == 2) {
+            List<FlashcardVocab> flashcardVocabs = new ArrayList<>();
+            for (Long card : longs) {
+                FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(card);
+                if (flashcardVocab != null) {
+                    flashcardVocabs.add(flashcardVocab);
+                }
+            }
+            return flashcardVocabs.size();
+        } else if (type == 3) {
+            List<FlashcardGrammar> flashcardGrammars = new ArrayList<>();
+            for (Long card : longs) {
+                FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(card);
+                if (flashcardGrammar != null) {
+                    flashcardGrammars.add(flashcardGrammar);
+                }
             }
             return flashcardGrammars.size();
         }
@@ -291,6 +335,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public ReadSetDTO readFlashcardSet(User user, long setId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        if(flashcardSet.getStatus() !=3) {
+            throw new AppException(Error.AUTH_GI_DO);
+        }
         if(flashcardSet == null ){
             throw new AppException(Error.INFO_NOT_FOUND);
         }
@@ -447,6 +494,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public ReadSetDTO readFlashcardSetOfGuest(long setId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        if(flashcardSet.getStatus() !=3) {
+            throw new AppException(Error.AUTH_GI_DO);
+        }
 //                    "Kanji";
         List<Card> cards = (List<Card>) getCardDTOSPublic(flashcardSet);
 
@@ -578,7 +628,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public List<SetSingleDTO> listManagerSetOfUser(User user) {
         List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByUser(user);
         return flashcardSets.stream()
-                .map(FlashcardMapper::convertSetSingleDTO)
+                .map(FlashcardMapper::convertSetSingleDTOManager)
                 .collect(Collectors.toList());
     }
 
