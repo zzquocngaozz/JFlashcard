@@ -3,58 +3,34 @@
 skinparam Style strictuml
 
 actor User
-participant ClassRoomView
-participant ClassRoomController
-participant ClassRoomService
-participant Exception
+participant ListFolderView
+participant FolderController
+participant FolderService
+'participant Exception
 participant Dto
 database Repository as ACTIVATE_ENTITY
 
-User -> ClassRoomView: Press on ClassRoom
-activate ClassRoomView
-ClassRoomView -> ClassRoomController: Send Request
-activate ClassRoomController
+User -> FolderController: Send request
+activate FolderController
+FolderController -> FolderService: listFolderSet()
+activate FolderService
+FolderService -> Repository : Process and get data list folder
+activate Repository
+Repository --> FolderService : Return data
+deactivate
+FolderService -> Dto : Convert data
+activate Dto
+Dto --> FolderService : Return data
+deactivate
+FolderService --> FolderController : Send data
+deactivate
+FolderController --> ListFolderView : Send data
+deactivate
+activate ListFolderView
+ListFolderView --> User : Display data
+deactivate
 
-ClassRoomController -> ClassRoomService: getClassroomById(id, myUserDetail)
-activate ClassRoomService
-alt User is not a Member
-    ClassRoomService -> Exception : Check Member
-    activate Exception
-    Exception --> ClassRoomService: User is not a Member in the class
-    activate ClassRoomService
-    deactivate Exception
-    ClassRoomService --> ClassRoomController: Error message to user
-    activate ClassRoomController
-    deactivate ClassRoomService
-    ClassRoomController --> ClassRoomView : send mess
-    activate ClassRoomView
-    deactivate ClassRoomController
 
-    ClassRoomView --> User : Dispaly mess
-    deactivate ClassRoomView
-else User is a Member
-    ClassRoomService -> Exception : Check Member
-    activate Exception
-    Exception --> ClassRoomService: User is  a Member in the class
-    activate ClassRoomService
-    deactivate Exception
-    ClassRoomService -> Repository: Process and retrieve ClassRoomSingleDTO
-    activate Repository
-    ClassRoomService <-- Repository: ClassRoomSingleDTO
-    deactivate Repository
-    ClassRoomService -> Dto : Convert data
-    activate Dto
-    Dto --> ClassRoomService : Return data
-    deactivate Dto
-    ClassRoomService --> ClassRoomController: send Data
-        activate ClassRoomController
-        deactivate ClassRoomService
-        ClassRoomController --> ClassRoomView : send Data
-        activate ClassRoomView
-        deactivate ClassRoomController
-        ClassRoomView --> User : Dispaly Data
-            deactivate ClassRoomView
-end
 
 
 

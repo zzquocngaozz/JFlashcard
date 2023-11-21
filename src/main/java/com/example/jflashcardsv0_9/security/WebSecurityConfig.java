@@ -36,6 +36,7 @@ public class WebSecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/v1/read/preview/**","/api/v1/search/**", "/api/v1/login", "/api/v1/register","/api/v1/forgot","/api/v1").permitAll()
                                 .requestMatchers("/api/v1/dashboard/**").hasRole("ADMIN")
+                                .requestMatchers("/api/v1/classroom/{classId}/set/listset","/api/v1/classroom/{classId}/set/add").hasRole("TEACHER")
 //                                .requestMatchers("/api/v1/classroom/**").hasRole("TEACHER")
                                 .anyRequest().authenticated()
                                 .and()
