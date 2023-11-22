@@ -12,6 +12,8 @@ import lombok.experimental.FieldDefaults;
 public class TeacherDashboardDTO {
     long countClass;
     long countMember;
+    long countFolder;
+
     LearnDashboardDTO.DataType setType;
     LearnDashboardDTO.Data dataSet;
     LearnDashboardDTO.DataType cardType;

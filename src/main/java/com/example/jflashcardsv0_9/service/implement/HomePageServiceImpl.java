@@ -28,6 +28,7 @@ public class HomePageServiceImpl implements HomePageService {
     ClassMemberRepository classMemberRepository;
     OpenedFlashcardSetRepository openedFlashcardSetRepository;
     FlashcardSetRepository flashcardSetRepository;
+    FolderRepository folderRepository;
     FlashcardGrammarRepository flashcardGrammarRepository;
     FlashcardKanjiRepository flashcardKanjiRepository;
     FlashcardVocabRepository flashcardVocabRepository;
@@ -36,10 +37,11 @@ public class HomePageServiceImpl implements HomePageService {
     TrackingProgressRepository trackingProgressRepository;
     @Autowired
 
-    public HomePageServiceImpl(ClassMemberRepository classMemberRepository, OpenedFlashcardSetRepository openedFlashcardSetRepository, FlashcardSetRepository flashcardSetRepository, FlashcardGrammarRepository flashcardGrammarRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, ClassRoomRepository classRoomRepository, UserRepository userRepository, TrackingProgressRepository trackingProgressRepository) {
+    public HomePageServiceImpl(ClassMemberRepository classMemberRepository, OpenedFlashcardSetRepository openedFlashcardSetRepository, FlashcardSetRepository flashcardSetRepository, FolderRepository folderRepository, FlashcardGrammarRepository flashcardGrammarRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, ClassRoomRepository classRoomRepository, UserRepository userRepository, TrackingProgressRepository trackingProgressRepository) {
         this.classMemberRepository = classMemberRepository;
         this.openedFlashcardSetRepository = openedFlashcardSetRepository;
         this.flashcardSetRepository = flashcardSetRepository;
+        this.folderRepository = folderRepository;
         this.flashcardGrammarRepository = flashcardGrammarRepository;
         this.flashcardKanjiRepository = flashcardKanjiRepository;
         this.flashcardVocabRepository = flashcardVocabRepository;
@@ -123,6 +125,7 @@ public class HomePageServiceImpl implements HomePageService {
                         .data(dataWeek)
                         .build())
                 .countClass(classMemberRepository.countDistinctByUser(user))
+                .countFolder(folderRepository.countAllByUser(user))
                 .setType(LearnDashboardDTO.DataType.builder()
                         .numberKanji(flashcardSetRepository.countAllByUserAndType(user,1))
                         .numberVocab(flashcardSetRepository.countAllByUserAndType(user,2))
@@ -162,7 +165,8 @@ public class HomePageServiceImpl implements HomePageService {
         List<ClassRoom> classRooms = classRoomRepository.findAllByTeacher(user);
         return TeacherDashboardDTO.builder()
                 .countClass(classMemberRepository.countDistinctByUser(user))
-                .countMember(classMemberRepository.countStudentsByTeacherInClasses(user,classRooms))
+                .countMember(classMemberRepository.countDistinctByClassroomInAndUserNot(classRooms,user))
+                .countFolder(folderRepository.countAllByUser(user))
                 .setType(LearnDashboardDTO.DataType.builder()
                         .numberKanji(flashcardSetRepository.countAllByUserAndType(user,1))
                         .numberVocab(flashcardSetRepository.countAllByUserAndType(user,2))
