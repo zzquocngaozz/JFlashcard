@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 public class LearnDashboardDTO {
     WeekTrackingDTOResponse weekTrackingDTOResponse;
     long countClass;
+    long countFolder;
     DataType setType;
     Data dataSet;
     DataType cardType;

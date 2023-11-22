@@ -1,49 +1,30 @@
 @startuml
 
-class ClassRoomController {
-    + listMembers(myUserDetail: MyUserDetail, classId: long): List<AuthDTO>
+class ClassPostController {
+  +deleteComment(commentId: Long, myUserDetail: MyUserDetail): ResponseEntity<?>
 }
 
-class ClassRoomService {
-    + getAllClassMembersByClassRoom(classRoomId: long): List<AuthDTO>
+class ClassPostService {
+  +deleteComment(commentId: Long, myUserDetail: MyUserDetail): void
 }
 
-interface ClassRoomRepository {
-    + getClassRoomByClassRoomId(classRoomId: long): ClassRoom
+interface CommentRepository {
+  +delete(comment: Comment): void
 }
 
-interface ClassMemberRepository {
-    + getAllByClassroom(classRoom: ClassRoom): List<ClassMember>
+class Comment {
+  -commentId: Long
+  // other attributes...
 }
 
-class ClassRoom {
-    // ClassRoom attributes and methods here
-}
+class MyUserDetail
 
-class ClassMember {
-    // ClassMember attributes and methods here
-}
+class ResponseEntity<T>
 
-class MyUserDetail {
-    // MyUserDetail attributes and methods here
-}
-
-class AuthDTO {
-    // AuthDTO attributes and methods here
-}
-
-class UserMapper {
-    + toAuthDTO(user: User): AuthDTO
-}
-
-ClassRoomController --> ClassRoomService
-ClassRoomController --> MyUserDetail
-ClassRoomService --> ClassRoomRepository
-ClassRoomService --> ClassMemberRepository
-ClassRoomService --> ClassMember
-ClassRoomRepository --> ClassRoom
-ClassMemberRepository --> ClassRoom
-ClassMember --> UserMapper
-UserMapper--> AuthDTO
+ClassPostController -- ClassPostService : uses
+ClassPostService -- CommentRepository : uses
+ClassPostService -- MyUserDetail : uses
+CommentRepository -- Comment : uses
+ClassPostController -- ResponseEntity : returns
 
 @enduml

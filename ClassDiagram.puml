@@ -1,36 +1,30 @@
-@startuml
+git @startuml
 !define ACTIVATE_ENTITY Repository <<Database>> #008000
 skinparam Style strictuml
 
 actor User
-participant ListFolderView
-participant FolderController
-participant FolderService
+participant DeleteCommentView
+participant ClassPostController
+participant ClassRoomService
 'participant Exception
-participant Dto
+'participant Dto
 database Repository as ACTIVATE_ENTITY
 
-User -> FolderController: Send request
-activate FolderController
-FolderController -> FolderService: listFolderSet()
-activate FolderService
-FolderService -> Repository : Process and get data list folder
+User -> ClassPostController: send request
+activate ClassPostController
+ClassPostController -> ClassRoomService: deleteComment()
+activate ClassRoomService
+ClassRoomService -> Repository : Process and delete Comment in post
 activate Repository
-Repository --> FolderService : Return data
+Repository --> ClassRoomService : Return Mess " delete successfully"
 deactivate
-FolderService -> Dto : Convert data
-activate Dto
-Dto --> FolderService : Return data
+ClassRoomService --> ClassPostController : Send Mess
 deactivate
-FolderService --> FolderController : Send data
+ClassPostController --> DeleteCommentView : Send Mess
 deactivate
-FolderController --> ListFolderView : Send data
+activate DeleteCommentView
+DeleteCommentView --> User : back bulletin board view
 deactivate
-activate ListFolderView
-ListFolderView --> User : Display data
-deactivate
-
-
 
 
 
