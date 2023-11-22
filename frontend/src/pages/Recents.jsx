@@ -5,6 +5,7 @@ import RecentsHome from "../components/RecentsHome";
 import useFetchRecent from "../hooks/useFetchRecent";
 import UserHomeChart from "../components/DataDisplay/UserHomeChart";
 import useAuth from "../hooks/useAuth";
+import TeacherHomeHeader from "../components/DataDisplay/TeacherHomeHeader";
 
 const Recents = () => {
   const { recent, data, loading, getWeekTracking } = useFetchRecent();
@@ -23,8 +24,8 @@ const Recents = () => {
           </>
         ) : (
           <>
+            <TeacherHomeHeader data={data} />
             <ClassHome classes={recent.classes} loading={loading} />
-            <RecentsHome sets={recent.sets} loading={loading} />
           </>
         )}
       </Stack>

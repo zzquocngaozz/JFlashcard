@@ -42,6 +42,12 @@ export const parseKanjiExcel = (jsonExecel) => {
   });
   return jsonMapped;
 };
+
+export const countValues = (...a) => {
+  return a.reduce((total, a) => {
+    return (total += a);
+  }, 0);
+};
 // parseChart data
 export const getOptionChart = (title, timeProgressLabels, annotations) => ({
   indexAxis: "y",

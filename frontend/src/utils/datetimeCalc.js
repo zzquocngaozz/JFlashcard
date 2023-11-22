@@ -82,12 +82,14 @@ export const getWeekDate = (weekIndex) => {
   return { startDate: new Date(monOfWeek), endDate: new Date(sunOfWeek) };
 };
 export function numOfWeek(startDate, endDate) {
+  const offsetEndDate = endDate.getDay() === 0 ? 5 : endDate.getDay() - 2;
+  const offsetStartDate = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
   const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7; // Số mili giây trong một tuần
   const difference =
     endDate.getTime() -
-    (endDate.getDay() - 1) * 24 * 60 * 60 * 1000 -
-    (startDate.getTime() - (startDate.getDay() - 1) * 24 * 60 * 60 * 1000);
-  const numberOfWeeks = Math.floor(difference / millisecondsPerWeek); // Số tuần
+    offsetEndDate * 24 * 60 * 60 * 1000 -
+    (startDate.getTime() - offsetStartDate * 24 * 60 * 60 * 1000);
+  const numberOfWeeks = Math.ceil(difference / millisecondsPerWeek); // Số tuần
 
   return numberOfWeeks !== 0 ? numberOfWeeks : 1;
 }

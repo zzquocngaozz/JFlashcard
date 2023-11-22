@@ -245,7 +245,7 @@ const ClassSetDialog = ({ learnProgress, student, handleTogle }) => {
                 label="Age"
                 onChange={handleChange}
               >
-                {new Array(selectSize + 1).fill(0).map((value, index) => (
+                {new Array(selectSize).fill(0).map((value, index) => (
                   <MenuItem value={index} key={index}>
                     {getWeekDateOption(index)}
                   </MenuItem>

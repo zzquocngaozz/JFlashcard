@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { StackList } from "../Styled/StyledStack";
+import FilterNoneIcon from "@mui/icons-material/FilterNone";
+import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import {
+  Box,
+  Chip,
   FormControl,
   IconButton,
   InputLabel,
@@ -22,6 +26,10 @@ import {
 } from "chart.js";
 import { getWeekDateOption, numOfWeek } from "../../utils/datetimeCalc";
 import DateRangeIcon from "@mui/icons-material/DateRange";
+import SchoolIcon from "@mui/icons-material/School";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import { FLAG_STATUS } from "../../utils/constant";
+import { countValues } from "../../utils/parseData";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -67,16 +75,19 @@ const options = {
 const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
   const { currentUser } = useAuth();
   const [userData, setUserData] = useState({
-    cardType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
-    dataCard: {
-      numberDraft: 0,
-      numberDone: 0,
-      numberPublic: 0,
-      numberClose: 0,
-    },
+    // cardType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
+    cardType: [0, 0, 0],
+    // dataCard: {
+    //   numberDraft: 0,
+    //   numberDone: 0,
+    //   numberPublic: 0,
+    //   numberClose: 0,
+    // },
+    dataCard: [0, 0, 0, 0],
     countClass: 0,
-    dataSet: { numberDraft: 0, numberDone: 0, numberPublic: 0, numberClose: 0 },
-    setType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
+    countFolder: 0,
+    dataSet: [0, 0, 0],
+    setType: [0, 0, 0, 0],
   });
   const [chartProps, setChartProps] = useState({
     data: {
@@ -144,6 +155,14 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
     console.log(Object.values(dataCard), "Thẻ status");
     console.log(Object.values(dataSet), "Set status");
     console.log(Object.values(setType), "Set type");
+    setUserData({
+      cardType: Object.values(cardType),
+      dataCard: Object.values(dataCard),
+      countClass: countClass,
+      countFolder: dashboard?.countFolder,
+      dataSet: Object.values(dataSet),
+      setType: Object.values(setType),
+    });
   }, [dashboard]);
 
   const selectRef = useRef(null);
@@ -155,7 +174,7 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
       className="container__theme"
       sx={{
         height: "260px",
-        justifyContent: "flex-start",
+        justifyContent: "space-between",
         position: "relative",
         mb: "30px",
       }}
@@ -205,8 +224,109 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
           </Select>
         </FormControl>
       </Stack>
-      <StackList>
-        <Typography variant="h6">Đã tham gia{}</Typography>
+      <StackList
+        sx={{
+          width: "calc(100% - 480px)",
+          justifyContent: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <StackList sx={{ width: "45%", height: "130px" }}>
+          <Stack
+            sx={{
+              justifyContent: "center",
+              width: "100%",
+              height: "100px",
+              padding: "20px",
+              borderRadius: "8px",
+              backgroundColor: "#86A789",
+              color: "#FFF",
+            }}
+          >
+            <StackList>
+              <SchoolIcon />
+              <Typography variant="h6" flex={1}>
+                Lớp học
+              </Typography>
+              <Typography variant="h6">{userData?.countClass}</Typography>
+            </StackList>
+          </Stack>
+        </StackList>
+        <StackList
+          sx={{
+            width: "45%",
+            height: "100px",
+            justifyContent: "space-between",
+          }}
+        >
+          <Stack
+            sx={{
+              justifyContent: "center",
+              width: "100%",
+              height: "100px",
+              padding: "20px",
+              borderRadius: "8px",
+              backgroundColor: "#164863",
+              color: "#FFF",
+            }}
+          >
+            <StackList>
+              <NoteOutlinedIcon />
+              <Typography variant="h6" flex={1}>
+                Số thẻ
+              </Typography>
+              <Typography variant="h6">
+                {countValues(...userData?.cardType)}
+              </Typography>
+            </StackList>
+          </Stack>
+        </StackList>
+        <StackList sx={{ width: "45%", height: "130px" }}>
+          <Stack
+            sx={{
+              justifyContent: "center",
+              width: "100%",
+              height: "100px",
+              padding: "20px",
+              borderRadius: "8px",
+              backgroundColor: "#363062",
+              color: "#FFF",
+            }}
+          >
+            <StackList>
+              <FilterNoneIcon />
+              <Typography variant="h6" flex={1}>
+                Học phần
+              </Typography>
+              <Typography variant="h6">
+                {countValues(...userData?.setType)}
+              </Typography>
+            </StackList>
+          </Stack>
+        </StackList>
+        <StackList sx={{ width: "45%", height: "130px" }}>
+          <Stack
+            sx={{
+              justifyContent: "center",
+              width: "100%",
+              height: "100px",
+              padding: "20px",
+              borderRadius: "8px",
+              backgroundColor: "#435585",
+              color: "#FFF",
+            }}
+          >
+            <StackList>
+              <FolderOpenIcon />
+              <Typography variant="h6" flex={1}>
+                Thư mục
+              </Typography>
+              <Typography variant="h6">
+                {!!userData?.countFolder ? userData?.countFolder : 0}
+              </Typography>
+            </StackList>
+          </Stack>
+        </StackList>
       </StackList>
     </StackList>
   );
