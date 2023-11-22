@@ -93,9 +93,7 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
             <Typography variant="h6" flex={1}>
               Số học sinh
             </Typography>
-            <Typography variant="h6">
-              {userData?.countMember - userData?.countClass}
-            </Typography>
+            <Typography variant="h6">{userData?.countMember}</Typography>
           </StackList>
         </Stack>
       </StackList>
