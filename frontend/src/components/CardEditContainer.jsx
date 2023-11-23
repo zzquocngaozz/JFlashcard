@@ -9,10 +9,11 @@ import VocaDialogForm from "./Dialog/VocaDialogForm";
 import GrammarDialogForm from "./Dialog/GrammarDialogForm";
 import AddCardDialog from "./Dialog/AddCardDialog";
 import CardSetEdit from "./Cards/CardSetEdit";
+import useAuth from "../hooks/useAuth";
 // TODO: create hook get list kanji
 const CardEditContainer = () => {
   const [openForm, setOpenForm] = useState(false);
-
+  const { currentUser } = useAuth();
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
   }, [openForm]);
@@ -24,7 +25,9 @@ const CardEditContainer = () => {
 
   return (
     <Stack>
-      {dataSet?.type === 1 ? (
+      {currentUser.role === 4 ? (
+        <></>
+      ) : dataSet?.type === 1 ? (
         <Button
           startIcon={<AddIcon />}
           variant="contained"
@@ -75,7 +78,7 @@ const CardEditContainer = () => {
             <img src={searhbanner} loading="lazy" alt="notfound" />
           </Box>
           <Typography textAlign={"center"}>
-            Chưa có thẻ nào trong bộ của bạn
+            Chưa có thẻ nào trong học phần
           </Typography>
         </Stack>
       ) : (

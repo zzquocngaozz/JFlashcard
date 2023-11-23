@@ -47,6 +47,7 @@ import SetEditContextProvider from "./context/SetEditContext";
 import LibCardBank from "./pages/LibCardBank";
 import ManagerRouter from "./routes/ManagerRouter";
 import CheckTeacherSet from "./pages/CheckTeacherSet";
+import SetCheck from "./pages/SetCheck";
 
 function App() {
   return (
@@ -131,6 +132,18 @@ function App() {
               element={
                 <SetEditContextProvider>
                   <SetEdit />
+                </SetEditContextProvider>
+              }
+            />
+          }
+        />
+        <Route
+          path="/:setId/check"
+          element={
+            <AuthenRoute
+              element={
+                <SetEditContextProvider>
+                  <SetCheck />
                 </SetEditContextProvider>
               }
             />

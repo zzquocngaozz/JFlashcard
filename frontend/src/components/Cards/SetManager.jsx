@@ -14,10 +14,19 @@ import {
   StackList,
   StarHolderStack,
 } from "../Styled/StyledStack";
+import useAuth from "../../hooks/useAuth";
 
 const SetManager = ({ flashcardSet }) => {
+  const { currentUser } = useAuth();
+
   return (
-    <StackCardLink to={`/${flashcardSet?.flashcardSetId}/edit`}>
+    <StackCardLink
+      to={
+        currentUser.role === 4
+          ? `/${flashcardSet?.flashcardSetId}/check`
+          : `/${flashcardSet?.flashcardSetId}/edit`
+      }
+    >
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />

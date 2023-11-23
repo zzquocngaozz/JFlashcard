@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LayoutNormal from "../components/Parts/LayoutNormal";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -31,6 +31,8 @@ import { useFlashcardSetContext } from "../context/FlashcardSetContext";
 import ImportFileDialog from "../components/Dialog/ImportFileDialog";
 import { useInitSetEditContext } from "../context/SetEditContext";
 import CardEditContainer from "../components/CardEditContainer";
+import { StackList } from "../components/Styled/StyledStack";
+import useAuth from "../hooks/useAuth";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -46,6 +48,8 @@ const VisuallyHiddenInput = styled("input")({
 const SetEdit = () => {
   const { setId } = useParams();
   // ------------------ Handle delete alert show and hide
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const handleToggleAlertDelete = () => {
     setAlertDelete({
       ...alertDelete,
@@ -93,6 +97,7 @@ const SetEdit = () => {
     updateSet(data, handleToggleUpdateSet);
   };
   useEffect(() => {
+    if (currentUser.role === 4) navigate(`/${setId}/check`);
     document.title = "Chỉnh sửa bộ flashcards";
   }, []);
   return (
@@ -161,27 +166,27 @@ const SetEdit = () => {
                   </IconButton>
                 </Tooltip>
                 {/* <Tooltip title={"Nhập bằng file"}>
-                  <IconButton component={"label"} onClick={handleToggleImport}>
-                    <CloudUploadIcon /> */}
+                    <IconButton component={"label"} onClick={handleToggleImport}>
+                      <CloudUploadIcon /> */}
                 {/* <VisuallyHiddenInput type="file" onChange={importFile} /> */}
                 {/* </IconButton>
-                </Tooltip> */}
+                  </Tooltip> */}
               </Box>
               <Stack
                 flexDirection={"row"}
                 sx={{ gap: 2, justifyContent: "flex-end" }}
               >
                 {/* <Button
-                  startIcon={<ArrowBackIosIcon />}
-                  sx={{
-                    textTransform: "none",
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
-                  }}
-                  variant="contained"
-                >
-                  Trở lại
-                </Button> */}
+                    startIcon={<ArrowBackIosIcon />}
+                    sx={{
+                      textTransform: "none",
+                      backgroundColor: "rgba(0,0,0,0.5)",
+                      "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
+                    }}
+                    variant="contained"
+                  >
+                    Trở lại
+                  </Button> */}
                 <Button
                   startIcon={<DoneIcon />}
                   sx={{ textTransform: "none" }}

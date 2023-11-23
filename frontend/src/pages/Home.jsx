@@ -181,7 +181,14 @@ const Home = () => {
           <Typography variant="h4" sx={{ marginTop: "8px" }}>
             Top 3 bộ thẻ điểm cao nhất
           </Typography>
-          {data ? <TopLearnSetCard setVote={data?.setVote} /> : <></>}
+          {data ? (
+            <TopLearnSetCard
+              setVote={data?.setVote}
+              orientation={"horizontal"}
+            />
+          ) : (
+            <></>
+          )}
         </Stack>
       </RevealFadeIn>
       <RevealFadeIn

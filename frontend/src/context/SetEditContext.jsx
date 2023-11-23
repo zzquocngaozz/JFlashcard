@@ -154,6 +154,53 @@ const SetEditContextProvider = ({ children }) => {
     }
   };
 
+  const publicSet = async (handleToggle) => {
+    try {
+      setMutationing(true);
+      const config = {
+        headers: {
+          Authorization: `${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      };
+      // Gửi yêu cầu post để thêm mới dữ liệu
+      const response = await axios.put(
+        `/managerset/${setId}/accept`,
+        "",
+        config
+      );
+      handleToggle();
+      setMutationing(false);
+      navigate("/manager");
+    } catch (error) {
+      setMutationing(false);
+      console.log("Error:", error.response?.data?.errors?.body[0]);
+    }
+  };
+  const rejectSet = async (handleToggle) => {
+    try {
+      setMutationing(true);
+      const config = {
+        headers: {
+          Authorization: `${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      };
+      // Gửi yêu cầu post để thêm mới dữ liệu
+      const response = await axios.put(
+        `/managerset/${setId}/rejected`,
+        "",
+        config
+      );
+      handleToggle();
+      setMutationing(false);
+      navigate("/manager");
+    } catch (error) {
+      setMutationing(false);
+      console.log("Error:", error.response?.data?.errors?.body[0]);
+    }
+  };
+
   const deleteSet = async () => {
     try {
       setMutationing(true);
@@ -252,6 +299,8 @@ const SetEditContextProvider = ({ children }) => {
         cardList,
         cardBank,
         selectCard,
+        publicSet,
+        rejectSet,
         handleSelectCard,
         deleteCardSet,
         handleAddCardSet,

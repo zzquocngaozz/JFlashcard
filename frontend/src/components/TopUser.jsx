@@ -3,25 +3,10 @@ import React from "react";
 import { StackList } from "./Styled/StyledStack";
 import { getColorFromEnum } from "../utils/colorGetter";
 
-const userTop = [
-  {
-    userName: "hieuht01",
-    numberSet: 3,
-  },
-  {
-    userName: "hieuht02",
-    numberSet: 2,
-  },
-  {
-    userName: "hieuht03",
-    numberSet: 1,
-  },
-];
-
 const TopUser = ({ userTop: data }) => {
   return (
     <Stack sx={{ width: "100%", rowGap: "20px", margin: "20px 0" }}>
-      {userTop.map((user, index) => (
+      {data?.map((user, index) => (
         <StackList justifyContent={"space-between"} key={index}>
           <StackList>
             <Avatar

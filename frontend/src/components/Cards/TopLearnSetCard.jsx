@@ -14,65 +14,24 @@ import StarIcon from "@mui/icons-material/Star";
 import { getColorFromEnum } from "../../utils/colorGetter";
 import { Link } from "react-router-dom";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
-const setLearn = [
-  {
-    flashcardSetId: 2,
-    title: "Từ vựng thông dụng",
-    description: "",
-    type: 2,
-    createdAt: "2023-11-10",
-    numberCard: 12,
-    votePoint: 2,
-    numberVote: 1,
-    authDTO: {
-      userId: 3,
-      userName: "hieuht01",
-      role: 2,
-    },
-    private: false,
-  },
-  {
-    flashcardSetId: 4,
-    title: "Kanji bộ thuỷ",
-    description: "",
-    type: 1,
-    createdAt: "2023-11-12",
-    numberCard: 36,
-    votePoint: 0,
-    numberVote: 0,
-    authDTO: {
-      userId: 2,
-      userName: "hieuht02",
-      role: 1,
-    },
-    private: false,
-  },
-  {
-    flashcardSetId: 6,
-    title: "Grammar",
-    description: "",
-    type: 1,
-    createdAt: "2023-11-15",
-    numberCard: 12,
-    votePoint: 4,
-    numberVote: 1,
-    authDTO: {
-      userId: 3,
-      userName: "hieuht01",
-      role: 2,
-    },
-    private: false,
-  },
-];
+import useAuth from "../../hooks/useAuth";
 
-const TopLearnSetCard = ({ setVote: data }) => {
+const TopLearnSetCard = ({ setVote: data, orientation }) => {
+  const { isLogin } = useAuth();
   return (
-    <Stack sx={{ rowGap: "20px", marginTop: "0!important" }}>
-      {data.map((set) => (
+    <Stack
+      sx={{
+        rowGap: "20px",
+        columnGap: "10px",
+        marginTop: "0!important",
+        flexDirection: `${orientation === "vertical" ? "row" : "column"}`,
+      }}
+    >
+      {data?.map((set) => (
         <StackCardLink
           key={set.flashcardSetId}
           className="container__theme"
-          to={`/${set?.flashcardSetId}/read`}
+          to={isLogin() ? `` : `/${set?.flashcardSetId}/read`}
         >
           <StackList sx={{ justifyContent: "space-between" }}>
             <StackList justifyContent={"space-between"}>

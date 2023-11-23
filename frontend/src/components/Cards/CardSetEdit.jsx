@@ -20,12 +20,13 @@ import VocaDialogForm from "../Dialog/VocaDialogForm";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import { FLAG_STATUS } from "../../utils/constant";
 import { useSetEditContext } from "../../context/SetEditContext";
+import useAuth from "../../hooks/useAuth";
 
 const CardSetEdit = ({ card, index }) => {
   const { deleteCardSet } = useSetEditContext();
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-
+  const { currentUser } = useAuth();
   const handleToggleDelete = useCallback(() => {
     setOpenDelete(!openDelete);
   }, [openDelete]);
@@ -65,19 +66,18 @@ const CardSetEdit = ({ card, index }) => {
       >
         <Typography flex={5}>{index + 1}</Typography>
         <Chip label={FLAG_STATUS[card.status]} />
-        {/* <Tooltip title={"Chỉnh sửa"}>
-          <IconButton sx={{ width: 30, height: 30 }} onClick={handleToggleForm}>
-            <ModeEditIcon color="primary" />
-          </IconButton>
-        </Tooltip> */}
-        <Tooltip title={"Xoá thẻ"}>
-          <IconButton
-            sx={{ width: 30, height: 30 }}
-            onClick={handleToggleDelete}
-          >
-            <DeleteForeverIcon color="error" />
-          </IconButton>
-        </Tooltip>
+        {currentUser.role === 4 ? (
+          <></>
+        ) : (
+          <Tooltip title={"Xoá thẻ"}>
+            <IconButton
+              sx={{ width: 30, height: 30 }}
+              onClick={handleToggleDelete}
+            >
+              <DeleteForeverIcon color="error" />
+            </IconButton>
+          </Tooltip>
+        )}
       </Stack>
       <Stack
         flexDirection={"row"}
