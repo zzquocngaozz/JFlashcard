@@ -5,6 +5,11 @@ export const isBirthDate = (birthDate) => {
 
   return current > bornAt;
 };
+export const isPublicDate = (publicAt) => {
+  let publicDate = new Date(publicAt);
+  const current = new Date();
+  return current.toLocaleDateString() <= publicDate.toLocaleDateString();
+};
 
 export const checkDueAt = (dueAt) => {
   // Tạo một đối tượng Date cho thời điểm hiện tại
@@ -101,8 +106,15 @@ export const getWeekDateOption = (weekIndex) => {
   )}`;
 };
 
-const dateRangeFormat = (date) => {
+export const dateRangeFormat = (date) => {
   const d = new Date(date);
 
   return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+};
+
+export const getDateDefault = () => {
+  const current = new Date();
+  return `${current.getFullYear()}-${
+    current.getMonth() + 1
+  }-${current.getDate()}`;
 };

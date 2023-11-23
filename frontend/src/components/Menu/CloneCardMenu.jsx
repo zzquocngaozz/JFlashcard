@@ -58,7 +58,7 @@ const CloneCardMenu = ({ handleTogleClone }) => {
           disabled={markedCards.length === 0}
           onClick={() => selectModeClone(1)}
         >
-          <ListItemText>Mhững thẻ đã chọn</ListItemText>
+          <ListItemText>Những thẻ đã chọn</ListItemText>
         </MenuItem>
       </Menu>
     </>

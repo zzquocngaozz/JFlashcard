@@ -4,15 +4,20 @@ import useAuth from "../hooks/useAuth";
 import axios from "axios";
 
 const LogoutRoute = () => {
-  const { logout } = useAuth();
+  const { logout, accessToken } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
-    logout();
     const clearContext = async () => {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken,
+        },
+      };
       try {
-        const response = axios.post("/logout");
-        await response;
+        const response = await axios.post("/logout", "", config);
+        logout();
       } catch (error) {
         console.log(error);
       }

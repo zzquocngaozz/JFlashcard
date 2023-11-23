@@ -3,6 +3,7 @@ export const BASE_URL = "http://localhost:8081/api/v1";
 export const ROLE = {
   1: "Học sinh",
   2: "Giáo viên",
+  4: "Kiểm duyệt viên",
   3: "Quản trị viên",
 };
 
@@ -18,4 +19,6 @@ export const FLAG_STATUS = {
   2: "Hoàn thành",
   3: "Công khai",
   4: "Đóng",
+  5: "Chờ duyệt",
+  6: "Bị chặn",
 };

@@ -5,6 +5,7 @@ import SideNavAdmin from "../components/Parts/SideNavAdmin";
 import LayoutAdmin from "../components/Parts/LayoutAdmin";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
+import AdminDashboardHeader from "../components/DataDisplay/AdminDashboardHeader";
 
 const Dashboard = () => {
   const [data, setData] = useState(null);
@@ -34,10 +35,10 @@ const Dashboard = () => {
 
   return (
     <LayoutAdmin>
-      <Typography variant="h4">Dashboard</Typography>
+      {/* <Typography variant="h4">Dashboard</Typography>
       <br />
-      <hr />
-      {isPending ? "Loading" : "Done"}
+      <hr /> */}
+      {isPending ? "Loading" : <AdminDashboardHeader data={data} />}
     </LayoutAdmin>
   );
 };

@@ -2,42 +2,25 @@ import React, { useEffect, useState } from "react";
 import { StackList } from "../Styled/StyledStack";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
-import { Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import SchoolIcon from "@mui/icons-material/School";
 import PeopleIcon from "@mui/icons-material/People";
 import { countValues } from "../../utils/parseData";
 
-const TeacherHomeHeader = ({ data: dashboard }) => {
+const AdminDashboardHeader = ({ data: dashboard }) => {
   const [userData, setUserData] = useState({
-    cardType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
-    dataCard: {
-      numberDraft: 0,
-      numberDone: 0,
-      numberPublic: 0,
-      numberClose: 0,
-    },
-    setType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
-    dataSet: {
-      numberDraft: 0,
-      numberDone: 0,
-      numberPublic: 0,
-      numberClose: 0,
-    },
-    countClass: 0,
-    countMember: 0,
+    numberFLCard: [0, 0, 0],
+    numberClass: 0,
+    numberUser: [0, 0, 0, 0],
   });
 
   useEffect(() => {
     if (!dashboard) return;
-    const { cardType, dataCard, countClass, countMember, dataSet, setType } =
-      dashboard;
+    const { numberFLCard, numberClass, numberUser } = dashboard;
     setUserData({
-      cardType: cardType,
-      dataCard: dataCard,
-      countClass: countClass,
-      countMember: countMember,
-      dataSet: dataSet,
-      setType: setType,
+      numberFLCard: numberFLCard,
+      numberClass: numberClass,
+      numberUser: numberUser,
     });
   }, [dashboard]);
   return (
@@ -50,7 +33,7 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
         mb: "30px",
       }}
     >
-      <StackList sx={{ width: "45%", height: "130px" }}>
+      <StackList sx={{ width: "30%", height: "130px" }}>
         <Stack
           sx={{
             justifyContent: "center",
@@ -67,8 +50,8 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
             <Typography variant="h6" flex={1}>
               Lớp học
             </Typography>
-            <Typography variant="h6">{userData?.countClass}</Typography>
           </StackList>
+          <Typography variant="h6">{userData?.numberClass}</Typography>
         </Stack>
       </StackList>
       <StackList sx={{ width: "45%", height: "130px" }}>
@@ -83,12 +66,23 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
             color: "#FFF",
           }}
         >
-          <StackList>
-            <PeopleIcon />
-            <Typography variant="h6" flex={1}>
-              Số học sinh
-            </Typography>
-            <Typography variant="h6">{userData?.countMember}</Typography>
+          <StackList justifyContent={"space-between"}>
+            <Stack>
+              <StackList alignItems={"center"}>
+                <PeopleIcon />
+                <Typography variant="h6" flex={1}>
+                  Người dùng
+                </Typography>
+              </StackList>
+              <Typography variant="h6">
+                {userData?.numberUser[0] + userData?.numberUser[1]}
+              </Typography>
+            </Stack>
+            <Stack sx={{ rowGap: "5px" }}>
+              <Typography>{userData?.numberUser[0] + " học sinh"}</Typography>
+
+              <Typography>{userData?.numberUser[1] + " giáo viên"}</Typography>
+            </Stack>
           </StackList>
         </Stack>
       </StackList>
@@ -108,39 +102,32 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
             borderRadius: "8px",
             backgroundColor: "#164863",
             color: "#FFF",
+            rowGap: "10px",
           }}
         >
           <StackList>
             <NoteOutlinedIcon />
             <Typography variant="h6" flex={1}>
-              Số thẻ
+              Số học phần
             </Typography>
             <Typography variant="h6">
-              {countValues(...Object.values(userData?.cardType))}
+              {countValues(...userData?.numberFLCard)}
             </Typography>
           </StackList>
-        </Stack>
-      </StackList>
-      <StackList sx={{ width: "45%", height: "130px" }}>
-        <Stack
-          sx={{
-            justifyContent: "center",
-            width: "100%",
-            height: "100px",
-            padding: "20px",
-            borderRadius: "8px",
-            backgroundColor: "#363062",
-            color: "#FFF",
-          }}
-        >
-          <StackList>
-            <FilterNoneIcon />
-            <Typography variant="h6" flex={1}>
-              Học phần
-            </Typography>
-            <Typography variant="h6">
-              {countValues(...Object.values(userData?.setType))}
-            </Typography>
+          <StackList justifyContent={"space-between"}>
+            <Typography>{userData?.numberFLCard[0] + " Hán tự"}</Typography>
+            <Divider
+              variant="middle"
+              sx={{ borderColor: "#FFF" }}
+              orientation="vertical"
+            />
+            <Typography>{userData?.numberFLCard[1] + " Từ vựng"}</Typography>
+            <Divider
+              variant="middle"
+              sx={{ borderColor: "#FFF" }}
+              orientation="vertical"
+            />
+            <Typography>{userData?.numberFLCard[2] + " Ngữ pháp"}</Typography>
           </StackList>
         </Stack>
       </StackList>
@@ -148,4 +135,4 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
   );
 };
 
-export default TeacherHomeHeader;
+export default AdminDashboardHeader;

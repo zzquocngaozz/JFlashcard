@@ -45,6 +45,8 @@ import ClassContextProvider from "./context/ClassContext";
 import LibSetManager from "./pages/LibSetManager";
 import SetEditContextProvider from "./context/SetEditContext";
 import LibCardBank from "./pages/LibCardBank";
+import ManagerRouter from "./routes/ManagerRouter";
+import CheckTeacherSet from "./pages/CheckTeacherSet";
 
 function App() {
   return (
@@ -141,7 +143,10 @@ function App() {
             element={<AuthenRoute element={<LearnSet />} />}
           />
         </Route>
-
+        <Route
+          path="/manager"
+          element={<ManagerRouter element={<CheckTeacherSet />} />}
+        />
         <Route path="/my-lib" element={<AuthenRoute element={<LibRoot />} />}>
           <Route
             path="/my-lib/set-manager"
