@@ -187,7 +187,7 @@ public class Validate {
         // Check if the user has a manager role
         Set<Role> userRoles = user.getRoles();
         for (Role role : userRoles) {
-            if ("MANAGER".equals(role.getName())) {
+            if ("ROLE_MANAGER".equals(role.getName())) {
                 return true;
             }
         }
