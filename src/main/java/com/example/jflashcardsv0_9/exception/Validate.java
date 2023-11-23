@@ -181,7 +181,7 @@ public class Validate {
     }
     private boolean isCreatorOrManager(User user, FlashcardSet flashcardSet) {
         // Check if the user is the creator
-        if (flashcardSet.getUser() != null && flashcardSet.getUser().getUserId() == user.getUserId()) {
+        if (flashcardSet.getUser().getUserId() == user.getUserId()) {
             return true;
         }
         // Check if the user has a manager role
