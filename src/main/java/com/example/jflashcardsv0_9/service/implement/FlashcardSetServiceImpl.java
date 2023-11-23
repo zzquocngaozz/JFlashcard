@@ -774,7 +774,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public void rejectedFlashcardSet(long setId, User user) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-        flashcardSet.setStatus(5);
+        flashcardSet.setStatus(6);
         flashcardSetRepository.save(flashcardSet);
         sendEmailService.sendRejectedEmail(flashcardSet.getUser().getEmail(),flashcardSet.getUser().getUserName(),flashcardSet.getTitle(),flashcardSet.getPublicAt(),flashcardSet.getDescription());
     }
