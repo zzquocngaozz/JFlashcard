@@ -14,6 +14,8 @@ import {
   Select,
   Stack,
 } from "@mui/material";
+import { getDateDefault } from "../../utils/datetimeCalc";
+import useAuth from "../../hooks/useAuth";
 
 // truyền vào defaultValue(optional) togglefunc updatefunc
 // TODO: lam edit form
@@ -28,7 +30,7 @@ export default function FormEditSetDiaolog({
     control,
     formState: { errors, isDirty },
   } = useForm();
-
+  const { currentUser } = useAuth();
   return (
     <>
       <Dialog open={true}>
@@ -64,27 +66,79 @@ export default function FormEditSetDiaolog({
                 InputLabelProps={{ shrink: true }}
                 variant="standard"
               />
-              <FormControl flex={1}>
-                <InputLabel htmlFor="typeSet">Trạng thái</InputLabel>
-                <Controller
-                  control={control}
-                  name="status"
-                  defaultValue={flashcardSet?.status}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      variant="standard"
-                      id="status"
-                      sx={{ width: "150px", mt: 10, fontSize: "18px" }}
-                    >
-                      <MenuItem value={1}>Nháp</MenuItem>
-                      <MenuItem value={2}>Hoàn thành</MenuItem>
-                      <MenuItem value={3}>Công khai</MenuItem>
-                      <MenuItem value={4}>Đóng</MenuItem>
-                    </Select>
-                  )}
-                />
-              </FormControl>
+              <TextField
+                {...register("publicAt", {
+                  required: "Hãy chọn ngày bạn muốn public bộ thẻ này",
+                })}
+                id="publicAt-helper-text"
+                type="date"
+                label="Ngày công khai"
+                defaultValue={getDateDefault()}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                error={!!errors.publicAt}
+                helperText={errors.publicAt?.message}
+                variant="standard"
+                sx={{
+                  display: `${
+                    currentUser?.role === 2 ? "inline-flex" : "none"
+                  }`,
+                }}
+              />
+              {currentUser.role === 1 ? (
+                <FormControl>
+                  <InputLabel htmlFor="typeSet">Trạng thái</InputLabel>
+                  <Controller
+                    control={control}
+                    name="status"
+                    defaultValue={flashcardSet?.status}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        variant="standard"
+                        id="status"
+                        sx={{ width: "150px", mt: 10, fontSize: "18px" }}
+                      >
+                        <MenuItem value={1}>Nháp</MenuItem>
+                        <MenuItem value={2}>Hoàn thành</MenuItem>
+                        <MenuItem value={3}>Công khai</MenuItem>
+                        <MenuItem value={4}>Đóng</MenuItem>
+                      </Select>
+                    )}
+                  />
+                </FormControl>
+              ) : currentUser.role === 2 ? (
+                <FormControl flex={1}>
+                  <InputLabel htmlFor="typeSet">Trạng thái</InputLabel>
+                  <Controller
+                    control={control}
+                    name="status"
+                    defaultValue={flashcardSet?.status}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        variant="standard"
+                        id="status"
+                        sx={{ width: "150px", mt: 10, fontSize: "18px" }}
+                      >
+                        <MenuItem value={1}>Nháp</MenuItem>
+                        <MenuItem value={2}>Hoàn thành</MenuItem>
+                        <MenuItem value={3} sx={{ display: "none" }}>
+                          Công khai
+                        </MenuItem>
+                        <MenuItem value={5}>Chờ duyệt</MenuItem>
+                        <MenuItem value={6} sx={{ display: "none" }}>
+                          Chặn
+                        </MenuItem>
+                        <MenuItem value={4}>Đóng</MenuItem>
+                      </Select>
+                    )}
+                  />
+                </FormControl>
+              ) : (
+                <></>
+              )}
             </Stack>
           </DialogContent>
           <DialogActions>

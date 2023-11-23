@@ -26,6 +26,7 @@ const UserAdd = () => {
     handleSubmit,
     watch,
     setError,
+    reset,
     clearErrors,
     formState: { errors },
     control,
@@ -40,7 +41,7 @@ const UserAdd = () => {
 
   const onSubmit = (data) => {
     isAdding.current = true;
-    addUser(data);
+    addUser(data, reset);
   };
 
   useEffect(() => {
@@ -195,7 +196,8 @@ const UserAdd = () => {
                     >
                       <MenuItem value={1}>Học sinh</MenuItem>
                       <MenuItem value={2}>Giáo viên</MenuItem>
-                      <MenuItem value={3}>Admin</MenuItem>
+                      <MenuItem value={4}>Kiểm duyệt viên</MenuItem>
+                      <MenuItem value={3}>Quản trị viên</MenuItem>
                     </Select>
                   )}
                 />

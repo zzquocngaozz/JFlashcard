@@ -16,6 +16,7 @@ const Signup = () => {
     register,
     handleSubmit,
     watch,
+    reset,
     setError,
     clearErrors,
     formState: { errors },
@@ -34,7 +35,7 @@ const Signup = () => {
       });
     } else {
       clearErrors("birth");
-      registerAccount(data);
+      registerAccount(data, reset);
     }
   };
 

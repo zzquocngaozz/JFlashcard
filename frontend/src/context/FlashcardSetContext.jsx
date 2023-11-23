@@ -6,6 +6,7 @@ import { set } from "react-hook-form";
 import axios from "axios";
 import useSnapBarAlert from "../hooks/useSnapBarAlert";
 import { isGrammarCard, isKanjiCard } from "../utils/cardUtil";
+import { isPublicDate } from "../utils/datetimeCalc";
 
 const FlashcardSetContext = createContext({});
 
@@ -69,6 +70,10 @@ export const FlashcardSetProvider = ({ children }) => {
   const [loadedSet, setLoadedSet] = useState("-1");
 
   const navigate = useNavigate();
+
+  const isPublic = () =>
+    new Date(flashcardSet?.publicAt).toLocaleDateString() <=
+    new Date().toLocaleDateString();
 
   const updateVote = async (newVote) => {
     try {
@@ -269,6 +274,7 @@ export const FlashcardSetProvider = ({ children }) => {
         alert,
         setAlert,
         handleCloseSnackBar,
+        isPublic,
         cloneSet,
         logStudiedCard,
         setLoadedSet,

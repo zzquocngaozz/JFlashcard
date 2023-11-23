@@ -144,14 +144,6 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
       setType,
       weekTrackingDTOResponse,
     } = dashboard;
-    // console.log(
-    //   cardType,
-    //   countClass,
-    //   dataCard,
-    //   dataSet,
-    //   setType,
-    //   weekTrackingDTOResponse
-    // );
     setUserData({
       cardType: Object.values(cardType),
       dataCard: Object.values(dataCard),
