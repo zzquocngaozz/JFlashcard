@@ -117,6 +117,7 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
     getWeekTracking(weekIndex);
   }, [weekIndex]);
   useEffect(() => {
+    console.log("check re-render");
     setChartProps({
       data: {
         labels: labels,
@@ -151,10 +152,6 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
     //   setType,
     //   weekTrackingDTOResponse
     // );
-    console.log(Object.values(cardType), "Thẻ");
-    console.log(Object.values(dataCard), "Thẻ status");
-    console.log(Object.values(dataSet), "Set status");
-    console.log(Object.values(setType), "Set type");
     setUserData({
       cardType: Object.values(cardType),
       dataCard: Object.values(dataCard),

@@ -44,7 +44,7 @@ export default function useFetchRecent() {
         // TODO: navigate to not found or accessdenied
         setLoading(false);
         const errorCode = error?.response?.status;
-        console.log(error?.message);
+        console.log(error);
         if (errorCode === 404) navigate("/not-found"); // not found
         if (errorCode === 401) navigate("/access-denied"); // not authorize
       }
@@ -67,14 +67,14 @@ export default function useFetchRecent() {
           ? "/homepage/dashboardteacher"
           : "/homepage/dashboardlearn";
 
-      const staticLearn = axios.post(
+      const staticLearn = await axios.post(
         url,
         JSON.stringify(weekTrackingDTO),
         config
       );
-      setData(staticLearn.data.data);
+      setData(staticLearn.data);
     } catch (error) {
-      // TODO: navigate to not found or accessdenied
+      // TODO: navigate to not vscode-file://vscode-app/c:/Users/Admin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-sandbox/workbench/workbench.htmlfound or accessdenied
       setLoading(false);
       const errorCode = error?.response?.status;
       console.log(error?.message);
