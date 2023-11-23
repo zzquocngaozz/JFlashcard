@@ -8,6 +8,7 @@ import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.repository.*;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
+import com.example.jflashcardsv0_9.service.SendEmailService;
 import com.example.jflashcardsv0_9.service.VotePointService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,11 +37,12 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     BookmarkCardRepository bookmarkCardRepository;
     TrackingProgressRepository trackingProgressRepository;
     VotePointRepository votePointRepository;
+    SendEmailService sendEmailService;
     Validate validate;
     OpenedFlashcardSetRepository openedFlashcardSetRepository;
     FlashcardSetAssociationRepository flashcardSetAssociationRepository;
     @Autowired
-    public FlashcardSetServiceImpl(Validate validate, FlashcardSetRepository flashcardSetRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository, UserRepository userRepository, VotePointService votePointService, BookmarkSetRepository bookmarkSetRepository, BookmarkCardRepository bookmarkCardRepository, TrackingProgressRepository trackingProgressRepository, VotePointRepository votePointRepository, OpenedFlashcardSetRepository openedFlashcardSetRepository, FlashcardSetAssociationRepository flashcardSetAssociationRepository) {
+    public FlashcardSetServiceImpl(Validate validate, FlashcardSetRepository flashcardSetRepository, FlashcardKanjiRepository flashcardKanjiRepository, FlashcardVocabRepository flashcardVocabRepository, FlashcardGrammarRepository flashcardGrammarRepository, UserRepository userRepository, VotePointService votePointService, BookmarkSetRepository bookmarkSetRepository, BookmarkCardRepository bookmarkCardRepository, TrackingProgressRepository trackingProgressRepository, VotePointRepository votePointRepository, SendEmailService sendEmailService, OpenedFlashcardSetRepository openedFlashcardSetRepository, FlashcardSetAssociationRepository flashcardSetAssociationRepository) {
         this.validate = validate;
         this.flashcardSetRepository = flashcardSetRepository;
         this.flashcardKanjiRepository = flashcardKanjiRepository;
@@ -51,6 +54,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         this.bookmarkCardRepository = bookmarkCardRepository;
         this.trackingProgressRepository = trackingProgressRepository;
         this.votePointRepository = votePointRepository;
+        this.sendEmailService = sendEmailService;
         this.openedFlashcardSetRepository = openedFlashcardSetRepository;
         this.flashcardSetAssociationRepository = flashcardSetAssociationRepository;
     }
@@ -761,15 +765,18 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     @Override
     public void acceptFlashcardSet(long setId, User user) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-        flashcardSet.setStatus(4);
+        flashcardSet.setStatus(3);
         flashcardSetRepository.save(flashcardSet);
+        sendEmailService.sendAcceptEmail(flashcardSet.getUser().getEmail(),flashcardSet.getUser().getUserName(),flashcardSet.getTitle(),flashcardSet.getPublicAt(),flashcardSet.getDescription());
+
     }
 
     @Override
     public void rejectedFlashcardSet(long setId, User user) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-        flashcardSet.setStatus(3);
+        flashcardSet.setStatus(5);
         flashcardSetRepository.save(flashcardSet);
+        sendEmailService.sendRejectedEmail(flashcardSet.getUser().getEmail(),flashcardSet.getUser().getUserName(),flashcardSet.getTitle(),flashcardSet.getPublicAt(),flashcardSet.getDescription());
     }
 
 

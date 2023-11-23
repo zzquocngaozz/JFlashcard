@@ -16,6 +16,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -232,6 +235,92 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
                 "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
                 "            <p>JFlashcard</p>\n" +
+                "        </div>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "      </body>\n" +
+                "    </html>";
+        sendEmail(email, subject, htmlContent);
+    }
+
+    @Async
+    public void sendAcceptEmail(String email, String userName, String setName, Timestamp publicAt, String des) {
+        String subject = "Thông Báo Chấp Nhận Công Bố Bộ Thẻ trên JFlashcards";
+        String htmlContent = "    <!doctype html>\n" +
+                "    <html>\n" +
+                "      <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "      </head>\n" +
+                "      <body style=\"font-family: sans-serif;\">\n" +
+                "        <div style=\"font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;\">\n" +
+                "            <div style=\"margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);\">\n" +
+                "            <div style=\"border-bottom:1px solid #eee;display: flex;column-gap: 10px;\">\n" +
+                "            <a href=\"#\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">\n" +
+                "            JFlashcard\n" +
+                "            </a>\n" +
+                "            </div>\n" +
+                "            <p style=\"font-size:1.1em\">Chào " + userName + " ,</p>\n" +
+                "            <p>Tôi hy vọng bạn đang có một ngày tốt lành. Chúng tôi xin thông báo rằng sau quá trình kiểm tra và đánh giá kỹ lưỡng,</p>\n" +
+                "            <p>chúng tôi đã quyết định chấp nhận công bố Bộ Thẻ của bạn trên JFlashcards.</p>\n" +
+                "            <p>Bộ Thẻ của bạn đã đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là phù hợp để chia sẻ với cộng đồng người dùng trên nền tảng của chúng tôi.</p>\n" +
+                "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ::\n" +
+                "\n" +
+                "Tên Khóa Học: [ " + setName + "]\n" +
+                "Mô tả Ngắn Gọn: [ " + des + "]\n" +
+                "Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
+                "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
+                "\n" +
+                "Cảm ơn bạn đã đóng góp vào cộng đồng JFlashcards của chúng tôi và chúc mừng vì việc công bố thành công của bạn!\n" +
+                "\n" +
+
+                "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
+                "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
+                "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
+                "Trân trọng,\n" +
+                "JFlashcard\n" +
+                "        </div>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "      </body>\n" +
+                "    </html>";
+        sendEmail(email, subject, htmlContent);
+    }
+
+    @Async
+    public void sendRejectedEmail(String email, String userName, String setName, Timestamp publicAt, String des) {
+        String subject = "Thông Báo Từ Chối Công Bố Bộ Thẻ trên JFlashcards";
+        String htmlContent = "    <!doctype html>\n" +
+                "    <html>\n" +
+                "      <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "      </head>\n" +
+                "      <body style=\"font-family: sans-serif;\">\n" +
+                "        <div style=\"font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;\">\n" +
+                "            <div style=\"margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);\">\n" +
+                "            <div style=\"border-bottom:1px solid #eee;display: flex;column-gap: 10px;\">\n" +
+                "            <a href=\"#\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">\n" +
+                "            JFlashcard\n" +
+                "            </a>\n" +
+                "            </div>\n" +
+                "            <p style=\"font-size:1.1em\">Chào " + userName + " ,</p>\n" +
+                "            <p>Tôi hy vọng bạn đang có một ngày tốt lành. Chúng tôi xin thông báo rằng sau quá trình kiểm tra và đánh giá kỹ lưỡng,</p>\n" +
+                "            <p>chúng tôi không thể chấp nhận công bố khóa học của bạn trên JFlashcards tại thời điểm này.</p>\n" +
+                "            <p>Bộ Thẻ của bạn chưa  đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là chưa phù hợp để chia sẻ với cộng đồng người dùng trên nền tảng của chúng tôi.</p>\n" +
+                "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ:\n" +
+                "\n" +
+                "Tên Khóa Học: [ " + setName + "]\n" +
+                "Mô tả Ngắn Gọn: [ " + des + "]\n" +
+                "Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
+                "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
+                "\n" +
+                "Cảm ơn bạn đã đóng góp vào cộng đồng JFlashcards của chúng tôi và chúc mừng vì việc công bố thành công của bạn!\n" +
+                "\n" +
+
+                "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
+                "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
+                "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
+                "Trân trọng,\n" +
+                "JFlashcard\n" +
                 "        </div>\n" +
                 "      </div>\n" +
                 "    </div>\n" +

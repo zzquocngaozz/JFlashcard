@@ -9,9 +9,13 @@ import com.example.jflashcardsv0_9.repository.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 @Component
 public class Validate {
@@ -171,10 +175,24 @@ public class Validate {
         if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
             throw new AppException(Error.SET_NOT_FOUND);
         }
-        if(!Objects.equals(flashcardSet.getUser().getUserId(), user.getUserId())){
+        if (!isCreatorOrManager(user, flashcardSet)) {
             throw new AppException(Error.AUTH_GI_DO);
         }
+    }
+    private boolean isCreatorOrManager(User user, FlashcardSet flashcardSet) {
+        // Check if the user is the creator
+        if (flashcardSet.getUser() != null && flashcardSet.getUser().getUserId() == user.getUserId()) {
+            return true;
+        }
+        // Check if the user has a manager role
+        Set<Role> userRoles = user.getRoles();
+        for (Role role : userRoles) {
+            if ("MANAGER".equals(role.getName())) {
+                return true;
+            }
+        }
 
+        return false;
     }
     public void checkExistsSet(long setId){
         if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
