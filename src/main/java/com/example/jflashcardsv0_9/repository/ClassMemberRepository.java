@@ -34,5 +34,5 @@ public interface ClassMemberRepository extends JpaRepository<ClassMember,Long> {
             "ORDER BY COUNT(cm.user) DESC")
     List<ClassRoom> getClassRoomWithMaxUsers(Pageable pageable);
     Long countDistinctByUser(User user);
-    Long countDistinctByClassroomInAndUserNot(List<ClassRoom> classRooms,User user);
+    Long countDistinctByUserAndClassroomIn(User user,List<ClassRoom> classRooms);
 }

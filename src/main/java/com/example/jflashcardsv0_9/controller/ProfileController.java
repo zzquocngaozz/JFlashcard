@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1")
-public class ProfileController {
+    public class ProfileController {
 
     @Autowired
     UserService userService;

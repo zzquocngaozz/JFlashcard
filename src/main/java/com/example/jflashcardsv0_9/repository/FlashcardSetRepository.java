@@ -20,6 +20,8 @@ public interface FlashcardSetRepository extends JpaRepository<FlashcardSet, Inte
     boolean existsFlashcardSetByFlashcardSetId(long setid);
 
     List<FlashcardSet> getAllByUser(User user);
+    List<FlashcardSet> getAllByStatus(int  status);
+
     List<FlashcardSet> getAllByUserAndStatus(User user,int status);
 
     Long countAllByStatus(int status);

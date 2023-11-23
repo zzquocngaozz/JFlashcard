@@ -44,6 +44,10 @@ public class FlashcardSet implements Serializable {
 
     @Column(name = "type")
     private int type;
+    @Column(name = "publicAt")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Timestamp publicAt;
 
     @ManyToOne // Mối quan hệ nhiều flashcardset đến một User
     @JoinColumn(name = "user") // Đặt tên cột foreign key là "user_id"

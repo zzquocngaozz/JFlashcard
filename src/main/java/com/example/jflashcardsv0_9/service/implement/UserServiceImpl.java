@@ -171,7 +171,6 @@ public class UserServiceImpl implements UserService {
     public void changePassword(TokenDTO tokenDTO, MyUserDetail myUserDetail) {
         User user = userRepository.getUserByUserId(myUserDetail.getUser().getUserId());
         boolean isCorrectPass = passwordEncoder.matches(tokenDTO.getPassword(),user.getPassword());
-        System.out.println("Print here 185 change pass" +tokenDTO.getPassword()+" "+tokenDTO.getNewPassword());
         if(!isCorrectPass) throw new AppException(Error.PASSWORD_FALSE);
         user.setPassword(passwordEncoder.encode(tokenDTO.getNewPassword()));
         userRepository.save(user);

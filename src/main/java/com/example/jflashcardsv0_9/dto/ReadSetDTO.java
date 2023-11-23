@@ -18,6 +18,7 @@ public class ReadSetDTO {
     String title;
     String description;
     int type;
+    Timestamp publicAt;
     Date createdAt;
     int status;
     boolean isBookMarked;

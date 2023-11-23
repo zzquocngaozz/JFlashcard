@@ -84,4 +84,10 @@ public interface FlashcardSetService {
     void addCardInSet(User user, long setId, DataCardIdDto dto);
 
     void deleteCardInSet(long setId, User user, long cardId);
+
+    List<SetSingleDTO> listManagerSet(User user);
+
+    void acceptFlashcardSet(long setId, User user);
+
+    void rejectedFlashcardSet(long setId, User user);
 }

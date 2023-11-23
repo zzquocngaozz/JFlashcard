@@ -51,6 +51,11 @@ public class JFlashcardsV09Application implements CommandLineRunner{
             role.setName("ROLE_ADMIN");
             roleRepository.save(role);
         }
+        if (roleRepository.findRoleByName("ROLE_MANAGER") == null) {
+            Role role = new Role();
+            role.setName("ROLE_MANAGER");
+            roleRepository.save(role);
+        }
         RegisterDTO registerDTO = RegisterDTO.builder()
                 .userName("Admin")
                 .password("Qwer1234")
@@ -62,6 +67,7 @@ public class JFlashcardsV09Application implements CommandLineRunner{
         if(userRepository.existsByEmail(registerDTO.getEmail()) == false){
             userService.registrationADMIN(registerDTO);
         }
+
 //         Create a BCryptPasswordEncoder
 //        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 //

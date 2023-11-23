@@ -1,31 +1,52 @@
-git @startuml
+@startuml
 !define ACTIVATE_ENTITY Repository <<Database>> #008000
 skinparam Style strictuml
 
 actor User
-participant DeleteCommentView
-participant ClassPostController
-participant ClassRoomService
-'participant Exception
-'participant Dto
+participant CreateCardGrammarView
+participant CardGrammarController
+participant FlashcardSetService
+participant Exception
+participant Dto
 database Repository as ACTIVATE_ENTITY
 
-User -> ClassPostController: send request
-activate ClassPostController
-ClassPostController -> ClassRoomService: deleteComment()
-activate ClassRoomService
-ClassRoomService -> Repository : Process and delete Comment in post
-activate Repository
-Repository --> ClassRoomService : Return Mess " delete successfully"
-deactivate
-ClassRoomService --> ClassPostController : Send Mess
-deactivate
-ClassPostController --> DeleteCommentView : Send Mess
-deactivate
-activate DeleteCommentView
-DeleteCommentView --> User : back bulletin board view
-deactivate
+User -> CardGrammarController: Send data
+activate CardGrammarController
+CardGrammarController -> FlashcardSetService: createGrammarCard()
+activate FlashcardSetService
+alt card data  is Invalid
+    FlashcardSetService -> Exception : Check Validate card
+    activate Exception
+    Exception --> FlashcardSetService: Data  is Invalid
+    deactivate Exception
+    activate FlashcardSetService
+    FlashcardSetService --> CardGrammarController: Error message to user
+    deactivate FlashcardSetService
+    activate CardGrammarController
+    CardGrammarController --> CreateCardGrammarView : send mess
+    deactivate CardGrammarController
+    activate CreateCardGrammarView
+    CreateCardGrammarView --> User : Dispaly mess
+    deactivate CreateCardGrammarView
+else card data   is Valid
+    FlashcardSetService -> Exception : Check Validate card
+    activate Exception
+    Exception --> FlashcardSetService: Data  is Valid
+    deactivate Exception
 
+    FlashcardSetService -> Dto : Convert data
+    activate Dto
+    Dto --> FlashcardSetService : Return data
+    deactivate
+    FlashcardSetService -> Repository: Process and save(data)
+    activate Repository
+    FlashcardSetService <-- Repository: return Mess"create successfully"
+    deactivate Repository
+    FlashcardSetService --> CardGrammarController: send Id
+    deactivate FlashcardSetService
+    activate CardGrammarController
+    CardGrammarController --> User : request Banh card  view
+    deactivate CardGrammarController
 
-
+end
 @enduml

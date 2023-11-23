@@ -165,7 +165,7 @@ public class HomePageServiceImpl implements HomePageService {
         List<ClassRoom> classRooms = classRoomRepository.findAllByTeacher(user);
         return TeacherDashboardDTO.builder()
                 .countClass(classMemberRepository.countDistinctByUser(user))
-                .countMember(classMemberRepository.countDistinctByClassroomInAndUserNot(classRooms,user))
+                .countMember(classMemberRepository.countDistinctByUserAndClassroomIn(user,classRooms))
                 .countFolder(folderRepository.countAllByUser(user))
                 .setType(LearnDashboardDTO.DataType.builder()
                         .numberKanji(flashcardSetRepository.countAllByUserAndType(user,1))

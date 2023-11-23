@@ -113,6 +113,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardSet.setTitle(flashcardSetDTORequest.getTitle());
         flashcardSet.setDescription(flashcardSetDTORequest.getDescription());
         flashcardSet.setStatus(flashcardSetDTORequest.getStatus());
+        flashcardSet.setPublicAt(flashcardSetDTORequest.getPublicAt());
         FlashcardSet set = flashcardSetRepository.save(flashcardSet);
         return FlashcardMapper.convertFlashcardSetDTOResponse(set);
     }
@@ -363,6 +364,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .description(flashcardSet.getDescription())
                 .createdAt(flashcardSet.getCreatedAt())
                 .type(flashcardSet.getType())
+                .publicAt(flashcardSet.getPublicAt())
                 .status(flashcardSet.getStatus())
                 .isBookMarked(bookmarkSetRepository.existsBookMarkSetByUserAndAndFlashcardSet(user,flashcardSet))
                 .voted(voted)
@@ -505,6 +507,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         return ReadSetDTO.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
+                .publicAt(flashcardSet.getPublicAt())
                 .description(flashcardSet.getDescription())
                 .createdAt(flashcardSet.getCreatedAt())
                 .type(flashcardSet.getType())
@@ -744,6 +747,29 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         FlashcardSetAssociation association = flashcardSetAssociationRepository.getFlashcardSetAssociationByFlashcardSetAndCardId(flashcardSet,cardId);
         flashcardSetAssociationRepository.delete(association);
+    }
+
+    @Override
+    public List<SetSingleDTO> listManagerSet(User user) {
+            List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByStatus(5);
+            return flashcardSets.stream()
+                    .map(FlashcardMapper::convertSetSingleDTOManager)
+                    .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public void acceptFlashcardSet(long setId, User user) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        flashcardSet.setStatus(4);
+        flashcardSetRepository.save(flashcardSet);
+    }
+
+    @Override
+    public void rejectedFlashcardSet(long setId, User user) {
+        FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
+        flashcardSet.setStatus(3);
+        flashcardSetRepository.save(flashcardSet);
     }
 
 
