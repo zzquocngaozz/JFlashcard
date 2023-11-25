@@ -74,7 +74,6 @@ export default function useFetchRecent() {
       );
       setData(staticLearn.data);
     } catch (error) {
-      // TODO: navigate to not vscode-file://vscode-app/c:/Users/Admin/AppData/Local/Programs/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-sandbox/workbench/workbench.htmlfound or accessdenied
       setLoading(false);
       const errorCode = error?.response?.status;
       console.log(error?.message);

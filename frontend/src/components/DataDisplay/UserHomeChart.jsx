@@ -73,16 +73,9 @@ const options = {
 };
 
 const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
-  const { currentUser } = useAuth();
   const [userData, setUserData] = useState({
     // cardType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
     cardType: [0, 0, 0],
-    // dataCard: {
-    //   numberDraft: 0,
-    //   numberDone: 0,
-    //   numberPublic: 0,
-    //   numberClose: 0,
-    // },
     dataCard: [0, 0, 0, 0],
     countClass: 0,
     countFolder: 0,
@@ -108,16 +101,13 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
   const [weekIndex, setWeekIndex] = useState(0);
 
   const handleChange = (e) => {
-    setWeekIndex(e.target.value);
+    // setWeekIndex(e.target.value);
+    getWeekTracking(e.target.value);
   };
   const [selectSize, setSelectSize] = useState(
     numOfWeek(new Date("2023-09-01"), new Date())
   );
   useEffect(() => {
-    getWeekTracking(weekIndex);
-  }, [weekIndex]);
-  useEffect(() => {
-    console.log("check re-render");
     setChartProps({
       data: {
         labels: labels,
@@ -136,14 +126,7 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
     });
 
     if (!dashboard) return;
-    const {
-      cardType,
-      dataCard,
-      countClass,
-      dataSet,
-      setType,
-      weekTrackingDTOResponse,
-    } = dashboard;
+    const { cardType, dataCard, countClass, dataSet, setType } = dashboard;
     setUserData({
       cardType: Object.values(cardType),
       dataCard: Object.values(dataCard),
@@ -321,4 +304,4 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
   );
 };
 
-export default UserHomeChart;
+export default React.memo(UserHomeChart);

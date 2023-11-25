@@ -131,13 +131,14 @@ const AdminSetLearnChart = ({
 
   const handleChange = (e) => {
     setWeekIndex(e.target.value);
+    getWeekTracking(e.target.value);
   };
   const [selectSize, setSelectSize] = useState(
     numOfWeek(new Date("2023-09-01"), new Date())
   );
-  useEffect(() => {
-    getWeekTracking(weekIndex);
-  }, [weekIndex]);
+  // useEffect(() => {
+  //   getWeekTracking(weekIndex);
+  // }, [weekIndex]);
   useEffect(() => {
     setChartProps({
       data: {

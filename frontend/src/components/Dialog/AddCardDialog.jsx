@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -39,7 +40,7 @@ export default function AddCardDialog({ handleToggle }) {
   const [cardList, setCardList] = React.useState(null);
 
   const [pagingList, setPaginList] = React.useState(null);
-  const { loading, handleAddCardSet, selectCard, cardBank } =
+  const { loading, handleAddCardSet, selectCard, cardBank, importing } =
     useInitCardBankContext();
   const handleSearch = (e) => {
     setSearchParam(e.target.value.trim());
@@ -103,8 +104,10 @@ export default function AddCardDialog({ handleToggle }) {
         fullWidth
         onClose={handleToggle}
       >
-        <DialogTitle>Thêm thẻ vào bộ</DialogTitle>
-        <Stack
+        <DialogTitle sx={{ padding: "32px 24px" }}>
+          Thêm thẻ vào học phần
+        </DialogTitle>
+        {/* <Stack
           alignItems={"center"}
           sx={{
             flexDirection: "row",
@@ -137,12 +140,14 @@ export default function AddCardDialog({ handleToggle }) {
               <MenuItem value={4}>Đóng</MenuItem>
             </Select>
           </FormControl>
-        </Stack>
+        </Stack> */}
         <DialogContent sx={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
           <Stack
             sx={{
               width: "100%",
-              height: "100%",
+
+              // height: "100%",
+              minHeight: "500px",
               flexDirection: "column",
               justifyContent: "flex-start",
               rowGap: "20px",
@@ -196,7 +201,15 @@ export default function AddCardDialog({ handleToggle }) {
                   <Typography textAlign={"center"}>
                     Không có thẻ phù hợp
                   </Typography>
-                  <Link to={"/my-lib/card-bank"}>Tạo thêm flashcard</Link>
+                  <Button
+                    sx={{ borderRadius: "15px", textTransform: "none" }}
+                    LinkComponent={Link}
+                    variant="outlined"
+                    to={"/my-lib/card-bank"}
+                    startIcon={<AddIcon />}
+                  >
+                    Tạo thêm flashcard
+                  </Button>
                 </StackList>
               </Stack>
             ) : (
@@ -206,7 +219,46 @@ export default function AddCardDialog({ handleToggle }) {
             )}
           </Stack>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "space-between" }}>
+        <DialogActions
+          sx={{
+            justifyContent: "space-between",
+            position: "absolute",
+            top: "8px",
+            right: "15px",
+          }}
+        >
+          <Stack
+            alignItems={"center"}
+            sx={{
+              flexDirection: "row",
+              columnGap: "10px",
+            }}
+          >
+            <TextField
+              onChange={handleSearch}
+              label="Tìm kiếm"
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
+            />
+            <FormControl sx={{ m: 1, minWidth: 100 }}>
+              <InputLabel id="filter-label">Trạng thái</InputLabel>
+              <Select
+                labelId="type-label"
+                id="type-label"
+                value={paramFilter.status}
+                onChange={handleChangeStatusFilter}
+                autoWidth
+                label="Lọc loại thẻ"
+                variant="standard"
+              >
+                <MenuItem value={0}>Tất cả</MenuItem>
+                <MenuItem value={1}>Nháp</MenuItem>
+                <MenuItem value={2}>Hoàn thành</MenuItem>
+                <MenuItem value={3}>Công khai</MenuItem>
+                <MenuItem value={4}>Đóng</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
           {!!cardList ? (
             <Pagination
               count={Math.ceil(cardList?.length / 4.0)}
@@ -222,21 +274,22 @@ export default function AddCardDialog({ handleToggle }) {
           )}
           <StackList>
             <Button
+              startIcon={<AddIcon />}
+              onClick={() => handleAddCardSet(handleToggle)}
+              color="primary"
+              variant="contained"
+              disabled={selectCard.length === 0 || importing}
+            >
+              Thêm thẻ đã chọn
+            </Button>
+            <Button
               startIcon={<DoneIcon />}
               onClick={handleToggle}
               variant="contained"
               color="secondary"
+              disabled={importing}
             >
               Xong
-            </Button>
-            <Button
-              startIcon={<AddCircleIcon />}
-              onClick={() => handleAddCardSet(handleToggle)}
-              color="primary"
-              variant="contained"
-              disabled={selectCard.length === 0}
-            >
-              Thêm thẻ đã chọn
             </Button>
           </StackList>
         </DialogActions>

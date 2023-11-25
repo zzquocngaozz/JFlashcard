@@ -36,13 +36,7 @@ const useLibCardBank = () => {
         },
       };
       const { data } = await axios.get(`/homepage/listbank`, config);
-      console.log(
-        sortDesCreateTime([
-          ...data.kanjiDTOS,
-          ...data.grammarDTOS,
-          ...data.vocabDTOS,
-        ])
-      );
+
       setCardBank(
         sortDesCreateTime([
           ...data.kanjiDTOS,
@@ -285,7 +279,6 @@ const useLibCardBank = () => {
         severity: "error",
         message: "Chỉ nhận định dạng file excel",
       });
-      return console.log("Chỉ nhận định dạng file excel");
     }
     if (file.size >= 1 * 1024 * 1024) {
       setAlert({

@@ -19,11 +19,13 @@ const Dashboard = () => {
   const [data, setData] = useState(null);
   const [dataChart, setDataChart] = useState(null);
   const [dataTop, setDataTop] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
   const { accessToken } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -45,14 +47,13 @@ const Dashboard = () => {
         setData(response.data);
         setDataChart(responseChart.data);
         setDataTop(responseTop.data);
-        console.log(response.data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     };
-    startTransition(() => {
-      fetchData();
-    });
+    fetchData();
   }, []);
 
   const getWeekTracking = async (weekIndex) => {
@@ -70,17 +71,13 @@ const Dashboard = () => {
       );
       const responseChart = await fetchChart;
       setDataChart(responseChart.data);
-      console.log(responseChart.data);
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <LayoutAdmin>
-      {/* <Typography variant="h4">Dashboard</Typography>
-      <br />
-      <hr /> */}
-      {isPending ? (
+      {loading ? (
         <BackdropLoading />
       ) : (
         <>

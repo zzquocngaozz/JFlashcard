@@ -34,10 +34,7 @@ const ClassHome = ({ classes, loading }) => {
           <Box width={70} height={70}>
             <img src={searhbanner} loading="lazy" alt="notfound" />
           </Box>
-          <Typography textAlign={"center"}>
-            Lịch sử học trống! Hãy tìm kiếm hoặc tạo 1 bộ thẻ của riêng bạn và
-            học ngay hôm nay
-          </Typography>
+          <Typography textAlign={"center"}>Danh sách lớp học trống</Typography>
         </Stack>
       ) : (
         <StackContain>
