@@ -58,6 +58,7 @@ public class FlashcardMapper {
     public static FlashcardSet convertFlS(FlashcardSetDTORequest flashcardSetDTORequest, User user){
         return FlashcardSet.builder()
                 .status(1)
+                .publicAt(flashcardSetDTORequest.getPublicAt())
                 .title(flashcardSetDTORequest.getTitle())
                 .description(flashcardSetDTORequest.getDescription())
                 .createdAt(new Date(System.currentTimeMillis()))
@@ -114,6 +115,7 @@ public class FlashcardMapper {
         return FlashcardSetDTOResponse.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
+                .publicAt(flashcardSet.getPublicAt())
                 .description(flashcardSet.getDescription())
                 .type(flashcardSet.getType())
                 .status(flashcardSet.getStatus())

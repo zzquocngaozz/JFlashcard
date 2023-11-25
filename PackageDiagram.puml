@@ -1,50 +1,39 @@
 @startuml
 
-class CardGrammarController {
-  +createGrammarCard(myUserDetail: MyUserDetail, grammarDTO: GrammarDTO): ResponseEntity<?>
+class ManagerSetController {
+  -flashcardSetService: FlashcardSetService
+  +rejectedFlashcardSet(myUserDetail: MyUserDetail, setId: long): ResponseEntity<?>
 }
 
 class FlashcardSetService {
-  +createFlashcardGrammar(grammarDTO: GrammarDTO, user: User): void
+  -flashcardSetRepository: FlashcardSetRepository
+  -sendEmailService: SendEmailService
+  +rejectedFlashcardSet(setId: long, user: User): void
 }
 
 class MyUserDetail
-
-class GrammarDTO {
-  -term: String
-  -mean: String
-  // other attributes...
-}
 
 class User {
   // attributes...
 }
 
-class Validate {
-  +validateTerm(term: String): void
-  +validateMean(mean: String): void
+interface FlashcardSetRepository {
+  +getFlashcardSetByFlashcardSetId(setId: long): FlashcardSet
 }
 
-class FlashcardMapper {
-  +convertToFlashcardGrammarEntity(grammarDTO: GrammarDTO, user: User): FlashcardGrammar
-}
-
-interface FlashcardGrammarRepository {
-  +save(flashcardGrammar: FlashcardGrammar): FlashcardGrammar
-}
-
-class FlashcardGrammar {
+class FlashcardSet {
   // attributes...
 }
 
-CardGrammarController -- FlashcardSetService : uses
-FlashcardSetService -- Validate : uses
-FlashcardSetService -- FlashcardMapper : uses
-FlashcardSetService -- FlashcardGrammarRepository : uses
+class SendEmailService {
+  +sendRejectedEmail(email: String, userName: String, title: String, publicAt: Date, description: String): void
+}
+
+ManagerSetController -- FlashcardSetService : has
+FlashcardSetService -- FlashcardSetRepository : uses
+FlashcardSetService -- SendEmailService : uses
 MyUserDetail -- User : uses
-FlashcardGrammarRepository -- FlashcardGrammar : uses
-CardGrammarController -- MyUserDetail : uses
-CardGrammarController -- ResponseEntity : returns
-FlashcardMapper -- GrammarDTO : uses
+ManagerSetController -- MyUserDetail : uses
+FlashcardSetRepository -- FlashcardSet : uses
 
 @enduml

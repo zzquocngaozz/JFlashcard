@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -20,5 +21,6 @@ public class FlashcardSetDTOResponse {
     String description;
     int type;
     int  status;
+    Timestamp publicAt;
     AuthDTO authDTO;
 }

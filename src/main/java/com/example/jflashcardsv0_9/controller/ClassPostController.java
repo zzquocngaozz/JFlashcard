@@ -38,7 +38,6 @@ public class ClassPostController {
         return classPostService.getClassPostsByClassroomId(classRoomId);
     }
 
-
     @PutMapping("/{classRoomId}/class-post")
     public ResponseEntity<?> updateClassPost( @RequestBody ClassPostDTO classPostDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
 

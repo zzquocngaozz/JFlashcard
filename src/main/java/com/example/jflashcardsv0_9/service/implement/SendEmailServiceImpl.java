@@ -263,11 +263,11 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            <p>Tôi hy vọng bạn đang có một ngày tốt lành. Chúng tôi xin thông báo rằng sau quá trình kiểm tra và đánh giá kỹ lưỡng,</p>\n" +
                 "            <p>chúng tôi đã quyết định chấp nhận công bố Bộ Thẻ của bạn trên JFlashcards.</p>\n" +
                 "            <p>Bộ Thẻ của bạn đã đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là phù hợp để chia sẻ với cộng đồng người dùng trên nền tảng của chúng tôi.</p>\n" +
-                "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ::\n" +
+                "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ::\n</p>" +
                 "\n" +
-                "Tên Khóa Học: [ " + setName + "]\n" +
-                "Mô tả Ngắn Gọn: [ " + des + "]\n" +
-                "Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
+                "<p>Tên Khóa Học: [ " + setName + "]</p>\n" +
+                "<p>Mô tả Ngắn Gọn: [ " + des + "]</p>\n" +
+                "<p>Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
                 "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
                 "\n" +
                 "Cảm ơn bạn đã đóng góp vào cộng đồng JFlashcards của chúng tôi và chúc mừng vì việc công bố thành công của bạn!\n" +
@@ -306,11 +306,11 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            <p>Tôi hy vọng bạn đang có một ngày tốt lành. Chúng tôi xin thông báo rằng sau quá trình kiểm tra và đánh giá kỹ lưỡng,</p>\n" +
                 "            <p>chúng tôi không thể chấp nhận công bố khóa học của bạn trên JFlashcards tại thời điểm này.</p>\n" +
                 "            <p>Bộ Thẻ của bạn chưa  đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là chưa phù hợp để chia sẻ với cộng đồng người dùng trên nền tảng của chúng tôi.</p>\n" +
-                "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ:\n" +
+                "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ:\n</p>" +
                 "\n" +
-                "Tên Khóa Học: [ " + setName + "]\n" +
-                "Mô tả Ngắn Gọn: [ " + des + "]\n" +
-                "Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
+                "            <p>Tên Khóa Học: [ " + setName + "]</p>\n" +
+                "            <p>Mô tả Ngắn Gọn: [ " + des + "]</p>\n" +
+                "            <p>Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
                 "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
                 "\n" +
                 "Cảm ơn bạn đã đóng góp vào cộng đồng JFlashcards của chúng tôi và chúc mừng vì việc công bố thành công của bạn!\n" +

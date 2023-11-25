@@ -15,7 +15,7 @@ public class BookMarkController {
     private BookmarkService bookmarkService;
 
     @PostMapping("/{setId}")
-    public ResponseEntity<?> bookMarkset(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long setId){
+    public ResponseEntity<?> bookMarkSet(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long setId){
         bookmarkService.bookMarkSet(myUserDetail.getUser(),setId);
         return ResponseEntity.ok("Book mark thành công");
     }

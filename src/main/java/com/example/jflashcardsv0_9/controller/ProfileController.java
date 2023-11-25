@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1")
-    public class ProfileController {
+public class ProfileController {
 
     @Autowired
     UserService userService;
@@ -32,27 +32,27 @@ import org.springframework.web.bind.annotation.*;
     }
 
     @PostMapping("/profile/verify")
-    public ResponseEntity<?> getVerifyToken(@AuthenticationPrincipal MyUserDetail myUserDetail){
+    public ResponseEntity<?> getVerifyToken(@AuthenticationPrincipal MyUserDetail myUserDetail) {
         profileService.sendVerifyToken(myUserDetail.getUser().getEmail());
         return ResponseEntity.ok("ok");
     }
 
     @PutMapping("/profile/verify")
-    public UserDTO verifyUser(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail){
-        System.out.println(tokenDTO.getToken()+" "+myUserDetail.getUser().getEmail());
+    public UserDTO verifyUser(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        System.out.println(tokenDTO.getToken() + " " + myUserDetail.getUser().getEmail());
 //        profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
-        return  profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
+        return profileService.verifyUser(tokenDTO.getToken(), myUserDetail.getUser().getEmail());
     }
 
     @PostMapping("/profile/wish")
-    public ResponseEntity<?> wishTeacherRole(@AuthenticationPrincipal MyUserDetail myUserDetail){
+    public ResponseEntity<?> wishTeacherRole(@AuthenticationPrincipal MyUserDetail myUserDetail) {
         profileService.askTeacherRole(myUserDetail.getUser().getEmail());
         return ResponseEntity.ok("ok");
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail){
-        userService.changePassword(tokenDTO,myUserDetail);
+    public ResponseEntity<?> changePassword(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        userService.changePassword(tokenDTO, myUserDetail);
         return ResponseEntity.ok("ok");
     }
 
