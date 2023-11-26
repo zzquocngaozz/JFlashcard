@@ -44,6 +44,8 @@ public class FlashcardKanji implements Serializable {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Timestamp createdAt;
+    @Column(name = "isverify",columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isVerify ;
     @ManyToOne
     @JoinColumn(name = "userId") // Tên cột khoá ngoại trong bảng FlashcardKanji
     private User user;

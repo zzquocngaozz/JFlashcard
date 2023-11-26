@@ -58,6 +58,15 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         this.openedFlashcardSetRepository = openedFlashcardSetRepository;
         this.flashcardSetAssociationRepository = flashcardSetAssociationRepository;
     }
+    public void checkStatusUpdate(boolean check ,long cardId,long type){
+        if(check == true){
+            List<FlashcardSet> sets = flashcardSetAssociationRepository.getAllFlashcardSetByCardIdAndType(cardId,type);
+            for (FlashcardSet flashcardSet : sets){
+                flashcardSet.setStatus(7);
+                flashcardSetRepository.save(flashcardSet);
+            }
+        }
+    }
     @Override
     public List<KanjiDTO> getKanjiDTOS(FlashcardSet flashcardSet) {
         List<FlashcardSetAssociation> flashcardSetAssociations = flashcardSetAssociationRepository.findAllByFlashcardSet(flashcardSet);
@@ -151,6 +160,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         validate.validateTerm(kanjiDTO.getTerm());
         validate.validateMean(kanjiDTO.getMean());
         FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(kanjiDTO.getCardId());
+        checkStatusUpdate(flashcardKanji.isVerify(),flashcardKanji.getCardKanjiId(),1);
+
         flashcardKanji.setOnSound(kanjiDTO.getOnSound());
         flashcardKanji.setStatus(kanjiDTO.getStatus());
         flashcardKanji.setKunSound(kanjiDTO.getKunSound());
@@ -168,6 +179,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void deleteFlKanji(long cardId) {
         FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(cardId);
         flashcardKanji.setStatus(4);
+        checkStatusUpdate(flashcardKanji.isVerify(),flashcardKanji.getCardKanjiId(),1);
         flashcardKanjiRepository.save(flashcardKanji);
 
     }
@@ -194,7 +206,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void updateGrammarCard(GrammarDTO grammarDTO, User user) {
         validate.validateTerm(grammarDTO.getTerm());
         validate.validateMean(grammarDTO.getMean());
+
         FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardId());
+        checkStatusUpdate(flashcardGrammar.isVerify(),flashcardGrammar.getCardGrammarId(),3);
         flashcardGrammar.setCombination(grammarDTO.getCombination());
         flashcardGrammar.setStatus(grammarDTO.getStatus());
         flashcardGrammar.setNote(grammarDTO.getNote());
@@ -211,6 +225,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void deleteFlGrammar(long cardId) {
          FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(cardId);
          flashcardGrammar.setStatus(4);
+        checkStatusUpdate(flashcardGrammar.isVerify(),flashcardGrammar.getCardGrammarId(),3);
          flashcardGrammarRepository.save(flashcardGrammar);
     }
     @Override
@@ -238,6 +253,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         validate.validateTerm(vocabDTO.getTerm());
         validate.validateMean(vocabDTO.getMean());
         FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardId());
+        checkStatusUpdate(flashcardVocab.isVerify(),flashcardVocab.getCardVocabId(),1);
+
         flashcardVocab.setStatus(vocabDTO.getStatus());
         flashcardVocab.setTerm(vocabDTO.getTerm());
         flashcardVocab.setMean(vocabDTO.getMean());
@@ -252,6 +269,8 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void deleteFlvocab(long cardId) {
         FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(cardId);
         flashcardVocab.setStatus(4);
+        checkStatusUpdate(flashcardVocab.isVerify(),flashcardVocab.getCardVocabId(),1);
+
         flashcardVocabRepository.save(flashcardVocab);
     }
 
@@ -766,6 +785,26 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void acceptFlashcardSet(long setId, User user) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         flashcardSet.setStatus(3);
+        List<FlashcardSetAssociation> list = flashcardSetAssociationRepository.findAllByFlashcardSet(flashcardSet);
+        if(flashcardSet.getType() == 1){
+            for (FlashcardSetAssociation association : list){
+                FlashcardKanji kanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(association.getCardId());
+                kanji.setVerify(true);
+                flashcardKanjiRepository.save(kanji);
+            }
+        }else if(flashcardSet.getType() == 2){
+            for (FlashcardSetAssociation association : list){
+                FlashcardVocab vocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(association.getCardId());
+                vocab.setVerify(true);
+                flashcardVocabRepository.save(vocab);
+            }
+        }else if(flashcardSet.getType()==3){
+            for (FlashcardSetAssociation association : list){
+                FlashcardGrammar grammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(association.getCardId());
+                grammar.setVerify(true);
+                flashcardGrammarRepository.save(grammar);
+            }
+        }
         flashcardSetRepository.save(flashcardSet);
         sendEmailService.sendAcceptEmail(flashcardSet.getUser().getEmail(),flashcardSet.getUser().getUserName(),flashcardSet.getTitle(),flashcardSet.getPublicAt(),flashcardSet.getDescription());
 
