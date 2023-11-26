@@ -202,6 +202,7 @@ const useLibCardBank = () => {
   };
 
   const updateCard = async (newCard, handleToggle) => {
+    handleToggle();
     try {
       setMutationing(true);
       const config = {
@@ -224,11 +225,11 @@ const useLibCardBank = () => {
           : card
       );
       setCardBank(newCardBank);
-      handleToggle();
+
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
-      handleToggle();
+
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
@@ -249,7 +250,12 @@ const useLibCardBank = () => {
         ? `/card/grammar-card/${card.cardId}`
         : `/card/vocab-card/${card.cardId}`;
       await axios.delete(url, config);
-      const newCardBank = cardBank.filter((c) => c.cardId !== card.cardId);
+      // const newCardBank = cardBank.filter((c) => c.cardId !== card.cardId);
+      const newCardBank = cardBank.map((c) =>
+        c.cardId === card.cardId && getCardType(c) === getCardType(card)
+          ? { ...card, status: 4 }
+          : c
+      );
       setCardBank(newCardBank);
       handleToggle();
       setMutationing(false);

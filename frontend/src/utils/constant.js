@@ -20,5 +20,6 @@ export const FLAG_STATUS = {
   3: "Công khai",
   4: "Đóng",
   5: "Chờ duyệt",
-  6: "Bị chặn",
+  6: "Từ chối",
+  7: "Đang chỉnh sửa",
 };

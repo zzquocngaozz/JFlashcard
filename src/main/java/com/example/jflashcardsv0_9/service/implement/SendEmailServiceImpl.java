@@ -26,7 +26,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
-
+    @Async
     @Override
     public void sendEmail(String to, String subject, String htmlContent) {
         System.out.println("send roi");
@@ -43,7 +43,7 @@ public class SendEmailServiceImpl implements SendEmailService {
         }
 
     }
-
+    @Async
     @Override
     public void sendVerifyToken(String email, String token) {
 
@@ -76,7 +76,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
         sendEmail(email, "Mã xác nhận tài khoản", htmlContent);
     }
-
+    @Async
     @Override
     public void sendOTPToken(String email, String token) {
 
@@ -111,6 +111,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     }
 
+    @Async
     @Override
     public void sendChangeRole(String email) {
         String htmlContent = """
@@ -195,8 +196,8 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            JFlashcard\n" +
                 "            </a>\n" +
                 "            </div>\n" +
-                "            <p style=\"font-size:1.1em\">Chào [ "+ userName +"] ,</p>\n" +
-                "            <p>Chúng tôi nhận thấy bạn đang học chậm tiến độ của  [ "+ setName +"] trong [ "+ classname +"]  . Hãy nỗ lực hơn để đảm bảo bạn không bị tụt lại.</p>\n" +
+                "            <p style=\"font-size:1.1em\">Chào "+ userName +",</p>\n" +
+                "            <p>Chúng tôi nhận thấy bạn đang học chậm tiến độ của  "+ setName +" trong "+ classname +". Hãy nỗ lực hơn để đảm bảo bạn không bị tụt lại.</p>\n" +
                 "            <p>Hãy tăng cường việc học tập để đảm bảo bạn đang theo kịp tiến độ của lớp học trên JFlashcards.</p>\n" +
                 "\n" +
                 "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
@@ -229,7 +230,7 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            </a>\n" +
                 "            </div>\n" +
                 "            <p style=\"font-size:1.1em\">Chào "+ userName +" ,</p>\n" +
-                "            <p>Chúng tôi nhận thấy bạn đang bị tụt lại rất xa theo tiến độ của  [ "+ setName +"] trong [ "+ classname +"] . Hãy đặt kế hoạch và bắt đầu học ngay!</p>\n" +
+                "            <p>Chúng tôi nhận thấy bạn đang bị tụt lại rất xa theo tiến độ của  "+ setName +" trong "+ classname +". Hãy đặt kế hoạch và bắt đầu học ngay!</p>\n" +
                 "            <p>Chúng tôi khuyên bạn nên đặt kế hoạch học tập và bắt đầu ngay, để đảm bảo bạn đang theo kịp tiến độ của lớp học trên JFlashcards.</p>\n" +
                 "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
                 "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
@@ -245,7 +246,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     @Async
     public void sendAcceptEmail(String email, String userName, String setName, Timestamp publicAt, String des) {
-        String subject = "Thông Báo Chấp Nhận Công Bố Bộ Thẻ trên JFlashcards";
+        String subject = "Thông báo chấp nhận việc công bố học phần trên JFlashcards";
         String htmlContent = "    <!doctype html>\n" +
                 "    <html>\n" +
                 "      <head>\n" +
@@ -260,14 +261,14 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            </a>\n" +
                 "            </div>\n" +
                 "            <p style=\"font-size:1.1em\">Chào " + userName + " ,</p>\n" +
-                "            <p>Tôi hy vọng bạn đang có một ngày tốt lành. Chúng tôi xin thông báo rằng sau quá trình kiểm tra và đánh giá kỹ lưỡng,</p>\n" +
-                "            <p>chúng tôi đã quyết định chấp nhận công bố Bộ Thẻ của bạn trên JFlashcards.</p>\n" +
-                "            <p>Bộ Thẻ của bạn đã đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là phù hợp để chia sẻ với cộng đồng người dùng trên nền tảng của chúng tôi.</p>\n" +
+                "            <p>Chúng tôi hy vọng bạn đang có một ngày tốt lành. Chúng tôi xin thông báo rằng sau quá trình kiểm tra và đánh giá kỹ lưỡng,</p>\n" +
+                "            <p>chúng tôi đã quyết định chấp nhận công bố bộ thẻ của bạn trên JFlashcards.</p>\n" +
+                "            <p>Bộ Thẻ của bạn đã đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là phù hợp để chia sẻ với cộng đồng người dùng trên JFlashcards.</p>\n" +
                 "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ::\n</p>" +
                 "\n" +
-                "<p> Tên Khóa Học: [ " + setName + "]</p>\n" +
-                "<p> Mô tả Ngắn Gọn: [ " + des + "]</p>\n" +
-                "<p> Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
+                "<p> Tên Khóa Học: " + setName + "</p>\n" +
+                "<p> Mô tả Ngắn Gọn: " + des + "</p>\n" +
+                "<p> Ngày Công Bố Dự Kiến: " + publicAt + "</p>\n" +
                 "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
                 "\n" +
                 "Cảm ơn bạn đã đóng góp vào cộng đồng JFlashcards của chúng tôi và chúc mừng vì việc công bố thành công của bạn!\n" +
@@ -303,15 +304,14 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            </a>\n" +
                 "            </div>\n" +
                 "            <p style=\"font-size:1.1em\">Chào " + userName + " ,</p>\n" +
-                "            <p>Tôi hy vọng bạn đang có một ngày tốt lành. Chúng tôi xin thông báo rằng sau quá trình kiểm tra và đánh giá kỹ lưỡng,</p>\n" +
-                "            <p>chúng tôi không thể chấp nhận công bố khóa học của bạn trên JFlashcards tại thời điểm này.</p>\n" +
-                "            <p>Bộ Thẻ của bạn chưa  đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là chưa phù hợp để chia sẻ với cộng đồng người dùng trên nền tảng của chúng tôi.</p>\n" +
+                "            <p>Chúng tôi hy vọng bạn có một ngày tốt lành. Chúng tôi xin thông báo rằng sau quá trình kiểm tra và đánh giá kỹ lưỡng,</p>\n" +
+                "            <p>chúng tôi nhận thấy học phần của bạn chưa đủ điều kiện để công khai.</p>\n" +
                 "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ:\n</p>" +
                 "\n" +
-                "            <p> Tên Khóa Học: [ " + setName + "]</p>\n" +
-                "            <p> Mô tả Ngắn Gọn: [ " + des + "]</p>\n" +
-                "            <p> Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
-                "            <p> Lý do từ chối : [ " + reason + "]</p>\n" +
+                "            <p> Tên học phần: " + setName + "</p>\n" +
+                "            <p> Mô tả ngắn gọn: " + des + "</p>\n" +
+                "            <p> Ngày công bố dự kiến: " + publicAt + "</p>\n" +
+                "            <p> Lý do từ chối : <br/>" + reason + "</p>\n" +
                 "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
                 "\n" +
                 "Cảm ơn bạn đã đóng góp vào cộng đồng JFlashcards của chúng tôi và chúc mừng vì việc công bố thành công của bạn!\n" +

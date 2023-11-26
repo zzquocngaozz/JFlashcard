@@ -13,16 +13,16 @@ import {
   styled,
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import PublicOffIcon from "@mui/icons-material/PublicOff";
+import PublicIcon from "@mui/icons-material/Public";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import DoneIcon from "@mui/icons-material/Done";
 import { FLAG_STATUS, SET_TYPE } from "../utils/constant";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 import FormEditSetDiaolog from "../components/Dialog/FormEditSetDiaolog";
-import KanjiCardEditContainer from "../components/KanjiCardEditContainer";
-import GrammarCardEditConainer from "../components/GrammarCardEditConainer";
-import VocaCardEditContainer from "../components/VocaCardEditContainer";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import useSetEdit from "../hooks/useSetEdit";
 import SnapBarAlter from "../components/FeedBack/SnapBarAlter";
 import useSnapBarAlert from "../hooks/useSnapBarAlert";
@@ -34,17 +34,6 @@ import CardEditContainer from "../components/CardEditContainer";
 import { StackList } from "../components/Styled/StyledStack";
 import useAuth from "../hooks/useAuth";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 const SetEdit = () => {
   const { setId } = useParams();
   // ------------------ Handle delete alert show and hide
@@ -56,6 +45,31 @@ const SetEdit = () => {
       open: !alertDelete.open,
     });
   };
+  const handleToggleAlertVisible = () => {
+    setAlertVisible({
+      ...alertVisible,
+      open: !alertVisible.open,
+    });
+  };
+  const handleToggleWaiting = () => {
+    setAlerttWaiting({
+      ...alertWaiting,
+      open: !alertWaiting.open,
+    });
+  };
+  const handleToggleRequestUpdate = () => {
+    setAlertRequestUpdate({
+      ...alertRequestUpdate,
+      open: !alertRequestUpdate.open,
+    });
+  };
+  // alert mard done
+  const handleToggleMarkDone = () => {
+    setAlertUpdating({
+      ...alertUpdating,
+      open: !alertUpdating.open,
+    });
+  };
 
   const handleToggleUpdateSet = () => {
     setOpenEditFrom(!openEditForm);
@@ -63,10 +77,30 @@ const SetEdit = () => {
   const [openEditForm, setOpenEditFrom] = useState(false);
   const [alertDelete, setAlertDelete] = useState({
     open: false,
-    message:
-      "Thao tác này không thể hoàn lại. Bạn muốn tiếp tục xoá bộ thẻ này không",
+    loadingMessage: "Đang cập nhật trạng thái",
+    message: "Bạn muốn đóng học phần này ?",
   });
-  const [openImport, setOpenImport] = useState(false);
+  const [alertVisible, setAlertVisible] = useState({
+    open: false,
+    loadingMessage: "Đang cập nhật trạng thái",
+    message: "Bạn muốn công khai học phần này ?",
+  });
+  const [alertUpdating, setAlertUpdating] = useState({
+    open: false,
+    loadingMessage: "Đang cập nhật trạng thái",
+    message: "Bạn muốn đánh dấu hoàn thành học phần này?",
+  });
+  const [alertRequestUpdate, setAlertRequestUpdate] = useState({
+    open: false,
+    loadingMessage: "Đang cập nhật trạng thái",
+    message: "Bạn muốn cập nhật lại học phần này?",
+  });
+  const [alertWaiting, setAlerttWaiting] = useState({
+    open: false,
+    loadingMessage: "Đang cập nhật trạng thái",
+    message: "Bạn muốn yêu cầu duyệt để công bố học phần này?",
+  });
+
   // const { alert, setAlert, handleCloseSnackBar } = useSnapBarAlert();
   // const {
   //   dataSet: flashcardSet,
@@ -87,14 +121,22 @@ const SetEdit = () => {
     handleCloseSnackBar,
     deleteSet,
     updateSet,
-    importFile,
   } = useInitSetEditContext();
 
-  const handleToggleImport = () => {
-    setOpenImport(!openImport);
-  };
   const handleUpdateSet = (data) => {
     updateSet(data, handleToggleUpdateSet);
+  };
+  const handleSetMarkDone = () => {
+    updateSet({ ...flashcardSet, status: 2 }, handleToggleMarkDone);
+  };
+  const handleSetWaiting = () => {
+    updateSet({ ...flashcardSet, status: 5 }, handleToggleWaiting);
+  };
+  const handleSetRequestUpdate = () => {
+    updateSet({ ...flashcardSet, status: 7 }, handleToggleRequestUpdate);
+  };
+  const handleSetVisible = () => {
+    updateSet({ ...flashcardSet, status: 3 }, handleToggleAlertVisible);
   };
   useEffect(() => {
     if (currentUser.role === 4) navigate(`/${setId}/check`);
@@ -155,47 +197,90 @@ const SetEdit = () => {
                   justifyContent: "flex-end",
                 }}
               >
-                <Tooltip title={"Chỉnh sửa"}>
-                  <IconButton onClick={handleToggleUpdateSet}>
-                    <ModeEditIcon color="primary" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title={"Xoá bộ"}>
-                  <IconButton onClick={handleToggleAlertDelete}>
-                    <DeleteForeverIcon color="error" />
-                  </IconButton>
-                </Tooltip>
-                {/* <Tooltip title={"Nhập bằng file"}>
-                    <IconButton component={"label"} onClick={handleToggleImport}>
-                      <CloudUploadIcon /> */}
-                {/* <VisuallyHiddenInput type="file" onChange={importFile} /> */}
-                {/* </IconButton>
-                  </Tooltip> */}
+                {flashcardSet.status === 3 && currentUser.role === 2 ? (
+                  <Tooltip title={"Chỉnh sửa học phần"}>
+                    <IconButton onClick={handleToggleRequestUpdate}>
+                      <ModeEditIcon color="warning" />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title={"Chỉnh sửa"}>
+                    <IconButton onClick={handleToggleUpdateSet}>
+                      <ModeEditIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {(flashcardSet.status < 3 ||
+                  flashcardSet.status === 6 ||
+                  flashcardSet.status === 7 ||
+                  flashcardSet.status === 8) &&
+                currentUser.role === 2 ? (
+                  <Tooltip title={"Yêu cầu duyệt"}>
+                    <Box>
+                      <IconButton onClick={handleToggleWaiting}>
+                        <VerifiedIcon color="success" />
+                      </IconButton>
+                    </Box>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
+                {flashcardSet?.status === 3 ? (
+                  <Tooltip title={"Đóng"}>
+                    <IconButton onClick={handleToggleAlertDelete}>
+                      <PublicOffIcon color="error" />
+                    </IconButton>
+                  </Tooltip>
+                ) : flashcardSet?.status === 4 ? (
+                  <Tooltip title={"Công khai"}>
+                    <IconButton onClick={handleToggleAlertVisible}>
+                      <PublicIcon color="success" />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
+                {flashcardSet?.status < 3 && currentUser.role === 1 ? (
+                  <Tooltip title={"Công khai"}>
+                    <IconButton onClick={handleToggleAlertVisible}>
+                      <PublicIcon color="success" />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
               </Box>
               <Stack
                 flexDirection={"row"}
                 sx={{ gap: 2, justifyContent: "flex-end" }}
               >
-                {/* <Button
-                    startIcon={<ArrowBackIosIcon />}
-                    sx={{
-                      textTransform: "none",
-                      backgroundColor: "rgba(0,0,0,0.5)",
-                      "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
-                    }}
-                    variant="contained"
-                  >
-                    Trở lại
-                  </Button> */}
                 <Button
-                  startIcon={<DoneIcon />}
-                  sx={{ textTransform: "none" }}
+                  startIcon={<ArrowBackIosIcon />}
+                  sx={{
+                    textTransform: "none",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
+                  }}
                   variant="contained"
                   LinkComponent={Link}
                   to={`/my-lib/set-manager`}
                 >
-                  Xong
+                  Về thư viện
                 </Button>
+                {flashcardSet.status === 1 ? (
+                  <Button
+                    startIcon={<DoneIcon />}
+                    sx={{
+                      textTransform: "none",
+                    }}
+                    variant="contained"
+                    onClick={handleToggleMarkDone}
+                  >
+                    Hoàn thành
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </Stack>
             </Stack>
           </Stack>
@@ -217,6 +302,47 @@ const SetEdit = () => {
           alertDelete={alertDelete}
           handleToggleAlertDelete={handleToggleAlertDelete}
           onDelete={deleteSet}
+          mutationing={mutationing}
+        />
+      ) : (
+        <></>
+      )}
+      {alertVisible.open ? (
+        <DialogAlertDelete
+          alertDelete={alertVisible}
+          handleToggleAlertDelete={handleToggleAlertVisible}
+          onDelete={handleSetVisible}
+          mutationing={mutationing}
+        />
+      ) : (
+        <></>
+      )}
+      {alertUpdating.open ? (
+        <DialogAlertDelete
+          alertDelete={alertUpdating}
+          handleToggleAlertDelete={handleToggleMarkDone}
+          onDelete={handleSetMarkDone}
+          mutationing={mutationing}
+        />
+      ) : (
+        <></>
+      )}
+      {alertWaiting.open ? (
+        <DialogAlertDelete
+          alertDelete={alertWaiting}
+          handleToggleAlertDelete={handleToggleWaiting}
+          onDelete={handleSetWaiting}
+          mutationing={mutationing}
+        />
+      ) : (
+        <></>
+      )}
+      {alertRequestUpdate.open ? (
+        <DialogAlertDelete
+          alertDelete={alertRequestUpdate}
+          handleToggleAlertDelete={handleToggleRequestUpdate}
+          onDelete={handleSetRequestUpdate}
+          mutationing={mutationing}
         />
       ) : (
         <></>
@@ -226,6 +352,7 @@ const SetEdit = () => {
           flashcardSet={flashcardSet}
           handleToggleUpdateSet={handleToggleUpdateSet}
           updateSet={handleUpdateSet}
+          mutationing={mutationing}
         />
       ) : (
         <></>
@@ -233,15 +360,6 @@ const SetEdit = () => {
       {mutationing ? <BackdropLoading></BackdropLoading> : <></>}
       {alert.open ? (
         <SnapBarAlter alert={alert} handleCloseSnackBar={handleCloseSnackBar} />
-      ) : (
-        <></>
-      )}
-      {openImport ? (
-        <ImportFileDialog
-          handleToggle={handleToggleImport}
-          importing={importing}
-          importFile={importFile}
-        />
       ) : (
         <></>
       )}

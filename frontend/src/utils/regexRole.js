@@ -207,4 +207,11 @@ export const role = {
       message: "Bình luận không chứa dấu xuống dòng",
     },
   },
+  reject: {
+    required: true,
+    maxLength: {
+      value: 255,
+      message: "Mô tả không quá 255 ký tự",
+    },
+  },
 };

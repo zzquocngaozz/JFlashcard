@@ -18,7 +18,7 @@ import { FLAG_STATUS, SET_TYPE } from "../utils/constant";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 
 import ShowMoreText from "../components/DataDisplay/ShowMoreText";
-
+import VerifiedIcon from "@mui/icons-material/Verified";
 import BlockIcon from "@mui/icons-material/Block";
 import { useInitSetEditContext } from "../context/SetEditContext";
 import CardEditContainer from "../components/CardEditContainer";
@@ -26,6 +26,7 @@ import { StackList } from "../components/Styled/StyledStack";
 import useAuth from "../hooks/useAuth";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 import LayoutManager from "../components/Parts/LayoutManager";
+import FormRejectDialog from "../components/Dialog/FormRejectDialog";
 
 const SetCheck = () => {
   // ------------------ Handle delete alert show and hide
@@ -52,7 +53,7 @@ const SetCheck = () => {
     open: false,
     loadingMessage: "Đang cập nhật trạng thái",
     message:
-      "Hãy kiểm tra thật cẩn trọng. Bạn có muốn chặn public học phần này?",
+      "Hãy thêm lý do từ chối để giáo viên có thể điều chỉnh lại học phần cho phù hợp",
   });
 
   const {
@@ -99,19 +100,27 @@ const SetCheck = () => {
                   variant="contained"
                 />
               </Stack>
+              <Typography>
+                Ngày công khai:{" "}
+                {new Date(flashcardSet?.publicAt).toLocaleDateString()}
+              </Typography>
+              <Typography>
+                Ngày tạo:{" "}
+                {new Date(flashcardSet?.createdAt).toLocaleDateString()}
+              </Typography>
             </Stack>
             <StackList
               flex={1.5}
               sx={{ alignItems: "flex-start", justifyContent: "flex-end" }}
             >
               <Button
-                startIcon={<DoneIcon />}
+                startIcon={<VerifiedIcon />}
                 sx={{ textTransform: "none" }}
                 variant="contained"
                 color="success"
                 onClick={handleTogglePublic}
               >
-                Công khai
+                Đồng ý
               </Button>
               <Button
                 startIcon={<BlockIcon />}
@@ -120,7 +129,7 @@ const SetCheck = () => {
                 variant="contained"
                 onClick={handleToggleReject}
               >
-                Chặn
+                Từ chối
               </Button>
             </StackList>
           </Stack>
@@ -140,10 +149,10 @@ const SetCheck = () => {
         <></>
       )}
       {alertReject.open ? (
-        <DialogAlertDelete
+        <FormRejectDialog
           alertDelete={alertReject}
           handleToggleAlertDelete={handleToggleReject}
-          onDelete={() => rejectSet(handleToggleReject)}
+          onDelete={(data) => rejectSet(data, handleToggleReject)}
           mutationing={mutationing}
         />
       ) : (

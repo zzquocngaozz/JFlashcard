@@ -29,7 +29,7 @@ export default function DialogAlertDeleteCard({ onDelete, handleToggle }) {
             </Box>
           </Zoom>
           <DialogContentText textAlign="center">
-            Thao tác không thể ngắt bạn có chắc muốn xoá thẻ này
+            Thao tác không thể ngắt bạn có chắc muốn tiếp tục
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -160,6 +160,7 @@ const LibSetManager = () => {
                     <MenuItem value={4}>{FLAG_STATUS[4]}</MenuItem>
                     <MenuItem value={5}>{FLAG_STATUS[5]}</MenuItem>
                     <MenuItem value={6}>{FLAG_STATUS[6]}</MenuItem>
+                    <MenuItem value={7}>{FLAG_STATUS[7]}</MenuItem>
                   </Select>
                 </FormControl>
               ) : (

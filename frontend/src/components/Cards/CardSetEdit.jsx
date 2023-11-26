@@ -8,22 +8,16 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import StarIcon from "@mui/icons-material/Star";
-import KanjiDialogForm from "../Dialog/KanjiDialogForm";
+import React, { useCallback, useState } from "react";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import placeholder from "../../assets/images/placeholder.png";
-import { isGrammarCard, isKanjiCard, isVocaCard } from "../../utils/cardUtil";
-import VocaDialogForm from "../Dialog/VocaDialogForm";
-import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import { FLAG_STATUS } from "../../utils/constant";
 import { useSetEditContext } from "../../context/SetEditContext";
 import useAuth from "../../hooks/useAuth";
 
 const CardSetEdit = ({ card, index }) => {
-  const { deleteCardSet } = useSetEditContext();
+  const { dataSet, deleteCardSet } = useSetEditContext();
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const { currentUser } = useAuth();
@@ -66,7 +60,8 @@ const CardSetEdit = ({ card, index }) => {
       >
         <Typography flex={5}>{index + 1}</Typography>
         <Chip label={FLAG_STATUS[card.status]} />
-        {currentUser.role === 4 ? (
+        {currentUser.role === 4 ||
+        (currentUser.role === 2 && dataSet.status === 3) ? (
           <></>
         ) : (
           <Tooltip title={"Xoá thẻ"}>

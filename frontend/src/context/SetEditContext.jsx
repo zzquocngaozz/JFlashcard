@@ -177,7 +177,7 @@ const SetEditContextProvider = ({ children }) => {
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
-  const rejectSet = async (handleToggle) => {
+  const rejectSet = async (data, handleToggle) => {
     try {
       setMutationing(true);
       const config = {
@@ -189,7 +189,7 @@ const SetEditContextProvider = ({ children }) => {
       // Gửi yêu cầu post để thêm mới dữ liệu
       const response = await axios.put(
         `/managerset/${setId}/rejected`,
-        "",
+        JSON.stringify(data),
         config
       );
       handleToggle();

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import PublicOffIcon from "@mui/icons-material/PublicOff";
 import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import placeholder from "../../assets/images/placeholder.png";
@@ -18,14 +18,27 @@ import { isGrammarCard, isKanjiCard, isVocaCard } from "../../utils/cardUtil";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import { FLAG_STATUS } from "../../utils/constant";
+import DialogAlertDelete from "../Dialog/DialogAlertDelete";
 
 const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-
+  const [verifiedAlert, setVerifiedAlert] = useState({
+    open: false,
+    message:
+      "Thẻ này đã được kiểm duyệt. Việc cập nhật sẽ ảnh hưởng đến những học phần khác.Bạn có muốn tiếp tục",
+  });
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
   }, [openForm]);
+
+  const handleToggleUpdateAlert = useCallback(() => {
+    if (!card.verified) {
+      handleToggleForm();
+      return;
+    }
+    setVerifiedAlert({ ...verifiedAlert, open: true });
+  }, []);
 
   const handleToggleDelete = useCallback(() => {
     setOpenDelete(!openDelete);
@@ -60,7 +73,10 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
         <Typography flex={5}>{index + 1}</Typography>
         <Chip label={FLAG_STATUS[card.status]} />
         <Tooltip title={"Chỉnh sửa"}>
-          <IconButton sx={{ width: 30, height: 30 }} onClick={handleToggleForm}>
+          <IconButton
+            sx={{ width: 30, height: 30 }}
+            onClick={handleToggleUpdateAlert}
+          >
             <ModeEditIcon color="primary" />
           </IconButton>
         </Tooltip>
@@ -69,7 +85,7 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
             sx={{ width: 30, height: 30 }}
             onClick={handleToggleDelete}
           >
-            <DeleteForeverIcon color="error" />
+            <PublicOffIcon color="error" />
           </IconButton>
         </Tooltip>
       </Stack>
@@ -225,6 +241,26 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
           handleToggle={handleToggleDelete}
           onDelete={() => {
             onDelete(card, handleToggleDelete);
+          }}
+        />
+      ) : (
+        <></>
+      )}
+      {verifiedAlert.open ? (
+        <DialogAlertDelete
+          alertDelete={verifiedAlert}
+          handleToggleAlertDelete={() => {
+            setVerifiedAlert({
+              ...verifiedAlert,
+              open: false,
+            });
+          }}
+          onDelete={() => {
+            setVerifiedAlert({
+              ...verifiedAlert,
+              open: false,
+            });
+            handleToggleForm();
           }}
         />
       ) : (
