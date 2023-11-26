@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 public class VocabDTO implements Card {
     Long cardId;
     int status;
+    boolean verified;
     String term;
     String mean;
     String example;

@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 public class KanjiDTO implements Card {
     Long cardId;
     int status;
+    boolean verified;
+
     String onSound;
     String kunSound;
     String chineseSound;

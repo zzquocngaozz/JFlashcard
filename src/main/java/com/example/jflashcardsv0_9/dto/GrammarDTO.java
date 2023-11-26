@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 public class GrammarDTO implements Card {
     Long cardId;
     int status;
+    boolean verified;
+
     String combination;
     String note;
     String term;

@@ -70,6 +70,7 @@ public class FlashcardMapper {
     public static GrammarDTO convertGrammarDTO(FlashcardGrammar flashcardGrammar){
         return GrammarDTO.builder()
                 .cardId(flashcardGrammar.getCardGrammarId())
+                .verified(flashcardGrammar.isVerify())
                 .status(flashcardGrammar.getStatus())
                 .combination(flashcardGrammar.getCombination())
                 .note(flashcardGrammar.getNote())
@@ -85,6 +86,7 @@ public class FlashcardMapper {
     public static KanjiDTO convertKanjiDTO(FlashcardKanji flashcardKanji){
         return KanjiDTO.builder()
                 .cardId(flashcardKanji.getCardKanjiId())
+                .verified(flashcardKanji.isVerify())
                 .status(flashcardKanji.getStatus())
                 .onSound(flashcardKanji.getOnSound())
                 .kunSound(flashcardKanji.getKunSound())
@@ -101,6 +103,7 @@ public class FlashcardMapper {
     public static VocabDTO convertVocabDTO(FlashcardVocab flashcardVocab){
         return VocabDTO.builder()
                 .cardId(flashcardVocab.getCardVocabId())
+                .verified(flashcardVocab.isVerify())
                 .status(flashcardVocab.getStatus())
                 .term(flashcardVocab.getTerm())
                 .mean(flashcardVocab.getMean())
