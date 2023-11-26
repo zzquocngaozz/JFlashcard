@@ -772,11 +772,19 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     }
 
     @Override
-    public void rejectedFlashcardSet(long setId, User user) {
+    public void rejectedFlashcardSet(long setId, User user,TokenDTO tokenDTO) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
         flashcardSet.setStatus(6);
         flashcardSetRepository.save(flashcardSet);
-        sendEmailService.sendRejectedEmail(flashcardSet.getUser().getEmail(),flashcardSet.getUser().getUserName(),flashcardSet.getTitle(),flashcardSet.getPublicAt(),flashcardSet.getDescription());
+        sendEmailService.sendRejectedEmail(flashcardSet.getUser().getEmail(),flashcardSet.getUser().getUserName(),flashcardSet.getTitle(),flashcardSet.getPublicAt(),flashcardSet.getDescription(),tokenDTO.getToken());
+    }
+
+    @Override
+    public List<SetSingleDTO> listManagerSetUpdate(User user) {
+        List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByStatus(7);
+        return flashcardSets.stream()
+                .map(FlashcardMapper::convertSetSingleDTOManager)
+                .collect(Collectors.toList());
     }
 
 

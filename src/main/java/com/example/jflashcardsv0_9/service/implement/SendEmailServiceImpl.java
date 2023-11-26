@@ -265,9 +265,9 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            <p>Bộ Thẻ của bạn đã đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là phù hợp để chia sẻ với cộng đồng người dùng trên nền tảng của chúng tôi.</p>\n" +
                 "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ::\n</p>" +
                 "\n" +
-                "<p>Tên Khóa Học: [ " + setName + "]</p>\n" +
-                "<p>Mô tả Ngắn Gọn: [ " + des + "]</p>\n" +
-                "<p>Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
+                "<p> Tên Khóa Học: [ " + setName + "]</p>\n" +
+                "<p> Mô tả Ngắn Gọn: [ " + des + "]</p>\n" +
+                "<p> Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
                 "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
                 "\n" +
                 "Cảm ơn bạn đã đóng góp vào cộng đồng JFlashcards của chúng tôi và chúc mừng vì việc công bố thành công của bạn!\n" +
@@ -287,7 +287,7 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     @Async
-    public void sendRejectedEmail(String email, String userName, String setName, Timestamp publicAt, String des) {
+    public void sendRejectedEmail(String email, String userName, String setName, Timestamp publicAt, String des,String reason) {
         String subject = "Thông Báo Từ Chối Công Bố Bộ Thẻ trên JFlashcards";
         String htmlContent = "    <!doctype html>\n" +
                 "    <html>\n" +
@@ -308,9 +308,10 @@ public class SendEmailServiceImpl implements SendEmailService {
                 "            <p>Bộ Thẻ của bạn chưa  đáp ứng các tiêu chí và yêu cầu của chúng tôi và được xem xét là chưa phù hợp để chia sẻ với cộng đồng người dùng trên nền tảng của chúng tôi.</p>\n" +
                 "            <p>Dưới đây là một số chi tiết cụ thể của Bộ thẻ:\n</p>" +
                 "\n" +
-                "            <p>Tên Khóa Học: [ " + setName + "]</p>\n" +
-                "            <p>Mô tả Ngắn Gọn: [ " + des + "]</p>\n" +
-                "            <p>Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
+                "            <p> Tên Khóa Học: [ " + setName + "]</p>\n" +
+                "            <p> Mô tả Ngắn Gọn: [ " + des + "]</p>\n" +
+                "            <p> Ngày Công Bố Dự Kiến: [ " + publicAt + "]</p>\n" +
+                "            <p> Lý do từ chối : [ " + reason + "]</p>\n" +
                 "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
                 "\n" +
                 "Cảm ơn bạn đã đóng góp vào cộng đồng JFlashcards của chúng tôi và chúc mừng vì việc công bố thành công của bạn!\n" +

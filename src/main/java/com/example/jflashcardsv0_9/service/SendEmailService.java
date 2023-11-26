@@ -19,7 +19,7 @@ public interface SendEmailService {
     public void sendBehindScheduleEmail(String email, String userName,String setName,String classname) ;
     public void sendLazyEmail(String email, String userName,String setName,String classname) ;
     public void sendAcceptEmail(String email, String userName, String setName, Timestamp publicAt, String des) ;
-    public void sendRejectedEmail(String email, String userName, String setName, Timestamp publicAt, String des) ;
+    public void sendRejectedEmail(String email, String userName, String setName, Timestamp publicAt, String des,String reason) ;
 
 
 
