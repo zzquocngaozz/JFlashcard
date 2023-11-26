@@ -118,6 +118,7 @@ public class FlashcardMapper {
         return FlashcardSetDTOResponse.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
+                .createdAt(flashcardSet.getCreatedAt())
                 .publicAt(flashcardSet.getPublicAt())
                 .description(flashcardSet.getDescription())
                 .type(flashcardSet.getType())
