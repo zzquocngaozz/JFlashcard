@@ -92,4 +92,6 @@ public interface FlashcardSetService {
     void rejectedFlashcardSet(long setId, User user,TokenDTO tokenDTO);
 
     List<SetSingleDTO> listManagerSetUpdate(User user);
+
+    void changeStatusSet(User user, List<IdDTO> list);
 }

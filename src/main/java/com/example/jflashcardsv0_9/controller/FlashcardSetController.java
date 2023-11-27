@@ -60,6 +60,13 @@ public class FlashcardSetController {
         flashcardSetService.addCardInSet(myUserDetail.getUser(),setId,dto);
         return ResponseEntity.ok("add successfully");
     }
+    @PostMapping("/changestatus")
+    public ResponseEntity<?> changeStatusSet(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody List<IdDTO> list){
+        flashcardSetService.changeStatusSet(myUserDetail.getUser(),list);
+        return ResponseEntity.ok("add successfully");
+    }
+
+
 
 
 }
