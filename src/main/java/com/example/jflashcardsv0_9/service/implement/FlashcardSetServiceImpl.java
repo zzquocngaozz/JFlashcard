@@ -826,5 +826,10 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void changeStatusSet(User user, List<IdDTO> list) {
+
+    }
+
 
 }
