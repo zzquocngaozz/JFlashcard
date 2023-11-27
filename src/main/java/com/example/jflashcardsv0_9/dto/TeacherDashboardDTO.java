@@ -13,10 +13,7 @@ public class TeacherDashboardDTO {
     long countClass;
     long countMember;
     long countFolder;
-
-    LearnDashboardDTO.DataType setType;
-    LearnDashboardDTO.Data dataSet;
-    LearnDashboardDTO.DataType cardType;
-    LearnDashboardDTO.Data dataCard;
+    long countSet;
+    long countCard;
 
 }

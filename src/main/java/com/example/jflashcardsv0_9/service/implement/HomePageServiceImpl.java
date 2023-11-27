@@ -117,6 +117,9 @@ public class HomePageServiceImpl implements HomePageService {
             List<Long> dailyData = trackingProgressRepository.getTotalCardsByDayHomePage(Date.valueOf(date), user);
             dataWeek.addAll(dailyData);
         }
+        long countCard = flashcardKanjiRepository.countByUser(user) +
+                flashcardVocabRepository.countByUser(user) +
+                flashcardGrammarRepository.countByUser(user);
 
         return LearnDashboardDTO.builder()
                 .weekTrackingDTOResponse(WeekTrackingDTOResponse.builder()
@@ -126,36 +129,8 @@ public class HomePageServiceImpl implements HomePageService {
                         .build())
                 .countClass(classMemberRepository.countDistinctByUser(user))
                 .countFolder(folderRepository.countAllByUser(user))
-                .setType(LearnDashboardDTO.DataType.builder()
-                        .numberKanji(flashcardSetRepository.countAllByUserAndType(user,1))
-                        .numberVocab(flashcardSetRepository.countAllByUserAndType(user,2))
-                        .numberGrammar(flashcardSetRepository.countAllByUserAndType(user,3))
-                        .build())
-                .dataSet(LearnDashboardDTO.Data.builder()
-                        .numberDraft(flashcardSetRepository.countAllByUserAndStatus(user,1))
-                        .numberDone(flashcardSetRepository.countAllByUserAndStatus(user,2))
-                        .numberPublic(flashcardSetRepository.countAllByUserAndStatus(user,3))
-                        .numberClose(flashcardSetRepository.countAllByUserAndStatus(user,4))
-                        .build())
-                .cardType(LearnDashboardDTO.DataType.builder()
-                        .numberKanji(flashcardKanjiRepository.countByUser(user))
-                        .numberVocab(flashcardVocabRepository.countByUser(user))
-                        .numberGrammar(flashcardGrammarRepository.countByUser(user))
-                        .build())
-                .dataCard(LearnDashboardDTO.Data.builder()
-                        .numberDraft(flashcardKanjiRepository.countByUserAndStatus(user,1)
-                                + flashcardGrammarRepository.countByUserAndStatus(user,1)
-                         + flashcardVocabRepository.countByUserAndStatus(user,1))
-                        .numberDone(flashcardKanjiRepository.countByUserAndStatus(user,2)
-                                + flashcardGrammarRepository.countByUserAndStatus(user,2)
-                                + flashcardVocabRepository.countByUserAndStatus(user,2))
-                        .numberPublic(flashcardKanjiRepository.countByUserAndStatus(user,3)
-                                + flashcardGrammarRepository.countByUserAndStatus(user,3)
-                                + flashcardVocabRepository.countByUserAndStatus(user,3))
-                        .numberClose(flashcardKanjiRepository.countByUserAndStatus(user,4)
-                                + flashcardGrammarRepository.countByUserAndStatus(user,4)
-                                + flashcardVocabRepository.countByUserAndStatus(user,4))
-                        .build())
+                .countSet(flashcardSetRepository.countAllByUser(user))
+                .countCard(countCard)
                 .build();
 
     }
@@ -163,40 +138,15 @@ public class HomePageServiceImpl implements HomePageService {
     @Override
     public TeacherDashboardDTO weekTrackingHomeTeacher(User user, WeekTrackingDTO weekTrackingDTO) {
         List<ClassRoom> classRooms = classRoomRepository.findAllByTeacher(user);
+        long countCard = flashcardKanjiRepository.countByUser(user) +
+                flashcardVocabRepository.countByUser(user) +
+                flashcardGrammarRepository.countByUser(user);
         return TeacherDashboardDTO.builder()
                 .countClass(classMemberRepository.countDistinctByUser(user))
-                .countMember(classMemberRepository.countDistinctByUserAndClassroomIn(user,classRooms))
+                .countMember(classMemberRepository.countDistinctUsersInClassrooms(classRooms) -1 )
                 .countFolder(folderRepository.countAllByUser(user))
-                .setType(LearnDashboardDTO.DataType.builder()
-                        .numberKanji(flashcardSetRepository.countAllByUserAndType(user,1))
-                        .numberVocab(flashcardSetRepository.countAllByUserAndType(user,2))
-                        .numberGrammar(flashcardSetRepository.countAllByUserAndType(user,3))
-                        .build())
-                .dataSet(LearnDashboardDTO.Data.builder()
-                        .numberDraft(flashcardSetRepository.countAllByUserAndStatus(user,1))
-                        .numberDone(flashcardSetRepository.countAllByUserAndStatus(user,2))
-                        .numberPublic(flashcardSetRepository.countAllByUserAndStatus(user,3))
-                        .numberClose(flashcardSetRepository.countAllByUserAndStatus(user,4))
-                        .build())
-                .cardType(LearnDashboardDTO.DataType.builder()
-                        .numberKanji(flashcardKanjiRepository.countByUser(user))
-                        .numberVocab(flashcardVocabRepository.countByUser(user))
-                        .numberGrammar(flashcardGrammarRepository.countByUser(user))
-                        .build())
-                .dataCard(LearnDashboardDTO.Data.builder()
-                        .numberDraft(flashcardKanjiRepository.countByUserAndStatus(user,1)
-                                + flashcardGrammarRepository.countByUserAndStatus(user,1)
-                                + flashcardVocabRepository.countByUserAndStatus(user,1))
-                        .numberDone(flashcardKanjiRepository.countByUserAndStatus(user,2)
-                                + flashcardGrammarRepository.countByUserAndStatus(user,2)
-                                + flashcardVocabRepository.countByUserAndStatus(user,2))
-                        .numberPublic(flashcardKanjiRepository.countByUserAndStatus(user,3)
-                                + flashcardGrammarRepository.countByUserAndStatus(user,3)
-                                + flashcardVocabRepository.countByUserAndStatus(user,3))
-                        .numberClose(flashcardKanjiRepository.countByUserAndStatus(user,4)
-                                + flashcardGrammarRepository.countByUserAndStatus(user,4)
-                                + flashcardVocabRepository.countByUserAndStatus(user,4))
-                        .build())
+                .countSet(flashcardSetRepository.countAllByUser(user))
+                .countCard(countCard)
                 .build();
     }
 

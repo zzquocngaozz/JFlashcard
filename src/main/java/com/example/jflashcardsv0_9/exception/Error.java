@@ -49,6 +49,7 @@ public enum Error {
     COMMENT_NOT_FOUND("Không tìm thấy bình luận", HttpStatus.NOT_FOUND),
     CLASSROOM_NOT_FOUND("Không tìm thấy lớp học", HttpStatus.NOT_FOUND),
     TOKEN_EXPIRE("Mã xác nhận đã hết hạn", HttpStatus.NOT_FOUND),
+    TOKEN_TIMEOUT("Mã xác nhận đã hết hạn", HttpStatus.REQUEST_TIMEOUT),
     ;
 
     private final String message;

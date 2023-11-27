@@ -35,4 +35,5 @@ public interface ClassMemberRepository extends JpaRepository<ClassMember,Long> {
     List<ClassRoom> getClassRoomWithMaxUsers(Pageable pageable);
     Long countDistinctByUser(User user);
     Long countDistinctByUserAndClassroomIn(User user,List<ClassRoom> classRooms);
-}
+    @Query("SELECT COUNT(DISTINCT cm.user) FROM ClassMember cm WHERE cm.classroom IN :classRooms")
+    Long countDistinctUsersInClassrooms(@Param("classRooms") List<ClassRoom> classRooms);}
