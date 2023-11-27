@@ -39,7 +39,7 @@ export default function FormEditSetDiaolog({
   } = useForm({
     defaultValues: {
       ...flashcardSet,
-      publicAt: flashcardSet.publicAt.split("T")[0],
+      publicAt: flashcardSet?.publicAt?.split("T")[0],
     },
   });
 
@@ -135,7 +135,7 @@ export default function FormEditSetDiaolog({
                   id="publicAt-helper-text"
                   type="date"
                   label="Ngày công khai"
-                  defaultValue={flashcardSet.publicAt.split("T")[0]}
+                  defaultValue={flashcardSet?.publicAt?.split("T")[0]}
                   InputLabelProps={{
                     shrink: true,
                   }}

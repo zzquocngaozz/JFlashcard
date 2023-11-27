@@ -35,7 +35,6 @@ const CardBank = ({ card, index }) => {
 
   useEffect(() => {
     setSelected(selectCard.includes(card));
-    console.log("check re-load");
   }, [selectCard, card]);
   // const handleToggleDelete = useCallback(() => {
   //   setOpenDelete(!openDelete);

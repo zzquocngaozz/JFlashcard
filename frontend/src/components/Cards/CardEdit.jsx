@@ -80,7 +80,7 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
             <ModeEditIcon color="primary" />
           </IconButton>
         </Tooltip>
-        <Tooltip title={"Xoá thẻ"}>
+        <Tooltip title={"Đóng thẻ"}>
           <IconButton
             sx={{ width: 30, height: 30 }}
             onClick={handleToggleDelete}
