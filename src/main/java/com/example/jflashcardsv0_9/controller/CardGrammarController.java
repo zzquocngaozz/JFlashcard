@@ -1,6 +1,7 @@
 package com.example.jflashcardsv0_9.controller;
 
 import com.example.jflashcardsv0_9.dto.GrammarDTO;
+import com.example.jflashcardsv0_9.dto.SetSingleDTO;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,6 @@ public class CardGrammarController {
     public ResponseEntity<?> createGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody GrammarDTO grammarDTO){
         flashcardSetService.createFlashcardGrammar(grammarDTO,myUserDetail.getUser());
         return ResponseEntity.ok("add thành công");
-
     }
     @PostMapping("/grammar-card/import")
     public ResponseEntity<?> importGrammarCardList(@AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody List<GrammarDTO> grammarDTOs){
@@ -37,13 +37,11 @@ public class CardGrammarController {
 
     }
     @DeleteMapping ("/grammar-card/{cardId}")
-    public ResponseEntity<?> deleteGrammarCard(@PathVariable long cardId){
-        flashcardSetService.deleteFlGrammar(cardId);
-        return ResponseEntity.ok("Xóa thành công");
+    public List<SetSingleDTO> deleteGrammarCard(@PathVariable long cardId){
+        return flashcardSetService.deleteFlGrammar(cardId);
     }
     @PutMapping ("/grammar-card/{cardId}")
-    public ResponseEntity<?> updateGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody GrammarDTO grammarDTO){
-        flashcardSetService.updateGrammarCard(grammarDTO,myUserDetail.getUser());
-        return ResponseEntity.ok("update thành công");
+    public List<SetSingleDTO> updateGrammarCard(@AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody GrammarDTO grammarDTO){
+        return flashcardSetService.updateGrammarCard(grammarDTO,myUserDetail.getUser());
     }
 }

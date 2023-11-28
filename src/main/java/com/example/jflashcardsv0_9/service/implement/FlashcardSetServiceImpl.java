@@ -58,14 +58,18 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         this.openedFlashcardSetRepository = openedFlashcardSetRepository;
         this.flashcardSetAssociationRepository = flashcardSetAssociationRepository;
     }
-    public void checkStatusUpdate(boolean check ,long cardId,long type){
+    public List<SetSingleDTO> checkStatusUpdate(boolean check ,long cardId,long type){
+        List<FlashcardSet> sets = flashcardSetAssociationRepository.getAllFlashcardSetByCardIdAndType(cardId,type);
         if(check == true){
-            List<FlashcardSet> sets = flashcardSetAssociationRepository.getAllFlashcardSetByCardIdAndType(cardId,type);
             for (FlashcardSet flashcardSet : sets){
                 flashcardSet.setStatus(7);
                 flashcardSetRepository.save(flashcardSet);
             }
         }
+        return sets.stream()
+                .map(FlashcardMapper::convertSetInBank)
+                .collect(Collectors.toList());
+
     }
     @Override
     public List<KanjiDTO> getKanjiDTOS(FlashcardSet flashcardSet) {
@@ -156,12 +160,10 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardKanjiRepository.saveAll(entities);
     }
     @Override
-    public void updateKanjiCard(KanjiDTO kanjiDTO, User user) {
+    public List<SetSingleDTO> updateKanjiCard(KanjiDTO kanjiDTO, User user) {
         validate.validateTerm(kanjiDTO.getTerm());
         validate.validateMean(kanjiDTO.getMean());
         FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(kanjiDTO.getCardId());
-        checkStatusUpdate(flashcardKanji.isVerify(),flashcardKanji.getCardKanjiId(),1);
-
         flashcardKanji.setOnSound(kanjiDTO.getOnSound());
         flashcardKanji.setStatus(kanjiDTO.getStatus());
         flashcardKanji.setKunSound(kanjiDTO.getKunSound());
@@ -174,13 +176,15 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardKanji.setTrick(kanjiDTO.getTrick());
         flashcardKanji.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         flashcardKanjiRepository.save(flashcardKanji);
+        return checkStatusUpdate(flashcardKanji.isVerify(),flashcardKanji.getCardKanjiId(),1);
+
     }
     @Override
-    public void deleteFlKanji(long cardId) {
+    public List<SetSingleDTO> deleteFlKanji(long cardId) {
         FlashcardKanji flashcardKanji = flashcardKanjiRepository.getFlashcardKanjiByCardKanjiId(cardId);
         flashcardKanji.setStatus(4);
-        checkStatusUpdate(flashcardKanji.isVerify(),flashcardKanji.getCardKanjiId(),1);
         flashcardKanjiRepository.save(flashcardKanji);
+        return checkStatusUpdate(flashcardKanji.isVerify(),flashcardKanji.getCardKanjiId(),1);
 
     }
 // xu lu ngu phap
@@ -203,12 +207,10 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardGrammarRepository.saveAll(entities);
     }
     @Override
-    public void updateGrammarCard(GrammarDTO grammarDTO, User user) {
+    public List<SetSingleDTO> updateGrammarCard(GrammarDTO grammarDTO, User user) {
         validate.validateTerm(grammarDTO.getTerm());
         validate.validateMean(grammarDTO.getMean());
-
         FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(grammarDTO.getCardId());
-        checkStatusUpdate(flashcardGrammar.isVerify(),flashcardGrammar.getCardGrammarId(),3);
         flashcardGrammar.setCombination(grammarDTO.getCombination());
         flashcardGrammar.setStatus(grammarDTO.getStatus());
         flashcardGrammar.setNote(grammarDTO.getNote());
@@ -219,14 +221,17 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardGrammar.setImgUrl(grammarDTO.getImgUrl());
         flashcardGrammar.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         flashcardGrammarRepository.save(flashcardGrammar);
+        return checkStatusUpdate(flashcardGrammar.isVerify(),flashcardGrammar.getCardGrammarId(),3);
+
 
     }
     @Override
-    public void deleteFlGrammar(long cardId) {
+    public List<SetSingleDTO> deleteFlGrammar(long cardId) {
          FlashcardGrammar flashcardGrammar = flashcardGrammarRepository.getFlashcardGrammarByCardGrammarId(cardId);
          flashcardGrammar.setStatus(4);
-        checkStatusUpdate(flashcardGrammar.isVerify(),flashcardGrammar.getCardGrammarId(),3);
          flashcardGrammarRepository.save(flashcardGrammar);
+        return checkStatusUpdate(flashcardGrammar.isVerify(),flashcardGrammar.getCardGrammarId(),3);
+
     }
     @Override
     public void createFlashcardVocab(VocabDTO vocabDTO, User user) {
@@ -249,7 +254,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     }
     @Override
-    public void updateVocabCard(VocabDTO vocabDTO, User user) {
+    public List<SetSingleDTO> updateVocabCard(VocabDTO vocabDTO, User user) {
         validate.validateTerm(vocabDTO.getTerm());
         validate.validateMean(vocabDTO.getMean());
         FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardId());
@@ -263,15 +268,17 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardVocab.setImgUrl(vocabDTO.getImgUrl());
         flashcardVocab.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         flashcardVocabRepository.save(flashcardVocab);
+        return checkStatusUpdate(flashcardVocab.isVerify(),flashcardVocab.getCardVocabId(),1);
+
     }
 // xu ly vocab
     @Override
-    public void deleteFlvocab(long cardId) {
+    public List<SetSingleDTO> deleteFlvocab(long cardId) {
         FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(cardId);
         flashcardVocab.setStatus(4);
-        checkStatusUpdate(flashcardVocab.isVerify(),flashcardVocab.getCardVocabId(),1);
-
         flashcardVocabRepository.save(flashcardVocab);
+        return checkStatusUpdate(flashcardVocab.isVerify(),flashcardVocab.getCardVocabId(),1);
+
     }
 
     @Override
@@ -776,7 +783,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public List<SetSingleDTO> listManagerSet(User user) {
             List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByStatus(5);
             return flashcardSets.stream()
-                    .map(FlashcardMapper::convertSetSingleDTOManager)
+                    .map(FlashcardMapper::convertSetSingleDTOManagerSet)
                     .collect(Collectors.toList());
 
     }
@@ -828,7 +835,11 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public void changeStatusSet(User user, List<IdDTO> list) {
-
+        for (IdDTO dto : list){
+            FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(dto.getId());
+            flashcardSet.setStatus(5);
+            flashcardSetRepository.save(flashcardSet);
+        }
     }
 
 

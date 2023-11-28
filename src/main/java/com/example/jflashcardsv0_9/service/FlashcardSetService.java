@@ -25,21 +25,21 @@ public interface FlashcardSetService {
     // card kanji
     void createFlashcardKanji(KanjiDTO kanjiDTO, User user);
     void createFlashcardKanjiList(List<KanjiDTO> kanjiDTOs, User user);
-    void updateKanjiCard(KanjiDTO kanjiDTO, User user);
-    void deleteFlKanji(long cardId);
+    List<SetSingleDTO> updateKanjiCard(KanjiDTO kanjiDTO, User user);
+    List<SetSingleDTO> deleteFlKanji(long cardId);
     // card grammar
     void createFlashcardGrammar(GrammarDTO grammarDTO, User user);
     void createFlashcardGrammarList(List<GrammarDTO> grammarDTOs, User user);
-    void updateGrammarCard(GrammarDTO grammarDTO, User user);
+    List<SetSingleDTO> updateGrammarCard(GrammarDTO grammarDTO, User user);
 
-    void deleteFlGrammar(long cardId);
+    List<SetSingleDTO> deleteFlGrammar(long cardId);
 
     // card vocab
     void createFlashcardVocab(VocabDTO vocabDTO, User user);
     void createFlashcardVocabList(List<VocabDTO> vocabDTOs, User user);
-    void updateVocabCard(VocabDTO vocabDTO, User user);
+    List<SetSingleDTO> updateVocabCard(VocabDTO vocabDTO, User user);
 
-    void deleteFlvocab(long cardId);
+    List<SetSingleDTO> deleteFlvocab(long cardId);
 
     // tính count cua các card bang type
     long numberCard(long setId,int type);

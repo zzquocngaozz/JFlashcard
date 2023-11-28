@@ -1,6 +1,7 @@
 package com.example.jflashcardsv0_9.controller;
 
 import com.example.jflashcardsv0_9.dto.KanjiDTO;
+import com.example.jflashcardsv0_9.dto.SetSingleDTO;
 import com.example.jflashcardsv0_9.dto.VocabDTO;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
@@ -37,13 +38,11 @@ public class CardVocabController {
 
     }
     @DeleteMapping ("/vocab-card/{cardId}")
-    public ResponseEntity<?> deleteVocabCard(@PathVariable long cardId){
-        flashcardSetService.deleteFlvocab(cardId);
-        return ResponseEntity.ok("Xóa thành công");
+    public List<SetSingleDTO> deleteVocabCard(@PathVariable long cardId){
+        return flashcardSetService.deleteFlvocab(cardId);
     }
     @PutMapping ("/vocab-card")
-    public ResponseEntity<?> updateVocabCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody VocabDTO vocabDTO){
-        flashcardSetService.updateVocabCard(vocabDTO,myUserDetail.getUser());
-        return ResponseEntity.ok("update thành công");
+    public List<SetSingleDTO> updateVocabCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody VocabDTO vocabDTO){
+        return flashcardSetService.updateVocabCard(vocabDTO,myUserDetail.getUser());
     }
 }

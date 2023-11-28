@@ -54,6 +54,26 @@ public class FlashcardMapper {
                 .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
                 .build();
     }
+    public  static SetSingleDTO convertSetSingleDTOManagerSet(FlashcardSet flashcardSet){
+        return SetSingleDTO.builder()
+                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .title(flashcardSet.getTitle())
+                .description(flashcardSet.getDescription())
+                .createdAt(flashcardSet.getCreatedAt())
+                .type(flashcardSet.getType())
+                .status(flashcardSet.getStatus())
+                .numberCard(flashcardSetService.numberCardManager(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
+                .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
+                .build();
+    }
+    public  static SetSingleDTO convertSetInBank(FlashcardSet flashcardSet){
+        return SetSingleDTO.builder()
+                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .title(flashcardSet.getTitle())
+                .type(flashcardSet.getType())
+                .status(flashcardSet.getStatus())
+                .build();
+    }
 
     public static FlashcardSet convertFlS(FlashcardSetDTORequest flashcardSetDTORequest, User user){
         return FlashcardSet.builder()

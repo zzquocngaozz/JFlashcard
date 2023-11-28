@@ -2,6 +2,7 @@ package com.example.jflashcardsv0_9.controller;
 
 import com.example.jflashcardsv0_9.dto.GrammarDTO;
 import com.example.jflashcardsv0_9.dto.KanjiDTO;
+import com.example.jflashcardsv0_9.dto.SetSingleDTO;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.FlashcardSetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,11 @@ public class CardKanjiController {
 
     }
     @DeleteMapping ("/kanji-card/{cardId}")
-    public ResponseEntity<?> deleteKanjiCard(@PathVariable long cardId){
-        flashcardSetService.deleteFlKanji(cardId);
-        return ResponseEntity.ok("Xóa thành công");
+    public List<SetSingleDTO> deleteKanjiCard(@PathVariable long cardId){
+        return flashcardSetService.deleteFlKanji(cardId);
     }
     @PutMapping ("/kanji-card")
-    public ResponseEntity<?> updateKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO){
-        flashcardSetService.updateKanjiCard(kanjiDTO,myUserDetail.getUser());
-        return ResponseEntity.ok("update thành công");
+    public List<SetSingleDTO> updateKanjiCard(@AuthenticationPrincipal MyUserDetail myUserDetail,@RequestBody KanjiDTO kanjiDTO){
+        return flashcardSetService.updateKanjiCard(kanjiDTO,myUserDetail.getUser());
     }
 }
