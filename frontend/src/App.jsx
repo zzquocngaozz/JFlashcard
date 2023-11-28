@@ -48,6 +48,7 @@ import LibCardBank from "./pages/LibCardBank";
 import ManagerRouter from "./routes/ManagerRouter";
 import CheckTeacherSet from "./pages/CheckTeacherSet";
 import SetCheck from "./pages/SetCheck";
+import VerifyRoute from "./routes/VerifyRoute";
 
 function App() {
   return (
@@ -153,7 +154,7 @@ function App() {
           <Route path="read" index element={<ReadSet />} />
           <Route
             path="flashcard"
-            element={<AuthenRoute element={<LearnSet />} />}
+            element={<VerifyRoute element={<LearnSet />} />}
           />
         </Route>
         <Route

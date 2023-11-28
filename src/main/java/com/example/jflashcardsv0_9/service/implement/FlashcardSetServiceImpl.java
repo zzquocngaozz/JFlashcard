@@ -258,7 +258,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         validate.validateTerm(vocabDTO.getTerm());
         validate.validateMean(vocabDTO.getMean());
         FlashcardVocab flashcardVocab = flashcardVocabRepository.getFlashcardVocabByCardVocabId(vocabDTO.getCardId());
-        checkStatusUpdate(flashcardVocab.isVerify(),flashcardVocab.getCardVocabId(),1);
+
 
         flashcardVocab.setStatus(vocabDTO.getStatus());
         flashcardVocab.setTerm(vocabDTO.getTerm());
@@ -268,7 +268,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardVocab.setImgUrl(vocabDTO.getImgUrl());
         flashcardVocab.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         flashcardVocabRepository.save(flashcardVocab);
-        return checkStatusUpdate(flashcardVocab.isVerify(),flashcardVocab.getCardVocabId(),1);
+        return checkStatusUpdate(flashcardVocab.isVerify(),flashcardVocab.getCardVocabId(),2);
 
     }
 // xu ly vocab

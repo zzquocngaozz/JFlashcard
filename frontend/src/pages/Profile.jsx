@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Navbar from "../components/Parts/Navbar";
 import {
   Avatar,
@@ -38,7 +38,7 @@ const Profile = () => {
   };
 
   const [openVerify, setOpenVerify] = React.useState(false);
-
+  const isShow = useRef(false);
   const {
     profile: currentUser,
     loading,
@@ -80,6 +80,10 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    console.log(Boolean(currentUser));
+    if (!Boolean(currentUser)) return;
+    if (isShow.current) return;
+    isShow.current = true;
     setOpenVerifyNotify(currentUser?.verify === false);
   }, [currentUser]);
   useEffect(() => {
