@@ -53,7 +53,7 @@ export default function useFetchRecent() {
     fetch();
   }, []);
 
-  const getWeekTracking = async (weekIndex, toggleLoading) => {
+  const getWeekTracking = async (weekIndex, toggleSelect) => {
     try {
       const config = {
         headers: {
@@ -73,6 +73,7 @@ export default function useFetchRecent() {
         config
       );
       setData(staticLearn.data);
+      // toggleSelect();
     } catch (error) {
       setLoading(false);
       const errorCode = error?.response?.status;

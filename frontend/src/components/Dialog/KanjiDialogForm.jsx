@@ -9,11 +9,14 @@ import { useForm } from "react-hook-form";
 import { role } from "../../utils/regexRole";
 import {
   Box,
+  CircularProgress,
+  DialogContentText,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   Stack,
+  Zoom,
 } from "@mui/material";
 import placeholder from "../../assets/images/placeholder.png";
 import { checkImg } from "../../utils/manualTesting";
@@ -115,174 +118,201 @@ export default function KanjiDialogForm({
           style={{ padding: "10px 20px" }}
         >
           <DialogTitle>{`${!dataInit ? "Tạo" : "Sửa"} thẻ kanji`}</DialogTitle>
-          <DialogContent sx={{ width: "1000px", display: "flex", gap: "20px" }}>
-            <Stack
-              flex={8}
-              sx={{
-                width: "100%",
-                // height: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "space-between",
-                flexWrap: "wrap",
-                // rowGap: "20px",
-                // columnGap: "30px",
-              }}
+          {mutationing ? (
+            <DialogContent
+              sx={{ width: "1000px", display: "flex", gap: "60px" }}
             >
-              <TextField
-                {...register("term", role["term"])}
-                label="Thuật ngữ*"
-                type="text"
-                defaultValue={dataInit?.term}
-                error={!!errors.term}
-                helperText={errors?.term?.message}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                sx={{ width: "48%" }}
-              />
-              <TextField
-                {...register("mean", role["mean"])}
-                label="Ý nghĩa*"
-                type="text"
-                defaultValue={dataInit?.mean}
-                error={!!errors.mean}
-                helperText={errors?.mean?.message}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                sx={{ width: "48%" }}
-              />
-              <TextField
-                {...register("onSound", role["nomarlRegex"])}
-                label="Âm on*"
-                type="text"
-                defaultValue={dataInit?.onSound}
-                error={!!errors.onSound}
-                helperText={
-                  !!errors.onSound ? `Âm on ${errors?.onSound?.message}` : ""
-                }
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                sx={{ width: "48%" }}
-              />
-              <TextField
-                {...register("kunSound", role["nomarlRegex"])}
-                label="Âm kun*"
-                type="text"
-                defaultValue={dataInit?.kunSound}
-                error={!!errors.kunSound}
-                helperText={
-                  !!errors.kunSound ? `Âm kun ${errors?.kunSound?.message}` : ""
-                }
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                sx={{ width: "48%" }}
-              />
-              <TextField
-                {...register("chineseSound", role["nomarlRegex"])}
-                label="Hán việt*"
-                type="text"
-                defaultValue={dataInit?.chineseSound}
-                error={!!errors.chineseSound}
-                helperText={
-                  !!errors.chineseSound
-                    ? `Âm Hán Việt ${errors?.chineseSound?.message}`
-                    : ""
-                }
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                sx={{ width: "48%" }}
-              />
-              <TextField
-                {...register("trick", role["checkLength"])}
-                label="Mẹo nhớ"
-                type="text"
-                defaultValue={dataInit?.trick}
-                error={!!errors.trick}
-                helperText={
-                  !!errors.trick ? `Mẹo nhớ ${errors?.trick?.message}` : ""
-                }
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                sx={{ width: "48%" }}
-              />
-              <TextField
-                {...register("example", role["checkLength"])}
-                label="Ví dụ"
-                type="text"
-                defaultValue={dataInit?.example}
-                error={!!errors.example}
-                helperText={
-                  !!errors.example ? `Ví dụ ${errors?.example?.message}` : ""
-                }
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                sx={{ width: "48%" }}
-              />
-              <TextField
-                {...register("exampleMean", role["checkLength"])}
-                label="Nghĩa của ví dụ"
-                type="text"
-                defaultValue={dataInit?.exampleMean}
-                error={!!errors.exampleMean}
-                helperText={
-                  !!errors.exampleMean
-                    ? `Ví dụ ${errors?.exampleMean?.message}`
-                    : ""
-                }
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                sx={{ width: "48%" }}
-              />
-            </Stack>
-            <Stack flex={2} gap={2}>
-              <FormControl
+              <Stack
+                width={"100%"}
+                height={"300px"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                sx={{ rowGap: "20px" }}
+              >
+                <Zoom in={true}>
+                  <CircularProgress />
+                </Zoom>
+                <DialogContentText textAlign="center">
+                  Đang lưu...
+                </DialogContentText>
+              </Stack>
+            </DialogContent>
+          ) : (
+            <DialogContent
+              sx={{ width: "1000px", display: "flex", gap: "20px" }}
+            >
+              <Stack
+                flex={8}
                 sx={{
-                  m: 1,
-                  minWidth: 100,
-                  marginLeft: 0,
-
-                  "& .MuiInputBase-root": {
-                    marginTop: "8px",
-                    marginBottom: "10px",
-                  },
+                  width: "100%",
+                  // height: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignContent: "space-between",
+                  flexWrap: "wrap",
+                  // rowGap: "20px",
+                  // columnGap: "30px",
                 }}
               >
-                <InputLabel id="filter-label" sx={{ left: "-18px" }}>
-                  Trạng thái
-                </InputLabel>
-                <Select
-                  labelId="type-label"
-                  id="type-label"
-                  {...register("status")}
-                  defaultValue={!!dataInit?.status ? dataInit?.status : 1}
-                  autoWidth
-                  label="Trạng thái"
+                <TextField
+                  {...register("term", role["term"])}
+                  label="Thuật ngữ*"
+                  type="text"
+                  defaultValue={dataInit?.term}
+                  error={!!errors.term}
+                  helperText={errors?.term?.message}
+                  InputLabelProps={{ shrink: true }}
                   variant="standard"
-                >
-                  <MenuItem value={1}>Nháp</MenuItem>
-                  <MenuItem value={2}>Hoàn thành</MenuItem>
-                  <MenuItem value={3}>Công khai</MenuItem>
-                  <MenuItem value={4}>Đóng</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField
-                {...register("imgUrl", role["imgUrl"])}
-                label="Link ảnh"
-                type="text"
-                defaultValue={dataInit?.imgUrl}
-                error={!!errors.imgUrl}
-                helperText={!!errors.imgUrl ? `${errors?.imgUrl?.message}` : ""}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-              />
-              <Box sx={{ width: "150px", height: "150px" }}>
-                <img
-                  alt="placeholder"
-                  src={!imgPreview ? placeholder : imgPreview}
+                  sx={{ width: "48%" }}
                 />
-              </Box>
-            </Stack>
-          </DialogContent>
+                <TextField
+                  {...register("mean", role["mean"])}
+                  label="Ý nghĩa*"
+                  type="text"
+                  defaultValue={dataInit?.mean}
+                  error={!!errors.mean}
+                  helperText={errors?.mean?.message}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  sx={{ width: "48%" }}
+                />
+                <TextField
+                  {...register("onSound", role["nomarlRegex"])}
+                  label="Âm on*"
+                  type="text"
+                  defaultValue={dataInit?.onSound}
+                  error={!!errors.onSound}
+                  helperText={
+                    !!errors.onSound ? `Âm on ${errors?.onSound?.message}` : ""
+                  }
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  sx={{ width: "48%" }}
+                />
+                <TextField
+                  {...register("kunSound", role["nomarlRegex"])}
+                  label="Âm kun*"
+                  type="text"
+                  defaultValue={dataInit?.kunSound}
+                  error={!!errors.kunSound}
+                  helperText={
+                    !!errors.kunSound
+                      ? `Âm kun ${errors?.kunSound?.message}`
+                      : ""
+                  }
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  sx={{ width: "48%" }}
+                />
+                <TextField
+                  {...register("chineseSound", role["nomarlRegex"])}
+                  label="Hán việt*"
+                  type="text"
+                  defaultValue={dataInit?.chineseSound}
+                  error={!!errors.chineseSound}
+                  helperText={
+                    !!errors.chineseSound
+                      ? `Âm Hán Việt ${errors?.chineseSound?.message}`
+                      : ""
+                  }
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  sx={{ width: "48%" }}
+                />
+                <TextField
+                  {...register("trick", role["checkLength"])}
+                  label="Mẹo nhớ"
+                  type="text"
+                  defaultValue={dataInit?.trick}
+                  error={!!errors.trick}
+                  helperText={
+                    !!errors.trick ? `Mẹo nhớ ${errors?.trick?.message}` : ""
+                  }
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  sx={{ width: "48%" }}
+                />
+                <TextField
+                  {...register("example", role["checkLength"])}
+                  label="Ví dụ"
+                  type="text"
+                  defaultValue={dataInit?.example}
+                  error={!!errors.example}
+                  helperText={
+                    !!errors.example ? `Ví dụ ${errors?.example?.message}` : ""
+                  }
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  sx={{ width: "48%" }}
+                />
+                <TextField
+                  {...register("exampleMean", role["checkLength"])}
+                  label="Nghĩa của ví dụ"
+                  type="text"
+                  defaultValue={dataInit?.exampleMean}
+                  error={!!errors.exampleMean}
+                  helperText={
+                    !!errors.exampleMean
+                      ? `Ví dụ ${errors?.exampleMean?.message}`
+                      : ""
+                  }
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  sx={{ width: "48%" }}
+                />
+              </Stack>
+              <Stack flex={2} gap={2}>
+                <FormControl
+                  sx={{
+                    m: 1,
+                    minWidth: 100,
+                    marginLeft: 0,
+
+                    "& .MuiInputBase-root": {
+                      marginTop: "8px",
+                      marginBottom: "10px",
+                    },
+                  }}
+                >
+                  <InputLabel id="filter-label" sx={{ left: "-18px" }}>
+                    Trạng thái
+                  </InputLabel>
+                  <Select
+                    labelId="type-label"
+                    id="type-label"
+                    {...register("status")}
+                    defaultValue={!!dataInit?.status ? dataInit?.status : 1}
+                    autoWidth
+                    label="Trạng thái"
+                    variant="standard"
+                  >
+                    <MenuItem value={1}>Nháp</MenuItem>
+                    <MenuItem value={2}>Hoàn thành</MenuItem>
+                    <MenuItem value={3}>Công khai</MenuItem>
+                    <MenuItem value={4}>Đóng</MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField
+                  {...register("imgUrl", role["imgUrl"])}
+                  label="Link ảnh"
+                  type="text"
+                  defaultValue={dataInit?.imgUrl}
+                  error={!!errors.imgUrl}
+                  helperText={
+                    !!errors.imgUrl ? `${errors?.imgUrl?.message}` : ""
+                  }
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                />
+                <Box sx={{ width: "150px", height: "150px" }}>
+                  <img
+                    alt="placeholder"
+                    src={!imgPreview ? placeholder : imgPreview}
+                  />
+                </Box>
+              </Stack>
+            </DialogContent>
+          )}
           <DialogActions>
             <Button
               type="button"

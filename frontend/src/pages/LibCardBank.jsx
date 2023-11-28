@@ -29,12 +29,18 @@ import VocaDialogForm from "../components/Dialog/VocaDialogForm";
 import GrammarDialogForm from "../components/Dialog/GrammarDialogForm";
 import { StackContain } from "../components/Styled/Container";
 import SetSkeleton from "../components/FeedBack/SetSkeleton";
+import EffectedSetListDialog from "../components/Dialog/EffectedSetListDialog";
 const LibCardBank = () => {
   const {
     cardBank: data,
+    effectedList,
+    selectedList,
     loading,
     mutationing,
     importing,
+    setUpdateWaiting,
+    handleCloseEffectedList,
+    onSelectSet,
     importFile,
     addCard,
     updateCard,
@@ -255,6 +261,18 @@ const LibCardBank = () => {
             )}
           </Stack>
         </>
+      )}
+      {effectedList.length !== 0 ? (
+        <EffectedSetListDialog
+          effectedSet={effectedList}
+          onSelectSet={onSelectSet}
+          handleToggle={handleCloseEffectedList}
+          mutationing={mutationing}
+          setUpdateWaiting={setUpdateWaiting}
+          selectedList={selectedList}
+        />
+      ) : (
+        <></>
       )}
       {openImport ? (
         <ImportFileDialog

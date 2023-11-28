@@ -75,12 +75,10 @@ const options = {
 const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
   const [userData, setUserData] = useState({
     // cardType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
-    cardType: [0, 0, 0],
-    dataCard: [0, 0, 0, 0],
+    countCard: 0,
+    countSet: 0,
     countClass: 0,
     countFolder: 0,
-    dataSet: [0, 0, 0],
-    setType: [0, 0, 0, 0],
   });
   const [chartProps, setChartProps] = useState({
     data: {
@@ -100,10 +98,6 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
   });
   const [weekIndex, setWeekIndex] = useState(0);
 
-  const handleChange = (e) => {
-    // setWeekIndex(e.target.value);
-    getWeekTracking(e.target.value);
-  };
   const [selectSize, setSelectSize] = useState(
     numOfWeek(new Date("2023-09-01"), new Date())
   );
@@ -126,20 +120,23 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
     });
 
     if (!dashboard) return;
-    const { cardType, dataCard, countClass, dataSet, setType } = dashboard;
+    const { countCard, countClass, countFolder, countSet } = dashboard;
     setUserData({
-      cardType: Object.values(cardType),
-      dataCard: Object.values(dataCard),
+      countCard: countCard,
+      countSet: countSet,
       countClass: countClass,
-      countFolder: dashboard?.countFolder,
-      dataSet: Object.values(dataSet),
-      setType: Object.values(setType),
+      countFolder: countFolder,
     });
   }, [dashboard]);
 
   const selectRef = useRef(null);
   const handleClick = () => {
     selectRef.current.classList.toggle("active");
+  };
+
+  const handleChange = (e) => {
+    setWeekIndex(e.target.value);
+    getWeekTracking(e.target.value, handleClick);
   };
   return (
     <StackList
@@ -247,9 +244,7 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
               <Typography variant="h6" flex={1}>
                 Số thẻ
               </Typography>
-              <Typography variant="h6">
-                {countValues(...userData?.cardType)}
-              </Typography>
+              <Typography variant="h6">{userData?.countCard}</Typography>
             </StackList>
           </Stack>
         </StackList>
@@ -270,9 +265,7 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
               <Typography variant="h6" flex={1}>
                 Học phần
               </Typography>
-              <Typography variant="h6">
-                {countValues(...userData?.setType)}
-              </Typography>
+              <Typography variant="h6">{userData?.countSet}</Typography>
             </StackList>
           </Stack>
         </StackList>
@@ -293,9 +286,7 @@ const UserHomeChart = ({ data: dashboard, getWeekTracking }) => {
               <Typography variant="h6" flex={1}>
                 Thư mục
               </Typography>
-              <Typography variant="h6">
-                {!!userData?.countFolder ? userData?.countFolder : 0}
-              </Typography>
+              <Typography variant="h6">{userData?.countFolder}</Typography>
             </StackList>
           </Stack>
         </StackList>

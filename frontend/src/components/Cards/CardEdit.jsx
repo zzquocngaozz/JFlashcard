@@ -14,10 +14,15 @@ import PublicOffIcon from "@mui/icons-material/PublicOff";
 import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import placeholder from "../../assets/images/placeholder.png";
-import { isGrammarCard, isKanjiCard, isVocaCard } from "../../utils/cardUtil";
+import {
+  getCardType,
+  isGrammarCard,
+  isKanjiCard,
+  isVocaCard,
+} from "../../utils/cardUtil";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
-import { FLAG_STATUS } from "../../utils/constant";
+import { FLAG_STATUS, SET_TYPE } from "../../utils/constant";
 import DialogAlertDelete from "../Dialog/DialogAlertDelete";
 
 const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
@@ -28,21 +33,21 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
     message:
       "Thẻ này đã được kiểm duyệt. Việc cập nhật sẽ ảnh hưởng đến những học phần khác.Bạn có muốn tiếp tục",
   });
-  const handleToggleForm = useCallback(() => {
+  const handleToggleForm = () => {
     setOpenForm(!openForm);
-  }, [openForm]);
+  };
 
-  const handleToggleUpdateAlert = useCallback(() => {
+  const handleToggleUpdateAlert = () => {
     if (!card.verified) {
       handleToggleForm();
       return;
     }
     setVerifiedAlert({ ...verifiedAlert, open: true });
-  }, []);
+  };
 
-  const handleToggleDelete = useCallback(() => {
+  const handleToggleDelete = () => {
     setOpenDelete(!openDelete);
-  }, [openDelete]);
+  };
   // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
   const handleUpdate = (data) => {
     onUpdate(data, handleToggleForm);
@@ -70,7 +75,9 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
           columnGap: "10px",
         }}
       >
-        <Typography flex={5}>{index + 1}</Typography>
+        <Box flex={5}>
+          <Chip label={SET_TYPE[getCardType(card)]} />
+        </Box>
         <Chip label={FLAG_STATUS[card.status]} />
         <Tooltip title={"Chỉnh sửa"}>
           <IconButton
@@ -80,14 +87,18 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
             <ModeEditIcon color="primary" />
           </IconButton>
         </Tooltip>
-        <Tooltip title={"Đóng thẻ"}>
-          <IconButton
-            sx={{ width: 30, height: 30 }}
-            onClick={handleToggleDelete}
-          >
-            <PublicOffIcon color="error" />
-          </IconButton>
-        </Tooltip>
+        {card.status === 3 ? (
+          <Tooltip title={"Đóng thẻ"}>
+            <IconButton
+              sx={{ width: 30, height: 30 }}
+              onClick={handleToggleDelete}
+            >
+              <PublicOffIcon color="error" />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <></>
+        )}
       </Stack>
       <Stack
         flexDirection={"row"}

@@ -205,8 +205,7 @@ const LibSetManager = () => {
               flexWrap: "wrap",
               justifyContent: "flex-start",
               rowGap: "30px",
-              columnGap: "25px",
-              transition: "all 1s ease",
+              columnGap: "61px",
             }}
           >
             {paginList?.map((flashcardSet) => (

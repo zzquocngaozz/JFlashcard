@@ -3,20 +3,23 @@ import {
   Box,
   Button,
   Chip,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   IconButton,
   Stack,
   Tooltip,
   Typography,
+  Zoom,
 } from "@mui/material";
 import React from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { utils, write } from "xlsx";
 
-const ImportFileDialog = ({ handleToggle, importFile }) => {
+const ImportFileDialog = ({ handleToggle, importFile, importing }) => {
   const handleImportFile = (e) => {
     e.preventDefault();
     // console.log(e.target.files);
@@ -173,40 +176,73 @@ const ImportFileDialog = ({ handleToggle, importFile }) => {
     <Dialog open={true} fullWidth maxWidth={"md"} onClose={handleToggle}>
       <DialogTitle>Nhập thẻ bằng file</DialogTitle>
       <DialogContent>
-        <Stack
-          className="dragDropZone"
-          sx={{
-            justifyContent: "center",
-            alignItems: "center",
-            border: "1px dashed rgba(0,0,0,1)",
-            padding: "10px",
-            "&.onDrag": {
-              border: "1px dashed blue",
-            },
-          }}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        >
-          <Typography>Kéo và thả file</Typography>
-          <Typography>hoặc</Typography>
-          <Tooltip title={"Nhập bằng file"}>
-            <Box>
-              <IconButton component={"label"}>
-                <CloudUploadIcon />
-                <VisuallyHiddenInput type="file" onChange={handleImportFile} />
-              </IconButton>
-            </Box>
-          </Tooltip>
-        </Stack>
+        {importing ? (
+          <Stack
+            width={"100%"}
+            height={"100%"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            sx={{ rowGap: "20px" }}
+          >
+            <Zoom in={true}>
+              <CircularProgress />
+            </Zoom>
+            <DialogContentText textAlign="center">
+              Đang nhập...
+            </DialogContentText>
+          </Stack>
+        ) : (
+          <Stack
+            className="dragDropZone"
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px dashed rgba(0,0,0,1)",
+              padding: "10px",
+              "&.onDrag": {
+                border: "1px dashed blue",
+              },
+            }}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <Typography>Kéo và thả file</Typography>
+            <Typography>hoặc</Typography>
+            <Tooltip title={"Nhập bằng file"}>
+              <Box>
+                <IconButton component={"label"}>
+                  <CloudUploadIcon />
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleImportFile}
+                  />
+                </IconButton>
+              </Box>
+            </Tooltip>
+          </Stack>
+        )}
       </DialogContent>
       <DialogActions>
-        <Chip label="Tải file mẫu kanji" onClick={() => handleDowload(0)} />
-        <Chip label="Tải file mẫu từ vựng" onClick={() => handleDowload(1)} />
-        <Chip label="Tải file mẫu grammar" onClick={() => handleDowload(2)} />
+        <Chip
+          label="Tải file mẫu kanji"
+          disabled={importing}
+          onClick={() => handleDowload(0)}
+        />
+        <Chip
+          label="Tải file mẫu từ vựng"
+          disabled={importing}
+          onClick={() => handleDowload(1)}
+        />
+        <Chip
+          label="Tải file mẫu grammar"
+          disabled={importing}
+          onClick={() => handleDowload(2)}
+        />
         <Chip
           label={"Huỷ"}
           component={Button}
+          disabled={importing}
           onClick={handleToggle}
           color="error"
           sx={{ textTransform: "none" }}

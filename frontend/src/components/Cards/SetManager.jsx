@@ -44,7 +44,7 @@ const SetManager = ({ flashcardSet }) => {
           <Chip label={SET_TYPE[flashcardSet?.type]} sx={{ width: "90px" }} />
           <Chip
             label={FLAG_STATUS[flashcardSet?.status]}
-            sx={{ width: "90px" }}
+            sx={{ minWidth: "90px" }}
           />
         </StackList>
         <StackList>
@@ -58,14 +58,14 @@ const SetManager = ({ flashcardSet }) => {
           <Typography>{parseBirth(flashcardSet?.createdAt)}</Typography>
         </StackList>
       </Stack>
-      <Tooltip title={`${flashcardSet?.numberVote} người đã đánh giá`}>
+      {/* <Tooltip title={`${flashcardSet?.numberVote} người đã đánh giá`}>
         <StarHolderStack>
           <StarIcon sx={{ color: "#ff9800" }} />
           <Typography>
             {flashcardSet?.votePoint + " "}({flashcardSet?.numberVote})
           </Typography>
         </StarHolderStack>
-      </Tooltip>
+      </Tooltip> */}
       <StackList>
         <Avatar
           sx={{

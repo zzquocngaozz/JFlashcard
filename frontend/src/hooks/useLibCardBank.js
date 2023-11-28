@@ -20,6 +20,8 @@ import {
 
 const useLibCardBank = () => {
   const [cardBank, setCardBank] = useState(null);
+  const [effectedList, setEffectList] = useState([]);
+  const [selectedList, setSelectedList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [importing, setImporting] = useState(false);
   const [mutationing, setMutationing] = useState(false);
@@ -202,7 +204,6 @@ const useLibCardBank = () => {
   };
 
   const updateCard = async (newCard, handleToggle) => {
-    handleToggle();
     try {
       setMutationing(true);
       const config = {
@@ -225,11 +226,14 @@ const useLibCardBank = () => {
           : card
       );
       setCardBank(newCardBank);
+      console.log(Boolean(response?.data), "Co tra ve gi khong nhe");
+      if (Boolean(response?.data)) setEffectList(response?.data);
 
       setMutationing(false);
+      handleToggle();
     } catch (error) {
       setMutationing(false);
-
+      handleToggle();
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
@@ -249,7 +253,7 @@ const useLibCardBank = () => {
         : isGrammarCard(card)
         ? `/card/grammar-card/${card.cardId}`
         : `/card/vocab-card/${card.cardId}`;
-      await axios.delete(url, config);
+      const response = await axios.delete(url, config);
       // const newCardBank = cardBank.filter((c) => c.cardId !== card.cardId);
       const newCardBank = cardBank.map((c) =>
         c.cardId === card.cardId && getCardType(c) === getCardType(card)
@@ -258,6 +262,7 @@ const useLibCardBank = () => {
       );
       setCardBank(newCardBank);
       handleToggle();
+      if (Boolean(response?.data)) setEffectList(response?.data);
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
@@ -321,8 +326,6 @@ const useLibCardBank = () => {
             ? parseGrammaExcel(json)
             : parseVocaExcel(json);
 
-        // console.log(jsonParsed);
-
         // gui ve backend
 
         const config = {
@@ -343,11 +346,13 @@ const useLibCardBank = () => {
           JSON.stringify(jsonParsed),
           config
         );
-
-        setImporting(false);
+        await setTimeout(() => {
+          setImporting(false);
+          handleToggle();
+        }, 2000);
       } catch (error) {
         setImporting(false);
-
+        handleToggle();
         setAlert({
           open: true,
           severity: "error",
@@ -358,14 +363,71 @@ const useLibCardBank = () => {
       }
     };
     reader.readAsArrayBuffer(files[0]);
-    handleToggle();
+    // handleToggle();
+  };
+
+  const onSelectSet = (flashcardSetId) => {
+    const select = selectedList.find(
+      (s) => s.flashcardSetId === flashcardSetId
+    );
+    if (!Boolean(select)) {
+      setSelectedList([
+        ...selectedList,
+        {
+          ...effectedList.find((set) => set.flashcardSetId === flashcardSetId),
+        },
+      ]);
+      return;
+    }
+    const temp = selectedList.filter(
+      (s) => s.flashcardSetId !== flashcardSetId
+    );
+    setSelectedList(temp);
+  };
+  const handleCloseEffectedList = () => {
+    setEffectList([]);
+    setSelectedList([]);
+  };
+
+  const setUpdateWaiting = async (action) => {
+    try {
+      setMutationing(true);
+      const config = {
+        headers: {
+          Authorization: `${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      };
+      // Gửi yêu cầu post để thêm mới dữ liệu
+      const url = `/createfls/changestatus`;
+      const data = action === 1 ? [...effectedList] : [...selectedList];
+      const payload = data.reduce((result, set) => {
+        result.push({ id: set.flashcardSetId });
+        return result;
+      }, []);
+      console.log("payload", payload);
+      await axios.post(url, JSON.stringify(payload), config);
+
+      setMutationing(false);
+      handleCloseEffectedList();
+    } catch (error) {
+      setMutationing(false);
+      handleCloseEffectedList();
+      console.log(error);
+      console.log("Error:", error.response?.data?.errors?.body[0]);
+    }
   };
 
   return {
     cardBank,
+    effectedList,
+    selectedList,
     loading,
     mutationing,
     importing,
+    setUpdateWaiting,
+    onSelectSet,
+    handleCloseEffectedList,
     importFile,
     deleteCard,
     updateCard,

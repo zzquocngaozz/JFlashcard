@@ -61,7 +61,8 @@ const CardSetEdit = ({ card, index }) => {
         <Typography flex={5}>{index + 1}</Typography>
         <Chip label={FLAG_STATUS[card.status]} />
         {currentUser.role === 4 ||
-        (currentUser.role === 2 && dataSet.status === 3) ? (
+        (currentUser.role === 2 &&
+          !(dataSet.status === 1 || dataSet.status === 7)) ? (
           <></>
         ) : (
           <Tooltip title={"Xoá thẻ"}>

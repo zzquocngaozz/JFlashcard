@@ -9,10 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import StarIcon from "@mui/icons-material/Star";
-import KanjiDialogForm from "../Dialog/KanjiDialogForm";
-import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import placeholder from "../../assets/images/placeholder.png";
 import { isGrammarCard, isKanjiCard, isVocaCard } from "../../utils/cardUtil";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
@@ -24,7 +20,6 @@ import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 const CardBank = ({ card, index }) => {
   const { selectCard, handleSelectCard } = useSetEditContext();
   const [openForm, setOpenForm] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
   const [selected, setSelected] = useState(selectCard.includes(card));
   const onSelect = () => {
     handleSelectCard(card);

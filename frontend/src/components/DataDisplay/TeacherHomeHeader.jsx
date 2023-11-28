@@ -9,35 +9,22 @@ import { countValues } from "../../utils/parseData";
 
 const TeacherHomeHeader = ({ data: dashboard }) => {
   const [userData, setUserData] = useState({
-    cardType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
-    dataCard: {
-      numberDraft: 0,
-      numberDone: 0,
-      numberPublic: 0,
-      numberClose: 0,
-    },
-    setType: { numberKanji: 0, numberVocab: 0, numberGrammar: 0 },
-    dataSet: {
-      numberDraft: 0,
-      numberDone: 0,
-      numberPublic: 0,
-      numberClose: 0,
-    },
+    countCard: 0,
+    countSet: 0,
     countClass: 0,
     countMember: 0,
   });
 
   useEffect(() => {
+    console.log(dashboard);
     if (!dashboard) return;
-    const { cardType, dataCard, countClass, countMember, dataSet, setType } =
+    const { countCard, countClass, countFolder, countMember, countSet } =
       dashboard;
     setUserData({
-      cardType: cardType,
-      dataCard: dataCard,
+      countCard: countCard,
+      countSet: countSet,
       countClass: countClass,
       countMember: countMember,
-      dataSet: dataSet,
-      setType: setType,
     });
   }, [dashboard]);
   return (
@@ -115,9 +102,7 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
             <Typography variant="h6" flex={1}>
               Số thẻ
             </Typography>
-            <Typography variant="h6">
-              {countValues(...Object.values(userData?.cardType))}
-            </Typography>
+            <Typography variant="h6">{userData?.countCard}</Typography>
           </StackList>
         </Stack>
       </StackList>
@@ -138,9 +123,7 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
             <Typography variant="h6" flex={1}>
               Học phần
             </Typography>
-            <Typography variant="h6">
-              {countValues(...Object.values(userData?.setType))}
-            </Typography>
+            <Typography variant="h6">{userData?.countSet}</Typography>
           </StackList>
         </Stack>
       </StackList>

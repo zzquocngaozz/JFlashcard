@@ -26,7 +26,8 @@ const CardEditContainer = () => {
   return (
     <Stack>
       {currentUser.role === 4 ||
-      (currentUser.role === 2 && dataSet.status === 3) ? (
+      (currentUser.role === 2 &&
+        !(dataSet.status === 1 || dataSet.status === 7)) ? (
         <></>
       ) : dataSet?.type === 1 ? (
         <Button

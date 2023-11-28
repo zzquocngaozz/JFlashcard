@@ -197,7 +197,9 @@ const SetEdit = () => {
                   justifyContent: "flex-end",
                 }}
               >
-                {flashcardSet.status === 3 && currentUser.role === 2 ? (
+                {flashcardSet.status !== 1 &&
+                flashcardSet.status !== 7 &&
+                currentUser.role === 2 ? (
                   <Tooltip title={"Chỉnh sửa học phần"}>
                     <IconButton onClick={handleToggleRequestUpdate}>
                       <ModeEditIcon color="warning" />
@@ -267,7 +269,7 @@ const SetEdit = () => {
                 >
                   Về thư viện
                 </Button>
-                {flashcardSet.status === 1 ? (
+                {flashcardSet.status === 1 || flashcardSet.status === 7 ? (
                   <Button
                     startIcon={<DoneIcon />}
                     sx={{
@@ -301,7 +303,7 @@ const SetEdit = () => {
         <DialogAlertDelete
           alertDelete={alertDelete}
           handleToggleAlertDelete={handleToggleAlertDelete}
-          onDelete={deleteSet}
+          onDelete={() => deleteSet(handleToggleAlertDelete)}
           mutationing={mutationing}
         />
       ) : (

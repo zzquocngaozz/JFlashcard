@@ -201,7 +201,7 @@ const SetEditContextProvider = ({ children }) => {
     }
   };
 
-  const deleteSet = async () => {
+  const deleteSet = async (handleToggle) => {
     try {
       setMutationing(true);
       const config = {
@@ -212,9 +212,11 @@ const SetEditContextProvider = ({ children }) => {
       };
       // Gửi yêu cầu delete để xoá dữ liệu
       const response = await axios.delete(`/createfls/${setId}`, config);
-      navigate("/");
+      setDataSet({ ...dataSet, status: 4 });
       setMutationing(false);
+      handleToggle();
     } catch (error) {
+      handleToggle();
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }

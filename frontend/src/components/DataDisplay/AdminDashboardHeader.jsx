@@ -99,6 +99,7 @@ const AdminDashboardHeader = ({ data: dashboard }) => {
           <Stack
             sx={{
               justifyContent: "center",
+
               width: "100%",
               height: "100px",
               padding: "20px",
@@ -117,20 +118,20 @@ const AdminDashboardHeader = ({ data: dashboard }) => {
                 {countValues(...userData?.numberFLCard)}
               </Typography>
             </StackList>
-            <StackList justifyContent={"space-between"}>
-              <Typography>{userData?.numberFLCard[0] + " Hán tự"}</Typography>
+            <StackList justifyContent={"space-between"} alignItems={"flex-end"}>
+              <Typography>{userData?.numberFLCard[0] + " HT"}</Typography>
               <Divider
                 variant="middle"
                 sx={{ borderColor: "#FFF" }}
                 orientation="vertical"
               />
-              <Typography>{userData?.numberFLCard[1] + " Từ vựng"}</Typography>
+              <Typography>{userData?.numberFLCard[1] + " TV"}</Typography>
               <Divider
                 variant="middle"
                 sx={{ borderColor: "#FFF" }}
                 orientation="vertical"
               />
-              <Typography>{userData?.numberFLCard[2] + " Ngữ pháp"}</Typography>
+              <Typography>{userData?.numberFLCard[2] + " NP"}</Typography>
             </StackList>
           </Stack>
         </StackList>

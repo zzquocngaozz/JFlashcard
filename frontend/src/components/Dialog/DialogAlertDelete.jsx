@@ -49,7 +49,7 @@ export default function DialogAlertDelete({
               <DialogContentText textAlign="center">
                 {alertDelete.loadingMessage
                   ? alertDelete.loadingMessage
-                  : "Đang xoá ...."}
+                  : "Đang lưu ...."}
               </DialogContentText>
             </Stack>
           ) : (
