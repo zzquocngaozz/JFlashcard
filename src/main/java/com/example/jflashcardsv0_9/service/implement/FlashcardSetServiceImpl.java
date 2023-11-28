@@ -59,17 +59,17 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         this.flashcardSetAssociationRepository = flashcardSetAssociationRepository;
     }
     public List<SetSingleDTO> checkStatusUpdate(boolean check ,long cardId,long type){
-        List<FlashcardSet> sets = flashcardSetAssociationRepository.getAllFlashcardSetByCardIdAndType(cardId,type);
         if(check == true){
+            List<FlashcardSet> sets = flashcardSetAssociationRepository.getAllFlashcardSetByCardIdAndType(cardId,type);
             for (FlashcardSet flashcardSet : sets){
                 flashcardSet.setStatus(7);
                 flashcardSetRepository.save(flashcardSet);
             }
+            return sets.stream()
+                    .map(FlashcardMapper::convertSetInBank)
+                    .collect(Collectors.toList());
         }
-        return sets.stream()
-                .map(FlashcardMapper::convertSetInBank)
-                .collect(Collectors.toList());
-
+        return null;
     }
     @Override
     public List<KanjiDTO> getKanjiDTOS(FlashcardSet flashcardSet) {
