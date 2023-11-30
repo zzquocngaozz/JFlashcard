@@ -31,19 +31,6 @@ public class ProfileController {
         return profileService.updateProfile(userDTO, myUserDetail);
     }
 
-    @PostMapping("/profile/verify")
-    public ResponseEntity<?> getVerifyToken(@AuthenticationPrincipal MyUserDetail myUserDetail) {
-        profileService.sendVerifyToken(myUserDetail.getUser().getEmail());
-        return ResponseEntity.ok("ok");
-    }
-
-    @PutMapping("/profile/verify")
-    public UserDTO verifyUser(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
-        System.out.println(tokenDTO.getToken() + " " + myUserDetail.getUser().getEmail());
-//        profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
-        return profileService.verifyUser(tokenDTO.getToken(), myUserDetail.getUser().getEmail());
-    }
-
     @PostMapping("/profile/wish")
     public ResponseEntity<?> wishTeacherRole(@AuthenticationPrincipal MyUserDetail myUserDetail) {
         profileService.askTeacherRole(myUserDetail.getUser().getEmail());

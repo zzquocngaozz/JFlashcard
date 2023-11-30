@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.toUser(registerDTO);
         Role roles = roleRepository.findByName("ROLE_LEARNER").get();
         user.setRoles(Collections.singleton(roles));
+        user.setVerify(true);
         userRepository.save(user);
         return UserMapper.toUserDTOResponse(user);
     }
