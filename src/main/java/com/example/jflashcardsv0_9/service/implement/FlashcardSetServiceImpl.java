@@ -781,7 +781,9 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
 
     @Override
     public List<SetSingleDTO> listManagerSet(User user) {
-            List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByStatus(5);
+        List<Integer> list = new ArrayList<>(List.of(3, 5, 6));
+        String roleName = "ROLE_TEACHER";
+            List<FlashcardSet> flashcardSets = flashcardSetRepository.findAllByStatusInAndUserHasTeacherRole(list,roleName);
             return flashcardSets.stream()
                     .map(FlashcardMapper::convertSetSingleDTOManagerSet)
                     .collect(Collectors.toList());

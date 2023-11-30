@@ -21,6 +21,13 @@ public interface FlashcardSetRepository extends JpaRepository<FlashcardSet, Inte
 
     List<FlashcardSet> getAllByUser(User user);
     List<FlashcardSet> getAllByStatus(int  status);
+    @Query("SELECT fs FROM FlashcardSet fs " +
+            "JOIN fs.user u " +
+            "JOIN u.roles r " +
+            "WHERE fs.status IN :statusList " +
+            "AND r.name = :teacher ")
+    List<FlashcardSet> findAllByStatusInAndUserHasTeacherRole(@Param("statusList") List<Integer> statusList
+            ,@Param("teacher") String  roleName);
 
     List<FlashcardSet> getAllByUserAndStatus(User user,int status);
 
