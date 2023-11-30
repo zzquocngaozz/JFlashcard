@@ -826,15 +826,6 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
         flashcardSetRepository.save(flashcardSet);
         sendEmailService.sendRejectedEmail(flashcardSet.getUser().getEmail(),flashcardSet.getUser().getUserName(),flashcardSet.getTitle(),flashcardSet.getPublicAt(),flashcardSet.getDescription(),tokenDTO.getToken());
     }
-
-    @Override
-    public List<SetSingleDTO> listManagerSetUpdate(User user) {
-        List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByStatus(7);
-        return flashcardSets.stream()
-                .map(FlashcardMapper::convertSetSingleDTO)
-                .collect(Collectors.toList());
-    }
-
     @Override
     public void changeStatusSet(User user, List<IdDTO> list) {
         for (IdDTO dto : list){
