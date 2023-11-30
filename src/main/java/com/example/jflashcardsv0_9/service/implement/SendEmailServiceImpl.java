@@ -330,5 +330,42 @@ public class SendEmailServiceImpl implements SendEmailService {
         sendEmail(email, subject, htmlContent);
     }
 
+    @Override
+    public void sendMailAccount(String email, String name, String password) {
+        String subject = "Thông Báo Từ Chối Công Bố Bộ Thẻ trên JFlashcards";
+        String htmlContent = "    <!doctype html>\n" +
+                "    <html>\n" +
+                "      <head>\n" +
+                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "      </head>\n" +
+                "      <body style=\"font-family: sans-serif;\">\n" +
+                "        <div style=\"font-family: Helvetica,Arial,sans-serif;width:100%;overflow:auto;line-height:2;\">\n" +
+                "            <div style=\"margin:50px auto;width:70%; padding: 10px 20px; border-radius: 8px; box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .25);\">\n" +
+                "            <div style=\"border-bottom:1px solid #eee;display: flex;column-gap: 10px;\">\n" +
+                "            <a href=\"#\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">\n" +
+                "            JFlashcard\n" +
+                "            </a>\n" +
+                "            </div>\n" +
+                "            <p style=\"font-size:1.1em\">Chào bạn ,</p>\n" +
+                "            <p>Chúng tôi hy vọng bạn có một ngày tốt lành,</p>\n" +
+                "            <p>Chào mừng bạn đã trở thành thành viên của hệ thống Jlashcards : </p>\n" +
+                "\n" +
+                "            <p> Email đăng ký:  " + email + "</p>\n" +
+                "            <p> Mật khẩu: " + password + "</p>\n" +
+                "            <p> Chức vụ:  " + name + "</p>\n" +
+                "            <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ bổ sung, đừng ngần ngại liên hệ với chúng tôi.\n" +
+                "            <p style=\"font-size:0.9em;\">Regards,<br />JFlashcard</p>\n" +
+                "            <hr style=\"border:none;border-top:1px solid #eee\" />\n" +
+                "            <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">\n" +
+                "Trân trọng,\n" +
+                "JFlashcard\n" +
+                "        </div>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "      </body>\n" +
+                "    </html>";
+        sendEmail(email, subject, htmlContent);
+    }
+
 
 }

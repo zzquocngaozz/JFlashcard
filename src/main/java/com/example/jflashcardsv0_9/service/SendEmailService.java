@@ -22,7 +22,5 @@ public interface SendEmailService {
     public void sendRejectedEmail(String email, String userName, String setName, Timestamp publicAt, String des,String reason) ;
 
 
-
-
-
-        }
+    void sendMailAccount(String email, String name, String password);
+}

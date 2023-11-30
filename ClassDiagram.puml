@@ -3,28 +3,30 @@
 skinparam Style strictuml
 
 actor User
-participant DeleteClassPostView
-participant ClassPostController
-participant ClassPostService
-'participant Exception
-'participant Dto
+participant SearchView
+participant SearchController
+participant FlashcardSetService
+'participant Unity
+participant Mapper
 database Repository as ACTIVATE_ENTITY
 
-User -> ClassPostController: Send request
-activate ClassPostController
-ClassPostController -> ClassPostService: deleteClassPost()
-activate ClassPostService
-ClassPostService -> Repository : Process and delete class Post
+User -> SearchController: Send request
+activate SearchController
+SearchController -> FlashcardSetService: searchFlashcardSetPublic()
+activate FlashcardSetService
+FlashcardSetService -> Repository : Get data for Seacrch
 activate Repository
-Repository --> ClassPostService : Return Mess " Delete successfully"
+Repository --> FlashcardSetService : Return Data
 deactivate
-ClassPostService --> ClassPostController : Send Mess
+FlashcardSetService -> Mapper : Convert data
+activate Mapper
+Mapper --> FlashcardSetService : Return Data
 deactivate
-ClassPostController --> DeleteClassPostView : Send Mess
+FlashcardSetService --> SearchController : Send data
 deactivate
-activate DeleteClassPostView
-DeleteClassPostView --> User : Display Mess
-deactivate
+SearchController --> SearchView : Send data
+activate SearchView
+SearchView --> User : Display Data
 
 
 

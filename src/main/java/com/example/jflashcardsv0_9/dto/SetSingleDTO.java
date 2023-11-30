@@ -17,6 +17,7 @@ public class SetSingleDTO {
     String description;
     int type;
     Date createdAt;
+    Date publicAt;
     int  status;
     long numberCard;
     float votePoint;

@@ -21,7 +21,7 @@ public class UserRequest {
     private String token;
     private Date createAt;
     private Date expireAt;// default 15 phu
-
+    private String mail;
     @ManyToOne
     @JoinColumn( name = "user_id")
     private User user;

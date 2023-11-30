@@ -141,9 +141,16 @@ public class HomePageServiceImpl implements HomePageService {
         long countCard = flashcardKanjiRepository.countByUser(user) +
                 flashcardVocabRepository.countByUser(user) +
                 flashcardGrammarRepository.countByUser(user);
+        long countMember = classMemberRepository.countDistinctUsersInClassrooms(classRooms);
+        long count = 0;
+        if (countMember == 0){
+            count = countMember;
+        }else {
+            count = countMember - 1;
+        }
         return TeacherDashboardDTO.builder()
                 .countClass(classMemberRepository.countDistinctByUser(user))
-                .countMember(classMemberRepository.countDistinctUsersInClassrooms(classRooms) -1 )
+                .countMember(count)
                 .countFolder(folderRepository.countAllByUser(user))
                 .countSet(flashcardSetRepository.countAllByUser(user))
                 .countCard(countCard)

@@ -663,7 +663,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public List<SetSingleDTO> listManagerSetOfUser(User user) {
         List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByUser(user);
         return flashcardSets.stream()
-                .map(FlashcardMapper::convertSetSingleDTOManager)
+                .map(FlashcardMapper::convertSetSingleDTO)
                 .collect(Collectors.toList());
     }
 
@@ -829,7 +829,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public List<SetSingleDTO> listManagerSetUpdate(User user) {
         List<FlashcardSet> flashcardSets = flashcardSetRepository.getAllByStatus(7);
         return flashcardSets.stream()
-                .map(FlashcardMapper::convertSetSingleDTOManager)
+                .map(FlashcardMapper::convertSetSingleDTO)
                 .collect(Collectors.toList());
     }
 

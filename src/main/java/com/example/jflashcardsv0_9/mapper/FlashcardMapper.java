@@ -30,6 +30,7 @@ public class FlashcardMapper {
         return SetSingleDTO.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
+                .publicAt(new Date(flashcardSet.getPublicAt().getTime()))
                 .description(flashcardSet.getDescription())
                 .createdAt(flashcardSet.getCreatedAt())
                 .type(flashcardSet.getType())
@@ -40,24 +41,11 @@ public class FlashcardMapper {
                 .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
                 .build();
     }
-    public  static SetSingleDTO convertSetSingleDTOManager(FlashcardSet flashcardSet){
-        return SetSingleDTO.builder()
-                .flashcardSetId(flashcardSet.getFlashcardSetId())
-                .title(flashcardSet.getTitle())
-                .description(flashcardSet.getDescription())
-                .createdAt(flashcardSet.getCreatedAt())
-                .type(flashcardSet.getType())
-                .status(flashcardSet.getStatus())
-                .numberCard(flashcardSetService.numberCardManager(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
-                .votePoint(votePointService.countNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
-                .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
-                .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
-                .build();
-    }
     public  static SetSingleDTO convertSetSingleDTOManagerSet(FlashcardSet flashcardSet){
         return SetSingleDTO.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
+                .publicAt(new Date(flashcardSet.getPublicAt().getTime()))
                 .description(flashcardSet.getDescription())
                 .createdAt(flashcardSet.getCreatedAt())
                 .type(flashcardSet.getType())
