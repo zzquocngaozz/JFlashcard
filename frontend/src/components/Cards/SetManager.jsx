@@ -8,17 +8,20 @@ import StarIcon from "@mui/icons-material/Star";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import { getColorFromEnum } from "../../utils/colorGetter";
 import { FLAG_STATUS, ROLE, SET_TYPE } from "../../utils/constant";
-import { parseBirth } from "../../utils/datetimeCalc";
+import { isOpen, isPublicDate, parseBirth } from "../../utils/datetimeCalc";
 import {
   StackCardLink,
   StackList,
   StarHolderStack,
 } from "../Styled/StyledStack";
 import useAuth from "../../hooks/useAuth";
+import SelectBox from "../Styled/SelectBox";
 
-const SetManager = ({ flashcardSet }) => {
+const SetManager = ({ flashcardSet, isSelected, toggleSelectSet }) => {
   const { currentUser } = useAuth();
-
+  const handleSelect = (setId) => {
+    toggleSelectSet(setId);
+  };
   return (
     <StackCardLink
       to={
@@ -42,10 +45,14 @@ const SetManager = ({ flashcardSet }) => {
         </StackList>
         <StackList>
           <Chip label={SET_TYPE[flashcardSet?.type]} sx={{ width: "90px" }} />
-          <Chip
-            label={FLAG_STATUS[flashcardSet?.status]}
-            sx={{ minWidth: "90px" }}
-          />
+          {flashcardSet?.status === 3 && !isOpen(flashcardSet?.publicAt) ? (
+            <Chip label={"Sắp công khai"} sx={{ minWidth: "120px" }} />
+          ) : (
+            <Chip
+              label={FLAG_STATUS[flashcardSet?.status]}
+              sx={{ minWidth: "90px" }}
+            />
+          )}
         </StackList>
         <StackList>
           <NoteOutlinedIcon />
@@ -58,14 +65,19 @@ const SetManager = ({ flashcardSet }) => {
           <Typography>{parseBirth(flashcardSet?.createdAt)}</Typography>
         </StackList>
       </Stack>
-      {/* <Tooltip title={`${flashcardSet?.numberVote} người đã đánh giá`}>
+      {flashcardSet.status === 1 || flashcardSet.status === 2 ? (
         <StarHolderStack>
-          <StarIcon sx={{ color: "#ff9800" }} />
-          <Typography>
-            {flashcardSet?.votePoint + " "}({flashcardSet?.numberVote})
-          </Typography>
+          <SelectBox
+            onSelect={() => {
+              handleSelect(flashcardSet.flashcardSetId);
+            }}
+            isSelected={isSelected(flashcardSet.flashcardSetId)}
+          />
         </StarHolderStack>
-      </Tooltip> */}
+      ) : (
+        <></>
+      )}
+
       <StackList>
         <Avatar
           sx={{

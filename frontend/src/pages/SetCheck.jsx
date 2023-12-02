@@ -27,6 +27,7 @@ import useAuth from "../hooks/useAuth";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 import LayoutManager from "../components/Parts/LayoutManager";
 import FormRejectDialog from "../components/Dialog/FormRejectDialog";
+import { isOpen } from "../utils/datetimeCalc";
 
 const SetCheck = () => {
   // ------------------ Handle delete alert show and hide
@@ -95,10 +96,15 @@ const SetCheck = () => {
                   variant="contained"
                   sx={{ mr: 1 }}
                 />
-                <Chip
-                  label={`${FLAG_STATUS[flashcardSet?.status]}`}
-                  variant="contained"
-                />
+                {flashcardSet?.status === 3 &&
+                !isOpen(flashcardSet?.publicAt) ? (
+                  <Chip label={"Chờ công khai"} sx={{ minWidth: "120px" }} />
+                ) : (
+                  <Chip
+                    label={FLAG_STATUS[flashcardSet?.status]}
+                    sx={{ minWidth: "90px" }}
+                  />
+                )}
               </Stack>
               <Typography>
                 Ngày công khai:{" "}
@@ -109,29 +115,33 @@ const SetCheck = () => {
                 {new Date(flashcardSet?.createdAt).toLocaleDateString()}
               </Typography>
             </Stack>
-            <StackList
-              flex={1.5}
-              sx={{ alignItems: "flex-start", justifyContent: "flex-end" }}
-            >
-              <Button
-                startIcon={<VerifiedIcon />}
-                sx={{ textTransform: "none" }}
-                variant="contained"
-                color="success"
-                onClick={handleTogglePublic}
+            {flashcardSet?.status === 5 ? (
+              <StackList
+                flex={1.5}
+                sx={{ alignItems: "flex-start", justifyContent: "flex-end" }}
               >
-                Đồng ý
-              </Button>
-              <Button
-                startIcon={<BlockIcon />}
-                color="error"
-                sx={{ textTransform: "none" }}
-                variant="contained"
-                onClick={handleToggleReject}
-              >
-                Từ chối
-              </Button>
-            </StackList>
+                <Button
+                  startIcon={<VerifiedIcon />}
+                  sx={{ textTransform: "none" }}
+                  variant="contained"
+                  color="success"
+                  onClick={handleTogglePublic}
+                >
+                  Đồng ý
+                </Button>
+                <Button
+                  startIcon={<BlockIcon />}
+                  color="error"
+                  sx={{ textTransform: "none" }}
+                  variant="contained"
+                  onClick={handleToggleReject}
+                >
+                  Từ chối
+                </Button>
+              </StackList>
+            ) : (
+              <></>
+            )}
           </Stack>
           <Stack sx={{ margin: "20px 50px" }}>
             <CardEditContainer importing={importing} />

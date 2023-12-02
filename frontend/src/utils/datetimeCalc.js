@@ -8,7 +8,24 @@ export const isBirthDate = (birthDate) => {
 export const isPublicDate = (publicAt) => {
   let publicDate = new Date(publicAt);
   const current = new Date();
-  return current.toLocaleDateString() <= publicDate.toLocaleDateString();
+  // return current.toLocaleDateString() <= publicDate.toLocaleDateString();
+  if (publicDate.getFullYear() < current.getFullYear()) return false;
+  if (publicDate.getFullYear() > current.getFullYear()) return true;
+  if (publicDate.getMonth() < current.getMonth()) return false;
+  if (publicDate.getMonth() > current.getMonth()) return true;
+  if (publicDate.getDate() < current.getDate()) return false;
+  return true;
+};
+export const isOpen = (publicAt) => {
+  let publicDate = new Date(publicAt);
+  const current = new Date();
+  // return current.toLocaleDateString() <= publicDate.toLocaleDateString();
+  if (publicDate.getFullYear() > current.getFullYear()) return false;
+  if (publicDate.getFullYear() < current.getFullYear()) return true;
+  if (publicDate.getMonth() > current.getMonth()) return false;
+  if (publicDate.getMonth() < current.getMonth()) return true;
+
+  return publicDate.getDate() <= current.getDate();
 };
 
 export const checkDueAt = (dueAt) => {

@@ -35,8 +35,9 @@ public class WebSecurityConfig {
                 .cors().and().authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/v1/read/preview/**","/api/v1/search/**", "/api/v1/login", "/api/v1/register","/api/v1/forgot","/api/v1","/api/v1/verify").permitAll()
+                                .requestMatchers("/api/v1/managerset/**").hasRole("MANAGER")
+                                .requestMatchers("/api/v1/dashboard").hasAnyRole("MANAGER","ADMIN")
                                 .requestMatchers("/api/v1/dashboard/**").hasRole("ADMIN")
-                                .requestMatchers("/api/v1/managerset/**","/api/v1/dashboard").hasRole("MANAGER")
                                 .requestMatchers("/api/v1/classroom/{classId}/set/listset","/api/v1/classroom/{classId}/set/add").hasRole("TEACHER")
 //                                .requestMatchers("/api/v1/classroom/**").hasRole("TEACHER")
                                 .anyRequest().authenticated()

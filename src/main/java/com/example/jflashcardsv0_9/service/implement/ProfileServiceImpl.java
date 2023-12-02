@@ -60,9 +60,9 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public boolean sendVerifyToken(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isEmpty())
-            throw new AppException(Error.USER_NOT_FOUND);
-        Optional<UserRequest> optionalUR = userRequestRepository.findByRequestTypeAndUserEmail(2, email);
+        if (optionalUser.isPresent())
+            throw new AppException(Error.EMAIL_USER_EXIST);
+        Optional<UserRequest> optionalUR = userRequestRepository.findByRequestTypeAndMail(2, email);
         if (optionalUR.isPresent()) {
             userRequestRepository.delete(optionalUR.get());// clear neu ton tai otp truoc do
         }
@@ -72,6 +72,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .requestType(2)
 
                 .token(token)
+                .mail(email)
                 .createAt(new Date(System.currentTimeMillis()))
                 .expireAt(new Date(System.currentTimeMillis() + 15 * 60 * 1000))// 15 phut
                 .build());
@@ -82,7 +83,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void verifyUser(String token, String email) {
-        Optional<UserRequest> optionalUserRequest = userRequestRepository.findByTokenAndUserEmail(token, email);
+        Optional<UserRequest> optionalUserRequest = userRequestRepository.findByTokenAndMail(token, email);
         if (optionalUserRequest.isEmpty())
             throw new AppException(Error.VERIFY_FALSE);
 
