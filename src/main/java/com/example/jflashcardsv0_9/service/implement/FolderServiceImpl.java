@@ -7,6 +7,7 @@ import com.example.jflashcardsv0_9.entities.FolderSet;
 import com.example.jflashcardsv0_9.entities.User;
 import com.example.jflashcardsv0_9.exception.AppException;
 import com.example.jflashcardsv0_9.exception.Error;
+import com.example.jflashcardsv0_9.exception.Validate;
 import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
 import com.example.jflashcardsv0_9.mapper.FolderMapper;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
@@ -24,18 +25,23 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FolderServiceImpl implements FolderService {
-    @Autowired
     FolderRepository folderRepository;
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     FlashcardSetRepository flashcardSetRepository;
+    Validate validate;
+    @Autowired
+    public FolderServiceImpl(FolderRepository folderRepository, UserRepository userRepository, FlashcardSetRepository flashcardSetRepository,Validate validate) {
+        this.folderRepository = folderRepository;
+        this.userRepository = userRepository;
+        this.flashcardSetRepository = flashcardSetRepository;
+        this.validate = validate;
+    }
 
     @Override
     public IdDTO createFolder(FolderSetDTO folderSetDTO, long userId) {
+        validate.checkFolder(folderSetDTO);
         FolderSet folderSet = folderRepository.save(FolderMapper.convertFolderDTOToFolderSet(folderSetDTO,userId));
         return IdDTO.builder()
                 .id(folderSet.getFolderId())
@@ -54,6 +60,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void updateFolder(long folderId, FolderSetDTO folderSetDTO, long userId) {
+        validate.checkFolder(folderSetDTO);
         FolderSet folderSet = folderRepository.getFolderSetByFolderId(folderId);
         folderSet.setTitle(folderSetDTO.getTitle());
         folderSet.setDescription(folderSetDTO.getDescription());
@@ -67,17 +74,18 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public long currentFolder(long folderId) {
-        FolderSet folderSet = folderRepository.findByFolderId(folderId).orElse(null);
-        if (folderSet == null) {
-            // Handle the case when the FolderSet doesn't exist.
-            return 0L;
-        }
-        Set<FlashcardSet> flashcardSets = folderSet.getFlashcardSets();
-        if (flashcardSets == null) {
-            // Handle the case when the FolderSet doesn't have any FlashcardSet.
-            return 0L;
-        }
-        return (long) flashcardSets.size();
+        return folderRepository.findByFolderId(folderId)
+                .map(folderSet -> {
+                    Set<FlashcardSet> flashcardSets = folderSet.getFlashcardSets();
+                    if (flashcardSets != null && !flashcardSets.isEmpty()) {
+                        long count = flashcardSets.stream()
+                                .filter(flashcardSet -> flashcardSet.getStatus() == 3)
+                                .count();
+                        return count;
+                    }
+                    return 0L;
+                })
+                .orElse(0L);
     }
 
     @Override
@@ -88,26 +96,18 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public List<SetSingleDTO> viewListSetByFolderId(long userId, long folderId) {
-        User user = userRepository.getUserByUserId(userId);
-        // Tìm FolderSet bằng ID
-        FolderSet folderSet = folderRepository.findByFolderId(folderId).orElse(null);
-        if(folderSet == null){
-            throw new AppException(Error.SET_NOT_FOUND);
-        }
-
-        // Lấy danh sách FlashcardSet từ FolderSet
-        Set<FlashcardSet> flashcardSets = folderSet.getFlashcardSets();
-
-        // Chuyển Set thành danh sách (List) nếu cần
-        List<FlashcardSet> flashcardSets1 = new ArrayList<>(flashcardSets);
-        return flashcardSets1.stream()
-                .map((FlashcardSet flashcardSet) -> FlashcardMapper.convertSetSingleDTO(flashcardSet))
+        return folderRepository.findByFolderId(folderId)
+                .map(FolderSet::getFlashcardSets)
+                .orElseThrow(() -> new AppException(Error.SET_NOT_FOUND))
+                .stream()
+                .filter(flashcardSet -> flashcardSet.getStatus() == 3)
+                .map(FlashcardMapper::convertSetSingleDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<FlashcardSetDTOResponse> getListSetOfUser(long userId, long folderId) {
-        List<FlashcardSet> allUserFlashcardSets = flashcardSetRepository.getAllByUser(userRepository.getUserByUserId(userId));
+        List<FlashcardSet> allUserFlashcardSets = flashcardSetRepository.getAllByUserAndStatus(userRepository.getUserByUserId(userId),3);
         // Lấy danh sách FlashcardSet từ FolderSet
         FolderSet folderSet = folderRepository.findByFolderId(folderId).orElse(null);
         if(folderSet == null){
@@ -123,7 +123,7 @@ public class FolderServiceImpl implements FolderService {
         allUserFlashcardSets.removeAll(flashcardSets1);
 
         return allUserFlashcardSets.stream()
-                .map((FlashcardSet flashcardSet) -> FlashcardMapper.convertFlashcardSetDTOResponse(flashcardSet))
+                .map(FlashcardMapper::convertFlashcardSetDTOResponse)
                 .collect(Collectors.toList());
     }
 

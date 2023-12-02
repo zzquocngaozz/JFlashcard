@@ -1,5 +1,33 @@
-@startuml LoginClassDiagram
+@startuml
+!define ACTIVATE_ENTITY Repository <<Database>> #008000
 skinparam Style strictuml
+
+actor User
+participant SearchView
+participant SearchController
+participant FlashcardSetService
+'participant Unity
+participant Mapper
+database Repository as ACTIVATE_ENTITY
+
+User -> SearchController: Send request
+activate SearchController
+SearchController -> FlashcardSetService: searchFlashcardSetPublic()
+activate FlashcardSetService
+FlashcardSetService -> Repository : Get data for Seacrch
+activate Repository
+Repository --> FlashcardSetService : Return Data
+deactivate
+FlashcardSetService -> Mapper : Convert data
+activate Mapper
+Mapper --> FlashcardSetService : Return Data
+deactivate
+FlashcardSetService --> SearchController : Send data
+deactivate
+SearchController --> SearchView : Send data
+activate SearchView
+SearchView --> User : Display Data
+
 
 
 @enduml

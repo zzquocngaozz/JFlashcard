@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
@@ -9,7 +9,7 @@ const useFolderSet = ({ adding }) => {
   const [mutationing, setMutationing] = useState(false);
   const { folderId } = useParams();
   const { accessToken } = useAuth();
-  const {navigate} = useNavigate();
+  const { navigate } = useNavigate();
 
   useEffect(() => {
     const getSet = async () => {
@@ -21,59 +21,11 @@ const useFolderSet = ({ adding }) => {
             Authorization: accessToken,
           },
         };
-        const response = await axios.get(`/createfolder/${folderId}/view-set-folder`, config);
+        const response = await axios.get(
+          `/createfolder/${folderId}/view-set-folder`,
+          config
+        );
         setFolderSet(response.data);
-        // setFolderSet([{
-        //   flashcardSetId: 1,
-        //   title: "Từ vựng thông dụng",
-        //   description:
-        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-        //   numberVote: 27,
-        //   votePoint: 4.5,
-        //   numberCard: 60,
-        //   createdAt: "2023/10/10",
-        //   type: 1,
-        //   private: false,
-        //   authoDTO: {
-        //     userId: 1,
-        //     userName: "ducpa01",
-        //     role: 1,
-        //   },
-        // },
-        // {
-        //   flashcardSetId: 2,
-        //   title: "Từ vựng thông dụng",
-        //   description:
-        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-        //   numberVote: 27,
-        //   votePoint: 4.5,
-        //   numberCard: 60,
-        //   createdAt: "2023/10/10",
-        //   type: 1,
-        //   private: false,
-        //   authoDTO: {
-        //     userId: 1,
-        //     userName: "ducpa01",
-        //     role: 1,
-        //   },
-        // },
-        // {
-        //   flashcardSetId: 3,
-        //   title: "Từ vựng thông dụng",
-        //   description:
-        //     "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-        //   numberVote: 27,
-        //   votePoint: 4.5,
-        //   numberCard: 60,
-        //   createdAt: "2023/10/10",
-        //   type: 3,
-        //   private: false,
-        //   authoDTO: {
-        //     userId: 1,
-        //     userName: "ducpa01",
-        //     role: 1,
-        //   },
-        // }])
         setLoading(false);
       } catch (error) {
         // log ra status
@@ -85,7 +37,7 @@ const useFolderSet = ({ adding }) => {
       }
     };
     getSet();
-  }, [folderId,adding]);
+  }, [folderId, adding]);
 
   const deleteFolderSet = async (setId) => {
     try {
@@ -97,8 +49,13 @@ const useFolderSet = ({ adding }) => {
         },
       };
       // Gửi yêu cầu delete để xoá dữ liệu
-      await axios.delete(`/createfolder/${folderId}/get-all-set/${setId}`, config);
-      const deletedList = folderSet.filter(set=>set.flashcardSetId!==setId)
+      await axios.delete(
+        `/createfolder/${folderId}/get-all-set/${setId}`,
+        config
+      );
+      const deletedList = folderSet.filter(
+        (set) => set.flashcardSetId !== setId
+      );
       setFolderSet(deletedList);
     } catch (error) {
       setMutationing(false);

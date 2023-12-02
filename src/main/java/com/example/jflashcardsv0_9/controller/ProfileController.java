@@ -1,7 +1,5 @@
 package com.example.jflashcardsv0_9.controller;
 
-import com.example.jflashcardsv0_9.dto.LoginDTORequest;
-import com.example.jflashcardsv0_9.dto.LoginDTOResponse;
 import com.example.jflashcardsv0_9.dto.TokenDTO;
 import com.example.jflashcardsv0_9.dto.UserDTO;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
@@ -33,28 +31,15 @@ public class ProfileController {
         return profileService.updateProfile(userDTO, myUserDetail);
     }
 
-    @PostMapping("/profile/verify")
-    public ResponseEntity<?> getVerifyToken(@AuthenticationPrincipal MyUserDetail myUserDetail){
-        profileService.sendVerifyToken(myUserDetail.getUser().getEmail());
-        return ResponseEntity.ok("ok");
-    }
-
-    @PutMapping("/profile/verify")
-    public UserDTO verifyUser(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail){
-        System.out.println(tokenDTO.getToken()+" "+myUserDetail.getUser().getEmail());
-//        profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
-        return  profileService.verifyUser(tokenDTO.getToken(),myUserDetail.getUser().getEmail());
-    }
-
     @PostMapping("/profile/wish")
-    public ResponseEntity<?> wishTeacherRole(@AuthenticationPrincipal MyUserDetail myUserDetail){
+    public ResponseEntity<?> wishTeacherRole(@AuthenticationPrincipal MyUserDetail myUserDetail) {
         profileService.askTeacherRole(myUserDetail.getUser().getEmail());
         return ResponseEntity.ok("ok");
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail){
-        userService.changePassword(tokenDTO,myUserDetail);
+    public ResponseEntity<?> changePassword(@RequestBody TokenDTO tokenDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        userService.changePassword(tokenDTO, myUserDetail);
         return ResponseEntity.ok("ok");
     }
 

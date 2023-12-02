@@ -20,35 +20,23 @@ import { parseBirth } from "../../utils/datetimeCalc";
 
 const SetRecent = ({ flashcardSet }) => {
   return (
-    <StackCardLink to={"#"}>
+    <StackCardLink to={`/${flashcardSet.flashcardSetId}/read`}>
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />
           <Typography variant="h5">{flashcardSet.title}</Typography>
         </StackList>
         <Chip label={SET_TYPE[flashcardSet.type]} sx={{ width: "100px" }} />
-            <Tooltip >
-                <StackList>
-                  <AccessTimeIcon color='error' />
-                  <Typography>{parseBirth(flashcardSet.openAt)}</Typography>
-                </StackList>
-            </Tooltip>
+        <Tooltip>
+          <StackList>
+            <AccessTimeIcon />
+            {/* <Typography>{parseBirth(flashcardSet.openAt)}</Typography> */}
+            <Typography>{parseBirth(flashcardSet?.createdAt)}</Typography>
+          </StackList>
+        </Tooltip>
         <StackList>
           <NoteOutlinedIcon />
-          <Typography>
-            {flashcardSet.numberCard+" "} thẻ
-          </Typography>
-          <Tooltip
-            title={`Đã học ${
-              flashcardSet.numberStudied + "/" + flashcardSet.numberCard
-            } thẻ`}
-          >
-            <LinearProgress
-              variant="determinate"
-              value={Math.floor(flashcardSet.numberStudied*100/flashcardSet.numberCard)}
-              sx={{height:'5px',width:"80%"}}
-            />
-          </Tooltip>
+          <Typography>{flashcardSet.numberCard + " "} thẻ</Typography>
         </StackList>
       </Stack>
       <Tooltip title={`${flashcardSet.numberVote} người đã đánh giá`}>
@@ -64,13 +52,13 @@ const SetRecent = ({ flashcardSet }) => {
           sx={{
             width: 40,
             height: 40,
-            bgcolor: `${getColorFromEnum(flashcardSet.authoDTO?.userName[0])}`,
+            bgcolor: `${getColorFromEnum(flashcardSet?.authDTO?.userName[0])}`,
           }}
         >
-          {flashcardSet.authoDTO?.userName.toUpperCase()[0]}
+          {flashcardSet?.authDTO?.userName.toUpperCase()[0]}
         </Avatar>
-        <Typography>{flashcardSet.authoDTO.userName + " "}</Typography>
-        <Chip label={ROLE[flashcardSet.authoDTO.role]} width={50} />
+        <Typography>{flashcardSet?.authDTO?.userName + " "}</Typography>
+        <Chip label={ROLE[flashcardSet?.authDTO?.role]} width={50} />
       </StackList>
     </StackCardLink>
   );

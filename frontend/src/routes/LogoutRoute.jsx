@@ -1,18 +1,31 @@
-import React, { useEffect } from 'react'
-import { Navigate, useLocation } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import React, { useEffect } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import axios from "axios";
 
 const LogoutRoute = () => {
-    const {logout} = useAuth();
-    const location = useLocation()
+  const { logout, accessToken } = useAuth();
+  const location = useLocation();
 
-    useEffect(()=>{
-        logout()
-    })
-    
-  return (
-    <Navigate to="/signin" state={{from:location}} replace />
-  )
-}
+  useEffect(() => {
+    const clearContext = async () => {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken,
+        },
+      };
+      try {
+        const response = await axios.post("/logout", "", config);
+        logout();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    clearContext();
+  });
 
-export default LogoutRoute
+  return <Navigate to="/signin" state={{ from: location }} replace />;
+};
+
+export default LogoutRoute;

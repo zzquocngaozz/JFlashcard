@@ -22,6 +22,7 @@ public interface FolderService {
 
     FolderSetDTO viewFolderById(long userId,long folderId);
     List<SetSingleDTO> viewListSetByFolderId(long userId,long folderId);
+
     List<FlashcardSetDTOResponse> getListSetOfUser(long userId, long  folderId);
 
     void deleteSetInFolder(long userId, long  folderId,long setId);

@@ -1,50 +1,39 @@
 @startuml
-package "jflashcardsv0_9" {
-    package "controller" {
-    }
 
-    package "dto" {
-    }
-
-    package "entities" {
-    }
-
-    package "exception" {
-    }
-
-    package "mapper" {
-    }
-
-    package "repository" {
-    }
-
-    package "security" {
-    }
-
-    package "service" {
-    }
-
-    package "service.implement" {
-    }
-
-    package "util" {
-    }
+class ManagerSetController {
+  -flashcardSetService: FlashcardSetService
+  +rejectedFlashcardSet(myUserDetail: MyUserDetail, setId: long): ResponseEntity<?>
 }
-controller -.-> service
-controller -.-> dto
-mapper -.-> dto
-mapper -.-> service
-mapper -.-> entities
-repository -.-> entities
-security -.-> util
-security -.-> entities
-security -.-> dto
-security -.-> repository
-security -.-> mapper
-service -.-> dto
-implement -.-> exception
-implement -.-> entities
-implement -.-> util
-implement -.-> mapper
-left to right direction
+
+class FlashcardSetService {
+  -flashcardSetRepository: FlashcardSetRepository
+  -sendEmailService: SendEmailService
+  +rejectedFlashcardSet(setId: long, user: User): void
+}
+
+class MyUserDetail
+
+class User {
+  // attributes...
+}
+
+interface FlashcardSetRepository {
+  +getFlashcardSetByFlashcardSetId(setId: long): FlashcardSet
+}
+
+class FlashcardSet {
+  // attributes...
+}
+
+class SendEmailService {
+  +sendRejectedEmail(email: String, userName: String, title: String, publicAt: Date, description: String): void
+}
+
+ManagerSetController -- FlashcardSetService : has
+FlashcardSetService -- FlashcardSetRepository : uses
+FlashcardSetService -- SendEmailService : uses
+MyUserDetail -- User : uses
+ManagerSetController -- MyUserDetail : uses
+FlashcardSetRepository -- FlashcardSet : uses
+
 @enduml

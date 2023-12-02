@@ -14,7 +14,7 @@ import KanjiDialogForm from "../Dialog/KanjiDialogForm";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import placeholder from "../../assets/images/placeholder.png";
 
-const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
+const KanjiCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -26,9 +26,9 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
     setOpenDelete(!openDelete);
   }, [openDelete]);
   // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
-  const handleUpdate = (data)=>{
-    onUpdate(data,handleToggleForm)
-  }
+  const handleUpdate = (data) => {
+    onUpdate(data, handleToggleForm);
+  };
   return (
     <Stack
       key={index}
@@ -36,7 +36,11 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
       bgcolor={"#fff"}
       m={"10px 0"}
       borderRadius={"8px"}
-      height={300}
+      height={320}
+      width={"100%"}
+      sx={{
+        overflowY: "scroll",
+      }}
     >
       <Stack
         flexGrow={12}
@@ -77,7 +81,14 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
           <Typography variant="h6">{card?.term}</Typography>
         </Stack>
 
-        <Stack flex={7} height={"100%"} p={1} position={"relative"} spacing={1}>
+        <Stack
+          flex={7}
+          height={"100%"}
+          p={1}
+          position={"relative"}
+          sx={{ "& p": { maxWidth: "calc(100% - 160px)" } }}
+          spacing={1}
+        >
           <Stack>
             <Typography variant="span" sx={{ fontWeight: 500 }}>
               Ý nghĩa:
@@ -88,27 +99,30 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
             </Typography>
           </Stack>
           <Stack sx={{ gap: 10, flexDirection: "row" }}>
-            <Stack>
+            <Stack width={"40%"}>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
                 Âm on:
               </Typography>
               <Typography>{card?.onSound}</Typography>
             </Stack>
-            <Stack>
+            <Stack width={"40%"}>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
                 Âm kun:
               </Typography>
               <Typography>{card?.kunSound}</Typography>
             </Stack>
           </Stack>
-          {!!card?.trick?
-          (<Stack>
-            <Typography variant="span" sx={{ fontWeight: 500 }}>
-              Mẹo nhớ:
-            </Typography>
-            <Typography>{card?.trick}</Typography>
-          </Stack>):<></>}
-          {(!!card?.example||!!card?.exampleMean)?
+          {!!card?.trick ? (
+            <Stack>
+              <Typography variant="span" sx={{ fontWeight: 500 }}>
+                Mẹo nhớ:
+              </Typography>
+              <Typography>{card?.trick}</Typography>
+            </Stack>
+          ) : (
+            <></>
+          )}
+          {!!card?.example || !!card?.exampleMean ? (
             <Stack>
               <Typography variant="span" sx={{ fontWeight: 500 }}>
                 Ví dụ:
@@ -116,9 +130,9 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
               <Typography>{card?.example}</Typography>
               <Typography>{card?.exampleMean}</Typography>
             </Stack>
-          :
+          ) : (
             <></>
-          }
+          )}
           <Box
             sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
           >
@@ -150,7 +164,7 @@ const KanjiCardEdit = ({ card, index, onUpdate, onDelete,mutationing }) => {
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            onDelete(card?.cardKanjiId, handleToggleDelete);
+            onDelete(card?.cardId, handleToggleDelete);
           }}
         />
       ) : (

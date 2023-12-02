@@ -1,0 +1,105 @@
+{
+  "events": [
+    {
+      "event": "call",
+      "http_server_request": {
+        "headers": {
+          "content-length": "65",
+          "postman-token": "848db253-40d1-4e0c-8ea8-bf0b738e8c1c",
+          "host": "localhost:8081",
+          "content-type": "application/json",
+          "connection": "keep-alive",
+          "accept-encoding": "gzip, deflate, br",
+          "user-agent": "PostmanRuntime/7.34.0",
+          "accept": "*/*"
+        },
+        "normalized_path_info": "/api/v1/login",
+        "path_info": "/api/v1/login",
+        "protocol": "HTTP/1.1",
+        "request_method": "POST"
+      },
+      "id": 1,
+      "thread_id": 38
+    },
+    {
+      "event": "call",
+      "id": 2,
+      "sql_query": {
+        "database_type": "MySQL",
+        "sql": "select u1_0.user_id,u1_0.birth,u1_0.email,u1_0.first_name,u1_0.islooked,u1_0.isverify,u1_0.last_name,u1_0.password,u1_0.user_name from users u1_0 where u1_0.email=?"
+      },
+      "thread_id": 38
+    },
+    {
+      "elapsed": 0,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "thread_id": 38
+    },
+    {
+      "elapsed": 0.02274433,
+      "event": "return",
+      "http_server_response": {
+        "headers": {
+          "Transfer-Encoding": "chunked",
+          "Keep-Alive": "timeout=60",
+          "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+          "X-Content-Type-Options": "nosniff",
+          "Connection": "keep-alive",
+          "Vary": "Origin",
+          "Pragma": "no-cache",
+          "Expires": "0",
+          "X-XSS-Protection": "0",
+          "Date": "Sun, 05 Nov 2023 08:57:26 GMT",
+          "Content-Type": "application/json"
+        },
+        "status": 422
+      },
+      "id": 4,
+      "parent_id": 1,
+      "thread_id": 38
+    }
+  ],
+  "version": "1.2",
+  "metadata": {
+    "name": "POST /api/v1/login (422) - 15:57:25.801",
+    "app": null,
+    "language": {
+      "name": "java",
+      "version": "17.0.9+11-LTS-201",
+      "engine": "Java HotSpot(TM) 64-Bit Server VM"
+    },
+    "client": {
+      "name": "appmap-java",
+      "url": "https://github.com/appland/appmap-java"
+    },
+    "recorder": {
+      "name": "request_recording",
+      "type": "requests"
+    },
+    "recording": {}
+  },
+  "classMap": [
+    {
+      "type": "http",
+      "name": "HTTP server requests",
+      "children": [
+        {
+          "type": "route",
+          "name": "POST /api/v1/login"
+        }
+      ]
+    },
+    {
+      "type": "database",
+      "name": "Database",
+      "children": [
+        {
+          "type": "query",
+          "name": "select u1_0.user_id,u1_0.birth,u1_0.email,u1_0.first_name,u1_0.islooked,u1_0.isverify,u1_0.last_name,u1_0.password,u1_0.user_name from users u1_0 where u1_0.email=?"
+        }
+      ]
+    }
+  ]
+}

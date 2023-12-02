@@ -6,7 +6,7 @@ import VocaCardEdit from "./Cards/VocaCardEdit";
 import VocaDialogForm from "./Dialog/VocaDialogForm";
 import useVocaCardEdit from "../hooks/useVocaCardEdit";
 // TODO: create hook get list kanji
-const VocaCardEditContainer = ({importing}) => {
+const VocaCardEditContainer = ({ importing }) => {
   //     const [data,setData] = useState([{
   //       cardVocabId: 1,
   //       term: "足",
@@ -38,11 +38,10 @@ const VocaCardEditContainer = ({importing}) => {
 
   const handleToggleForm = useCallback(() => {
     setOpenForm(!openForm);
-    
   }, [openForm]);
 
   const { vocaList, loading, mutationing, addCard, updateCard, deleteCard } =
-    useVocaCardEdit({ handleToggleForm , importing});
+    useVocaCardEdit({ handleToggleForm, importing });
 
   return (
     <Stack>
@@ -64,11 +63,7 @@ const VocaCardEditContainer = ({importing}) => {
       ) : vocaList.length === 0 ? (
         <Stack minHeight={150} justifyContent={"center"} alignItems={"center"}>
           <Box width={70} height={70}>
-            <img
-              src={searhbanner}
-              loading="lazy"
-              alt="notfound"
-            />
+            <img src={searhbanner} loading="lazy" alt="notfound" />
           </Box>
           <Typography textAlign={"center"}>
             Chưa có thẻ nào trong bộ của bạn

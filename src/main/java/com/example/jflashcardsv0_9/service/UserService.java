@@ -31,4 +31,6 @@ public interface UserService {
     void forgotPassword(TokenDTO tokenDTO);
 
     public boolean sendOTP(String email);
+
+    HomeDTO homePageOfGuest();
 }

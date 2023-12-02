@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author Admin
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name = "classpost")
 @Entity
 @Builder
@@ -43,4 +45,7 @@ public class ClassPost implements Serializable{
     @ManyToOne // Mối quan hệ nhiều ClassPost đến một User
     @JoinColumn(name = "creatorId") // Đặt tên cột foreign key là "class_id"
     private User user;
+
+    @OneToMany(mappedBy = "classPost", cascade = CascadeType.ALL)
+    private List<Comment> commentList;
 }

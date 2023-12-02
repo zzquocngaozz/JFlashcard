@@ -1,14 +1,12 @@
 package com.example.jflashcardsv0_9.service.implement;
 
 import com.example.jflashcardsv0_9.dto.*;
-import com.example.jflashcardsv0_9.entities.Role;
-import com.example.jflashcardsv0_9.entities.User;
-import com.example.jflashcardsv0_9.entities.UserRequest;
+import com.example.jflashcardsv0_9.entities.*;
 import com.example.jflashcardsv0_9.exception.Error;
+import com.example.jflashcardsv0_9.exception.Validate;
+import com.example.jflashcardsv0_9.mapper.FlashcardMapper;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
-import com.example.jflashcardsv0_9.repository.RoleRepository;
-import com.example.jflashcardsv0_9.repository.UserRepository;
-import com.example.jflashcardsv0_9.repository.UserRequestRepository;
+import com.example.jflashcardsv0_9.repository.*;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.SendEmailService;
 import com.example.jflashcardsv0_9.service.UserService;
@@ -17,80 +15,63 @@ import com.example.jflashcardsv0_9.exception.*;
 
 import com.example.jflashcardsv0_9.util.RandomTokenUtil;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     BCryptPasswordEncoder passwordEncoder;
-    @Autowired
     JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
+    RoleRepository roleRepository;
     UserRequestRepository userRequestRepository;
-
-    @Autowired
     SendEmailService sendEmailService;
+    FlashcardSetRepository flashcardSetRepository;
+    ClassRoomRepository classRoomRepository;
+    ClassMemberRepository classMemberRepository;
+    VotePointRepository votePointRepository;
+    TrackingProgressRepository trackingProgressRepository;
+    Validate validate;
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, RoleRepository roleRepository, UserRequestRepository userRequestRepository, SendEmailService sendEmailService, FlashcardSetRepository flashcardSetRepository, ClassRoomRepository classRoomRepository, ClassMemberRepository classMemberRepository, VotePointRepository votePointRepository, TrackingProgressRepository trackingProgressRepository, Validate validate) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.roleRepository = roleRepository;
+        this.userRequestRepository = userRequestRepository;
+        this.sendEmailService = sendEmailService;
+        this.flashcardSetRepository = flashcardSetRepository;
+        this.classRoomRepository = classRoomRepository;
+        this.classMemberRepository = classMemberRepository;
+        this.votePointRepository = votePointRepository;
+        this.trackingProgressRepository = trackingProgressRepository;
+        this.validate = validate;
+    }
+
     @Override
     public UserDTO registration( RegisterDTO registerDTO) {
-        CheckRegisterDTO(registerDTO);
+        validate.checkRegisterDTO(registerDTO);
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         User user = UserMapper.toUser(registerDTO);
         Role roles = roleRepository.findByName("ROLE_LEARNER").get();
         user.setRoles(Collections.singleton(roles));
+        user.setVerify(true);
         userRepository.save(user);
         return UserMapper.toUserDTOResponse(user);
     }
 
-    private void CheckRegisterDTO(RegisterDTO registerDTO) {
-        if (registerDTO.getUserName() == null) {
-            throw new AppException(Error.USERNAME_USER_NULL);
-        }
-        if(registerDTO.getEmail() == null){
-            throw new AppException(Error.EMAIL_USER_NULL);
-        }
-        if(userRepository.existsByUserName(registerDTO.getUserName())){
-            throw new AppException(Error.USERNAME_USER_EXIST);
-        }
-        if(userRepository.existsByEmail(registerDTO.getEmail())){
-            throw new AppException(Error.EMAIL_USER_EXIST);
-        }
-
-    }
-    private void CheckUserDTO(UserDTO userDTO) {
-        if (userDTO.getUserName() == null) {
-            throw new AppException(Error.USERNAME_USER_NULL);
-        }
-        if(userDTO.getEmail() == null){
-            throw new AppException(Error.EMAIL_USER_NULL);
-        }
-        if(userRepository.existsByUserName(userDTO.getUserName())){
-            throw new AppException(Error.USERNAME_USER_EXIST);
-        }
-        if(userRepository.existsByEmail(userDTO.getEmail())){
-            throw new AppException(Error.EMAIL_USER_EXIST);
-        }
-
-    }
-
     @Override
     public UserDTO registrationADMIN( RegisterDTO registerDTO) {
-        CheckRegisterDTO(registerDTO);
+        validate.checkRegisterDTO(registerDTO);
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         User user = UserMapper.toUser(registerDTO);
         Role roles = roleRepository.findByName("ROLE_ADMIN").get();
@@ -171,7 +152,6 @@ public class UserServiceImpl implements UserService {
         }
         User user = userOptional.get();
         Role roles = roleRepository.findByRoleId(role).get();
-        System.out.println(roles.getName());
         Set<Role> rs = new HashSet<>();
         rs.add(roles);
         user.setRoles(rs);
@@ -180,19 +160,19 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void addUser(UserDTO userDTO) {
-        CheckUserDTO(userDTO);
+        validate.checkUserDTO(userDTO);
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = UserMapper.toUserDTO(userDTO);
         Role roles = roleRepository.findRoleByRoleId(userDTO.getRole());
         user.setRoles(Collections.singleton(roles));
+        user.setVerify(true);
         userRepository.save(user);
+        sendEmailService.sendMailAccount(userDTO.getEmail(),roles.getName(),userDTO.getPassword());
     }
-
     @Override
     public void changePassword(TokenDTO tokenDTO, MyUserDetail myUserDetail) {
         User user = userRepository.getUserByUserId(myUserDetail.getUser().getUserId());
         boolean isCorrectPass = passwordEncoder.matches(tokenDTO.getPassword(),user.getPassword());
-        System.out.println("Print here 185 change pass" +tokenDTO.getPassword()+" "+tokenDTO.getNewPassword());
         if(!isCorrectPass) throw new AppException(Error.PASSWORD_FALSE);
         user.setPassword(passwordEncoder.encode(tokenDTO.getNewPassword()));
         userRepository.save(user);
@@ -237,5 +217,50 @@ public class UserServiceImpl implements UserService {
         sendEmailService.sendOTPToken(email, token);//send token
         //
         return true;
+    }
+
+    @Override
+    public HomeDTO homePageOfGuest() {
+        Pageable pageable = PageRequest.of(0, 3);
+        // list 3 class
+        List<ClassRoom> classRooms = classMemberRepository.getClassRoomWithMaxUsers(pageable);
+        List<HomeDTO.ClassRoom> rooms = new ArrayList<>();
+        for (ClassRoom classRoom : classRooms){
+            HomeDTO.ClassRoom room = HomeDTO.ClassRoom.builder()
+                    .classRoomName(classRoom.getClassRoomName())
+                    .description(classRoom.getDescription())
+                    .numberMember(classMemberRepository.countClassMembersByClassroom(classRoom))
+                    .teacher(UserMapper.toAuthDTO(classRoom.getTeacher()))
+                    .build();
+            rooms.add(room);
+        }
+        List<FlashcardSet> setLearns = trackingProgressRepository.getTopFlashcardSetsWithMostUsers(3,pageable);
+        List<FlashcardSet> setVotes = votePointRepository.findTop3SetsWithHighestAveragePoints(3,pageable);
+        List<Object[]> topUsers = trackingProgressRepository.getTopUsersWithLearnedFlashcardSets(pageable);
+        List<HomeDTO.User> userTops = new ArrayList<>();
+        for (Object[] result : topUsers){
+            User user = (User) result[0];
+            Long flashcardSetCount = (Long) result[1];
+            HomeDTO.User userDTO  = HomeDTO.User.builder()
+                    .userName(user.getUserName())
+                    .numberSet(flashcardSetCount)
+                    .build();
+            userTops.add(userDTO);
+        }
+
+
+        return HomeDTO.builder()
+                .numberUser(userRepository.count())
+                .numberFLCard(flashcardSetRepository.countAllByStatus(3))
+                .numberClass(classRoomRepository.count())
+                .classRoom(rooms)
+                .setLearn(setLearns.stream()
+                        .map(FlashcardMapper::convertSetSingleDTO)
+                        .collect(Collectors.toList()))
+                .setVote(setVotes.stream()
+                        .map(FlashcardMapper::convertSetSingleDTO)
+                        .collect(Collectors.toList()))
+                .userTop(userTops)
+                .build();
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * @author Admin
@@ -40,12 +41,17 @@ public class ClassRoom implements Serializable {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date createdAt;
 
-    @ManyToOne(cascade = CascadeType.REMOVE) // Đây là mối quan hệ nhiều Class đến một User
+    @ManyToOne(fetch  = FetchType.LAZY) // Đây là mối quan hệ nhiều Class đến một User
     @JoinColumn(name = "teacherId") // Đặt tên cột foreign key là "teacher_id"
     private User teacher;
 
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    private List<ClassMember> classMember;
 
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    private List<ClassPost> classPost;
 
-
+    @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL)
+    private List<ClassSet> classSets;
 
 }

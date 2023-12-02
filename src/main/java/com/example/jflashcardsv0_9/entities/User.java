@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,6 +21,7 @@ import java.util.Set;
  */
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Getter
 @Setter
 @Table(name = "users")
@@ -55,6 +57,7 @@ public class User implements Serializable {
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Role> roles;;
+
 
     @Column(name = "islooked",columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isLooked  ;

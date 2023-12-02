@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
@@ -11,11 +11,13 @@ const useFolder = ({ handleToggleUpdate }) => {
   const { accessToken } = useAuth();
   const navigate = useNavigate();
 
-  const updateNumSet = (isAcs)=>{
-    const numberSet = isAcs?(dataFolder.numberSet+1):(dataFolder.numberSet-1)
-    const newFolder = {...dataFolder,numberSet:numberSet}
-    setDataFolder(newFolder)    
-  }
+  const updateNumSet = (isAcs) => {
+    const numberSet = isAcs
+      ? dataFolder.numberSet + 1
+      : dataFolder.numberSet - 1;
+    const newFolder = { ...dataFolder, numberSet: numberSet };
+    setDataFolder(newFolder);
+  };
 
   useEffect(() => {
     const getSet = async () => {
@@ -27,7 +29,10 @@ const useFolder = ({ handleToggleUpdate }) => {
             Authorization: accessToken,
           },
         };
-        const response = await axios.get(`/createfolder/${folderId}/view-folder`, config);
+        const response = await axios.get(
+          `/createfolder/${folderId}/view-folder`,
+          config
+        );
         setDataFolder(response.data);
         // setDataFolder({
         //   folderId: 1,
@@ -85,7 +90,10 @@ const useFolder = ({ handleToggleUpdate }) => {
         },
       };
       // Gửi yêu cầu delete để xoá dữ liệu
-      const response = await axios.delete(`/createfolder/${folderId}/edit`, config);
+      const response = await axios.delete(
+        `/createfolder/${folderId}/edit`,
+        config
+      );
       navigate("/");
     } catch (error) {
       setMutationing(false);

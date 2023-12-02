@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "classset")
+@Table(name = "classSet")
 @Entity
 @Builder
 public class ClassSet {

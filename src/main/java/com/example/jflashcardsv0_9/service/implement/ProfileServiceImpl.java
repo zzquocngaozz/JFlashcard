@@ -60,9 +60,9 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public boolean sendVerifyToken(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isEmpty())
-            throw new AppException(Error.USER_NOT_FOUND);
-        Optional<UserRequest> optionalUR = userRequestRepository.findByRequestTypeAndUserEmail(2, email);
+        if (optionalUser.isPresent())
+            throw new AppException(Error.EMAIL_USER_EXIST);
+        Optional<UserRequest> optionalUR = userRequestRepository.findByRequestTypeAndMail(2, email);
         if (optionalUR.isPresent()) {
             userRequestRepository.delete(optionalUR.get());// clear neu ton tai otp truoc do
         }
@@ -71,9 +71,9 @@ public class ProfileServiceImpl implements ProfileService {
         userRequestRepository.save(UserRequest.builder()
                 .requestType(2)
                 .token(token)
+                .mail(email)
                 .createAt(new Date(System.currentTimeMillis()))
                 .expireAt(new Date(System.currentTimeMillis() + 15 * 60 * 1000))// 15 phut
-                .user(optionalUser.get())
                 .build());
         sendEmailService.sendVerifyToken(email, token);//send token
         //
@@ -81,10 +81,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public UserDTO verifyUser(String token, String email) {
-
-        Optional<UserRequest> optionalUserRequest = userRequestRepository.findByTokenAndUserEmail(token, email);
-        System.out.println(optionalUserRequest.isEmpty());
+    public void verifyUser(String token, String email) {
+        Optional<UserRequest> optionalUserRequest = userRequestRepository.findByTokenAndMail(token, email);
         if (optionalUserRequest.isEmpty())
             throw new AppException(Error.VERIFY_FALSE);
 
@@ -92,12 +90,6 @@ public class ProfileServiceImpl implements ProfileService {
         if (RandomTokenUtil.checkExpire(userRequest.getExpireAt()))
             throw new AppException(Error.TOKEN_EXPIRE);
         userRequestRepository.delete(userRequest);// clearn token after verify
-        User verifyUser = userRequest.getUser();
-
-        verifyUser.setVerify(true);
-        User updatedUser = userRepository.save(verifyUser);
-        System.out.print(verifyUser.toString());
-        return UserMapper.toUserDTOResponse(updatedUser);
     }
 
     @Override

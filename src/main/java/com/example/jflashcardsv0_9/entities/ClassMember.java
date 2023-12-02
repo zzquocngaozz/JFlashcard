@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "classmember", uniqueConstraints = {
+@Table(name = "classMember", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"userId", "classId"})
 })
 @Entity
@@ -32,12 +32,10 @@ public class ClassMember implements Serializable {
 
     @ManyToOne // Mối quan hệ nhiều ClassMember đến một Classroom
     @JoinColumn(name = "classId") // Đặt tên cột foreign key là "class_id"
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private ClassRoom classroom;
 
     @ManyToOne// Mối quan hệ nhiều ClassMember đến một User
     @JoinColumn(name = "userId") // Đặt tên cột foreign key là "user_id"
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Navbar from "../components/Parts/Navbar";
 import {
   Avatar,
@@ -38,7 +38,7 @@ const Profile = () => {
   };
 
   const [openVerify, setOpenVerify] = React.useState(false);
-
+  const isShow = useRef(false);
   const {
     profile: currentUser,
     loading,
@@ -80,9 +80,15 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    console.log(Boolean(currentUser));
+    if (!Boolean(currentUser)) return;
+    if (isShow.current) return;
+    isShow.current = true;
     setOpenVerifyNotify(currentUser?.verify === false);
   }, [currentUser]);
-
+  useEffect(() => {
+    document.title = "Hồ sơ cá nhân";
+  }, []);
   return (
     <>
       <Navbar />
@@ -167,7 +173,7 @@ const Profile = () => {
                     ""
                   )}
 
-                  <Box sx={{ cursor: "default", display:'flex' }}>
+                  <Box sx={{ cursor: "default", display: "flex" }}>
                     <Chip
                       label={ROLE[currentUser?.role]}
                       color="info"
@@ -189,7 +195,7 @@ const Profile = () => {
                     )}
                   </Box>
 
-                  {!currentUser?.verify? (
+                  {!currentUser?.verify ? (
                     <Button
                       variant="outlined"
                       color="secondary"
@@ -199,7 +205,7 @@ const Profile = () => {
                     >
                       Lấy mã xác minh
                     </Button>
-                  ) :currentUser?.role === 1?(
+                  ) : currentUser?.role === 1 ? (
                     <Button
                       endIcon={<SchoolIcon />}
                       color="success"
@@ -213,7 +219,9 @@ const Profile = () => {
                     >
                       Tôi là giáo viên
                     </Button>
-                  ):(<></>)}
+                  ) : (
+                    <></>
+                  )}
                   <Button
                     endIcon={<ModeEditIcon />}
                     onClick={handleOpenUpdate}

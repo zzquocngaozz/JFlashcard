@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "./useAuth";
 import axios from "axios";
 
-const useVocaCardEdit = ({ handleToggleForm,importing }) => {
+const useVocaCardEdit = ({ handleToggleForm, importing }) => {
   const [vocaList, setVocaList] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
@@ -26,17 +26,15 @@ const useVocaCardEdit = ({ handleToggleForm,importing }) => {
         );
         setVocaList(response.data);
         setLoading(false);
-        
       } catch (error) {
         console.log(error.response.status);
         setLoading(false);
       }
     };
-    if(!importing) {
-      console.log("sao k reload");
+    if (!importing) {
       getVocaCard();
     }
-  }, [setId,importing]);
+  }, [setId, importing]);
 
   const addCard = async (newVocaCard) => {
     try {
@@ -53,8 +51,8 @@ const useVocaCardEdit = ({ handleToggleForm,importing }) => {
         JSON.stringify(newVocaCard),
         config
       );
-      vocaList.push(response.data)
-      
+      vocaList.push(response.data);
+
       setVocaList(vocaList);
       handleToggleForm();
       setMutationing(false);
@@ -64,8 +62,7 @@ const useVocaCardEdit = ({ handleToggleForm,importing }) => {
     }
   };
 
-
-  const updateCard = async (newVocaCard,handleToggle) => {
+  const updateCard = async (newVocaCard, handleToggle) => {
     try {
       setMutationing(true);
       const config = {
@@ -80,13 +77,11 @@ const useVocaCardEdit = ({ handleToggleForm,importing }) => {
         JSON.stringify(newVocaCard),
         config
       );
-      const newKanjiList = vocaList.map((vocaCard) =>
-        vocaCard.cardKanjiId === newVocaCard.cardVocaId
-          ? newVocaCard
-          : vocaCard
+      const newVocaList = vocaList.map((vocaCard) =>
+        vocaCard.cardId === newVocaCard.cardId ? newVocaCard : vocaCard
       );
-      setVocaList(newKanjiList);
-      handleToggle();// dong from update nay la callback gui ve tu voca form
+      setVocaList(newVocaList);
+      handleToggle(); // dong from update nay la callback gui ve tu voca form
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
@@ -104,10 +99,13 @@ const useVocaCardEdit = ({ handleToggleForm,importing }) => {
         },
       };
       // Gửi yêu cầu post để thêm mới dữ liệu
-      const response = await axios.delete(`/createfls/${setId}/edit/vocab-card/${cardId}`, config);
-      const newVocaList = vocaList.filter((voca) =>voca.cardVocabId !== cardId);
-      setVocaList(newVocaList)
-      handleToggle()//dong form sau khi add
+      const response = await axios.delete(
+        `/createfls/${setId}/edit/vocab-card/${cardId}`,
+        config
+      );
+      const newVocaList = vocaList.filter((voca) => voca.cardId !== cardId);
+      setVocaList(newVocaList);
+      handleToggle(); //dong form sau khi add
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
@@ -115,8 +113,7 @@ const useVocaCardEdit = ({ handleToggleForm,importing }) => {
     }
   };
 
-  
-  return { vocaList, loading, mutationing, deleteCard, updateCard,addCard };
+  return { vocaList, loading, mutationing, deleteCard, updateCard, addCard };
 };
 
 export default useVocaCardEdit;

@@ -1,18 +1,26 @@
 package com.example.jflashcardsv0_9.controller;
-import com.example.jflashcardsv0_9.dto.UserDTO;
-import com.example.jflashcardsv0_9.entities.User;
-import com.example.jflashcardsv0_9.repository.UserRepository;
-import com.example.jflashcardsv0_9.security.MyUserDetail;
-import com.example.jflashcardsv0_9.service.UserService;
+
+import com.example.jflashcardsv0_9.dto.DashBoardDTO;
+import com.example.jflashcardsv0_9.dto.WeekTrackingDTO;
+import com.example.jflashcardsv0_9.dto.WeekTrackingDTOResponse;
+import com.example.jflashcardsv0_9.service.HomePageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/dashboard")
 public class DashboardController {
     @Autowired
-    private UserService userService;
+    private HomePageService homePageService;
+
+    @GetMapping
+    public DashBoardDTO dashboard(){
+        return homePageService.dashboard();
+    }
+    @PostMapping
+    public WeekTrackingDTOResponse chartDashboard(@RequestBody WeekTrackingDTO weekTrackingDTO){
+        return homePageService.chartDashboard(weekTrackingDTO);
+    }
 
 }

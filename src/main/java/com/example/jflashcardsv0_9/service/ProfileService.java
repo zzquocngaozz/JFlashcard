@@ -14,7 +14,7 @@ public interface ProfileService {
 
     public boolean sendVerifyToken(String email);
 
-    public UserDTO verifyUser(String token, String email);
+    public void verifyUser(String token, String email);
 
     public boolean askTeacherRole(String email);
 }

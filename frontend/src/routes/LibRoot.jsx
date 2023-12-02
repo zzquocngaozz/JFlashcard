@@ -35,6 +35,8 @@ const LibRoot = () => {
     useRef(null),
     useRef(null),
     useRef(null),
+    useRef(null),
+    useRef(null),
   ];
   const [hoverOffset, setHoverOffset] = useState({ left: 0, width: 0 });
 
@@ -70,7 +72,7 @@ const LibRoot = () => {
         });
       }
     });
-    if(location.pathname === '/my-lib') navigate('/my-lib/sets')
+    if (location.pathname === "/my-lib") navigate("/my-lib/set-manager");
   }, [location.pathname]);
   return (
     <>
@@ -87,7 +89,7 @@ const LibRoot = () => {
               {currentUser?.userName.toUpperCase()[0]}
             </Avatar>
             <Stack>
-              <Typography variant="h5" component={'div'} pl={2}>
+              <Typography variant="h5" component={"div"} pl={2}>
                 {currentUser.firstName + " "} {currentUser.lastName}
                 <Chip
                   label={ROLE[currentUser.role]}
@@ -102,8 +104,24 @@ const LibRoot = () => {
           </BannerLib>
           <NavStyled>
             <NavLink
-              to={"/my-lib/recent"}
+              to={"/my-lib/set-manager"}
               ref={linkRefs[0]}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+            >
+              <ListItem>Quản lý học phần</ListItem>
+            </NavLink>
+            <NavLink
+              to={"/my-lib/card-bank"}
+              ref={linkRefs[1]}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+            >
+              <ListItem>Kho thẻ</ListItem>
+            </NavLink>
+            <NavLink
+              to={"/my-lib/recent"}
+              ref={linkRefs[2]}
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
             >
@@ -111,7 +129,7 @@ const LibRoot = () => {
             </NavLink>
             <NavLink
               to={"/my-lib/marked"}
-              ref={linkRefs[1]}
+              ref={linkRefs[3]}
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
             >
@@ -119,7 +137,7 @@ const LibRoot = () => {
             </NavLink>
             <NavLink
               to={"/my-lib/sets"}
-              ref={linkRefs[2]}
+              ref={linkRefs[4]}
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
             >
@@ -127,7 +145,7 @@ const LibRoot = () => {
             </NavLink>
             <NavLink
               to={"/my-lib/folders"}
-              ref={linkRefs[3]}
+              ref={linkRefs[5]}
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
             >
@@ -135,7 +153,7 @@ const LibRoot = () => {
             </NavLink>
             <NavLink
               to={"/my-lib/classes"}
-              ref={linkRefs[4]}
+              ref={linkRefs[6]}
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
             >
@@ -147,7 +165,7 @@ const LibRoot = () => {
                 backgroundColor: "#007fe3",
                 left: `${hoverOffset.left - 20}px`,
                 width: `${hoverOffset.width - 35}px`,
-                borderRadius:'8px',
+                borderRadius: "8px",
                 bottom: "10px",
                 position: "absolute",
                 transition: "all 120ms cubic-bezier(0.4, 0, 0.2, 1) 10ms",
@@ -176,32 +194,32 @@ const NavStyled = styled(List)({
   padding: "0px 15px",
   backgroundColor: "#fff",
   borderRadius: "8px",
-  "& a":{
-    padding:'10px'
-  }
-//   "& a": {
-//     position: "relative",
-//     "&:after": {
-//       // Sử dụng "&" để liên kết với lớp active của thẻ a
-//       content: '""',
-//       position: "absolute",
-//       left: "10px",
-//       right: "10px",
-//       // width: '50px',
-//       height: "0px",
-//       backgroundColor: "#007fe3",
-//       transition: "all 120ms cubic-bezier(0.4, 0, 0.2, 1) 10ms",
-//     },
-//     "&:hover:after": {
-//       // Sử dụng "&" để liên kết với lớp active của thẻ a
-//       height: "3px",
-//       borderRadius: "3px",
-//     },
-//     "&.active:after": {
-//       // Sử dụng "&" để liên kết với lớp active của thẻ a
-//       height: "3px",
-//       backgroundColor: "#007fe3",
-//     },
-//   },
+  "& a": {
+    padding: "10px",
+  },
+  //   "& a": {
+  //     position: "relative",
+  //     "&:after": {
+  //       // Sử dụng "&" để liên kết với lớp active của thẻ a
+  //       content: '""',
+  //       position: "absolute",
+  //       left: "10px",
+  //       right: "10px",
+  //       // width: '50px',
+  //       height: "0px",
+  //       backgroundColor: "#007fe3",
+  //       transition: "all 120ms cubic-bezier(0.4, 0, 0.2, 1) 10ms",
+  //     },
+  //     "&:hover:after": {
+  //       // Sử dụng "&" để liên kết với lớp active của thẻ a
+  //       height: "3px",
+  //       borderRadius: "3px",
+  //     },
+  //     "&.active:after": {
+  //       // Sử dụng "&" để liên kết với lớp active của thẻ a
+  //       height: "3px",
+  //       backgroundColor: "#007fe3",
+  //     },
+  //   },
 });
 export default LibRoot;

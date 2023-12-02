@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "folderset")
+@Table(name = "folderSet")
 @Entity
 @Builder
 public class FolderSet implements Serializable {
@@ -40,7 +41,12 @@ public class FolderSet implements Serializable {
     @JoinColumn(name = "userId") // Đặt tên cột foreign key là "user_id"
     private User user;
 
-    @ManyToMany
-    private Set<FlashcardSet> flashcardSets;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "folderSet_flashcardSet",
+            joinColumns = @JoinColumn(name = "folderId"),
+            inverseJoinColumns = @JoinColumn(name = "flashcardSetId")
+    )
+    private Set<FlashcardSet> flashcardSets= new HashSet<>();
 
 }

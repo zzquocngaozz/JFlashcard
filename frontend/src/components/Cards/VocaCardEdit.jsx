@@ -12,7 +12,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DialogAlertDeleteCard from "../Dialog/DialogAlertDeleteCard";
 import VocaDialogForm from "../Dialog/VocaDialogForm";
-import placeholder from '../../assets/images/placeholder.png'
+import placeholder from "../../assets/images/placeholder.png";
 
 const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -36,7 +36,11 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
       bgcolor={"#fff"}
       m={"10px 0"}
       borderRadius={"8px"}
-      height={300}
+      height={320}
+      width={"100%"}
+      sx={{
+        overflowY: "scroll",
+      }}
     >
       <Stack
         flexGrow={12}
@@ -77,7 +81,14 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
           <Typography variant="h6">{card?.term}</Typography>
         </Stack>
 
-        <Stack flex={7} height={"100%"} p={1} position={"relative"} spacing={1}>
+        <Stack
+          flex={7}
+          height={"100%"}
+          p={1}
+          position={"relative"}
+          sx={{ "& p": { maxWidth: "calc(100% - 160px)" } }}
+          spacing={1}
+        >
           <Stack>
             <Typography variant="span" sx={{ fontWeight: 500 }}>
               Ý nghĩa:
@@ -129,7 +140,7 @@ const VocaCardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
         <DialogAlertDeleteCard
           handleToggle={handleToggleDelete}
           onDelete={() => {
-            onDelete(card?.cardVocabId, handleToggleDelete);
+            onDelete(card?.cardId, handleToggleDelete);
           }}
         />
       ) : (
