@@ -70,6 +70,7 @@ public class ProfileServiceImpl implements ProfileService {
         // get token
         userRequestRepository.save(UserRequest.builder()
                 .requestType(2)
+
                 .token(token)
                 .createAt(new Date(System.currentTimeMillis()))
                 .expireAt(new Date(System.currentTimeMillis() + 15 * 60 * 1000))// 15 phut

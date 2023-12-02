@@ -1,39 +1,56 @@
 @startuml
-
-class ManagerSetController {
-  -flashcardSetService: FlashcardSetService
-  +rejectedFlashcardSet(myUserDetail: MyUserDetail, setId: long): ResponseEntity<?>
+class ClassSetController {
+    - classSetService: ClassSetService
+    + listClassSet(myUserDetail: MyUserDetail, classId: long): List<ClassSetDTO>
 }
 
-class FlashcardSetService {
-  -flashcardSetRepository: FlashcardSetRepository
-  -sendEmailService: SendEmailService
-  +rejectedFlashcardSet(setId: long, user: User): void
+class ClassSetService {
+    + listClassSet(user: User, classId: long): List<ClassSetDTO>
 }
 
-class MyUserDetail
+class ClassSetDTO {
+    - classSetId: long
+    - startAt: Date
+    - dueAt: Date
+    - classRoomId: long
+    - flashcardSetId: long
+    - title: String
+    - status: String
+    - type: String
+    - numberCard: int
+    - authDTO: AuthDTO
+}
+
+class MyUserDetail {
+    // Assuming attributes and methods specific to your application
+}
 
 class User {
-  // attributes...
+    // Assuming attributes and methods specific to your application
 }
 
-interface FlashcardSetRepository {
-  +getFlashcardSetByFlashcardSetId(setId: long): FlashcardSet
+class ClassRoom {
+    // Assuming attributes and methods specific to your application
+}
+
+class ClassSet {
+    // Assuming attributes and methods specific to your application
 }
 
 class FlashcardSet {
-  // attributes...
+    // Assuming attributes and methods specific to your application
 }
 
-class SendEmailService {
-  +sendRejectedEmail(email: String, userName: String, title: String, publicAt: Date, description: String): void
+class AuthDTO {
+    // Assuming attributes and methods specific to your application
 }
 
-ManagerSetController -- FlashcardSetService : has
-FlashcardSetService -- FlashcardSetRepository : uses
-FlashcardSetService -- SendEmailService : uses
-MyUserDetail -- User : uses
-ManagerSetController -- MyUserDetail : uses
-FlashcardSetRepository -- FlashcardSet : uses
-
+ClassSetController --> ClassSetService: classSetService
+ClassSetController --> MyUserDetail: myUserDetail
+ClassSetController --> ClassSetDTO: List<ClassSetDTO>
+ClassSetService --> User: user
+ClassSetService --> ClassRoom: classRoom
+ClassSetService --> ClassSet: classSets
+ClassSet --> FlashcardSet: flashcardSet
+ClassSetDTO --> AuthDTO: authDTO
 @enduml
