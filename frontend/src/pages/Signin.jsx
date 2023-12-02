@@ -52,9 +52,11 @@ const Signin = () => {
         throw Error("Lỗi không nhận được phản hồi từ máy chủ");
       if (responseData.user.role === 3) {
         navigate("/dashboard");
+        return;
       }
       if (responseData.user.role === 4) {
-        navigate("/manager");
+        navigate("/dashboard/manager");
+        return;
       }
       navigate("/");
     } catch (error) {

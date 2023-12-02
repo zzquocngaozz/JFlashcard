@@ -24,10 +24,12 @@ import VocaDialogForm from "../Dialog/VocaDialogForm";
 import GrammarDialogForm from "../Dialog/GrammarDialogForm";
 import { FLAG_STATUS, SET_TYPE } from "../../utils/constant";
 import DialogAlertDelete from "../Dialog/DialogAlertDelete";
+import { StackList } from "../Styled/StyledStack";
 
 const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openPublic, setOpenPublic] = useState(false);
   const [verifiedAlert, setVerifiedAlert] = useState({
     open: false,
     message:
@@ -47,6 +49,9 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
 
   const handleToggleDelete = () => {
     setOpenDelete(!openDelete);
+  };
+  const handleTogglePublic = () => {
+    setOpenPublic(!openPublic);
   };
   // truyen vao data form truyen vao luc handle submit va call back de dong form luc update thanh cong
   const handleUpdate = (data) => {
@@ -75,10 +80,10 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
           columnGap: "10px",
         }}
       >
-        <Box flex={5}>
+        <StackList flex={5}>
           <Chip label={SET_TYPE[getCardType(card)]} />
-        </Box>
-        <Chip label={FLAG_STATUS[card.status]} />
+          <Chip label={FLAG_STATUS[card.status]} />
+        </StackList>
         <Tooltip title={"Chỉnh sửa"}>
           <IconButton
             sx={{ width: 30, height: 30 }}
@@ -252,6 +257,16 @@ const CardEdit = ({ card, index, onUpdate, onDelete, mutationing }) => {
           handleToggle={handleToggleDelete}
           onDelete={() => {
             onDelete(card, handleToggleDelete);
+          }}
+        />
+      ) : (
+        <></>
+      )}
+      {openPublic ? (
+        <DialogAlertDeleteCard
+          handleToggle={handleTogglePublic}
+          onDelete={() => {
+            onDelete(card, handleTogglePublic);
           }}
         />
       ) : (

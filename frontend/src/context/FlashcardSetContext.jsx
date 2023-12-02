@@ -71,9 +71,17 @@ export const FlashcardSetProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const isPublic = () =>
-    new Date(flashcardSet?.publicAt).toLocaleDateString() <=
-    new Date().toLocaleDateString();
+  const isPublic = () => {
+    let publicDate = new Date(flashcardSet.publicAt);
+    const current = new Date();
+    // return current.toLocaleDateString() <= publicDate.toLocaleDateString();
+    if (publicDate.getFullYear() > current.getFullYear()) return false;
+    if (publicDate.getFullYear() < current.getFullYear()) return true;
+    if (publicDate.getMonth() > current.getMonth()) return false;
+    if (publicDate.getMonth() < current.getMonth()) return true;
+
+    return publicDate.getDate() <= current.getDate();
+  };
 
   const updateVote = async (newVote) => {
     try {

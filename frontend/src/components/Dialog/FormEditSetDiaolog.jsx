@@ -62,7 +62,6 @@ export default function FormEditSetDiaolog({
   React.useEffect(() => {
     // neu public at < current thi loi
     if (!publicAt) return;
-    console.log(publicAt >= flashcardSet.createdAt);
     if (publicAt < flashcardSet.createdAt && publicAt !== "") {
       setError("publicAt", {
         type: "manual",

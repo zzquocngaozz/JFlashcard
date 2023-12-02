@@ -147,6 +147,7 @@ const SetEditContextProvider = ({ children }) => {
       const newFlashSet = { ...dataSet, ...newSet };
       setDataSet(newFlashSet);
       handleToggleUpdateSet();
+      if (newSet.status === 2) navigate("/my-lib/set-manager");
       setMutationing(false);
     } catch (error) {
       setMutationing(false);
@@ -171,7 +172,7 @@ const SetEditContextProvider = ({ children }) => {
       );
       handleToggle();
       setMutationing(false);
-      navigate("/manager");
+      navigate("/manager/set");
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);
@@ -194,7 +195,7 @@ const SetEditContextProvider = ({ children }) => {
       );
       handleToggle();
       setMutationing(false);
-      navigate("/manager");
+      navigate("/manager/set");
     } catch (error) {
       setMutationing(false);
       console.log("Error:", error.response?.data?.errors?.body[0]);

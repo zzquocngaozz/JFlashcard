@@ -160,6 +160,11 @@ export default function EffectedSetListDialog({
                         onSelect={() => {
                           handleSelect(set.flashcardSetId);
                         }}
+                        isSelected={Boolean(
+                          selectedList.find(
+                            (s) => s.flashcardSetId === set.flashcardSetId
+                          )
+                        )}
                       />
                       <Tooltip title={"Xem"}>
                         <Box>

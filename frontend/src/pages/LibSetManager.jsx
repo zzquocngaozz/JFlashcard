@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -15,10 +16,23 @@ import SetManager from "../components/Cards/SetManager";
 import useLibSetManager from "../hooks/useLibSetManager";
 import { FLAG_STATUS } from "../utils/constant";
 import useAuth from "../hooks/useAuth";
-
+import { isOpen } from "../utils/datetimeCalc";
+import { StackList } from "../components/Styled/StyledStack";
+import { Link } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 const LibSetManager = () => {
   const { currentUser } = useAuth();
-  const { listSet: data, loading } = useLibSetManager();
+  const {
+    listSet: data,
+    listSelect,
+    loading,
+    mutationing,
+    setWaiting,
+    toggleSelectSet,
+    isSelected,
+  } = useLibSetManager();
   const [flashcardSetList, setFlashcardList] = useState([]);
   const [paginList, setPaginList] = useState([]);
   const [searchParam, setSearchParam] = useState("");
@@ -30,6 +44,22 @@ const LibSetManager = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [alertWaiting, setAlerttWaiting] = useState({
+    open: false,
+    loadingMessage: "Đang cập nhật trạng thái",
+    message: "Bạn muốn yêu cầu duyệt để công bố những học phần đã chọn này.",
+  });
+
+  const handleToggleWaiting = () => {
+    setAlerttWaiting({
+      ...alertWaiting,
+      open: !alertWaiting.open,
+    });
+  };
+
+  const handleSetWaiting = () => {
+    setWaiting(handleToggleWaiting);
+  };
   const handleSearch = (e) => {
     setSearchParam(e.target.value.trim());
   };
@@ -46,7 +76,7 @@ const LibSetManager = () => {
 
   useEffect(() => {
     const filterData = setTimeout(() => {
-      if (!!data) {
+      if (data.length !== 0) {
         // const result = data.filter(
         //   (set) =>
         //     fuzzySearch(searchParam, set.title) &&
@@ -62,11 +92,45 @@ const LibSetManager = () => {
               fuzzySearch(searchParam, set.title) &&
               set.type === paramFilter.type
             );
+
+          if (paramFilter.type === 0 && paramFilter.status === 3) {
+            return (
+              fuzzySearch(searchParam, set.title) &&
+              set.status === paramFilter.status &&
+              isOpen(set.publicAt)
+            );
+          }
+
+          if (paramFilter.type !== 0 && paramFilter.status === 3) {
+            return (
+              fuzzySearch(searchParam, set.title) &&
+              set.status === paramFilter.status &&
+              set.type === paramFilter.type &&
+              isOpen(set.publicAt)
+            );
+          }
+          if (paramFilter.type === 0 && paramFilter.status === -1) {
+            return (
+              fuzzySearch(searchParam, set.title) &&
+              set.status === 3 &&
+              !isOpen(set.publicAt)
+            );
+          }
+
+          if (paramFilter.type !== 0 && paramFilter.status === -1) {
+            return (
+              fuzzySearch(searchParam, set.title) &&
+              set.status === 3 &&
+              set.type === paramFilter.type &&
+              !isOpen(set.publicAt)
+            );
+          }
           if (paramFilter.type === 0 && paramFilter.status !== 0)
             return (
               fuzzySearch(searchParam, set.title) &&
               set.status === paramFilter.status
             );
+
           if (paramFilter.type !== 0 && paramFilter.status !== 0)
             return (
               fuzzySearch(searchParam, set.title) &&
@@ -104,9 +168,32 @@ const LibSetManager = () => {
         <BackdropLoading />
       ) : (
         <>
-          <Typography variant="h6" sx={{ mt: "15px" }}>
-            Đã tạo {flashcardSetList.length} bộ flashcard
-          </Typography>
+          <StackList sx={{ alignItems: "center" }}>
+            <Typography variant="h6" sx={{ m: "15px 0" }}>
+              Đã tạo {flashcardSetList.length} bộ flashcard
+            </Typography>
+            <StackList>
+              <Button
+                LinkComponent={Link}
+                variant="outlined"
+                to="/create-set"
+                startIcon={<AddIcon />}
+                sx={{ textTransform: "none", borderRadius: "20px" }}
+              >
+                Thêm học phần
+              </Button>
+              <Button
+                color="success"
+                startIcon={<VerifiedIcon />}
+                variant="contained"
+                disabled={listSelect.length === 0}
+                sx={{ textTransform: "none", borderRadius: "20px" }}
+                onClick={handleToggleWaiting}
+              >
+                Duyệt học phần đã chọn
+              </Button>
+            </StackList>
+          </StackList>
           <Stack
             flexDirection={"row"}
             alignItems={"flex-end"}
@@ -157,10 +244,11 @@ const LibSetManager = () => {
                     <MenuItem value={1}>{FLAG_STATUS[1]}</MenuItem>
                     <MenuItem value={2}>{FLAG_STATUS[2]}</MenuItem>
                     <MenuItem value={3}>{FLAG_STATUS[3]}</MenuItem>
-                    <MenuItem value={4}>{FLAG_STATUS[4]}</MenuItem>
+                    <MenuItem value={-1}>Sắp công khai</MenuItem>
+                    <MenuItem value={7}>{FLAG_STATUS[7]}</MenuItem>
                     <MenuItem value={5}>{FLAG_STATUS[5]}</MenuItem>
                     <MenuItem value={6}>{FLAG_STATUS[6]}</MenuItem>
-                    <MenuItem value={7}>{FLAG_STATUS[7]}</MenuItem>
+                    <MenuItem value={4}>{FLAG_STATUS[4]}</MenuItem>
                   </Select>
                 </FormControl>
               ) : (
@@ -212,11 +300,24 @@ const LibSetManager = () => {
               <SetManager
                 key={flashcardSet.flashcardSetId}
                 flashcardSet={flashcardSet}
+                toggleSelectSet={toggleSelectSet}
+                isSelected={isSelected}
               />
             ))}
           </Stack>
         </>
       )}
+      {alertWaiting.open ? (
+        <DialogAlertDelete
+          alertDelete={alertWaiting}
+          handleToggleAlertDelete={handleToggleWaiting}
+          onDelete={handleSetWaiting}
+          mutationing={mutationing}
+        />
+      ) : (
+        <></>
+      )}
+      -
     </>
   );
 };

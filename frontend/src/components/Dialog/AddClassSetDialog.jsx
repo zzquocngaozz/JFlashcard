@@ -20,7 +20,7 @@ import {
 import { StackList } from "../Styled/StyledStack";
 import { useEffect } from "react";
 import { fuzzySearch } from "../../utils/search";
-import { checkDueAt } from "../../utils/datetimeCalc";
+import { checkDueAt, isOpen } from "../../utils/datetimeCalc";
 import useTeacherCreatedSet from "../../hooks/useTeacherCreatedSet";
 import { FLAG_STATUS } from "../../utils/constant";
 import { Link } from "react-router-dom";
@@ -191,11 +191,21 @@ export default function AddClassSetDialog({ handleToggle, addClassSet }) {
                   <StackList flexGrow={1} flexBasis={"50px"}>
                     <Typography
                       className="text--overflow"
-                      sx={{ maxWidth: "350px" }}
+                      sx={{ width: "300px" }}
                     >
                       {set?.title}
                     </Typography>
-                    <Chip label={FLAG_STATUS[set?.status]} />
+                    {set?.status === 3 && !isOpen(set?.publicAt) ? (
+                      <Chip
+                        label={"Chờ công khai"}
+                        sx={{ minWidth: "120px" }}
+                      />
+                    ) : (
+                      <Chip
+                        label={FLAG_STATUS[set?.status]}
+                        sx={{ minWidth: "90px" }}
+                      />
+                    )}
                   </StackList>
                   <IconButton
                     variant="contained"

@@ -22,17 +22,12 @@ import { FLAG_STATUS, SET_TYPE } from "../utils/constant";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import DialogAlertDelete from "../components/Dialog/DialogAlertDelete";
 import FormEditSetDiaolog from "../components/Dialog/FormEditSetDiaolog";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import useSetEdit from "../hooks/useSetEdit";
 import SnapBarAlter from "../components/FeedBack/SnapBarAlter";
-import useSnapBarAlert from "../hooks/useSnapBarAlert";
 import ShowMoreText from "../components/DataDisplay/ShowMoreText";
-import { useFlashcardSetContext } from "../context/FlashcardSetContext";
-import ImportFileDialog from "../components/Dialog/ImportFileDialog";
 import { useInitSetEditContext } from "../context/SetEditContext";
 import CardEditContainer from "../components/CardEditContainer";
-import { StackList } from "../components/Styled/StyledStack";
 import useAuth from "../hooks/useAuth";
+import { isOpen } from "../utils/datetimeCalc";
 
 const SetEdit = () => {
   const { setId } = useParams();
@@ -162,6 +157,14 @@ const SetEdit = () => {
               <ShowMoreText maxLength={100}>
                 {flashcardSet?.description}
               </ShowMoreText>
+              {currentUser.role === 2 ? (
+                <Typography variant="p">
+                  Ngày công khai:{" "}
+                  {new Date(flashcardSet?.publicAt).toLocaleDateString()}
+                </Typography>
+              ) : (
+                <></>
+              )}
               <Stack sx={{ flexDirection: "row", gap: 1, width: 200 }}>
                 <Chip
                   label={SET_TYPE[flashcardSet?.type]}
@@ -182,10 +185,15 @@ const SetEdit = () => {
                     variant="contained"
                   />
                 )} */}
-                <Chip
-                  label={`${FLAG_STATUS[flashcardSet?.status]}`}
-                  variant="contained"
-                />
+                {flashcardSet?.status === 3 &&
+                !isOpen(flashcardSet?.publicAt) ? (
+                  <Chip label={"Chờ công khai"} sx={{ minWidth: "120px" }} />
+                ) : (
+                  <Chip
+                    label={FLAG_STATUS[flashcardSet?.status]}
+                    sx={{ minWidth: "90px" }}
+                  />
+                )}
               </Stack>
             </Stack>
             <Stack flex={1.5} sx={{ justifyContent: "space-between" }}>

@@ -49,6 +49,7 @@ import ManagerRouter from "./routes/ManagerRouter";
 import CheckTeacherSet from "./pages/CheckTeacherSet";
 import SetCheck from "./pages/SetCheck";
 import VerifyRoute from "./routes/VerifyRoute";
+import ManagerDashboard from "./pages/ManagerDashboard";
 
 function App() {
   return (
@@ -84,6 +85,14 @@ function App() {
         <Route
           path="/dashboard"
           element={<AdminRoute element={<Dashboard />} />}
+        />
+        <Route
+          path="/manager/set"
+          element={<ManagerRouter element={<CheckTeacherSet />} />}
+        />
+        <Route
+          path="/dashboard/manager"
+          element={<ManagerRouter element={<ManagerDashboard />} />}
         />
         <Route path="/users">
           <Route
@@ -157,10 +166,6 @@ function App() {
             element={<VerifyRoute element={<LearnSet />} />}
           />
         </Route>
-        <Route
-          path="/manager"
-          element={<ManagerRouter element={<CheckTeacherSet />} />}
-        />
         <Route path="/my-lib" element={<AuthenRoute element={<LibRoot />} />}>
           <Route
             path="/my-lib/set-manager"
