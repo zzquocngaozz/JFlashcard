@@ -39,8 +39,9 @@ const CreateSet = () => {
   const publicAt = watch("publicAt");
 
   const onSubmit = (data) => {
+    console.log(data.publicAt);
     if (!isPublicDate(data.publicAt) && publicAt !== "") {
-      setError("birth", {
+      setError("publicAt", {
         type: "manual",
         message: "Ngày công khai thẻ lớn hơn hoặc bằng ngày hiện tại",
       });
@@ -117,11 +118,11 @@ const CreateSet = () => {
                 error={!!errors.publicAt}
                 helperText={errors.publicAt?.message}
                 variant="standard"
-                sx={{
-                  display: `${
-                    currentUser?.role === 2 ? "inline-flex" : "none"
-                  }`,
-                }}
+                // sx={{
+                //   display: `${
+                //     currentUser?.role === 2 ? "inline-flex" : "none"
+                //   }`,
+                // }}
               />
               <Stack flexDirection={"row"} sx={{ gap: "50px", width: "100%" }}>
                 <FormControl>
