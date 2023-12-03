@@ -14,7 +14,7 @@ const UnAuthenRoute = ({ path, children }) => {
       ) : currentUser?.role === 3 ? (
         <Navigate to="/dashboard" state={{ from: location }} replace />
       ) : currentUser?.role === 4 ? (
-        <Navigate to="/manager" state={{ from: location }} replace />
+        <Navigate to="/dashboard/manager" state={{ from: location }} replace />
       ) : (
         <Navigate to="/home" state={{ from: location }} replace />
       )}

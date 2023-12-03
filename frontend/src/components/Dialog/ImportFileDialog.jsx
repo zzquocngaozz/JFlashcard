@@ -47,10 +47,14 @@ const ImportFileDialog = ({ handleToggle, importFile, importing }) => {
         const fileType =
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
         const fileExtension = ".xlsx";
-
         const ws = utils.json_to_sheet(data);
+
         const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-        const excelBuffer = write(wb, { bookType: "xlsx", type: "array" });
+        const excelBuffer = write(wb, {
+          bookType: "xlsx",
+          type: "array",
+          cellStyles: true,
+        });
 
         const blob = new Blob([excelBuffer], { type: fileType });
         const fileName = "example" + fileExtension;
