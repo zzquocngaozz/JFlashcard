@@ -182,16 +182,20 @@ const LibSetManager = () => {
               >
                 Thêm học phần
               </Button>
-              <Button
-                color="success"
-                startIcon={<VerifiedIcon />}
-                variant="contained"
-                disabled={listSelect.length === 0}
-                sx={{ textTransform: "none", borderRadius: "20px" }}
-                onClick={handleToggleWaiting}
-              >
-                Duyệt học phần đã chọn
-              </Button>
+              {currentUser.role === 2 ? (
+                <Button
+                  color="success"
+                  startIcon={<VerifiedIcon />}
+                  variant="contained"
+                  disabled={listSelect.length === 0}
+                  sx={{ textTransform: "none", borderRadius: "20px" }}
+                  onClick={handleToggleWaiting}
+                >
+                  Duyệt học phần đã chọn
+                </Button>
+              ) : (
+                <></>
+              )}
             </StackList>
           </StackList>
           <Stack

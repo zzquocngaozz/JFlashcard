@@ -65,7 +65,8 @@ const SetManager = ({ flashcardSet, isSelected, toggleSelectSet }) => {
           <Typography>{parseBirth(flashcardSet?.createdAt)}</Typography>
         </StackList>
       </Stack>
-      {flashcardSet.status === 1 || flashcardSet.status === 2 ? (
+      {(flashcardSet.status === 1 || flashcardSet.status === 2) &&
+      currentUser.role === 2 ? (
         <StarHolderStack>
           <SelectBox
             onSelect={() => {
