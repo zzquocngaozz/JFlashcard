@@ -161,13 +161,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(UserDTO userDTO) {
         validate.checkUserDTO(userDTO);
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        String pass = userDTO.getPassword();
+        userDTO.setPassword(passwordEncoder.encode(pass));
         User user = UserMapper.toUserDTO(userDTO);
         Role roles = roleRepository.findRoleByRoleId(userDTO.getRole());
         user.setRoles(Collections.singleton(roles));
         user.setVerify(true);
         userRepository.save(user);
-        sendEmailService.sendMailAccount(userDTO.getEmail(),roles.getName(),userDTO.getPassword());
+        sendEmailService.sendMailAccount(userDTO.getEmail(),roles.getName(),pass);
     }
     @Override
     public void changePassword(TokenDTO tokenDTO, MyUserDetail myUserDetail) {

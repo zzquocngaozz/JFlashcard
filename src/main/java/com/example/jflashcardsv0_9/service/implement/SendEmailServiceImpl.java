@@ -332,7 +332,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     @Override
     public void sendMailAccount(String email, String name, String password) {
-        String subject = "Thông Báo Từ Chối Công Bố Bộ Thẻ trên JFlashcards";
+        String subject = "Thông Báo Cấp Tài Khoản JFlashcards";
         String htmlContent = "    <!doctype html>\n" +
                 "    <html>\n" +
                 "      <head>\n" +
