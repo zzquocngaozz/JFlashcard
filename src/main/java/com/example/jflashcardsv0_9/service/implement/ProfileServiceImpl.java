@@ -70,7 +70,6 @@ public class ProfileServiceImpl implements ProfileService {
         // get token
         userRequestRepository.save(UserRequest.builder()
                 .requestType(2)
-
                 .token(token)
                 .mail(email)
                 .createAt(new Date(System.currentTimeMillis()))
