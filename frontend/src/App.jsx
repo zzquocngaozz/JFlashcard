@@ -38,7 +38,6 @@ import ClassMember from "./pages/ClassMember";
 import ReadSet from "./pages/ReadSet";
 import LearnSet from "./pages/LearnSet";
 import ClassProgress from "./pages/ClassProgress";
-import { FlashcardSetProvider } from "./context/FlashcardSetContext";
 import FlashcardSetComsumer from "./routes/FlashcardSetComsumer";
 import ClassPostCommer from "./routes/ClassPostCommer";
 import ClassContextProvider from "./context/ClassContext";
