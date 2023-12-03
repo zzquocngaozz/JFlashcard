@@ -118,11 +118,11 @@ const CreateSet = () => {
                 error={!!errors.publicAt}
                 helperText={errors.publicAt?.message}
                 variant="standard"
-                // sx={{
-                //   display: `${
-                //     currentUser?.role === 2 ? "inline-flex" : "none"
-                //   }`,
-                // }}
+                sx={{
+                  display: `${
+                    currentUser?.role === 2 ? "inline-flex" : "none"
+                  }`,
+                }}
               />
               <Stack flexDirection={"row"} sx={{ gap: "50px", width: "100%" }}>
                 <FormControl>
