@@ -3,6 +3,8 @@ package com.example.jflashcardsv0_9.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Builder
@@ -11,6 +13,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 public class KanjiDTO implements Card {
     Long cardId;
+    int status;
+    boolean verified;
+
     String onSound;
     String kunSound;
     String chineseSound;
@@ -20,9 +25,6 @@ public class KanjiDTO implements Card {
     String exampleMean;
     String imgUrl;
     String trick;
-    Long flashcardSetId;
-    @Override
-    public Long getCardId() {
-        return this.cardId;
-    }
+    Timestamp creatAt;
+
 }

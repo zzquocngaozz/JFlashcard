@@ -67,12 +67,7 @@ public class ClassPostServiceImpl implements ClassPostService {
         if(existPost.isEmpty()) throw new AppException(Error.valueOf("Bài đăng không tồn tại"));
         ClassPost cachePost = existPost.get();
         cachePost.setContent(classPostDTO.getContent());
-
         classPostRepository.save(cachePost);
-        // Update the entity with the data from the provided ClassPostDTO
-
-        // Save the updated entity to the repository
-        // Handle any error or validation as needed
     }
 
     @Override

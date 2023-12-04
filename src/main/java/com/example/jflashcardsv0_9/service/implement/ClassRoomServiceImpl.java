@@ -32,25 +32,26 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClassRoomServiceImpl implements ClassRoomService {
 
-    @Autowired
     ClassRoomRepository classRoomRepository;
 
-    @Autowired
     ClassMemberRepository classMemberRepository;
 
-    @Autowired
     UserRepository userRepository;
+    @Autowired
+    public ClassRoomServiceImpl(ClassRoomRepository classRoomRepository, ClassMemberRepository classMemberRepository, UserRepository userRepository) {
+        this.classRoomRepository = classRoomRepository;
+        this.classMemberRepository = classMemberRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public IdDTO createClassroom(ClassRoomDTO classRoomDTO, MyUserDetail myUserDetail) {
         classRoomDTO.setTeacher(AuthDTO.builder().userId(myUserDetail.getUser().getUserId()).build());
         classRoomDTO.setClassRoomCode(RandomTokenUtil.generateToken());
         classRoomDTO.setCreatedAt(new Date(System.currentTimeMillis()));
-        System.out.println(classRoomDTO.getClassRoomCode()+" vao day r line 36");
         // chuyen Dto thanh entity va luu vao db
         ClassRoom saveClassroom = classRoomRepository.save(ClassroomMapper.toEntity(classRoomDTO));
         // luu vao classroom member ship
@@ -60,7 +61,6 @@ public class ClassRoomServiceImpl implements ClassRoomService {
                         .user(User.builder().userId(myUserDetail.getUser().getUserId())
                         .build())
                         .build());
-        System.out.println(" vao day r line 46");
         return IdDTO.builder().id(saveClassroom.getClassRoomId()).build();
     }
 
@@ -110,14 +110,14 @@ public class ClassRoomServiceImpl implements ClassRoomService {
                 .collect(Collectors.toList());
     }
     public void deleteClassroom(Long id, MyUserDetail myUserDetail) {
-        Optional<ClassRoom> classRoom = classRoomRepository.findById(id);
-        if(classRoom.isEmpty())
-            throw new AppException(Error.USER_BLOCK);
-        if(classRoom.get().getTeacher().getUserId()!=myUserDetail.getUser().getUserId())
-            throw new AppException(Error.USER_BLOCK);
-        ClassRoom classRoom1 = classRoom.get();
-        System.out.println("printed )" +classRoom1.toString());
-        classRoomRepository.delete(classRoom1);
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(id);
+        if(classRoom == null) {
+            throw new AppException(Error.INFO_NOT_FOUND);
+        }
+        if(classRoom.getTeacher().getUserId()!= myUserDetail.getUser().getUserId()) {
+            throw new AppException(Error.AUTH_GI_DO);
+        }
+        classRoomRepository.delete(classRoom);
     }
 
     @Override
@@ -133,8 +133,10 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     }
 
     @Override
-    public void deleteClassRoom(long auth,long userId, long  classCodeId) {
-        ClassMember classMember = classMemberRepository.getClassMemberByClassroomAndUser(classRoomRepository.getClassRoomByClassRoomId(classCodeId),userRepository.getUserByUserId(userId));
+    public void deleteClassMember(long auth, long userId, long  classCodeId) {
+        ClassRoom classRoom = classRoomRepository.getClassRoomByClassRoomId(classCodeId);
+        User user = userRepository.getUserByUserId(userId);
+        ClassMember classMember = classMemberRepository.getClassMemberByClassroomAndUser(classRoom,user);
         classMemberRepository.delete(classMember);
     }
 

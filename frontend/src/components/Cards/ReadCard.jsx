@@ -15,7 +15,7 @@ import { useFlashcardSetContext } from "../../context/FlashcardSetContext";
 
 const ReadCard = ({ card, index, onSeclectCard }) => {
   const { isLogin } = useAuth();
-  const { markedCards } = useFlashcardSetContext();
+  const { markedCards, mutation } = useFlashcardSetContext();
   const [selected, setSelected] = useState(false);
   useEffect(() => {
     setSelected(markedCards?.includes(card));
@@ -28,9 +28,11 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
       borderRadius={"8px"}
       height={320}
       width={"100%"}
-      sx={{ boxShadow: "1px 2px 5px -1px rgba(0, 0, 0, 0.25)" }}
-      overflow={"none"}
-      overflowy={"scroll"}
+      sx={{
+        boxShadow: "1px 2px 5px -1px rgba(0, 0, 0, 0.25)",
+        overflowY: "scroll",
+      }}
+      // overflow={"none"}
     >
       <Stack
         flexDirection={"row"}
@@ -52,12 +54,15 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
         <Stack
           flex={7}
           className="backside-card"
-          height={"100%"}
-          p={1}
+          minHeight={"100%"}
+          p={2}
           position={"relative"}
-          justifyContent={"center"}
-          sx={{ "& p": { maxWidth: "calc(100% - 160px)" } }}
-          spacing={1}
+          justifyContent={"flex-start"}
+          sx={{
+            rowGap: "10px",
+            "& p": { maxWidth: "calc(100% - 160px)" },
+          }}
+          // spacing={1}
         >
           {!!card.chineseSound ? (
             <Stack>
@@ -137,7 +142,14 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
             <></>
           )}
           <Box
-            sx={{ position: "absolute", right: 10, width: 150, height: 150 }}
+            sx={{
+              position: "absolute",
+              right: 10,
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: 150,
+              height: 150,
+            }}
           >
             {!!card?.imgUrl ? (
               <img
@@ -158,6 +170,7 @@ const ReadCard = ({ card, index, onSeclectCard }) => {
                 top: 5,
                 right: 20,
               }}
+              display={!mutation}
             >
               <Tooltip title={`${!selected ? "Chọn" : "Bỏ chọn"}`}>
                 <IconButton

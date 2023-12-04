@@ -1,6 +1,8 @@
 package com.example.jflashcardsv0_9.security;
 
 import com.example.jflashcardsv0_9.entities.User;
+import com.example.jflashcardsv0_9.exception.AppException;
+import com.example.jflashcardsv0_9.exception.Error;
 import com.example.jflashcardsv0_9.mapper.UserMapper;
 import com.example.jflashcardsv0_9.dto.TokenPayload;
 import com.example.jflashcardsv0_9.repository.UserRepository;
@@ -68,7 +70,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     Authentication authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                }else{}
+                }else{
+                    throw new AppException(Error.TOKEN_TIMEOUT);
+                }
             }
         }
         filterChain.doFilter(request, response);

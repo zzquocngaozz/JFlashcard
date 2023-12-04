@@ -10,7 +10,6 @@ const useCreateClass = () => {
 
   const createClass = async (data) => {
     setLoading(true);
-    console.log(JSON.stringify(data));
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -18,7 +17,6 @@ const useCreateClass = () => {
       },
     };
     try {
-      console.log(data);
       const response = await axios.post(
         "/classroom",
         JSON.stringify(data),
@@ -26,7 +24,6 @@ const useCreateClass = () => {
       );
       const url = `/class/${response.data.id}`;
       navigate(url);
-      //console.log(response.data)
     } catch (error) {
       setLoading(false);
       console.log("lỗi rồi");

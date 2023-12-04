@@ -16,17 +16,53 @@ import { role } from "../utils/regexRole";
 import { useNavigate } from "react-router-dom";
 import useAddSet from "../hooks/useAddSet";
 import useAuth from "../hooks/useAuth";
+import {
+  getDateDefault,
+  isBirthDate,
+  isPublicDate,
+} from "../utils/datetimeCalc";
 
 const CreateSet = () => {
   const {
     register,
     handleSubmit,
+    watch,
+    setError,
+    clearErrors,
     formState: { errors, isDirty },
     control,
   } = useForm();
   const navigate = useNavigate();
-
+  const { currentUser } = useAuth();
   const { loading, createSet } = useAddSet();
+
+  const publicAt = watch("publicAt");
+
+  const onSubmit = (data) => {
+    console.log(data.publicAt);
+    if (!isPublicDate(data.publicAt) && publicAt !== "") {
+      setError("publicAt", {
+        type: "manual",
+        message: "Ngày công khai thẻ lớn hơn hoặc bằng ngày hiện tại",
+      });
+    } else {
+      createSet(data);
+      clearErrors("publicAt");
+    }
+  };
+
+  useEffect(() => {
+    // neu public at < current thi loi
+    if (!publicAt) return;
+    if (!isPublicDate(publicAt) && publicAt !== "") {
+      setError("publicAt", {
+        type: "manual",
+        message: "Ngày công khai thẻ lớn hơn hoặc bằng ngày hiện tại",
+      });
+    } else {
+      clearErrors("publicAt");
+    }
+  }, [publicAt]);
 
   useEffect(() => {
     document.title = "Tạo bộ flashcard";
@@ -45,7 +81,7 @@ const CreateSet = () => {
         <Paper sx={{ padding: "30px", width: 500, maxHeight: 500 }}>
           <Typography variant="h5">Tạo bộ mới</Typography>
           <br />
-          <form onSubmit={handleSubmit(createSet)} noValidate>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Stack flexDirection={"column"} sx={{ gap: "20px" }}>
               <TextField
                 {...register("title", role["title"])}
@@ -66,6 +102,27 @@ const CreateSet = () => {
                 error={!!errors.description}
                 helperText={errors.description?.message}
                 variant="standard"
+              />
+
+              <TextField
+                {...register("publicAt", {
+                  required: "Hãy chọn ngày bạn muốn public bộ thẻ này",
+                })}
+                id="publicAt-helper-text"
+                type="date"
+                label="Ngày công khai"
+                defaultValue={getDateDefault()}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                error={!!errors.publicAt}
+                helperText={errors.publicAt?.message}
+                variant="standard"
+                sx={{
+                  display: `${
+                    currentUser?.role === 2 ? "inline-flex" : "none"
+                  }`,
+                }}
               />
               <Stack flexDirection={"row"} sx={{ gap: "50px", width: "100%" }}>
                 <FormControl>
@@ -88,7 +145,7 @@ const CreateSet = () => {
                     )}
                   />
                 </FormControl>
-                <FormControl flex={1}>
+                {/* <FormControl flex={1}>
                   <InputLabel htmlFor="typeSet">Chế độ</InputLabel>
                   <Controller
                     control={control}
@@ -106,7 +163,7 @@ const CreateSet = () => {
                       </Select>
                     )}
                   />
-                </FormControl>
+                </FormControl> */}
               </Stack>
               <Stack
                 sx={{
@@ -116,7 +173,11 @@ const CreateSet = () => {
                   width: "100%",
                 }}
               >
-                <Button disabled={!isDirty} type="submit" variant="contained">
+                <Button
+                  disabled={!isDirty || loading}
+                  type="submit"
+                  variant="contained"
+                >
                   Tạo
                 </Button>
                 <Button
@@ -126,6 +187,7 @@ const CreateSet = () => {
                   onClick={() => {
                     navigate(-1);
                   }}
+                  disabled={loading}
                 >
                   Huỷ
                 </Button>

@@ -5,6 +5,45 @@ export const isBirthDate = (birthDate) => {
 
   return current > bornAt;
 };
+export const isPublicDate = (publicAt) => {
+  let publicDate = new Date(publicAt);
+  const current = new Date();
+  // return current.toLocaleDateString() <= publicDate.toLocaleDateString();
+  if (publicDate.getFullYear() < current.getFullYear()) return false;
+  if (publicDate.getFullYear() > current.getFullYear()) return true;
+  if (publicDate.getMonth() < current.getMonth()) return false;
+  if (publicDate.getMonth() > current.getMonth()) return true;
+  if (publicDate.getDate() < current.getDate()) return false;
+  return true;
+};
+export const isOpen = (publicAt) => {
+  let publicDate = new Date(publicAt);
+  const current = new Date();
+  // return current.toLocaleDateString() <= publicDate.toLocaleDateString();
+  if (publicDate.getFullYear() > current.getFullYear()) return false;
+  if (publicDate.getFullYear() < current.getFullYear()) return true;
+  if (publicDate.getMonth() > current.getMonth()) return false;
+  if (publicDate.getMonth() < current.getMonth()) return true;
+
+  return publicDate.getDate() <= current.getDate();
+};
+
+export const checkDueAt = (dueAt) => {
+  // Tạo một đối tượng Date cho thời điểm hiện tại
+  const currentDate = new Date();
+
+  // Tạo một đối tượng Date cho thời điểm `dueAt`
+  const dueDate = new Date(dueAt);
+
+  // Tính thời gian cach nhau tính bằng mili giây (1 ngày = 24 giờ x 60 phút x 60 giây x 1000 mili giây)
+  const timeDifference = dueDate.getTime() - currentDate.getTime();
+
+  // xac dinh khoang cach ngay giua current date va due date (24 * 60 * 60 * 1000)
+  const daysSpace = (timeDifference + 60 * 1000) / (24 * 60 * 60 * 1000);
+
+  // Kiem tra due date >= 3 ngay current date
+  return daysSpace >= 3;
+};
 
 export const parseBirth = (birth) => {
   const date = new Date(birth);
@@ -18,8 +57,9 @@ export const parseBirth = (birth) => {
   return `${day}-${month}-${year}`;
 };
 
-export function formatTime(timestamp) {
+export function formatTime(createAt) {
   const currentTime = new Date().getTime();
+  const timestamp = new Date(createAt).getTime();
   const timeDifference = currentTime - timestamp;
 
   const seconds = Math.floor(timeDifference / 1000);
@@ -49,5 +89,51 @@ export function formatTime(timestamp) {
     return minutes + " phút trước";
   }
 
-  return "Vài giây trước";
+  return "vài giây trước";
 }
+
+export const getWeekDate = (weekIndex) => {
+  const currentDate = new Date();
+  const day = currentDate.getDay();
+  const monOfWeek =
+    currentDate.getTime() -
+    (day - 1) * 24 * 60 * 60 * 1000 -
+    weekIndex * 7 * 24 * 60 * 60 * 1000;
+  const sunOfWeek = monOfWeek + 6 * 24 * 60 * 60 * 1000;
+
+  return { startDate: new Date(monOfWeek), endDate: new Date(sunOfWeek) };
+};
+export function numOfWeek(startDate, endDate) {
+  const offsetEndDate = endDate.getDay() === 0 ? 5 : endDate.getDay() - 2;
+  const offsetStartDate = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
+  const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7; // Số mili giây trong một tuần
+  const difference =
+    endDate.getTime() -
+    offsetEndDate * 24 * 60 * 60 * 1000 -
+    (startDate.getTime() - offsetStartDate * 24 * 60 * 60 * 1000);
+  const numberOfWeeks = Math.ceil(difference / millisecondsPerWeek); // Số tuần
+
+  return numberOfWeeks !== 0 ? numberOfWeeks : 1;
+}
+
+export const getWeekDateOption = (weekIndex) => {
+  const dateOfWeek = getWeekDate(weekIndex);
+  return `${dateRangeFormat(dateOfWeek.startDate)} - ${dateRangeFormat(
+    dateOfWeek.endDate
+  )}`;
+};
+
+export const dateRangeFormat = (date) => {
+  const d = new Date(date);
+
+  return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+};
+
+export const getDateDefault = () => {
+  const current = new Date();
+  return `${current.getFullYear()}-${
+    current.getMonth() < 9
+      ? "0" + (current.getMonth() + 1)
+      : current.getMonth() + 1
+  }-${current.getDate() < 10 ? "0" + current.getDate() : current.getDate()}`;
+};

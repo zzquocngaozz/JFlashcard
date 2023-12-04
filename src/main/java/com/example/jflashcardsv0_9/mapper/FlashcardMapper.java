@@ -30,31 +30,56 @@ public class FlashcardMapper {
         return SetSingleDTO.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
+                .publicAt(new Date(flashcardSet.getPublicAt().getTime()))
                 .description(flashcardSet.getDescription())
                 .createdAt(flashcardSet.getCreatedAt())
                 .type(flashcardSet.getType())
-                .isPrivate(flashcardSet.isPrivate())
+                .status(flashcardSet.getStatus())
                 .numberCard(flashcardSetService.numberCard(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
                 .votePoint(votePointService.countNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
                 .numberVote(votePointService.currentNumberVoteBySetId(flashcardSet.getFlashcardSetId()))
                 .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
                 .build();
     }
+    public  static SetSingleDTO convertSetSingleDTOManagerSet(FlashcardSet flashcardSet){
+        return SetSingleDTO.builder()
+                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .title(flashcardSet.getTitle())
+                .publicAt(new Date(flashcardSet.getPublicAt().getTime()))
+                .description(flashcardSet.getDescription())
+                .createdAt(flashcardSet.getCreatedAt())
+                .type(flashcardSet.getType())
+                .status(flashcardSet.getStatus())
+                .numberCard(flashcardSetService.numberCardManager(flashcardSet.getFlashcardSetId(),flashcardSet.getType()))
+                .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
+                .build();
+    }
+    public  static SetSingleDTO convertSetInBank(FlashcardSet flashcardSet){
+        return SetSingleDTO.builder()
+                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .title(flashcardSet.getTitle())
+                .type(flashcardSet.getType())
+                .status(flashcardSet.getStatus())
+                .build();
+    }
 
     public static FlashcardSet convertFlS(FlashcardSetDTORequest flashcardSetDTORequest, User user){
         return FlashcardSet.builder()
+                .status(1)
+                .publicAt(flashcardSetDTORequest.getPublicAt())
                 .title(flashcardSetDTORequest.getTitle())
                 .description(flashcardSetDTORequest.getDescription())
-                .isPrivate(flashcardSetDTORequest.isPrivate())
                 .createdAt(new Date(System.currentTimeMillis()))
                 .type(flashcardSetDTORequest.getType())
                 .user(user)
                 .build();
     }
 
-    public static GrammarDTO convertGrammarDTO(FlashcardGrammar flashcardGrammar,FlashcardSet flashcardSet){
+    public static GrammarDTO convertGrammarDTO(FlashcardGrammar flashcardGrammar){
         return GrammarDTO.builder()
                 .cardId(flashcardGrammar.getCardGrammarId())
+                .verified(flashcardGrammar.isVerify())
+                .status(flashcardGrammar.getStatus())
                 .combination(flashcardGrammar.getCombination())
                 .note(flashcardGrammar.getNote())
                 .term(flashcardGrammar.getTerm())
@@ -62,13 +87,15 @@ public class FlashcardMapper {
                 .example(flashcardGrammar.getExample())
                 .exampleMean(flashcardGrammar.getExampleMean())
                 .imgUrl(flashcardGrammar.getImgUrl())
-                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .creatAt(flashcardGrammar.getCreatedAt())
                 .build();
     }
 
-    public static KanjiDTO convertKanjiDTO(FlashcardKanji flashcardKanji,FlashcardSet flashcardSet){
+    public static KanjiDTO convertKanjiDTO(FlashcardKanji flashcardKanji){
         return KanjiDTO.builder()
                 .cardId(flashcardKanji.getCardKanjiId())
+                .verified(flashcardKanji.isVerify())
+                .status(flashcardKanji.getStatus())
                 .onSound(flashcardKanji.getOnSound())
                 .kunSound(flashcardKanji.getKunSound())
                 .chineseSound(flashcardKanji.getChineseSound())
@@ -78,18 +105,20 @@ public class FlashcardMapper {
                 .exampleMean(flashcardKanji.getExampleMean())
                 .imgUrl(flashcardKanji.getImgUrl())
                 .trick(flashcardKanji.getTrick())
-                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .creatAt(flashcardKanji.getCreatedAt())
                 .build();
     }
-    public static VocabDTO convertVocabDTO(FlashcardVocab flashcardVocab,FlashcardSet flashcardSet){
+    public static VocabDTO convertVocabDTO(FlashcardVocab flashcardVocab){
         return VocabDTO.builder()
                 .cardId(flashcardVocab.getCardVocabId())
+                .verified(flashcardVocab.isVerify())
+                .status(flashcardVocab.getStatus())
                 .term(flashcardVocab.getTerm())
                 .mean(flashcardVocab.getMean())
                 .example(flashcardVocab.getExample())
                 .exampleMean(flashcardVocab.getExampleMean())
                 .imgUrl(flashcardVocab.getImgUrl())
-                .flashcardSetId(flashcardSet.getFlashcardSetId())
+                .creatAt(flashcardVocab.getCreatedAt())
                 .build();
     }
 
@@ -97,15 +126,18 @@ public class FlashcardMapper {
         return FlashcardSetDTOResponse.builder()
                 .flashcardSetId(flashcardSet.getFlashcardSetId())
                 .title(flashcardSet.getTitle())
+                .createdAt(flashcardSet.getCreatedAt())
+                .publicAt(flashcardSet.getPublicAt())
                 .description(flashcardSet.getDescription())
                 .type(flashcardSet.getType())
-                .isPrivate(flashcardSet.isPrivate())
+                .status(flashcardSet.getStatus())
                 .authDTO(UserMapper.toAuthDTO(flashcardSet.getUser()))
                 .build();
     }
-    public static FlashcardKanji convertToFlashcardKanjiEntity(KanjiDTO dto,long setId) {
+    public static FlashcardKanji convertToFlashcardKanjiEntity(KanjiDTO dto,User user) {
         return FlashcardKanji.builder()
                 .cardKanjiId(dto.getCardId())
+                .status(1)
                 .onSound(dto.getOnSound())
                 .kunSound(dto.getKunSound())
                 .chineseSound(dto.getChineseSound())
@@ -115,23 +147,29 @@ public class FlashcardMapper {
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
                 .trick(dto.getTrick())
-                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId))
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+
+                .user(user)
                 .build();
     }
-    public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto,long setId) {
+    public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto,User user) {
         return FlashcardVocab.builder()
                 .cardVocabId(dto.getCardId())
+                .status(1)
+
                 .term(dto.getTerm())
                 .mean(dto.getMean())
                 .example(dto.getExample())
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
-                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId))
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .user(user)
                 .build();
     }
-    public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto,long setId) {
+    public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto,User user) {
         return FlashcardGrammar.builder()
                 .cardGrammarId(dto.getCardId())
+                .status(1)
                 .combination(dto.getCombination())
                 .note(dto.getNote())
                 .term(dto.getTerm())
@@ -139,8 +177,59 @@ public class FlashcardMapper {
                 .example(dto.getExample())
                 .exampleMean(dto.getExampleMean())
                 .imgUrl(dto.getImgUrl())
-                .flashcardSet(flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId))
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .user(user)
                 .build();
+    }
+    public static FlashcardVocab getFlashcardVocab(VocabDTO dto, User user) {
+        FlashcardVocab cloneVocab = new FlashcardVocab();
+        // Sao chép các trường dữ liệu khác nếu cần
+        cloneVocab.setTerm(dto.getTerm());
+        cloneVocab.setStatus(1);
+        cloneVocab.setMean(dto.getMean());
+        cloneVocab.setExample(dto.getExample());
+        cloneVocab.setExampleMean(dto.getExampleMean());
+        cloneVocab.setImgUrl(dto.getImgUrl());
+        cloneVocab.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        // Gán flashcardSet mới cho cloneVocab
+        cloneVocab.setUser(user);
+        return cloneVocab;
+    }
+    public static FlashcardGrammar getFlashcardGrammar(GrammarDTO dto, User user) {
+        FlashcardGrammar cloneGrammar = new FlashcardGrammar();
+
+        // Sao chép các trường dữ liệu khác nếu cần
+        cloneGrammar.setCombination(dto.getCombination());
+        cloneGrammar.setStatus(1);
+        cloneGrammar.setNote(dto.getNote());
+        cloneGrammar.setTerm(dto.getTerm());
+        cloneGrammar.setMean(dto.getMean());
+        cloneGrammar.setExample(dto.getExample());
+        cloneGrammar.setExampleMean(dto.getExampleMean());
+        cloneGrammar.setImgUrl(dto.getImgUrl());
+        cloneGrammar.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        // Gán flashcardSet mới cho cloneVocab
+        cloneGrammar.setUser(user);
+        return cloneGrammar;
+    }
+    public static FlashcardKanji getFlashcardKanji(KanjiDTO dto, User user) {
+        FlashcardKanji cloneKanji = new FlashcardKanji();
+
+        // Sao chép các trường dữ liệu khác nếu cần
+        cloneKanji.setOnSound(dto.getOnSound());
+        cloneKanji.setStatus(1);
+        cloneKanji.setKunSound(dto.getKunSound());
+        cloneKanji.setChineseSound(dto.getChineseSound());
+        cloneKanji.setTerm(dto.getTerm());
+        cloneKanji.setMean(dto.getMean());
+        cloneKanji.setExample(dto.getExample());
+        cloneKanji.setExampleMean(dto.getExampleMean());
+        cloneKanji.setImgUrl(dto.getImgUrl());
+        cloneKanji.setTrick(dto.getTrick());
+        cloneKanji.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        // Gán flashcardSet mới cho cloneVocab
+        cloneKanji.setUser(user);
+        return cloneKanji;
     }
 
 

@@ -13,13 +13,13 @@ import java.util.List;
 public class SearchController {
     @Autowired
     private FlashcardSetService flashcardSetService;
-//    @GetMapping({"","/", "/{title}"})//
-//    public List<SetSingleDTO> searchFlashcardSetPublic (@PathVariable(required = false) String title) {
-//        return flashcardSetService.searchFlashcardSetPublic(title);
-//    }
     @GetMapping()
     public List<SetSingleDTO> searchFlashcardSetPublic(@RequestParam String q) {
         return flashcardSetService.searchFlashcardSetPublic(q);
+    }
+    @GetMapping("/top3")
+    public List<SetSingleDTO> listTop3FlashcardSetPublic() {
+        return flashcardSetService.listTop3VoteFlashcardSetPublic();
     }
 
 }

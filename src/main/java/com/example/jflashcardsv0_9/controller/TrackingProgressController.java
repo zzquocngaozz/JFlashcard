@@ -1,6 +1,6 @@
 package com.example.jflashcardsv0_9.controller;
 
-import com.example.jflashcardsv0_9.dto.TrackingClassSetSTO;
+import com.example.jflashcardsv0_9.dto.*;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
 import com.example.jflashcardsv0_9.service.TrackingProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class TrackingProgressController {
     @Autowired
     TrackingProgressService trackingProgressService;
+
     @PostMapping("/{setId}&&{cardId}")
     public ResponseEntity<?> trackingProgress(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long setId, @PathVariable long cardId){
         trackingProgressService.trackingProgress(myUserDetail.getUser(),setId,cardId);
@@ -22,8 +23,17 @@ public class TrackingProgressController {
     @GetMapping("/{classId}/class/set/{classSetId}")
     public TrackingClassSetSTO trackingProgressClassSet(@AuthenticationPrincipal MyUserDetail myUserDetail, @PathVariable long classId, @PathVariable long classSetId){
         return trackingProgressService.trackingProgressClassSet(myUserDetail.getUser(),classId,classSetId);
-
     }
 
+    @PostMapping("/sendmail")
+    public ResponseEntity<?> sendMailTracking(@RequestBody TrackingDTOResponse trackingDTOResponse){
+        trackingProgressService.sendMailTracking(trackingDTOResponse);
+        return ResponseEntity.ok("đã send mail");
+    }
+
+    @PostMapping("/{classId}/class/set/{classSetId}/view")
+    public WeekTrackingDTOResponse weekTrackingClassSet(@RequestBody WeekTrackingDTO weekTrackingDTO){
+        return trackingProgressService.weekTrackingClassSet(weekTrackingDTO);
+    }
 
 }

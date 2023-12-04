@@ -5,9 +5,10 @@ import com.example.jflashcardsv0_9.dto.ClassPostDTO;
 import com.example.jflashcardsv0_9.dto.CommentDTO;
 import com.example.jflashcardsv0_9.dto.IdDTO;
 import com.example.jflashcardsv0_9.security.MyUserDetail;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface ClassPostService {
     ClassPostDTO createClassPost(ClassPostDTO classPostDTO, MyUserDetail myUserDetail);
     List<ClassPostDTO> getClassPostsByClassroomId(Long classRoomId);

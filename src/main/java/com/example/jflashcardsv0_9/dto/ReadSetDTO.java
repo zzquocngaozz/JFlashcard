@@ -18,8 +18,9 @@ public class ReadSetDTO {
     String title;
     String description;
     int type;
+    Timestamp publicAt;
     Date createdAt;
-    boolean isPrivate;
+    int status;
     boolean isBookMarked;
     long numberCard;
     int voted;
@@ -28,31 +29,15 @@ public class ReadSetDTO {
     AuthDTO authDTO;
 
     List<Card> cards;
-    List<LearnedCard> learnedCards;
-    List<MarkedCard> markedCards;
+    List<Data> learnedCards;
+    List<Data> markedCards;
 
 
     @Getter
     @Setter
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class LearnedCard {
-        long trackingProgressId;
-        long cardId;
-        long userId;
-        long flashcardSetId;
-        Timestamp createdAt;
-        Timestamp lastLearn;
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class MarkedCard {
-        long bookMarkCardId;
-        long userId;
-        long flashcardSetId;
+    public static class Data {
         long cardId;
     }
 }

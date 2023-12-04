@@ -30,7 +30,7 @@ export const StackCardLink = styled(Link)({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
-  width: "32%",
+  width: "30%",
   minWidth: "300px",
   height: "250px",
   backgroundColor: "#fff",

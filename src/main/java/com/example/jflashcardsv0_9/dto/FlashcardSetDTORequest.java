@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Builder
@@ -13,7 +15,8 @@ import java.sql.Date;
 public class FlashcardSetDTORequest {
     String title;
     String description;
-    boolean isPrivate;
+    int status;
+    Timestamp publicAt;
     int type;
 
 }

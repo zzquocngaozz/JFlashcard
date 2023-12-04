@@ -17,21 +17,22 @@ import { getColorFromEnum } from "../utils/colorGetter";
 import { StackList } from "./Styled/StyledStack";
 import CancelScheduleSendIcon from "@mui/icons-material/CancelScheduleSend";
 import CommentCard from "./Cards/CommentCard";
-const CommentContainer = ({ comments }) => {
+import { useClassContext } from "../context/ClassContext";
+import { useClassPostContext } from "../context/ClassPostContext";
+const CommentContainer = ({ comments, classPostId }) => {
+  const { createComment } = useClassPostContext();
   const [open, setOpen] = useState(false);
-
   const { currentUser } = useAuth();
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm();
 
   const onSubmitForm = function (data) {
-    console.log(data);
+    createComment(data, classPostId, reset);
   };
-
-  console.log(comments);
 
   return (
     <Stack>
@@ -43,12 +44,23 @@ const CommentContainer = ({ comments }) => {
           </>
         ) : comments?.length > 1 ? (
           <>
-            <Button sx={{ textTransform: "none" }}>
+            <Button
+              sx={{ textTransform: "none" }}
+              onClick={() => {
+                setOpen(!open);
+              }}
+            >
               Có {comments.length} bình luận
             </Button>
-            {comments?.map((comment) => (
-              <CommentCard postComment={comment} />
-            ))}
+            {open ? (
+              <>
+                {comments?.map((comment) => (
+                  <CommentCard postComment={comment} />
+                ))}
+              </>
+            ) : (
+              <CommentCard postComment={comments[0]} />
+            )}
           </>
         ) : (
           <></>

@@ -4,10 +4,10 @@ import useAuth from "./useAuth";
 import axios from "axios";
 
 const useLearnTracking = () => {
-  const [classMember, setClassMember] = useState([]);
+  const [learnProgress, setLearnProgress] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mutationing, setMutationing] = useState(false);
-  const { classRoomId, setId } = useParams();
+  const { classRoomId, classSetId } = useParams();
   const { accessToken } = useAuth();
   const navigate = useNavigate();
 
@@ -21,11 +21,11 @@ const useLearnTracking = () => {
             Authorization: accessToken,
           },
         };
-        // const response = await axios.get(
-        //   `/classroom/${classRoomId}/listMemBer`,
-        //   config
-        // );
-        // setClassMember(response.data);
+        const response = await axios.get(
+          `/tracking/${classRoomId}/class/set/${classSetId}`,
+          config
+        );
+        setLearnProgress(response.data);
         setLoading(false);
       } catch (error) {
         // log ra status
@@ -39,11 +39,7 @@ const useLearnTracking = () => {
     getClassMember();
   }, [classRoomId]);
 
-  const sendEmail = async (
-    listEmailWarn,
-    listEmailRemind,
-    handleToggleAlertDelete
-  ) => {
+  const sendEmail = async (listEmail, handleToggle) => {
     try {
       setMutationing(true);
       const config = {
@@ -52,24 +48,35 @@ const useLearnTracking = () => {
           "Content-Type": "application/json",
         },
       };
+      const data = {
+        setId: learnProgress.flashcardSetId,
+        classId: classRoomId,
+        onTracking: [],
+        behind: [],
+        lazy: [],
+        ...listEmail,
+      };
       // Gửi yêu cầu delete để xoá dữ liệu
-      const response = await axios.delete(
-        // `/classroom/${classRoomId}/deleteMember/${userId}`,
+      const response = await axios.post(
+        `/tracking/sendmail`,
+        JSON.stringify(data),
         config
       );
-      // const newList = classMember.filter((member) => member.userId !== userId);
-      // setClassMember(newList);
-      handleToggleAlertDelete();
+
       setMutationing(false);
+      handleToggle();
     } catch (error) {
       setMutationing(false);
+      handleToggle();
+
       console.log("Error:", error.response?.data?.errors?.body[0]);
     }
   };
   return {
-    classMember,
+    learnProgress,
     loading,
     mutationing,
+    sendEmail,
   };
 };
 

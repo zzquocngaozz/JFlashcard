@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useInitFlashcardSetContext } from "../context/FlashcardSetContext";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { Box, Stack } from "@mui/material";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
 import { isEmpty } from "../utils/manualTesting";
 import LearnSetWidget from "../components/LearnSetWidget";

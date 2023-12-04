@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class HomePageDTO {
+
     List<SetSingleDTO> flashcardSets;
     List<ClassRoomSingleDTO> classRooms;
 }

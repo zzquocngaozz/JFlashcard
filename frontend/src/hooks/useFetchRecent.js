@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "./useAuth";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { getWeekDate } from "../utils/datetimeCalc";
 
 export default function useFetchRecent() {
   const [recent, setRecent] = useState({ classes: [], sets: [] });
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { accessToken } = useAuth();
-
+  const { accessToken, currentUser } = useAuth();
+  const navigate = useNavigate();
   useEffect(() => {
-    setLoading(true);
-    const fetch = async (url1, url2) => {
+    const fetch = async () => {
+      setLoading(true);
       try {
         const config = {
           headers: {
@@ -17,141 +20,68 @@ export default function useFetchRecent() {
             Authorization: accessToken,
           },
         };
-        // const classes = axios.get(url1, config);
-        // const sets = axios.get(url2, config);
+        const recent = axios.get("/homepage", config);
+        const weekTrackingDTO = getWeekDate(0);
+        const url =
+          currentUser.role === 2
+            ? "/homepage/dashboardteacher"
+            : "/homepage/dashboardlearn";
 
-        // const resultClass = (await classes).data;
-        // const resultSets = (await sets).data;
-
-        // setRecent({resultClass, resultSets});
-
+        const staticLearn = axios.post(
+          url,
+          JSON.stringify(weekTrackingDTO),
+          config
+        );
+        const response = await recent;
+        const result = await staticLearn;
+        setData(result.data);
         setRecent({
-          classes: [
-            {
-              classRoomId: 1,
-              classRoomName: "Lớp học kaiwa cô Kai",
-              classRoomCode: "avxC2sss",
-              description: "Lớp học kaiwa khoá 7 kỳ 3",
-              numberStudent: 27,
-              numberSet: 10,
-              createdAt: "2023/10/10",
-              teacher: {
-                userId: 11,
-                userName: "BanKai01",
-                role: 2,
-              },
-            },
-            {
-              classRoomId: 2,
-              classRoomName: "Lớp học kaiwa cô Kai",
-              classRoomCode: "avxC2sss",
-              description: "Lớp học kaiwa khoá 7 kỳ 3",
-              numberStudent: 27,
-              numberSet: 10,
-              createdAt: "2023/10/8",
-              teacher: {
-                userId: 21,
-                userName: "BanKai02",
-                role: 2,
-              },
-            },
-            {
-              classRoomId: 3,
-              classRoomName: "Lớp học kaiwa cô Kai",
-              classRoomCode: "avxC2sss",
-              description: "Lớp học kaiwa khoá 7 kỳ 3",
-              numberStudent: 27,
-              numberSet: 10,
-              createdAt: "2023/10/7",
-              teacher: {
-                userId: 11,
-                userName: "BanKai01",
-                role: 2,
-              },
-            },
-            {
-              classRoomId: 4,
-              classRoomName: "Lớp học kaiwa cô Kai",
-              classRoomCode: "avxC2sss",
-              description: "Lớp học kaiwa khoá 7 kỳ 3",
-              numberStudent: 27,
-              numberSet: 10,
-              createdAt: "2023/10/10",
-              teacher: {
-                userId: 11,
-                userName: "BanKai03",
-                role: 2,
-              },
-            },
-          ],
-          sets: [
-            {
-              flashcardSetId: 1,
-              title: "Từ vựng thông dụng",
-              description:
-                "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-              numberVote: 27,
-              votePoint: 4.5,
-              numberCard: 60,
-              createdAt: "2023/10/10",
-              type: 1,
-              private: false,
-              authDTO: {
-                userId: 1,
-                userName: "ducpa01",
-                role: 1,
-              },
-            },
-            {
-              flashcardSetId: 2,
-              title: "Từ vựng thông dụng",
-              description:
-                "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-              numberVote: 27,
-              votePoint: 4.5,
-              numberCard: 60,
-              createdAt: "2023/10/10",
-              type: 1,
-              private: false,
-              authDTO: {
-                userId: 1,
-                userName: "ducpa01",
-                role: 1,
-              },
-            },
-            {
-              flashcardSetId: 3,
-              title: "Từ vựng thông dụng",
-              description:
-                "Danh sách từ vựng thông dụng học bài 1 giáo trình minanonihongo",
-              numberVote: 27,
-              votePoint: 4.5,
-              numberCard: 60,
-              createdAt: "2023/10/10",
-              type: 3,
-              private: false,
-              authDTO: {
-                userId: 1,
-                userName: "ducpa01",
-                role: 1,
-              },
-            },
-          ],
+          classes: response?.data?.classRooms,
+          sets: response?.data?.flashcardSets,
         });
-
-        // setLoading(false);
+        setLoading(false);
       } catch (error) {
         // TODO: navigate to not found or accessdenied
-        // setLoading(false);
-        const errorCode = error.response.status;
-        console.log(errorCode);
-        // if (errorCode === 404) navigate("/not-found"); // not found
-        // if (errorCode === 401) navigate("/access-denied"); // not authorize
+        setLoading(false);
+        const errorCode = error?.response?.status;
+        console.log(error);
+        if (errorCode === 404) navigate("/not-found"); // not found
+        if (errorCode === 401) navigate("/access-denied"); // not authorize
       }
     };
 
-    fetch("link1", "link2");
+    fetch();
   }, []);
 
-  return { recent, loading };
+  const getWeekTracking = async (weekIndex, toggleSelect) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: accessToken,
+        },
+      };
+      const weekTrackingDTO = getWeekDate(weekIndex);
+      const url =
+        currentUser.role === 2
+          ? "/homepage/dashboardteacher"
+          : "/homepage/dashboardlearn";
+
+      const staticLearn = await axios.post(
+        url,
+        JSON.stringify(weekTrackingDTO),
+        config
+      );
+      setData(staticLearn.data);
+      // toggleSelect();
+    } catch (error) {
+      setLoading(false);
+      const errorCode = error?.response?.status;
+      console.log(error?.message);
+      if (errorCode === 404) navigate("/not-found"); // not found
+      if (errorCode === 401) navigate("/access-denied"); // not authorize
+    }
+  };
+
+  return { recent, data, loading, getWeekTracking };
 }

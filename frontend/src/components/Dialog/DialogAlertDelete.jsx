@@ -15,8 +15,8 @@ export default function DialogAlertDelete({
   onDelete,
   mutationing,
 }) {
-  const handleClose = () => {
-    handleToggleAlertDelete();
+  const handleClose = (e) => {
+    handleToggleAlertDelete(e);
   };
 
   return (
@@ -28,9 +28,12 @@ export default function DialogAlertDelete({
       <Dialog
         open={alertDelete.open}
         onClose={handleClose}
+        onClick={(e) => {
+          e.preventDefault();
+        }}
         sx={{ "& .MuiPaper-root": { width: "500px", height: "300px" } }}
       >
-        <DialogTitle>Cảnh báo của hệ thống</DialogTitle>
+        <DialogTitle>Thông báo của hệ thống</DialogTitle>
         <DialogContent>
           {mutationing ? (
             <Stack
@@ -43,9 +46,11 @@ export default function DialogAlertDelete({
               <Zoom in={true}>
                 <CircularProgress />
               </Zoom>
-                <DialogContentText textAlign="center">
-                  Đang xoá ....
-                </DialogContentText>
+              <DialogContentText textAlign="center">
+                {alertDelete.loadingMessage
+                  ? alertDelete.loadingMessage
+                  : "Đang lưu ...."}
+              </DialogContentText>
             </Stack>
           ) : (
             <>

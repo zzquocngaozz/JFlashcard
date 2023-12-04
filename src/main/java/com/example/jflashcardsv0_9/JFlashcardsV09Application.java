@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 
 
+@EnableAsync
 @SpringBootApplication
 public class JFlashcardsV09Application implements CommandLineRunner{
 
@@ -49,10 +51,15 @@ public class JFlashcardsV09Application implements CommandLineRunner{
             role.setName("ROLE_ADMIN");
             roleRepository.save(role);
         }
+        if (roleRepository.findRoleByName("ROLE_MANAGER") == null) {
+            Role role = new Role();
+            role.setName("ROLE_MANAGER");
+            roleRepository.save(role);
+        }
         RegisterDTO registerDTO = RegisterDTO.builder()
-                .userName("huuu")
+                .userName("Admin")
                 .password("Qwer1234")
-                .email("12345abc@gmail.com")
+                .email("admin@example.com")
                 .birth(Date.valueOf("2001-12-12"))
                 .firstName("hoang")
                 .lastName("hieu")
@@ -60,6 +67,17 @@ public class JFlashcardsV09Application implements CommandLineRunner{
         if(userRepository.existsByEmail(registerDTO.getEmail()) == false){
             userService.registrationADMIN(registerDTO);
         }
+
+//         Create a BCryptPasswordEncoder
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//
+//        // Password to encode
+//        String rawPassword = "Qwer1234";
+//
+//        // Encode the password
+//        String encodedPassword = passwordEncoder.encode(rawPassword);
+//
+//        System.out.println("Encoded Password: " + encodedPassword);
     }
 
 }

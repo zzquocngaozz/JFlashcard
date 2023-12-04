@@ -91,10 +91,10 @@ const LibClasses = () => {
             >
               <TextField
                 onChange={handleSearch}
-                label="Có tên"
+                label="Tìm theo tên"
                 variant="standard"
               />
-              <FormControl sx={{ m: 1, minWidth: 100 }}>
+              {/* <FormControl sx={{ m: 1, minWidth: 100 }}>
                 <InputLabel id="filter-label">Các lớp</InputLabel>
                 <Select
                   labelId="type-label"
@@ -110,7 +110,7 @@ const LibClasses = () => {
                   <MenuItem value={1}>Đã tham gia</MenuItem>
                   <MenuItem value={2}>Đã tạo</MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl> */}
             </Stack>
 
             {classList.length > 6 ? (

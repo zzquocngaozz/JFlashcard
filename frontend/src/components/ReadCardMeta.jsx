@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FlashcardBookMark from "./DataDisplay/FlashcardBookMark";
 import SetVote from "./Menu/SetVote";
 import { StackList } from "./Styled/StyledStack";
@@ -20,19 +20,62 @@ import { ROLE, SET_TYPE } from "../utils/constant";
 import { getColorFromEnum } from "../utils/colorGetter";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
+import BackdropLoading from "./FeedBack/BackdropLoading";
+import SaveIcon from "@mui/icons-material/Save";
+import SnapBarAlter from "./FeedBack/SnapBarAlter";
+import AlertCloneSet from "./Dialog/AlertCloneSet";
+import CloneCardMenu from "./Menu/CloneCardMenu";
 
 const ReadCardMeta = () => {
-  const { flashcardSet, remain, learnedCards, markedCards } =
-    useFlashcardSetContext();
+  const {
+    flashcardSet,
+    remain,
+    cloning,
+    learnedCards,
+    markedCards,
+    cloneSet,
+    alert,
+    handleCloseSnackBar,
+  } = useFlashcardSetContext();
   const navigate = useNavigate();
   const { isLogin, currentUser } = useAuth();
   const { setId } = useParams();
+
+  const [alertClone, setAlertClone] = useState({
+    open: false,
+    mode: 0,
+    message: "Bạn có muốn sao chép toàn bộ thẻ trong bộ này",
+  });
+
+  const handleTogleClone = (mode) => {
+    console.log(mode);
+    if (mode === 0)
+      setAlertClone({
+        mode: 0,
+        message: "Bạn có muốn sao chép những thẻ trong bộ này",
+        open: true,
+      });
+    else
+      setAlertClone({
+        open: true,
+        mode: 1,
+        message: "Bạn có muốn sao chép những thẻ đã được chọn",
+      });
+  };
+
+  const handleToggleAlert = () => {
+    setAlertClone({ ...alertClone, open: !alertClone.open });
+  };
+
+  const handleClone = (mode) => {
+    cloneSet(mode, handleToggleAlert);
+  };
 
   const setLearnMode = (url, learnMode) => {
     // Chuyển đến trang Page B và truyền state thông qua props.location.state
     navigate(url, { state: { learnMode } });
   };
-  console.log("re-render");
+
   return (
     <Stack
       // pr={4}
@@ -57,19 +100,6 @@ const ReadCardMeta = () => {
               variant="contained"
               sx={{ mr: 1 }}
             />
-            {flashcardSet?.private ? (
-              <Chip
-                label={"Riêng tư"}
-                // color="default"
-                variant="contained"
-              />
-            ) : (
-              <Chip
-                label={"Công khai"}
-                // color="secondary"
-                variant="contained"
-              />
-            )}
           </Stack>
         </Stack>
         <Stack>
@@ -178,15 +208,31 @@ const ReadCardMeta = () => {
             </IconButton>
           </Tooltip>
         ) : isLogin() ? (
-          <Tooltip title={"Lưu và sửa"}>
-            <IconButton
-              onClick={() => {
-                console.log("clicked");
-              }}
-            >
-              <FilterNoneIcon />
-            </IconButton>
-          </Tooltip>
+          // <Tooltip title={"Sao chép thẻ"}>
+          //   <IconButton onClick={cloneSet}>
+          //     <SaveIcon />
+          //   </IconButton>
+          // </Tooltip>
+          <CloneCardMenu handleTogleClone={handleTogleClone} />
+        ) : (
+          <></>
+        )}
+        {cloning ? <BackdropLoading /> : <></>}
+        {alert.open ? (
+          <SnapBarAlter
+            alert={alert}
+            handleCloseSnackBar={handleCloseSnackBar}
+          />
+        ) : (
+          <></>
+        )}
+        {alertClone.open ? (
+          <AlertCloneSet
+            alertClone={alertClone}
+            handleToggle={handleToggleAlert}
+            onClone={handleClone}
+            cloning={cloning}
+          />
         ) : (
           <></>
         )}

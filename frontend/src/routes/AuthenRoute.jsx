@@ -6,9 +6,7 @@ import { useAuthContext } from "../context/AuthContext";
 // route chan nguoi dung chua dang nhap
 const AuthenRoute = ({ path, element }) => {
   const { isLogin } = useAuth();
-  // const { authUser } = useAuthContext();
   const location = useLocation();
-  // console.log(authUser);
 
   return (
     <>

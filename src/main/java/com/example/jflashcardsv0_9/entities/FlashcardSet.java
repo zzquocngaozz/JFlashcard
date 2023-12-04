@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "flashcardset")
+@Table(name = "flashcardSet")
 @Entity
 @Builder
 public class FlashcardSet implements Serializable {
@@ -39,38 +39,36 @@ public class FlashcardSet implements Serializable {
     @JsonFormat(pattern="dd-MM-yyyy")
     private Date createdAt;
 
-    @Column(name = "isprivate",columnDefinition = "BOOLEAN DEFAULT false")
-    private boolean isPrivate = false ;
+    @Column(name = "status", columnDefinition = "INT DEFAULT 1")
+    private int  status ;
 
     @Column(name = "type")
     private int type;
+    @Column(name = "publicAt")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Timestamp publicAt;
 
     @ManyToOne // Mối quan hệ nhiều flashcardset đến một User
     @JoinColumn(name = "user") // Đặt tên cột foreign key là "user_id"
     private User user;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
-    private List<FlashcardGrammar> flashcardGrammars;
-
-    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
-    private List<FlashcardKanji> flashcardKanjis;
-
-    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
-    private List<FlashcardVocab> flashcardVocabs;
-
-    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<BookMarkSet> bookMarkSets;
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<OpenedFlashcardSet> openedFlashcardSets;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<BookMarkCard> bookMarkCards;
     @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<VotePoint> votePoints;
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
+    private List<ClassSet>  classSets;
+    @OneToMany(mappedBy = "flashcardSet", cascade = CascadeType.ALL)
     private List<TrackingProgress> trackingProgresses;
-//    public String getRoleString(){
-//        if(setType == 1){
-//            return "Kanji";
-//        }else if (setType ==2) {
-//            return "Từ vựng";
-//        }else if (setType ==3) {
-//            return "Ngữ pháp";
-//        }
-//        return "";
-//    }
+    @ManyToMany(mappedBy = "flashcardSets")
+    private Set<FolderSet> folderSets = new HashSet<>();
+    @PreRemove
+    private void preRemove() {
+        // Xóa liên kết với FolderSet mà không xóa FolderSet
+        folderSets.forEach(folderSet -> folderSet.getFlashcardSets().remove(this));
+    }
 }

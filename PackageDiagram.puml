@@ -1,50 +1,56 @@
 @startuml
-package "jflashcardsv0_9" {
-    package "controller" {
-    }
-
-    package "dto" {
-    }
-
-    package "entities" {
-    }
-
-    package "exception" {
-    }
-
-    package "mapper" {
-    }
-
-    package "repository" {
-    }
-
-    package "security" {
-    }
-
-    package "service" {
-    }
-
-    package "service.implement" {
-    }
-
-    package "util" {
-    }
+class ClassSetController {
+    - classSetService: ClassSetService
+    + listClassSet(myUserDetail: MyUserDetail, classId: long): List<ClassSetDTO>
 }
-controller -.-> service
-controller -.-> dto
-mapper -.-> dto
-mapper -.-> service
-mapper -.-> entities
-repository -.-> entities
-security -.-> util
-security -.-> entities
-security -.-> dto
-security -.-> repository
-security -.-> mapper
-service -.-> dto
-implement -.-> exception
-implement -.-> entities
-implement -.-> util
-implement -.-> mapper
-left to right direction
+
+class ClassSetService {
+    + listClassSet(user: User, classId: long): List<ClassSetDTO>
+}
+
+class ClassSetDTO {
+    - classSetId: long
+    - startAt: Date
+    - dueAt: Date
+    - classRoomId: long
+    - flashcardSetId: long
+    - title: String
+    - status: String
+    - type: String
+    - numberCard: int
+    - authDTO: AuthDTO
+}
+
+class MyUserDetail {
+    // Assuming attributes and methods specific to your application
+}
+
+class User {
+    // Assuming attributes and methods specific to your application
+}
+
+class ClassRoom {
+    // Assuming attributes and methods specific to your application
+}
+
+class ClassSet {
+    // Assuming attributes and methods specific to your application
+}
+
+class FlashcardSet {
+    // Assuming attributes and methods specific to your application
+}
+
+class AuthDTO {
+    // Assuming attributes and methods specific to your application
+}
+
+ClassSetController --> ClassSetService: classSetService
+ClassSetController --> MyUserDetail: myUserDetail
+ClassSetController --> ClassSetDTO: List<ClassSetDTO>
+ClassSetService --> User: user
+ClassSetService --> ClassRoom: classRoom
+ClassSetService --> ClassSet: classSets
+ClassSet --> FlashcardSet: flashcardSet
+ClassSetDTO --> AuthDTO: authDTO
 @enduml

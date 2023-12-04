@@ -7,8 +7,8 @@ import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import StarIcon from "@mui/icons-material/Star";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import { getColorFromEnum } from "../../utils/colorGetter";
-import { ROLE, SET_TYPE } from "../../utils/constant";
-import { parseBirth } from "../../utils/datetimeCalc";
+import { FLAG_STATUS, ROLE, SET_TYPE } from "../../utils/constant";
+import { isOpen, parseBirth } from "../../utils/datetimeCalc";
 import {
   StackCardLink,
   StackList,
@@ -16,7 +16,6 @@ import {
 } from "../Styled/StyledStack";
 
 const SetSingle = ({ flashcardSet }) => {
-  console.log(flashcardSet);
   return (
     <StackCardLink to={`/${flashcardSet?.flashcardSetId}/read`}>
       <Stack spacing={1}>
@@ -32,7 +31,17 @@ const SetSingle = ({ flashcardSet }) => {
             {flashcardSet?.title}
           </Typography>
         </StackList>
-        <Chip label={SET_TYPE[flashcardSet?.type]} sx={{ width: "90px" }} />
+        <StackList>
+          <Chip label={SET_TYPE[flashcardSet?.type]} sx={{ width: "90px" }} />
+          {flashcardSet?.status === 3 && !isOpen(flashcardSet?.publicAt) ? (
+            <Chip label={"Chờ công khai"} sx={{ minWidth: "120px" }} />
+          ) : (
+            <Chip
+              label={FLAG_STATUS[flashcardSet?.status]}
+              sx={{ minWidth: "90px" }}
+            />
+          )}
+        </StackList>
         <StackList>
           <NoteOutlinedIcon />
           <Typography>

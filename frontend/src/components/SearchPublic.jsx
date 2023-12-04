@@ -66,11 +66,6 @@ const SearchPublic = () => {
   };
 
   useEffect(() => {
-    console.log(!!listSet);
-    console.log(filter.creator === 0 && filter.type === 0);
-    console.log(filter.creator !== 0 && filter.type === 0);
-    console.log(filter.creator === 0 && filter.type !== 0);
-
     const data = [
       ...listSet.filter((set) => {
         if (filter.creator === 0 && filter.type === 0) return true;
@@ -99,10 +94,9 @@ const SearchPublic = () => {
       default:
         break;
     }
-    console.log(sort);
+
     setFilterSet([...data]);
   }, [listSet, sort, filter]);
-  console.log(Math.ceil(filterSet.length / 6.0));
 
   const handleChangePaging = (e, value) => {
     setCurrentPage(value);

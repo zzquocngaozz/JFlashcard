@@ -11,14 +11,21 @@ import {
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DialogAlertDelete from "../Dialog/DialogAlertDelete";
+import useAuth from "../../hooks/useAuth";
 
-const ClassMemberCard = ({ member, isClassAdmin, onDelete, mutationing }) => {
+const ClassMemberCard = ({
+  member,
+  classAdminId,
+  isClassAdmin,
+  onDelete,
+  mutationing,
+}) => {
   const [alertDelete, setAlertDelete] = useState({
     open: false,
     message:
       "Thao tác này không thể hoàn lại. Bạn có muốn tiếp tục xoá thành viên trong lớp học",
   });
-
+  const { currentUser } = useAuth();
   const handleToggleAlertDelete = () => {
     setAlertDelete({
       ...alertDelete,
@@ -39,7 +46,7 @@ const ClassMemberCard = ({ member, isClassAdmin, onDelete, mutationing }) => {
       </Avatar>
       <Typography>{member?.userName + " "}</Typography>
       <Chip label={isClassAdmin ? "Giáo viên" : "Thành viên"} width={50} />
-      {!isClassAdmin ? (
+      {!isClassAdmin && currentUser.userId === classAdminId ? (
         <Tooltip title={`Xoá khỏi lớp học`}>
           <ActionHolderStack sx={{ top: "15px" }}>
             <IconButton

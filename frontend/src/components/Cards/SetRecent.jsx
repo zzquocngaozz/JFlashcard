@@ -20,7 +20,7 @@ import { parseBirth } from "../../utils/datetimeCalc";
 
 const SetRecent = ({ flashcardSet }) => {
   return (
-    <StackCardLink to={"#"}>
+    <StackCardLink to={`/${flashcardSet.flashcardSetId}/read`}>
       <Stack spacing={1}>
         <StackList>
           <FilterNoneIcon />
@@ -29,26 +29,14 @@ const SetRecent = ({ flashcardSet }) => {
         <Chip label={SET_TYPE[flashcardSet.type]} sx={{ width: "100px" }} />
         <Tooltip>
           <StackList>
-            <AccessTimeIcon color="error" />
-            <Typography>{parseBirth(flashcardSet.openAt)}</Typography>
+            <AccessTimeIcon />
+            {/* <Typography>{parseBirth(flashcardSet.openAt)}</Typography> */}
+            <Typography>{parseBirth(flashcardSet?.createdAt)}</Typography>
           </StackList>
         </Tooltip>
         <StackList>
           <NoteOutlinedIcon />
           <Typography>{flashcardSet.numberCard + " "} thẻ</Typography>
-          {/* <Tooltip
-            title={`Đã học ${
-              flashcardSet.numberStudied + "/" + flashcardSet.numberCard
-            } thẻ`}
-          >
-            <LinearProgress
-              variant="determinate"
-              value={Math.floor(
-                (flashcardSet.numberStudied * 100) / flashcardSet.numberCard
-              )}
-              sx={{ height: "5px", width: "80%" }}
-            />
-          </Tooltip> */}
         </StackList>
       </Stack>
       <Tooltip title={`${flashcardSet.numberVote} người đã đánh giá`}>

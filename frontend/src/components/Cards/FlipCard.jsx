@@ -18,13 +18,14 @@ import CustomTextSpeaker from "../DataDisplay/CustomTextSpeaker";
 
 const FlipCard = ({ card }) => {
   const { isLogin } = useAuth();
-  const { markedCards, handleToggleSelectCard: onSeclectCard } =
-    useFlashcardSetContext();
+  const {
+    markedCards,
+    handleToggleSelectCard: onSeclectCard,
+    mutation,
+  } = useFlashcardSetContext();
   const [selected, setSelected] = useState(false);
   const [flip, setFlip] = useState(false);
   useEffect(() => {
-    console.log(card);
-    console.log(markedCards);
     setSelected(markedCards?.includes(card));
   }, [card]);
 
@@ -35,6 +36,7 @@ const FlipCard = ({ card }) => {
   const handleSelect = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (mutation) return;
     setSelected(!selected);
     onSeclectCard(card?.cardId);
   };
@@ -59,7 +61,6 @@ const FlipCard = ({ card }) => {
   useEffect(() => {
     // Lắng nghe sự kiện nhấn phím khi component được render
     document.addEventListener("keydown", handleKeyDown);
-    console.log(flip);
     // Hủy lắng nghe sự kiện khi component bị unmount
     return () => {
       document.removeEventListener("keydown", handleKeyDown);

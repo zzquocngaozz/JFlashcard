@@ -32,7 +32,6 @@ const useVocaCardEdit = ({ handleToggleForm, importing }) => {
       }
     };
     if (!importing) {
-      console.log("sao k reload");
       getVocaCard();
     }
   }, [setId, importing]);

@@ -26,4 +26,5 @@ public interface FolderRepository extends JpaRepository<FolderSet, Long> {
 
     @Override
     void delete(FolderSet entity);
+    long countAllByUser(User user);
 }

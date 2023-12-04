@@ -6,6 +6,7 @@ import searhbanner from "../assets/images/searhbanner.png";
 import GrammarCardEdit from "./Cards/GrammarCardEdit";
 import GrammarDialogForm from "./Dialog/GrammarDialogForm";
 import useGrammarCardEdit from "../hooks/useGrammarCardEdit";
+import CardEdit from "./Cards/CardEdit";
 
 const GrammarCardEditConainer = ({ importing }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -45,7 +46,7 @@ const GrammarCardEditConainer = ({ importing }) => {
         </Stack>
       ) : (
         grammarList.map((card, index) => (
-          <GrammarCardEdit
+          <CardEdit
             key={index}
             index={index}
             card={card}

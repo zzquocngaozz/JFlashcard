@@ -8,7 +8,6 @@ public interface Card {
     String getExample();
     String getExampleMean();
     String getImgUrl();
-    Long getFlashcardSetId();
     // Các phương thức khác nếu cần
 
 }

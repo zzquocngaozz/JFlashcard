@@ -47,20 +47,26 @@ const Signin = () => {
       const responseData = response.data;
       // save into local storage
       login(responseData);
-      console.log(responseData);
       setLoading(false);
-      if (responseData.user && responseData.user.role === 3) {
+      if (!responseData.user)
+        throw Error("Lỗi không nhận được phản hồi từ máy chủ");
+      if (responseData.user.role === 3) {
         navigate("/dashboard");
-      } else {
-        navigate("/");
+        return;
       }
+      if (responseData.user.role === 4) {
+        navigate("/dashboard/manager");
+        return;
+      }
+      navigate("/");
     } catch (error) {
       setLoading(false);
       setAlert({
         open: true,
         severity: "error",
         message:
-          error.response?.data?.errors?.body[0] || "Lỗi trả về không xác định",
+          error.response?.data?.errors?.body[0] ||
+          "Không nhận được phản hồi từ máy chủ",
       });
     }
   };

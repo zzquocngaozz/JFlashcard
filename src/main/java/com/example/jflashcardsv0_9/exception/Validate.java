@@ -9,9 +9,13 @@ import com.example.jflashcardsv0_9.repository.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 @Component
 public class Validate {
@@ -166,16 +170,29 @@ public class Validate {
         validateTitle(flashcardSetDTORequest.getTitle());
         validateDescription(flashcardSetDTORequest.getDescription());
     }
-    public void checkAuthSetFound(long userid,long setId) {
+    public void checkAuthSetFound(User user,long setId) {
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-        User user = userRepository.getUserByUserId(userid);
         if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
             throw new AppException(Error.SET_NOT_FOUND);
         }
-        if(!Objects.equals(flashcardSet.getUser().getUserId(), user.getUserId())){
+        if (!isCreatorOrManager(user, flashcardSet)) {
             throw new AppException(Error.AUTH_GI_DO);
         }
+    }
+    private boolean isCreatorOrManager(User user, FlashcardSet flashcardSet) {
+        // Check if the user is the creator
+        if (flashcardSet.getUser().getUserId() == user.getUserId()) {
+            return true;
+        }
+        // Check if the user has a manager role
+        Set<Role> userRoles = user.getRoles();
+        for (Role role : userRoles) {
+            if ("ROLE_MANAGER".equals(role.getName())) {
+                return true;
+            }
+        }
 
+        return false;
     }
     public void checkExistsSet(long setId){
         if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
@@ -183,31 +200,7 @@ public class Validate {
         }
     }
 
-    public void checkExistsSetAndCard(long setId, long cardId) {
-        if(!flashcardSetRepository.existsFlashcardSetByFlashcardSetId(setId)){
-            throw new AppException(Error.SET_NOT_FOUND);
-        }else {
-            FlashcardSet flashcardSet =flashcardSetRepository.getFlashcardSetByFlashcardSetId(setId);
-            if(flashcardSet.getType() == 1){
-                if(!flashcardKanjiRepository.existsFlashcardKanjiByCardKanjiIdAndFlashcardSet(cardId,flashcardSet)){
-                    throw new AppException(Error.CARD_NOT_FOUND);
-                }
-            }
-            //            "Từ vựng";
-            else if(flashcardSet.getType() == 2){
-                if(!flashcardVocabRepository.existsFlashcardVocabByCardVocabIdAndFlashcardSet(cardId,flashcardSet)){
-                    throw new AppException(Error.CARD_NOT_FOUND);
-                }
-            }
-//             "Ngữ pháp";
-            else if(flashcardSet.getType() == 3){
-                if(!flashcardGrammarRepository.existsFlashcardGrammarByCardGrammarIdAndFlashcardSet(cardId,flashcardSet)){
-                    throw new AppException(Error.CARD_NOT_FOUND);
-                }
-            }
-        }
 
-    }
 
     public void checkClassMember(User user, ClassRoom classRoom) {
         if(!classMemberRepository.existsClassMemberByClassroomAndUser(classRoom,user)){

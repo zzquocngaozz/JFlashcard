@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import UserList from "./pages/UserList";
 import Home from "./pages/Home";
@@ -38,6 +38,17 @@ import ClassMember from "./pages/ClassMember";
 import ReadSet from "./pages/ReadSet";
 import LearnSet from "./pages/LearnSet";
 import ClassProgress from "./pages/ClassProgress";
+import FlashcardSetComsumer from "./routes/FlashcardSetComsumer";
+import ClassPostCommer from "./routes/ClassPostCommer";
+import ClassContextProvider from "./context/ClassContext";
+import LibSetManager from "./pages/LibSetManager";
+import SetEditContextProvider from "./context/SetEditContext";
+import LibCardBank from "./pages/LibCardBank";
+import ManagerRouter from "./routes/ManagerRouter";
+import CheckTeacherSet from "./pages/CheckTeacherSet";
+import SetCheck from "./pages/SetCheck";
+import VerifyRoute from "./routes/VerifyRoute";
+import ManagerDashboard from "./pages/ManagerDashboard";
 
 function App() {
   return (
@@ -73,6 +84,14 @@ function App() {
         <Route
           path="/dashboard"
           element={<AdminRoute element={<Dashboard />} />}
+        />
+        <Route
+          path="/manager/set"
+          element={<ManagerRouter element={<CheckTeacherSet />} />}
+        />
+        <Route
+          path="/dashboard/manager"
+          element={<ManagerRouter element={<ManagerDashboard />} />}
         />
         <Route path="/users">
           <Route
@@ -117,15 +136,44 @@ function App() {
         />
         <Route
           path="/:setId/edit"
-          element={<AuthenRoute element={<SetEdit />} />}
+          element={
+            <AuthenRoute
+              element={
+                <SetEditContextProvider>
+                  <SetEdit />
+                </SetEditContextProvider>
+              }
+            />
+          }
         />
-
         <Route
-          path="/:setId/flashcard"
-          element={<AuthenRoute element={<LearnSet />} />}
+          path="/:setId/check"
+          element={
+            <AuthenRoute
+              element={
+                <SetEditContextProvider>
+                  <SetCheck />
+                </SetEditContextProvider>
+              }
+            />
+          }
         />
-        <Route path="/:setId/read" element={<ReadSet />} />
+        <Route path="/:setId" element={<FlashcardSetComsumer />}>
+          <Route path="read" index element={<ReadSet />} />
+          <Route
+            path="flashcard"
+            element={<VerifyRoute element={<LearnSet />} />}
+          />
+        </Route>
         <Route path="/my-lib" element={<AuthenRoute element={<LibRoot />} />}>
+          <Route
+            path="/my-lib/set-manager"
+            element={<AuthenRoute element={<LibSetManager />} />}
+          />
+          <Route
+            path="/my-lib/card-bank"
+            element={<AuthenRoute element={<LibCardBank />} />}
+          />
           <Route
             path="/my-lib/recent"
             index
@@ -135,6 +183,7 @@ function App() {
             path="/my-lib/sets"
             element={<AuthenRoute element={<LibSets />} />}
           />
+
           <Route
             path="/my-lib/folders"
             element={<AuthenRoute element={<LibFolders />} />}
@@ -151,16 +200,32 @@ function App() {
         <Route
           exact
           path="/class/:classRoomId"
-          element={<AuthenRoute element={<Classroom />} />}
+          element={
+            <AuthenRoute
+              element={
+                <ClassPostCommer>
+                  <Classroom />
+                </ClassPostCommer>
+              }
+            />
+          }
         />
         <Route
           exact
           path="/class/:classRoomId/class-sets"
-          element={<AuthenRoute element={<ClassSet />} />}
+          element={
+            <AuthenRoute
+              element={
+                <ClassContextProvider>
+                  <ClassSet />
+                </ClassContextProvider>
+              }
+            />
+          }
         />
         <Route
           exact
-          path="/class/:classRoomId/progress/:setId"
+          path="/class/:classRoomId/progress/:classSetId"
           element={<AuthenRoute element={<ClassProgress />} />}
         />
         <Route

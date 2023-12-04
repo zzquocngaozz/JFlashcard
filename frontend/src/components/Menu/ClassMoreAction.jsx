@@ -16,10 +16,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useAuth from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useClassContext } from "../../context/ClassContext";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-const ClassMoreAction = ({ handleToggleUpdate, handleToggleDelete }) => {
+const ClassMoreAction = ({
+  handleToggleUpdate,
+  handleToggleDelete,
+  handleLeaveClass,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser } = useAuth();
+  const { isClassAdmin } = useClassContext();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -46,7 +53,7 @@ const ClassMoreAction = ({ handleToggleUpdate, handleToggleDelete }) => {
           </IconButton>
         </Tooltip>
       </Box>
-      <Menu
+      {/* <Menu
         anchorEl={anchorEl}
         id="add-menu"
         open={open}
@@ -54,20 +61,48 @@ const ClassMoreAction = ({ handleToggleUpdate, handleToggleDelete }) => {
         onClick={handleClose}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem onClick={handleClickUpdate}>
-          <ListItemIcon>
-            <CreateIcon />
-          </ListItemIcon>
-          <ListItemText>Chỉnh sửa</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleClickDelete}>
-          <ListItemIcon>
-            <DeleteIcon />
-          </ListItemIcon>
-          <ListItemText>Xoá lớp học</ListItemText>
-        </MenuItem>
-      </Menu>
+      > */}
+      {isClassAdmin() ? (
+        <Menu
+          anchorEl={anchorEl}
+          id="add-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem onClick={handleClickUpdate}>
+            <ListItemIcon>
+              <CreateIcon />
+            </ListItemIcon>
+            <ListItemText>Chỉnh sửa</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={handleClickDelete}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText>Xoá lớp học</ListItemText>
+          </MenuItem>
+        </Menu>
+      ) : (
+        <Menu
+          anchorEl={anchorEl}
+          id="add-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem onClick={handleLeaveClass}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText>Rời lớp học</ListItemText>
+          </MenuItem>
+        </Menu>
+      )}
     </>
   );
 };

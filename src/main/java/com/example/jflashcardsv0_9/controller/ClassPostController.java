@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/classroom")
 public class ClassPostController {
@@ -37,12 +38,11 @@ public class ClassPostController {
         return classPostService.getClassPostsByClassroomId(classRoomId);
     }
 
-
     @PutMapping("/{classRoomId}/class-post")
-    public ResponseEntity<Void> updateClassPost( @RequestBody ClassPostDTO classPostDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+    public ResponseEntity<?> updateClassPost( @RequestBody ClassPostDTO classPostDTO, @AuthenticationPrincipal MyUserDetail myUserDetail) {
 
         classPostService.updateClassPost(classPostDTO, myUserDetail);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Thêm thành công");
     }
 
     @DeleteMapping("/{classRoomId}/class-post/{classPostId}")
