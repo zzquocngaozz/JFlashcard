@@ -65,7 +65,7 @@ const CreateSet = () => {
   }, [publicAt]);
 
   useEffect(() => {
-    document.title = "Tạo bộ flashcard";
+    document.title = "Tạo học phần";
   }, []);
 
   return (

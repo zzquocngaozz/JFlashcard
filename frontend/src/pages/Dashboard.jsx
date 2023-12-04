@@ -24,6 +24,7 @@ const Dashboard = () => {
   const { accessToken } = useAuth();
 
   useEffect(() => {
+    document.title = "JFlashcard";
     const fetchData = async () => {
       setLoading(true);
       const config = {

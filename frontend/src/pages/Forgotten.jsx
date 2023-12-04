@@ -20,6 +20,10 @@ export default function Forgotten() {
     setStep(newStep);
   };
 
+  useEffect(() => {
+    document.title = "Quên mật khẩu";
+  }, []);
+
   return (
     <Stack
       sx={{

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LayoutNormal from "../components/Parts/LayoutNormal";
 import {
@@ -42,6 +42,9 @@ const ClassSet = () => {
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
+  useEffect(() => {
+    document.title = "Học phần của lớp";
+  }, []);
   return (
     <LayoutNormal>
       <Stack p={3} pr={5} pl={5}>

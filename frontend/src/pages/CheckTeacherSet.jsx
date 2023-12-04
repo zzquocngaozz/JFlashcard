@@ -142,7 +142,7 @@ const CheckTeacherSet = () => {
     setCurrentPage(value);
   };
   useEffect(() => {
-    document.title = "Bộ flashcard của bạn";
+    document.title = "Xem học phần của giáo viên";
   }, []);
   return (
     <>
