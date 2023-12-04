@@ -152,6 +152,23 @@ public class FlashcardMapper {
                 .user(user)
                 .build();
     }
+    public static FlashcardKanji convertToKanjiEntity(KanjiDTO dto,User user) {
+        return FlashcardKanji.builder()
+                .cardKanjiId(dto.getCardId())
+                .status(dto.getStatus())
+                .onSound(dto.getOnSound())
+                .kunSound(dto.getKunSound())
+                .chineseSound(dto.getChineseSound())
+                .term(dto.getTerm())
+                .mean(dto.getMean())
+                .example(dto.getExample())
+                .exampleMean(dto.getExampleMean())
+                .imgUrl(dto.getImgUrl())
+                .trick(dto.getTrick())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .user(user)
+                .build();
+    }
     public static FlashcardVocab convertToFlashcardVocabEntity(VocabDTO dto,User user) {
         return FlashcardVocab.builder()
                 .cardVocabId(dto.getCardId())
@@ -166,10 +183,38 @@ public class FlashcardMapper {
                 .user(user)
                 .build();
     }
+    public static FlashcardVocab convertToVocabEntity(VocabDTO dto,User user) {
+        return FlashcardVocab.builder()
+                .cardVocabId(dto.getCardId())
+                .status(dto.getStatus())
+                .term(dto.getTerm())
+                .mean(dto.getMean())
+                .example(dto.getExample())
+                .exampleMean(dto.getExampleMean())
+                .imgUrl(dto.getImgUrl())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .user(user)
+                .build();
+    }
     public static FlashcardGrammar convertToFlashcardGrammarEntity(GrammarDTO dto,User user) {
         return FlashcardGrammar.builder()
                 .cardGrammarId(dto.getCardId())
                 .status(1)
+                .combination(dto.getCombination())
+                .note(dto.getNote())
+                .term(dto.getTerm())
+                .mean(dto.getMean())
+                .example(dto.getExample())
+                .exampleMean(dto.getExampleMean())
+                .imgUrl(dto.getImgUrl())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .user(user)
+                .build();
+    }
+    public static FlashcardGrammar convertToGrammarEntity(GrammarDTO dto,User user) {
+        return FlashcardGrammar.builder()
+                .cardGrammarId(dto.getCardId())
+                .status(dto.getStatus())
                 .combination(dto.getCombination())
                 .note(dto.getNote())
                 .term(dto.getTerm())

@@ -145,7 +145,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void createFlashcardKanji(KanjiDTO kanjiDTO, User user) {
         validate.validateTerm(kanjiDTO.getTerm());
         validate.validateMean(kanjiDTO.getMean());
-        FlashcardKanji flashcardKanji = FlashcardMapper.convertToFlashcardKanjiEntity(kanjiDTO,user);
+        FlashcardKanji flashcardKanji = FlashcardMapper.convertToKanjiEntity(kanjiDTO,user);
         flashcardKanjiRepository.save(flashcardKanji);
     }
     @Override
@@ -192,7 +192,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void createFlashcardGrammar(GrammarDTO grammarDTO, User user) {
         validate.validateTerm(grammarDTO.getTerm());
         validate.validateMean(grammarDTO.getMean());
-        FlashcardGrammar flashcardGrammar = FlashcardMapper.convertToFlashcardGrammarEntity(grammarDTO,user);
+        FlashcardGrammar flashcardGrammar = FlashcardMapper.convertToGrammarEntity(grammarDTO,user);
         flashcardGrammarRepository.save(flashcardGrammar);
     }
     @Override
@@ -237,7 +237,7 @@ public class FlashcardSetServiceImpl implements FlashcardSetService {
     public void createFlashcardVocab(VocabDTO vocabDTO, User user) {
         validate.validateTerm(vocabDTO.getTerm());
         validate.validateMean(vocabDTO.getMean());
-        FlashcardVocab flashcardVocab = FlashcardMapper.convertToFlashcardVocabEntity(vocabDTO,user);
+        FlashcardVocab flashcardVocab = FlashcardMapper.convertToVocabEntity(vocabDTO,user);
         flashcardVocabRepository.save(flashcardVocab);
 
     }
