@@ -59,7 +59,7 @@ const LibSets = () => {
     setCurrentPage(value);
   };
   useEffect(() => {
-    document.title = "Bộ flashcard của bạn";
+    document.title = "Học phần của bạn";
   }, []);
   return (
     <>

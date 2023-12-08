@@ -39,7 +39,6 @@ const CreateSet = () => {
   const publicAt = watch("publicAt");
 
   const onSubmit = (data) => {
-    console.log(data.publicAt);
     if (!isPublicDate(data.publicAt) && publicAt !== "") {
       setError("publicAt", {
         type: "manual",

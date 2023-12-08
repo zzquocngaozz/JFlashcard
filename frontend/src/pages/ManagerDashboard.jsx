@@ -75,6 +75,10 @@ const ManagerDashboard = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    document.title = "JFlashcard | Dashboard";
+  }, []);
   return (
     <LayoutManager>
       {loading ? (

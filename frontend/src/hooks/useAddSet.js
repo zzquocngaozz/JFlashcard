@@ -17,7 +17,6 @@ const useAddSet = () => {
       },
     };
     try {
-      console.log(JSON.stringify(data));
       const response = await axios.post(
         "/createfls",
         JSON.stringify(data),

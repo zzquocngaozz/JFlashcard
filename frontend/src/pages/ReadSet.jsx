@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import LayoutNormal from "../components/Parts/LayoutNormal";
 import BackdropLoading from "../components/FeedBack/BackdropLoading";
@@ -15,7 +15,9 @@ const ReadSet = () => {
   const { isLogin, currentUser } = useAuth();
   const { setId } = useParams();
   // const [loading, setLoading] = useState(true);
-
+  useEffect(() => {
+    document.title = "Xem học phần";
+  }, []);
   return (
     <LayoutNormal>
       <Stack p={3} pr={16} pl={16} minHeight={"100%"}>
