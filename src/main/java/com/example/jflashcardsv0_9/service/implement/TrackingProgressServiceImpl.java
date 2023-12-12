@@ -75,12 +75,10 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
         validate.checkClassMember(user, classRoom);
         List<ClassMember> classMembers = classMemberRepository.getAllByClassroom(classRoom);
         classMembers.removeIf(classMember -> classMember.getUser().getUserId().equals(classRoom.getTeacher().getUserId()));
-
         List<TrackingClassSetSTO.Data> datas = new ArrayList<>();
         for (ClassMember classMember : classMembers) {
-            List<TrackingProgress> trackingProgresses = trackingProgressRepository.getDistinctByUserAndFlashcardSetAndTimeLearnBetween(classMember.getUser(), flashcardSet, classSet.getCreatedAt(), classSet.getDueAt());
-            long count = getCountByFlashcardSetType(flashcardSet.getType(), trackingProgresses);
-
+            List<Long> longs = trackingProgressRepository.findDistinctCardIdsByUserAndFlashcardSetAndTimeLearnBetween(classMember.getUser(), flashcardSet, classSet.getCreatedAt(), classSet.getDueAt());
+            long count = getCountByFlashcardSetType(flashcardSet.getType(), longs);
             TrackingClassSetSTO.Data data = TrackingClassSetSTO.Data.builder()
                     .userId(classMember.getUser().getUserId())
                     .userName(classMember.getUser().getUserName())
@@ -100,20 +98,20 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
                 .build();
     }
 
-    private long getCountByFlashcardSetType(int flashcardSetType, List<TrackingProgress> trackingProgresses) {
-        switch (flashcardSetType) {
+    public long getCountByFlashcardSetType(int type, List<Long> longs) {
+        return longs.stream()
+                .filter(card -> getStatus(type, card) == 3)
+                .count();
+    }
+
+    private int getStatus(int type, Long card) {
+        switch (type) {
             case 1:
-                return trackingProgresses.stream()
-                        .map(progress -> flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(progress.getCardId(), 3))
-                        .count();
+                return flashcardKanjiRepository.getFlashcardKanjiByCardKanjiIdAndStatus(card, 3) != null ? 3 : 0;
             case 2:
-                return trackingProgresses.stream()
-                        .map(progress -> flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(progress.getCardId(), 3))
-                        .count();
+                return flashcardVocabRepository.getFlashcardVocabByCardVocabIdAndStatus(card, 3) != null ? 3 : 0;
             case 3:
-                return trackingProgresses.stream()
-                        .map(progress -> flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(progress.getCardId(), 3))
-                        .count();
+                return flashcardGrammarRepository.getFlashcardGrammarByCardGrammarIdAndStatus(card, 3) != null ? 3 : 0;
             default:
                 return 0;
         }

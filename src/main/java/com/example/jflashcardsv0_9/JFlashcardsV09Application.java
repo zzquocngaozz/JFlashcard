@@ -25,59 +25,10 @@ public class JFlashcardsV09Application implements CommandLineRunner{
     public static void main(String[] args) {
         SpringApplication.run(JFlashcardsV09Application.class, args);
     }
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
 
     @Override
     public  void run(String... arg) throws Exception{
-        if (roleRepository.findRoleByName("ROLE_LEARNER") == null) {
-            Role role = new Role();
-            role.setName("ROLE_LEARNER");
-            roleRepository.save(role);
-        }
 
-        if (roleRepository.findRoleByName("ROLE_TEACHER") == null) {
-            Role role = new Role();
-            role.setName("ROLE_TEACHER");
-            roleRepository.save(role);
-        }
-
-        if (roleRepository.findRoleByName("ROLE_ADMIN") == null) {
-            Role role = new Role();
-            role.setName("ROLE_ADMIN");
-            roleRepository.save(role);
-        }
-        if (roleRepository.findRoleByName("ROLE_MANAGER") == null) {
-            Role role = new Role();
-            role.setName("ROLE_MANAGER");
-            roleRepository.save(role);
-        }
-        RegisterDTO registerDTO = RegisterDTO.builder()
-                .userName("Admin")
-                .password("Qwer1234")
-                .email("admin@example.com")
-                .birth(Date.valueOf("2001-12-12"))
-                .firstName("hoang")
-                .lastName("hieu")
-                .build();
-        if(userRepository.existsByEmail(registerDTO.getEmail()) == false){
-            userService.registrationADMIN(registerDTO);
-        }
-
-//         Create a BCryptPasswordEncoder
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//
-//        // Password to encode
-//        String rawPassword = "Qwer1234";
-//
-//        // Encode the password
-//        String encodedPassword = passwordEncoder.encode(rawPassword);
-//
-//        System.out.println("Encoded Password: " + encodedPassword);
     }
 
 }
