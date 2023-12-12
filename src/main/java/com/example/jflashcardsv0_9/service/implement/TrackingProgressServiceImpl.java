@@ -22,6 +22,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -184,7 +185,10 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
     @Override
     public WeekTrackingDTOResponse weekTrackingClassSet(WeekTrackingDTO dto) {
         User user = userRepository.getUserByUserId(dto.getUserId());
+
         FlashcardSet flashcardSet = flashcardSetRepository.getFlashcardSetByFlashcardSetId(dto.getFlashcardSetId());
+        Optional<TrackingProgress> oldestTrackingProgress = trackingProgressRepository.findTopByUserAndFlashcardSetOrderByTimeLearnAsc(user, flashcardSet);
+        Optional<TrackingProgress> latestTrackingProgress = trackingProgressRepository.findTopByUserAndFlashcardSetOrderByTimeLearnDesc(user, flashcardSet);
         List<LocalDate> dateRange = getDateRange(dto.getStartDate().toLocalDate(), dto.getEndDate().toLocalDate());
         List<Long> dataWeek = new ArrayList<>();
         for (LocalDate date : dateRange) {
@@ -192,8 +196,8 @@ public class TrackingProgressServiceImpl implements TrackingProgressService {
             dataWeek.addAll(dailyData);
         }
         return WeekTrackingDTOResponse.builder()
-                .startDate(trackingProgressRepository.getTimeLearnOld(user,flashcardSet))
-                .endDate(trackingProgressRepository.getTimeLearnNew(user,flashcardSet))
+                .startDate(oldestTrackingProgress.get().getTimeLearn())
+                .endDate(latestTrackingProgress.get().getTimeLearn())
                 .data(dataWeek)
                 .build();
     }
