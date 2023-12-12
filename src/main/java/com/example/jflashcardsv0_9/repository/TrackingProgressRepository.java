@@ -78,6 +78,15 @@ public interface TrackingProgressRepository extends JpaRepository<TrackingProgre
             "AND tp.flashcardSet = :flashcard " +
             "GROUP BY DATE(tp.timeLearn)")
     Date getTimeLearnNew(@Param("user") User user, @Param("flashcard") FlashcardSet flashcard);
-    List<TrackingProgress> getDistinctByUserAndFlashcardSetAndTimeLearnBetween(User user,FlashcardSet flashcardSet,Timestamp start,Timestamp end);
+    @Query("SELECT DISTINCT tp.cardId FROM TrackingProgress tp " +
+            "WHERE tp.user = :user " +
+            "AND tp.flashcardSet = :flashcardSet " +
+            "AND tp.timeLearn BETWEEN :start AND :end")
+    List<Long> findDistinctCardIdsByUserAndFlashcardSetAndTimeLearnBetween(
+            @Param("user") User user,
+            @Param("flashcardSet") FlashcardSet flashcardSet,
+            @Param("start") Timestamp start,
+            @Param("end") Timestamp end
+    );
 
 }

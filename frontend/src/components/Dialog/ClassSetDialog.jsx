@@ -108,14 +108,15 @@ const ClassSetDialog = ({ learnProgress, student, handleTogle }) => {
     setWeekIndex(e.target.value);
   };
   useEffect(() => {
+    console.log(studentProgress?.startDate);
     if (studentProgress?.startDate === studentProgress?.endDate) {
       setSelectSize(1);
       return;
     }
     setSelectSize(
       numOfWeek(
-        new Date(studentProgress?.startDate),
-        new Date(studentProgress?.endDate)
+        new Date(studentProgress?.startDate?.split("T")[0]),
+        new Date(studentProgress?.endDate?.split("T")[0])
       )
     );
   }, [studentProgress]);
@@ -226,14 +227,16 @@ const ClassSetDialog = ({ learnProgress, student, handleTogle }) => {
               <StackList>
                 <AccessTimeIcon sx={{ color: "#079" }} />
                 <Typography>
-                  {parseBirth(studentProgress?.startDate)}
+                  {parseBirth(studentProgress?.startDate?.split("T")[0])}
                 </Typography>
               </StackList>
             </MuiToolTip>
             <MuiToolTip title="Lần học gần nhất">
               <StackList>
                 <AccessTimeIcon sx={{ color: "#079" }} />
-                <Typography>{parseBirth(studentProgress?.endDate)}</Typography>
+                <Typography>
+                  {parseBirth(studentProgress?.endDate?.split("T")[0])}
+                </Typography>
               </StackList>
             </MuiToolTip>
             <FormControl fullWidth>

@@ -226,7 +226,6 @@ const useLibCardBank = () => {
           : card
       );
       setCardBank(newCardBank);
-      console.log(Boolean(response?.data), "Co tra ve gi khong nhe");
       if (Boolean(response?.data)) setEffectList(response?.data);
 
       setMutationing(false);

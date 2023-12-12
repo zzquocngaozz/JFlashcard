@@ -289,7 +289,7 @@ export default function KanjiDialogForm({
                     <MenuItem value={1}>Nháp</MenuItem>
                     <MenuItem value={2}>Hoàn thành</MenuItem>
                     <MenuItem value={3}>Công khai</MenuItem>
-                    <MenuItem value={4}>Đóng</MenuItem>
+                    {/* <MenuItem value={4}>Đóng</MenuItem> */}
                   </Select>
                 </FormControl>
                 <TextField

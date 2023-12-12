@@ -165,7 +165,9 @@ const LibCardBank = () => {
             >
               <TextField
                 onChange={handleSearch}
-                label="Có tên"
+                label="Tìm kiếm"
+                InputLabelProps={{ shrink: true }}
+                placeholder="Tìm bằng thuật ngữ"
                 variant="standard"
               />
               <FormControl sx={{ m: 1, minWidth: 100 }}>
