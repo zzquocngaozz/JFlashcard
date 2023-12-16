@@ -32,7 +32,6 @@ const FolderSet = () => {
   };
 
   const handleToggleUpdate = () => {
-    console.log("Toggle");
     setOpenEditFrom(!openEditForm);
   };
 

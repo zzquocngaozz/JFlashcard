@@ -7,7 +7,7 @@ import { useAuthContext } from "../context/AuthContext";
 const VerifyRoute = ({ path, element }) => {
   const { isLogin, currentUser } = useAuth();
   const location = useLocation();
-  console.log(currentUser);
+
   return (
     <>
       {!isLogin() ? (

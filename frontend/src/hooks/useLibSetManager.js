@@ -53,7 +53,6 @@ const useLibSetManager = () => {
   };
 
   const updateStatusSelectedSet = () => {
-    console.log(listSelect);
     const newList = listSet.map((set) =>
       isSelected(set.flashcardSetId) ? { ...set, status: 5 } : set
     );

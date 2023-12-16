@@ -242,7 +242,7 @@ const SetEditContextProvider = ({ children }) => {
       (result, card) => [...result, card?.cardId],
       []
     );
-    console.log(data);
+
     try {
       const config = {
         headers: {

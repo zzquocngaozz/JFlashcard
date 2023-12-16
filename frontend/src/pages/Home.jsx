@@ -159,7 +159,9 @@ const Home = () => {
               Việc học bằng thẻ giúp bạn ghi nhớ từ tựng. Tối ưu hoá thẻ của bạn
               với bộ thẻ Từ vựng, Hán tự, ngữ pháp của JFlashcard
             </Typography>
-            <Button variant="contained">Bắt đầu</Button>
+            <Button variant="contained" component={Link} to="/signin">
+              Bắt đầu
+            </Button>
           </Box>
         </Stack>
 
@@ -222,7 +224,7 @@ const Home = () => {
               objectFit: "cover",
             }}
           />
-          <Box>
+          <Box width={"100%"}>
             <Typography variant="h4" mt={1}>
               Người học chăm chỉ
             </Typography>
@@ -252,7 +254,7 @@ const Home = () => {
             alt="create"
             style={{ width: "50%", clipPath: "1/1", objectFit: "cover" }}
           />
-          <Box>
+          <Box width={"100%"}>
             <Typography variant="h4">Lớp học nổi bật</Typography>
             {data ? <TopClass classRoom={data?.classRoom} /> : <></>}
           </Box>

@@ -108,7 +108,7 @@ const ManagerDashboard = () => {
                   objectFit: "cover",
                 }}
               />
-              <Box>
+              <Box width={"100%"}>
                 <Typography variant="h5" mt={1}>
                   Người học chăm chỉ
                 </Typography>
@@ -127,7 +127,7 @@ const ManagerDashboard = () => {
                 alt="create"
                 style={{ width: "50%", clipPath: "1/1", objectFit: "cover" }}
               />
-              <Box>
+              <Box width={"100%"}>
                 <Typography variant="h5">Lớp học nổi bật</Typography>
                 {dataTop ? <TopClass classRoom={dataTop?.classRoom} /> : <></>}
               </Box>

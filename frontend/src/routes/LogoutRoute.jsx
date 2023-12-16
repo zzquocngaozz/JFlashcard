@@ -20,6 +20,7 @@ const LogoutRoute = () => {
         logout();
       } catch (error) {
         console.log(error);
+        logout();
       }
     };
     clearContext();

@@ -108,7 +108,6 @@ const ClassSetDialog = ({ learnProgress, student, handleTogle }) => {
     setWeekIndex(e.target.value);
   };
   useEffect(() => {
-    console.log(studentProgress?.startDate);
     if (studentProgress?.startDate === studentProgress?.endDate) {
       setSelectSize(1);
       return;

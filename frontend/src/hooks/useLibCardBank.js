@@ -404,7 +404,7 @@ const useLibCardBank = () => {
         result.push({ id: set.flashcardSetId });
         return result;
       }, []);
-      console.log("payload", payload);
+
       await axios.post(url, JSON.stringify(payload), config);
 
       setMutationing(false);

@@ -16,10 +16,8 @@ const TeacherHomeHeader = ({ data: dashboard }) => {
   });
 
   useEffect(() => {
-    console.log(dashboard);
     if (!dashboard) return;
-    const { countCard, countClass, countFolder, countMember, countSet } =
-      dashboard;
+    const { countCard, countClass, countMember, countSet } = dashboard;
     setUserData({
       countCard: countCard,
       countSet: countSet,
