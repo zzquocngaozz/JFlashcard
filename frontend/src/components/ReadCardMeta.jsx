@@ -48,7 +48,6 @@ const ReadCardMeta = () => {
   });
 
   const handleTogleClone = (mode) => {
-    console.log(mode);
     if (mode === 0)
       setAlertClone({
         mode: 0,

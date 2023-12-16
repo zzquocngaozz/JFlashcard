@@ -132,6 +132,8 @@ export const dateRangeFormat = (date) => {
 export const getDateDefault = () => {
   const current = new Date();
   return `${current.getFullYear()}-${
-    current.getMonth() + 1
-  }-${current.getDate()}`;
+    current.getMonth() < 9
+      ? "0" + (current.getMonth() + 1)
+      : current.getMonth() + 1
+  }-${current.getDate() < 10 ? "0" + current.getDate() : current.getDate()}`;
 };

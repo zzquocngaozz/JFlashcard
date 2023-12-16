@@ -3,31 +3,50 @@
 skinparam Style strictuml
 
 actor User
-participant SearchView
-participant SearchController
+participant UpdateFlashcardSetView
+participant FlashcardSetController
 participant FlashcardSetService
-'participant Unity
+participant Utils
 participant Mapper
 database Repository as ACTIVATE_ENTITY
 
-User -> SearchController: Send request
-activate SearchController
-SearchController -> FlashcardSetService: searchFlashcardSetPublic()
+User -> FlashcardSetController: Send data
+activate FlashcardSetController
+FlashcardSetController -> FlashcardSetService: updateFlashcardSetResponse()
 activate FlashcardSetService
-FlashcardSetService -> Repository : Get data for Seacrch
-activate Repository
-Repository --> FlashcardSetService : Return Data
-deactivate
-FlashcardSetService -> Mapper : Convert data
-activate Mapper
-Mapper --> FlashcardSetService : Return Data
-deactivate
-FlashcardSetService --> SearchController : Send data
-deactivate
-SearchController --> SearchView : Send data
-activate SearchView
-SearchView --> User : Display Data
+alt FlashcardSet data  is Invalid
+    FlashcardSetService -> Utils : Check Validate FlashcardSet
+    activate Utils
+    Utils --> FlashcardSetService: Data  is Invalid
+    deactivate Utils
+    activate FlashcardSetService
+    FlashcardSetService --> FlashcardSetController: Error message to user
+    deactivate FlashcardSetService
+    activate FlashcardSetController
+    FlashcardSetController --> UpdateFlashcardSetView : send mess
+    deactivate FlashcardSetController
+    activate UpdateFlashcardSetView
+    UpdateFlashcardSetView --> User : Dispaly mess
+    deactivate UpdateFlashcardSetView
+else FlashcardSet data   is Valid
+    FlashcardSetService -> Utils : Check Validate FlashcardSet
+    activate Utils
+    Utils --> FlashcardSetService: Data  is Valid
+    deactivate Utils
 
+    FlashcardSetService -> Mapper : Convert data
+    activate Mapper
+    Mapper --> FlashcardSetService : Return data
+    deactivate
+    FlashcardSetService -> Repository: Process and save(data)
+    activate Repository
+    FlashcardSetService <-- Repository: return Id
+    deactivate Repository
+    FlashcardSetService --> FlashcardSetController: send Id
+    deactivate FlashcardSetService
+    activate FlashcardSetController
+    FlashcardSetController --> User : request flashcard set view
+    deactivate FlashcardSetController
 
-
+end
 @enduml

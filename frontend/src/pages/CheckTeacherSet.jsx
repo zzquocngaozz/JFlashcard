@@ -142,7 +142,7 @@ const CheckTeacherSet = () => {
     setCurrentPage(value);
   };
   useEffect(() => {
-    document.title = "Bộ flashcard của bạn";
+    document.title = "Xem học phần của giáo viên";
   }, []);
   return (
     <>
@@ -189,7 +189,7 @@ const CheckTeacherSet = () => {
                   InputLabelProps={{ shrink: true }}
                 />
                 <FormControl sx={{ m: 1, minWidth: 100 }}>
-                  <InputLabel id="filter-label">Loại thẻ</InputLabel>
+                  <InputLabel id="filter-label">Tìm theo</InputLabel>
                   <Select
                     labelId="type-label"
                     id="type-label"

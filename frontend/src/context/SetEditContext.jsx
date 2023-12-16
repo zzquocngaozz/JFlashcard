@@ -242,7 +242,7 @@ const SetEditContextProvider = ({ children }) => {
       (result, card) => [...result, card?.cardId],
       []
     );
-    console.log(data);
+
     try {
       const config = {
         headers: {
@@ -276,7 +276,7 @@ const SetEditContextProvider = ({ children }) => {
         config
       );
       const newCardList = cardList.filter((card) => card.cardId !== cardId);
-      console.log(newCardList);
+
       setCardList(newCardList);
       setMutationing(false);
       handleToggle();

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LayoutNormal from "../components/Parts/LayoutNormal";
 import ClassNav from "../components/Parts/ClassNav";
@@ -8,28 +8,6 @@ import ClassMemberCard from "../components/Cards/ClassMemberCard";
 import useAuth from "../hooks/useAuth";
 import useClassMember from "../hooks/useClassMember";
 
-// const members = [
-//   {
-//     userId: 4,
-//     userName: "ducpa04",
-//     role: 1,
-//   },
-//   {
-//     userId: 1,
-//     userName: "ducpa01",
-//     role: 1,
-//   },
-//   {
-//     userId: 2,
-//     userName: "ducpa02",
-//     role: 1,
-//   },
-//   {
-//     userId: 3,
-//     userName: "ducpa03",
-//     role: 1,
-//   },
-// ];
 const ClassMember = () => {
   const { classRoomId } = useParams();
   const { currentUser } = useAuth();
@@ -40,7 +18,9 @@ const ClassMember = () => {
     mutationing,
     deleteClassMember,
   } = useClassMember();
-
+  useEffect(() => {
+    document.title = "Xem thành viên";
+  }, []);
   return (
     <LayoutNormal>
       <Stack p={3} pr={5} pl={5}>

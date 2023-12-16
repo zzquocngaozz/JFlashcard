@@ -29,7 +29,6 @@ export default function FormRejectDialog({
   };
 
   React.useEffect(() => {
-    console.log();
     if (!Boolean(message)) return;
 
     if (message.trim() === "") {
@@ -46,7 +45,6 @@ export default function FormRejectDialog({
   }, [message]);
 
   const onSubmit = () => {
-    console.log(Boolean(message));
     // onDelete(data)
     if (!!error) return;
     if (!Boolean(message) || message.trim() === "") {

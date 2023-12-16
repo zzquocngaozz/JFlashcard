@@ -140,6 +140,10 @@ const ClassProgress = () => {
       });
   }, [filterBy]);
 
+  useEffect(() => {
+    document.title = "Tiến độ học";
+  }, []);
+
   return (
     <LayoutNormal>
       <StackList

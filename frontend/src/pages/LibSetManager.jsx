@@ -160,7 +160,7 @@ const LibSetManager = () => {
     setCurrentPage(value);
   };
   useEffect(() => {
-    document.title = "Bộ flashcard của bạn";
+    document.title = "Quản lý học phần";
   }, []);
   return (
     <>

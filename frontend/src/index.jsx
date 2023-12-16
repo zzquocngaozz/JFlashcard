@@ -5,7 +5,8 @@ import App from "./App";
 import axios from "axios";
 import { AuthProvider } from "./context/AuthContext";
 
-axios.defaults.baseURL = "http://localhost:8081/api/v1";
+// axios.defaults.baseURL = "http://localhost:8081/api/v1";
+axios.defaults.baseURL = "http://3.25.162.128:8081/api/v1";
 axios.defaults.headers.common["Content-Type"] = "application/json";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

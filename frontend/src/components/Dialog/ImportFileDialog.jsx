@@ -72,7 +72,7 @@ const ImportFileDialog = ({ handleToggle, importFile, importing }) => {
 
         // Xóa thẻ a sau khi tải xuống hoàn tất
         document.body.removeChild(link);
-        console.log("import kanji");
+
         break;
       case 1:
         const dataVoca = [
@@ -109,7 +109,7 @@ const ImportFileDialog = ({ handleToggle, importFile, importing }) => {
 
         // Xóa thẻ a sau khi tải xuống hoàn tất
         document.body.removeChild(linkVoca);
-        console.log("import voca");
+
         break;
       case 2:
         const dataGrammar = [
@@ -153,7 +153,7 @@ const ImportFileDialog = ({ handleToggle, importFile, importing }) => {
 
         // Xóa thẻ a sau khi tải xuống hoàn tất
         document.body.removeChild(linkGrammar);
-        console.log("import grammar");
+
         break;
       default:
         break;
@@ -172,7 +172,7 @@ const ImportFileDialog = ({ handleToggle, importFile, importing }) => {
   const handleDrop = (event) => {
     event.preventDefault();
     event.target.classList.remove("onDrag");
-    console.log(event.dataTransfer.files);
+
     importFile(event.dataTransfer.files, handleToggle);
   };
 

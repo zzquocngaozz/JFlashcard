@@ -226,7 +226,6 @@ const useLibCardBank = () => {
           : card
       );
       setCardBank(newCardBank);
-      console.log(Boolean(response?.data), "Co tra ve gi khong nhe");
       if (Boolean(response?.data)) setEffectList(response?.data);
 
       setMutationing(false);
@@ -405,7 +404,7 @@ const useLibCardBank = () => {
         result.push({ id: set.flashcardSetId });
         return result;
       }, []);
-      console.log("payload", payload);
+
       await axios.post(url, JSON.stringify(payload), config);
 
       setMutationing(false);

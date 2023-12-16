@@ -34,7 +34,7 @@ export default function FormClassDialog({
     <>
       <Dialog open={true} fullWidth maxWidth={"sm"}>
         <form noValidate onSubmit={handleSubmit(updateClass)}>
-          <DialogTitle>Cập nhật thư mục</DialogTitle>
+          <DialogTitle>Cập nhật lớp học</DialogTitle>
           <DialogContent>
             <TextField
               {...register("classRoomName", role["className"])}

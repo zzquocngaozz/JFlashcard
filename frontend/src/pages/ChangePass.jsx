@@ -89,7 +89,7 @@ const ChangePass = () => {
               <ListItem>Hồ sơ cá nhân</ListItem>
             </NavLink>
             <NavLink to="/changepass">
-              <ListItem>Quên mật khẩu</ListItem>
+              <ListItem>Đổi mật khẩu</ListItem>
             </NavLink>
           </List>
         </Box>

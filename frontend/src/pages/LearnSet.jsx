@@ -47,6 +47,9 @@ const LearnSet = () => {
       }
     }
   }, [setId, cards]);
+  useEffect(() => {
+    document.title = "Học bằng flashcard";
+  }, []);
   return (
     <>
       {isEmpty(learnList) ? (

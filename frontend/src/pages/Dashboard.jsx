@@ -24,6 +24,7 @@ const Dashboard = () => {
   const { accessToken } = useAuth();
 
   useEffect(() => {
+    document.title = "JFlashcard";
     const fetchData = async () => {
       setLoading(true);
       const config = {
@@ -104,7 +105,7 @@ const Dashboard = () => {
                   objectFit: "cover",
                 }}
               />
-              <Box>
+              <Box width={"100%"}>
                 <Typography variant="h5" mt={1}>
                   Người học chăm chỉ
                 </Typography>
@@ -123,7 +124,7 @@ const Dashboard = () => {
                 alt="create"
                 style={{ width: "50%", clipPath: "1/1", objectFit: "cover" }}
               />
-              <Box>
+              <Box width={"100%"}>
                 <Typography variant="h5">Lớp học nổi bật</Typography>
                 {dataTop ? <TopClass classRoom={dataTop?.classRoom} /> : <></>}
               </Box>

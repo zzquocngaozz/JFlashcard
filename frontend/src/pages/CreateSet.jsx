@@ -40,7 +40,7 @@ const CreateSet = () => {
 
   const onSubmit = (data) => {
     if (!isPublicDate(data.publicAt) && publicAt !== "") {
-      setError("birth", {
+      setError("publicAt", {
         type: "manual",
         message: "Ngày công khai thẻ lớn hơn hoặc bằng ngày hiện tại",
       });
@@ -64,7 +64,7 @@ const CreateSet = () => {
   }, [publicAt]);
 
   useEffect(() => {
-    document.title = "Tạo bộ flashcard";
+    document.title = "Tạo học phần";
   }, []);
 
   return (

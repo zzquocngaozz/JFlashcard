@@ -80,7 +80,6 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    console.log(Boolean(currentUser));
     if (!Boolean(currentUser)) return;
     if (isShow.current) return;
     isShow.current = true;

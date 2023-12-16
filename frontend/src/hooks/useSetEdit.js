@@ -127,7 +127,6 @@ const useSetEdit = ({ handleToggleUpdateSet, setAlert }) => {
       const worksheet = workbook.Sheets[sheetName];
       const json = utils.sheet_to_json(worksheet);
       try {
-        console.log(json);
         // Modify the JSON keys as needed
         const jsonParsed =
           dataSet.type === 1
